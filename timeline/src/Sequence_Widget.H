@@ -21,7 +21,7 @@
 #pragma once
 
 #include "Sequence.H"
-#include "Loggable.H"
+#include "../../nonlib/Loggable.H"
 #include "Timeline.H"
 #include <list>
 #include <algorithm>

@@ -43,10 +43,10 @@
 #include "Track.H"
 #include "Transport.H"
 
-#include "FL/menu_popup.H"
+#include "../../FL/menu_popup.H"
 
 #include "const.h"
-#include "debug.h"
+#include "../../nonlib/debug.h"
 
 /* these headers are just for the NSM support */
 #include "Project.H"
@@ -54,11 +54,11 @@
 /*  */
 
 
-#include "OSC/Endpoint.H"
+#include "../../nonlib/OSC/Endpoint.H"
 
 #include <unistd.h>
 
-#include <nsm.h>
+#include "../../nonlib/nsm.h"
 extern nsm_client_t *nsm;
 
 #define BASE Fl_Group
@@ -1649,8 +1649,8 @@ Timeline::track_under ( int Y )
     return NULL;
 }
 
-#include "FL/event_name.H"
-#include "FL/test_press.H"
+#include "../../FL/event_name.H"
+#include "../../FL/test_press.H"
 
 /** a bit of a hack to keep FLTK's focus navigation stuff from
  * stealing the arrow keys from us */

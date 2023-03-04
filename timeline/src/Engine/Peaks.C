@@ -40,9 +40,9 @@
 
 #include "assert.h"
 #include "const.h"
-#include "debug.h"
-#include "Thread.H"
-#include "file.h"
+#include "../../../nonlib/debug.h"
+#include "../../../nonlib/Thread.H"
+#include "../../../nonlib/file.h"
 
 #include <errno.h>
 

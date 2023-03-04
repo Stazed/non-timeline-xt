@@ -24,12 +24,12 @@
 #include "../Audio_Region.H"
 
 #include "Audio_File.H"
-#include "dsp.h"
+#include "../../../nonlib/dsp.h"
 
 #include "const.h"
 #include "const.h"
-#include "debug.h"
-#include "Thread.H"
+#include "../../../nonlib/debug.h"
+#include "../../../nonlib/Thread.H"
 
 
 

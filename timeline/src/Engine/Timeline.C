@@ -25,7 +25,7 @@
 #include "Record_DS.H"
 #include "Playback_DS.H"
 
-#include "Thread.H"
+#include "../../../nonlib/Thread.H"
 #include "../Cursor_Sequence.H"
 
 #include "Engine.H"

@@ -27,7 +27,7 @@
 #include <list>
 
 #include "types.h"
-#include "Mutex.H"
+#include "../../../nonlib/Mutex.H"
 #include "Peaks.H"
 
 class Peak_Writer;

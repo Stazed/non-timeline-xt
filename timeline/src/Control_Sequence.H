@@ -23,10 +23,10 @@
 #include "Sequence.H"
 #include "Control_Point.H"
 
-#include "JACK/Port.H"
+#include "../../nonlib/JACK/Port.H"
 
 // class JACK::Port;
-#include "OSC/Endpoint.H"
+#include "../../nonlib/OSC/Endpoint.H"
 
 class Control_Sequence_Header;
 class Fl_Menu_Button;

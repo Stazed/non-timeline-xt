@@ -26,8 +26,8 @@
 /* This is the home of the JACK process callback */
 
 #include "const.h"
-#include "debug.h"
-#include "Thread.H"
+#include "../../../nonlib/debug.h"
+#include "../../../nonlib/Thread.H"
 
 
 

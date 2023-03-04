@@ -26,7 +26,7 @@
 #include <errno.h>
 
 #include <assert.h>
-#include "debug.h"
+#include "../debug.h"
 
 namespace JACK
 {

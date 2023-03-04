@@ -28,11 +28,11 @@
 // #include "Port.H"
 #include "Playback_DS.H"
 #include "Engine.H"
-#include "dsp.h"
+#include "../../../nonlib/dsp.h"
 
 #include "const.h"
-#include "debug.h"
-#include "Thread.H"
+#include "../../../nonlib/debug.h"
+#include "../../../nonlib/Thread.H"
 #include <unistd.h>
 
 bool

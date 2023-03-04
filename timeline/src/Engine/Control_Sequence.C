@@ -22,8 +22,8 @@
 #include "../Transport.H" // for ->frame
 
 #include "const.h"
-#include "debug.h"
-#include "Thread.H"
+#include "../../../nonlib/debug.h"
+#include "../../../nonlib/Thread.H"
 
 #include <list>
 using std::list;

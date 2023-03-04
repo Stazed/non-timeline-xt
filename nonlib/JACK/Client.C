@@ -24,7 +24,7 @@
 
 
 
-#include "debug.h"
+#include "../debug.h"
 
 #ifdef __SSE2_MATH__
 #include <xmmintrin.h>

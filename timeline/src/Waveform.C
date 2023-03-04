@@ -27,7 +27,7 @@
 #include <algorithm>
 using std::min;
 using std::max;
-#include <dsp.h>
+#include "../../nonlib/dsp.h"
 
 
 

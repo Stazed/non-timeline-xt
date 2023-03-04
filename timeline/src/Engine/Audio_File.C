@@ -22,8 +22,8 @@
 #include "Audio_File_Dummy.H"
 
 #include "const.h"
-#include "debug.h"
-#include "Block_Timer.H"
+#include "../../../nonlib/debug.h"
+#include "../../../nonlib/Block_Timer.H"
 
 #include <string.h>
 

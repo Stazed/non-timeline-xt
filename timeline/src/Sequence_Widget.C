@@ -23,7 +23,7 @@
 #include "Track.H"
 
 #include "const.h"
-#include "debug.h"
+#include "../../nonlib/debug.h"
 
 using namespace std;
 
@@ -382,7 +382,7 @@ Sequence_Widget::draw_box ( void )
 }
 
 
-#include "FL/test_press.H"
+#include "../../FL/test_press.H"
 
 /* base hanlde just does basic dragging */
 int

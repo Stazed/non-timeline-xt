@@ -19,11 +19,11 @@
 
 #include "../Audio_Sequence.H"
 
-#include "dsp.h"
+#include "../../../nonlib/dsp.h"
 
 #include "const.h"
-#include "debug.h"
-#include "Thread.H"
+#include "../../../nonlib/debug.h"
+#include "../../../nonlib/Thread.H"
 
 using namespace std;
 

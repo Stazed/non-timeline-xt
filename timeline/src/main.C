@@ -47,9 +47,9 @@
 #include "Transport.H"
 #include "Engine/Engine.H"
 
-#include "Thread.H"
+#include "../../nonlib/Thread.H"
 
-#include <nsm.h>
+#include "../../nonlib/nsm.h"
 
 extern void set_nsm_callbacks ( nsm_client_t *nsm );
 
@@ -74,7 +74,7 @@ const double NSM_CHECK_INTERVAL = 0.25f;
 #define PACKAGE "non"
 
 #include "const.h"
-#include "debug.h"
+#include "../../nonlib/debug.h"
 
 char *user_config_dir;
 

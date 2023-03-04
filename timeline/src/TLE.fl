@@ -40,7 +40,7 @@ decl {\#include <sys/wait.h>} {private local
 decl {\#include <FL/Fl_Overlay_Window.H>} {private local
 } 
 
-decl {\#include <FL/Fl_Menu_Settings.H>} {private local
+decl {\#include "../../FL/Fl_Menu_Settings.H"} {private local
 } 
 
 decl {\#include "Timeline.H"} {private local
@@ -49,7 +49,7 @@ decl {\#include "Timeline.H"} {private local
 decl {\#include "Transport.H"} {private local
 } 
 
-decl {\#include "Loggable.H"} {private local
+decl {\#include "../../nonlib/Loggable.H"} {private local
 } 
 
 decl {\#include "Project.H"} {private local
@@ -58,10 +58,10 @@ decl {\#include "Project.H"} {private local
 decl {\#include "Clock.H"} {public local
 } 
 
-decl {\#include <FL/Fl_Flowpack.H>} {private local
+decl {\#include "../../FL/Fl_Flowpack.H"} {private local
 } 
 
-decl {\#include <FL/New_Project_Dialog.H>} {private local
+decl {\#include "../../FL/New_Project_Dialog.H"} {private local
 } 
 
 decl {\#include "Track.H" // for capture_format} {private local
@@ -94,13 +94,13 @@ decl {\#include "Engine/Engine.H"} {private local
 decl {\#include "Engine/Audio_File.H" // for supported formats} {private local
 } 
 
-decl {\#include <FL/About_Dialog.H>} {private local
+decl {\#include "../../FL/About_Dialog.H"} {private local
 } 
 
 decl {extern char project_display_name[256];} {private global
 } 
 
-decl {\#include <nsm.h>} {private local
+decl {\#include "../../nonlib/nsm.h"} {selected private local
 } 
 
 decl {extern nsm_client_t *nsm;} {private global
@@ -261,9 +261,9 @@ Loggable::progress_callback( &TLE::progress_cb, this );} {}
       label {Non Timeline}
       callback {if ( Fl::event_key() != FL_Escape )
 	timeline->command_quit();} open
-      xywh {204 266 1025 770} type Double resizable
+      xywh {204 266 1025 770} type Double hide resizable
       code0 {o->xclass( APP_NAME );}
-      class TLE_Window size_range {947 300 0 0} visible
+      class TLE_Window size_range {947 300 0 0}
     } {
       Fl_Group {} {open
         xywh {0 -53 1025 126} box FLAT_BOX
@@ -327,7 +327,7 @@ pi.run();}
               } {}
               MenuItem {} {
                 label {Playback Latency Compensation}
-                callback {Timeline::playback_latency_compensation = menu_picked_value( o );} selected
+                callback {Timeline::playback_latency_compensation = menu_picked_value( o );}
                 xywh {55 55 40 25} type Toggle
               }
             }
@@ -777,7 +777,7 @@ ab.run();}
           Fl_Button solo_blinker {
             label SOLO
             xywh {800 33 50 15} box BORDER_BOX down_box BORDER_BOX color 74 selection_color 92 labelfont 1 labelsize 11 labelcolor 32
-            code0 {\#include "FL/Fl_Blink_Button.H"}
+            code0 {\#include "../../FL/Fl_Blink_Button.H"}
             code1 {o->box( FL_ASYM_BOX );}
             code2 {o->down_box( FL_ASYM_BOX );}
             code3 {o->ignore_input( true );}
@@ -786,7 +786,7 @@ ab.run();}
           Fl_Button rec_blinker {
             label REC
             xywh {800 53 50 15} box BORDER_BOX down_box BORDER_BOX color 72 selection_color 88 labelfont 1 labelsize 11 labelcolor 32
-            code0 {\#include "FL/Fl_Blink_Button.H"}
+            code0 {\#include "../../FL/Fl_Blink_Button.H"}
             code1 {o->box( FL_ASYM_BOX );}
             code2 {o->down_box( FL_ASYM_BOX );}
             code3 {o->ignore_input( true );}
@@ -795,7 +795,7 @@ ab.run();}
           Fl_Button selected_blinker {
             label SEL
             xywh {745 53 50 15} box BORDER_BOX down_box BORDER_BOX color 13 selection_color 5 labelfont 1 labelsize 11 labelcolor 32
-            code0 {\#include "FL/Fl_Blink_Button.H"}
+            code0 {\#include "../../FL/Fl_Blink_Button.H"}
             code1 {o->box( FL_ASYM_BOX );}
             code2 {o->down_box( FL_ASYM_BOX );}
             code3 {o->ignore_input( true );}
@@ -804,7 +804,7 @@ ab.run();}
           Fl_Button seek_blinker {
             label SEEK
             xywh {745 33 50 15} box BORDER_BOX down_box BORDER_BOX color 10 selection_color 2 labelfont 1 labelsize 11 labelcolor 32
-            code0 {\#include "FL/Fl_Blink_Button.H"}
+            code0 {\#include "../../FL/Fl_Blink_Button.H"}
             code1 {o->box( FL_ASYM_BOX );}
             code2 {o->down_box( FL_ASYM_BOX );}
             code3 {o->ignore_input( true );}
@@ -1059,7 +1059,7 @@ if ( logo_box->image() )
 	((Fl_Shared_Image*)logo_box->image())->release();
 	logo_box->image( NULL );
 }} open
-      private xywh {1195 197 520 710} type Double modal visible
+      private xywh {527 298 520 710} type Double hide modal
     } {
       Fl_Group {} {open
         xywh {25 30 470 75}
@@ -1075,7 +1075,7 @@ if ( logo_box->image() )
           code0 {static char pat[40];}
           code1 {snprintf( pat, sizeof( pat ), "%.1fK", size( "history" ) / (float)1024 );}
           code2 {o->value( pat );}
-          code3 {\#include "file.h"}
+          code3 {\#include "../../nonlib/file.h"}
         }
         Fl_Output {} {
           label {Created On}

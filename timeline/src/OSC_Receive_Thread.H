@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include "Thread.H"
-#include "Mutex.H"
+#include "../../nonlib/Thread.H"
+#include "../../nonlib/Mutex.H"
 
 class OSC_Receive_Thread : public Mutex
 {

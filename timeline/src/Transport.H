@@ -27,7 +27,7 @@
 #include <FL/Fl_Button.H>
 
 #include <stdio.h>
-#include <FL/Fl_Flowpack.H>
+#include "../../FL/Fl_Flowpack.H"
 
 class Transport : public jack_position_t, public Fl_Flowpack
 {

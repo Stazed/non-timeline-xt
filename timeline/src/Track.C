@@ -28,13 +28,13 @@
 
 #include "Transport.H"
 
-#include "../FL/Fl_Sometimes_Input.H"
-#include "../FL/Fl_Sometimes_Pack.H"
+#include "../../FL/Fl_Sometimes_Input.H"
+#include "../../FL/Fl_Sometimes_Pack.H"
 #include <FL/fl_ask.H>
 #include <FL/Fl_Color_Chooser.H>
 #include <FL/Fl.H>
-#include "FL/Fl_Scalepack.H"
-#include "FL/Fl_Blink_Button.H"
+#include "../../FL/Fl_Scalepack.H"
+#include "../../FL/Fl_Blink_Button.H"
 
 #include "Control_Sequence.H"
 #include "Annotation_Sequence.H"
@@ -42,10 +42,10 @@
 #include "Track_Header.H"
 
 #include "const.h"
-#include "debug.h"
+#include "../../nonlib/debug.h"
 
 #include <FL/Fl_Menu_Button.H>
-#include "FL/menu_popup.H"
+#include "../../FL/menu_popup.H"
 
 extern char *instance_name;
 
@@ -1016,8 +1016,8 @@ Track::menu ( void ) const
     return _menu;
 }
 
-#include "FL/event_name.H"
-#include "FL/test_press.H"
+#include "../../FL/event_name.H"
+#include "../../FL/test_press.H"
 
 static Fl_Widget *receptive_to_drop = NULL;
 

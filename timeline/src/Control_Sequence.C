@@ -18,7 +18,7 @@
 /*******************************************************************************/
 
 #include "const.h"
-#include "debug.h"
+#include "../../nonlib/debug.h"
 
 #include <FL/fl_ask.H>
 #include <FL/Fl_Color_Chooser.H>
@@ -35,14 +35,14 @@ using std::list;
 
 #include "Transport.H"
 
-#include "OSC/Endpoint.H"
+#include "../../nonlib/OSC/Endpoint.H"
 
-#include "string_util.h"
+#include "../../nonlib/string_util.h"
 
-#include "FL/event_name.H"
-#include "FL/test_press.H"
+#include "../../FL/event_name.H"
+#include "../../FL/test_press.H"
 #include <FL/Fl_Menu_Button.H>
-#include "FL/menu_popup.H"
+#include "../../FL/menu_popup.H"
 
 
 

@@ -25,10 +25,10 @@ class Audio_Sequence;
 #include "Engine.H" // for locking.
 
 #include "Disk_Stream.H"
-#include "dsp.h"
+#include "../../../nonlib/dsp.h"
 
 #include "const.h"
-#include "debug.h"
+#include "../../../nonlib/debug.h"
 
 #include <unistd.h>
 

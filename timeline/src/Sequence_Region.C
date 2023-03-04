@@ -19,7 +19,7 @@
 
 #include "Sequence_Region.H"
 #include "Track.H"
-#include "debug.h"
+#include "../../nonlib/debug.h"
 
 #include <stdint.h>
 
@@ -133,7 +133,7 @@ Sequence_Region::split ( Sequence_Region * copy, nframes_t where )
 }
 
 
-#include "FL/test_press.H"
+#include "../../FL/test_press.H"
 
 int
 Sequence_Region::handle ( int m )

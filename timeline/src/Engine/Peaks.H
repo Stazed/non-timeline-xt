@@ -27,7 +27,7 @@
 
 #include <stdio.h>
 
-#include "Thread.H"
+#include "../../../nonlib/Thread.H"
 
 
 class Audio_File;

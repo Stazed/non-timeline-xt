@@ -32,7 +32,7 @@
 // #define HAS_SF_FORMAT_VORBIS
 
 #include "const.h"
-#include "debug.h"
+#include "../../../nonlib/debug.h"
 #include <stdio.h>
 
 

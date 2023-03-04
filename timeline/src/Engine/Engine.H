@@ -19,13 +19,13 @@
 
 #pragma once
 
-#include "Mutex.H"
+#include "../../../nonlib/Mutex.H"
 
 class Port;
 
-#include "JACK/Client.H"
+#include "../../../nonlib/JACK/Client.H"
 
-#include "Thread.H"
+#include "../../../nonlib/Thread.H"
 
 class Engine : public JACK::Client
 {

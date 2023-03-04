@@ -24,12 +24,12 @@
 
 #include "Track.H"
 
-#include "FL/event_name.H"
+#include "../../FL/event_name.H"
 
 #include "Transport.H" // for locate()
 
 #include "const.h"
-#include "debug.h"
+#include "../../nonlib/debug.h"
 
 using namespace std;
 
@@ -315,7 +315,7 @@ Sequence::draw ( void )
     fl_pop_clip();
 }
 
-#include "FL/test_press.H"
+#include "../../FL/test_press.H"
 
 int
 Sequence::handle ( int m )

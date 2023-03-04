@@ -21,7 +21,7 @@
 #pragma once
 
 #include "Sequence_Point.H"
-#include "Loggable.H"
+#include "../../nonlib/Loggable.H"
 
 struct time_sig
 {

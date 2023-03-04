@@ -18,13 +18,13 @@
 /*******************************************************************************/
 
 #include "const.h"
-#include "debug.h"
+#include "../../nonlib/debug.h"
 #include "Timeline.H"
 #include "TLE.H"
 #include "Project.H"
-#include "OSC/Endpoint.H"
+#include "../../nonlib/OSC/Endpoint.H"
 
-#include <nsm.h>
+#include "../../nonlib/nsm.h"
 
 #define OSC_INTERVAL 0.2f
 

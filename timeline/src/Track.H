@@ -29,14 +29,14 @@
 #include <FL/Fl_Box.H>
 #include <FL/fl_draw.H>
 
-#include "Loggable.H"
+#include "../../nonlib/Loggable.H"
 
 /* TODO: rename this to Audio_Track or something since it's clearly audio specific. */
 
 #include <vector>
 using std::vector;
 
-#include "JACK/Port.H"
+#include "../../nonlib/JACK/Port.H"
 
 #include "Timeline.H"
 

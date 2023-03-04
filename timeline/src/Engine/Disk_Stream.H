@@ -27,10 +27,10 @@
 #include <vector>
 
 #include "types.h"
-#include "Mutex.H"
+#include "../../../nonlib/Mutex.H"
 #include "const.h"
-#include "debug.h"
-#include "Thread.H"
+#include "../../../nonlib/debug.h"
+#include "../../../nonlib/Thread.H"
 
 class Track;
 class Audio_Sequence;

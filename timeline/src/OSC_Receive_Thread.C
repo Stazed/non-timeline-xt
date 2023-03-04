@@ -24,9 +24,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "debug.h"
+#include "../../nonlib/debug.h"
 
-#include "OSC/Endpoint.H"
+#include "../../nonlib/OSC/Endpoint.H"
 
 extern Timeline *timeline;
 

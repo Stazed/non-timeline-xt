@@ -18,7 +18,7 @@
 /*******************************************************************************/
 
 #include <lo/lo.h>
-#include "debug.h"
+#include "../debug.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -28,7 +28,7 @@
 
 #include "Endpoint.H"
 
-#include "Thread.H"
+#include "../Thread.H"
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 

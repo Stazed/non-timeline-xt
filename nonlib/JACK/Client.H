@@ -24,7 +24,7 @@
 #ifdef HAVE_JACK_METADATA
 #	include <jack/metadata.h>
 #endif
-#include <Mutex.H>
+#include "../Mutex.H"
 
 typedef jack_nframes_t nframes_t;
 typedef jack_default_audio_sample_t sample_t;

@@ -30,7 +30,7 @@
 #include <sys/fcntl.h>
 #include <errno.h>
 
-#include "Loggable.H"
+#include "../../nonlib/Loggable.H"
 #include "Project.H"
 
 #include "Timeline.H" // for sample_rate()
@@ -40,9 +40,9 @@
 #include <FL/filename.H>
 
 #include "const.h"
-#include "debug.h"
-#include "file.h"
-#include "Block_Timer.H"
+#include "../../nonlib/debug.h"
+#include "../../nonlib/file.h"
+#include "../../nonlib/Block_Timer.H"
 
 #include "Transport.H"
 

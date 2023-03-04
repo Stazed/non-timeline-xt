@@ -20,7 +20,7 @@
 /* An Audio_Sequence is a sequence of Audio_Regions. Takes and 'track
  * contents' consist of these objects */
 
-#include "debug.h"
+#include "../../nonlib/debug.h"
 
 #include <sys/time.h>
 #include <FL/fl_ask.H>
@@ -40,7 +40,7 @@ using namespace std;
 
 #include <unistd.h> // for symlink()
 
-#include "string_util.h"
+#include "../../nonlib/string_util.h"
 
 
 

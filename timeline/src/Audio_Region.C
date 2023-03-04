@@ -33,8 +33,8 @@
 #include "Engine/Audio_File.H"
 #include "Transport.H"
 #include "const.h"
-#include "debug.h"
-#include <FL/focus_frame.H>
+#include "../../nonlib/debug.h"
+#include "../../FL/focus_frame.H"
 
 #include <algorithm>
 using std::min;
@@ -335,8 +335,8 @@ Audio_Region::menu_cb ( const Fl_Menu_ *m )
     redraw();
 }
 
-#include "FL/test_press.H"
-#include "FL/menu_popup.H"
+#include "../../FL/test_press.H"
+#include "../../FL/menu_popup.H"
 
 /** build the context menu for this region */
 Fl_Menu_Button &
