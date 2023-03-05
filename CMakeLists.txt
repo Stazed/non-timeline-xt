@@ -1,15 +1,15 @@
-#CMake file for non-daw-xt
+#CMake file for non-timeline-xt
 
 cmake_minimum_required(VERSION 3.1)
-project (non-daw-xt)
+project (non-timeline-xt)
 
 set (PACKAGE_VERSION "1.0.1")
 
 set (CMAKE_SKIP_RULE_DEPENDENCY OFF)
 
 add_definitions(-D'VERSION="${PACKAGE_VERSION}"')
-add_definitions(-D'WEBSITE="https://github.com/Stazed/non-daw-xt"')
-add_definitions(-D'PACKAGE="non-daw-xt"')
+add_definitions(-D'WEBSITE="https://github.com/Stazed/non-timeline-xt"')
+add_definitions(-D'PACKAGE="non-timeline-xt"')
 add_definitions(-D'PIXMAP_PATH="${CMAKE_INSTALL_PREFIX}/share/pixmaps"')
 add_definitions(-D'DOCUMENT_PATH="${CMAKE_INSTALL_PREFIX}/share/doc"')
 
@@ -56,8 +56,8 @@ find_package (PkgConfig REQUIRED)
 #dependencies
 find_package(Threads REQUIRED)
 if(THREADS_HAVE_PTHREAD_ARG)
-  set_property(TARGET non-daw-xt PROPERTY COMPILE_OPTIONS "-pthread")
-  set_property(TARGET non-daw-xt PROPERTY INTERFACE_COMPILE_OPTIONS "-pthread")
+  set_property(TARGET non-timeline-xt PROPERTY COMPILE_OPTIONS "-pthread")
+  set_property(TARGET non-timeline-xt PROPERTY INTERFACE_COMPILE_OPTIONS "-pthread")
 endif()
 
 pkg_check_modules(JACK REQUIRED jack>=0.115.6)
@@ -102,6 +102,14 @@ CHECK_CXX_SOURCE_COMPILES(
 if(HAVE_BUILTIN_ALIGNED)
     add_definitions(-D'HAS_BUILTIN_ASSUME_ALIGNED=1')
 endif(HAVE_BUILTIN_ALIGNED)
+
+CHECK_CXX_SOURCE_COMPILES(
+    "#include <sndfile.h>\nint main ( char **argv, int argc ) {
+    return SF_FORMAT_VORBIS; }" HAS_SF_FORMAT_VORBIS)
+
+if(HAS_SF_FORMAT_VORBIS)
+    add_definitions(-D'HAVE_SF_FORMAT_VORBIS=1')
+endif(HAS_SF_FORMAT_VORBIS)
 
 check_symbol_exists(mlock "sys/mman.h" MLOCK)
 if(MLOCK)
@@ -212,6 +220,7 @@ package_status(LIBLO_FOUND         "Liblo support. . . . . . . . . . . . . . . .
 package_status(JACK_METADATA       "Jack metadata support. . . . . . . . . . . . . . . . . .:"  )
 package_status(JACK_LATENCY_RANGE  "Jack port latency range support. . . . . . . . . . . . .:"  )
 package_status(HAVE_BUILTIN_ALIGNED "Has builtin assume aligned . . . . . . . . . . . . . . .:"  )
+package_status(HAS_SF_FORMAT_VORBIS    "Have SF format vorbis. . . . . . . . . . . . . . . . . .:"  )
 
 message (STATUS)
 message (STATUS                    "____________________ User Options________________________"  )

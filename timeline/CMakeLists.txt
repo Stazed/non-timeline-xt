@@ -1,6 +1,6 @@
-#CMake file for Non-daw-xt
+#CMake file for non-timeline-xt
 
-project (non-daw-xt)
+project (non-timeline-xt)
 
 set (ProgSources
     ../nonlib/JACK/Client.C
@@ -77,19 +77,19 @@ set(ExternLibraries
     m
 )
 
-add_executable (non-daw-xt ${ProgSources} src/main.C)
+add_executable (non-timeline-xt ${ProgSources} src/main.C)
 
 target_include_directories (
-    non-daw-xt PRIVATE
+    non-timeline-xt PRIVATE
     ${NTK_INCLUDE_DIRS}
     ${JACK_INCLUDE_DIRS}
     ${SNDFILE_INCLUDE_DIRS}
     ${LIBLO_INCLUDE_DIRS}
 )
 
-target_link_libraries (non-daw-xt ${ExternLibraries})
-install (TARGETS non-daw-xt RUNTIME DESTINATION bin)
+target_link_libraries (non-timeline-xt ${ExternLibraries})
+install (TARGETS non-timeline-xt RUNTIME DESTINATION bin)
 
 
 install (FILES non-timeline.desktop.in
-    DESTINATION share/applications RENAME non-daw-xt.desktop)
+    DESTINATION share/applications RENAME non-timeline-xt.desktop)
