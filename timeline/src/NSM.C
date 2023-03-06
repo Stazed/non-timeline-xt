@@ -36,7 +36,7 @@ extern Timeline *timeline;
 
 
 static int 
-command_save ( char **out_msg, void *userdata )
+command_save ( char **out_msg, void * /* userdata */ )
 {
    if ( timeline->command_save() )
        return ERR_OK;
@@ -48,7 +48,7 @@ command_save ( char **out_msg, void *userdata )
 }
 
 static int 
-command_open ( const char *name, const char *display_name, const char *client_id, char **out_msg, void *userdata )
+command_open ( const char *name, const char *display_name, const char *client_id, char **out_msg, void * /* userdata */ )
 {
     if ( instance_name )
         free( instance_name );
@@ -88,13 +88,13 @@ command_open ( const char *name, const char *display_name, const char *client_id
 }
 
 static void
-command_session_is_loaded ( void *userdata )
+command_session_is_loaded ( void * /* userdata */ )
 {
     MESSAGE( "NSM says session is loaded." );
 }
 
 static int
-command_broadcast ( const char *path, lo_message msg, void *userdata )
+command_broadcast ( const char *path, lo_message msg, void * /* userdata */ )
 {
      lo_message_get_argc( msg );
 //    lo_arg **argv = lo_message_get_argv( msg );

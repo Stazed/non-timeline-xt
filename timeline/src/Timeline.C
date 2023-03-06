@@ -133,10 +133,13 @@ draw_full_arrow_symbol ( Fl_Color color )
 class Timeline::Timeline_Panzoomer : public Fl_Panzoomer 
 {
 public:
+_Pragma("GCC diagnostic push")
+_Pragma("GCC diagnostic ignored \"-Wunused-parameter\"")
     Timeline_Panzoomer ( int X,int Y,int W,int H, const char *L=0)
         : Fl_Panzoomer(X,Y,W,H)
         {
         }
+_Pragma("GCC diagnostic pop")
 protected:
     void
     draw_background ( int X, int Y,int W, int H )
@@ -299,7 +302,7 @@ Timeline::cb_scroll ( Fl_Widget *w, void *v )
 }
 
 void
-Timeline::cb_scroll ( Fl_Widget *w )
+Timeline::cb_scroll ( Fl_Widget * /* w */)
 {
     //adjust_panzoomer();
 

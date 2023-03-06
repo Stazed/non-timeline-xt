@@ -152,7 +152,7 @@ Sequence::overlaps ( Sequence_Widget *r )
 }
 
 void
-Sequence::handle_widget_change ( nframes_t start, nframes_t length )
+Sequence::handle_widget_change ( nframes_t /* start */, nframes_t /* length */ )
 {
     /* this might be invoked from Capture or GUI thread */
 //    Fl::lock();

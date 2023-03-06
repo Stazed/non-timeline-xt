@@ -255,7 +255,7 @@ Sequence_Region::draw ( void )
 }
 
 void
-Sequence_Region::draw_label ( const char *label, Fl_Align align, Fl_Color color, int xo, int yo )
+Sequence_Region::draw_label ( const char *label, Fl_Align align, Fl_Color /* color */, int /* xo*/, int /* yo */ )
 {
     fl_color( active_r() ? FL_FOREGROUND_COLOR : fl_inactive( FL_FOREGROUND_COLOR ) );
     fl_font( FL_HELVETICA_ITALIC, 10 );

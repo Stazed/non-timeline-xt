@@ -166,7 +166,7 @@ Fl_Menu_Settings::find_item_x ( const char *name, const Fl_Menu_Item *item )
                 // IT'S A SUBMENU
                 // we do not support searches through FL_SUBMENU_POINTER links
                 if ( menupath[0] )
-                    strlcat( menupath, "/", sizeof( menupath ) );
+                    strlcat( menupath, "/", sizeof( menupath ) - 1 );
 
                 strlcat( menupath, m->label(), sizeof( menupath ) - 1 );
 
@@ -202,7 +202,7 @@ Fl_Menu_Settings::find_item_x ( const char *name, const Fl_Menu_Item *item )
                 strcpy( itempath, menupath );
 
                 if ( itempath[0] )
-                    strlcat( itempath, "/", sizeof( itempath ) );
+                    strlcat( itempath, "/", sizeof( itempath ) - 1 );
 
                 strlcat( itempath, m->label(), sizeof( itempath ) - 1 );
 
@@ -246,7 +246,7 @@ path_pop ( char *path )
 }
 
 void
-Fl_Menu_Settings::load ( Fl_Menu_ *bar, const Fl_Menu_Item *item, FILE *fp, int depth, char *path, int pmax )
+Fl_Menu_Settings::load ( Fl_Menu_ *bar, const Fl_Menu_Item *item, FILE *fp, int depth, char *path, int /* pmax */ )
 {
     char line[256];
 

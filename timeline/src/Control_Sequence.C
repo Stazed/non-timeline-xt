@@ -494,16 +494,30 @@ Control_Sequence::draw ( void )
     }
 
     if ( interpolation() == None || _highlighted == this || Fl::focus() == this )
+    {
         for ( list <Sequence_Widget *>::const_iterator r = _widgets.begin();  r != _widgets.end(); r++ )
+        {
             if ( (*r)->x() + (*r)->w() >= bx && 
                  (*r)->x() <= bw + bw )
+            {
                 (*r)->draw_box();
+            }
+        }
+    }
     else
+    {
         for ( list <Sequence_Widget *>::const_iterator r = _widgets.begin();  r != _widgets.end(); r++ )
+        {
             if ( (*r)->selected() )
+            {
                 if ( (*r)->x() + (*r)->w() >= bx && 
                      (*r)->x() <= bw + bw )
+                {
                     (*r)->draw_box();
+                }
+            }
+        }
+    }
 
     fl_pop_clip();
     
