@@ -376,6 +376,8 @@ Sequence::handle ( int m )
 
             if ( Sequence_Widget::belowmouse() )
                 return Sequence_Widget::belowmouse()->dispatch( m );
+
+            break;
         case FL_NO_EVENT:
             /* garbage from overlay window */
             return 0;
@@ -535,6 +537,8 @@ Sequence::handle ( int m )
             }
         }
     }
+
+    return 0;
 }
 
 

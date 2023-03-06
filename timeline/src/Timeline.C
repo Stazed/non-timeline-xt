@@ -1071,7 +1071,6 @@ Timeline::render_tempomap( nframes_t start, nframes_t length, measure_line_callb
     const nframes_t end = start + length;
 
     position_info pos;
-    memset( &pos, 0, sizeof( pos ) );
 
     BBT &bbt = pos.bbt;
 

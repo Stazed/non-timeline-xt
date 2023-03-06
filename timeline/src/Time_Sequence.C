@@ -75,8 +75,11 @@ Time_Sequence::handle ( int m )
                 }
                 return 0;
             }
+            break;
+
         default:
             return 0;
-
     }
+
+    return 0;
 }

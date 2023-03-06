@@ -89,13 +89,18 @@ struct BBT
 /* FIXME: wrong place for this */
 struct position_info
 {
-    nframes_t frame;
+    jack_nframes_t frame;
 
     float tempo;
     int beats_per_bar;
     int beat_type;
-
     BBT bbt;
+    
+    position_info() :
+        tempo(0.0),
+        beats_per_bar(0),
+        beat_type(0),
+        bbt() {}
 };
 
 #define SEQUENCE_WIDGET_CLONE_FUNC(class)               \
