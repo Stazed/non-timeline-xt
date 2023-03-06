@@ -125,12 +125,14 @@ public:
                     }
                     else if ( Fl::event_button3() && ! ( Fl::event_state() & ( FL_ALT | FL_SHIFT | FL_CTRL ) ) )
                     {
-
+_Pragma("GCC diagnostic push")
+_Pragma("GCC diagnostic ignored \"-Wmissing-field-initializers\"")
                         Fl_Menu_Item menu[] =
                             {
                                 { "Remove" },
                                 { 0 }
                             };
+_Pragma("GCC diagnostic pop")
 
                         const Fl_Menu_Item *r = menu->popup( Fl::event_x(), Fl::event_y(), "Annotation Sequence" );
 

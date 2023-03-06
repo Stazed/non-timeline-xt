@@ -347,6 +347,8 @@ Audio_Region::menu ( void )
     Fade::fade_type_e it = _fade_in.type;
     Fade::fade_type_e ot = _fade_out.type;
 
+_Pragma("GCC diagnostic push")
+_Pragma("GCC diagnostic ignored \"-Wmissing-field-initializers\"")
     Fl_Menu_Item items[] =
         {
             { "Fade",             0, 0, 0,  FL_SUBMENU    },
@@ -387,6 +389,7 @@ Audio_Region::menu ( void )
             { "Remove", 0, 0, 0 },
             { 0 },
         };
+_Pragma("GCC diagnostic pop")
 
     menu_set_callback( items, &Audio_Region::menu_cb, (void*)this );
 
@@ -673,12 +676,11 @@ Audio_Region::draw ( void )
             }
         }
         else
-            ;
+        {
 //            WARNING( "Pbuf == %p, peaks = %lu", pbuf, (unsigned long)peaks );
+        }
 
-       
-	
-        
+
         if ( peaks < loop_peaks_needed )
         {
 //            DMESSAGE( "Peak read came up %lu peaks short", (unsigned long)loop_peaks_needed - peaks );
