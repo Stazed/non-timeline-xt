@@ -209,8 +209,10 @@ namespace JACK
     Client::freewheeling ( bool yes )
     {
         if ( jack_set_freewheel( _client, yes ) )
+        {
             ;
 //            WARNING( "Unkown error while setting freewheeling mode" );
+        }
     }
     
     const char *
@@ -299,9 +301,9 @@ namespace JACK
 
         s = init( s );
 
-        thaw_ports();
-        
         _frozen.unlock();
+
+        thaw_ports();
 
         return s;
     }
