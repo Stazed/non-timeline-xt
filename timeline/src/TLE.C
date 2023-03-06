@@ -718,7 +718,10 @@ TLE_Window* TLE::make_window() {
             o->align(Fl_Align(FL_ALIGN_CENTER));
             o->when(FL_WHEN_RELEASE);
             o->type( Clock::HMS );
+            _Pragma("GCC diagnostic push")
+_Pragma("GCC diagnostic ignored \"-Waddress-of-packed-member\"")
             o->run( &transport->frame );
+_Pragma("GCC diagnostic pop")
           } // Clock* o
           { Clock* o = new Clock(440, 30, 137, 41, "PLAYHEAD");
             o->box(FL_FLAT_BOX);
@@ -731,7 +734,10 @@ TLE_Window* TLE::make_window() {
             o->align(Fl_Align(FL_ALIGN_CENTER));
             o->when(FL_WHEN_RELEASE);
             o->type( Clock::BBT );
+            _Pragma("GCC diagnostic push")
+_Pragma("GCC diagnostic ignored \"-Waddress-of-packed-member\"")
             o->run( &transport->frame );
+_Pragma("GCC diagnostic pop")
           } // Clock* o
           o->spacing( 2 );
           clocks_pack->end();

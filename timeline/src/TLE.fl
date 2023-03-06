@@ -261,7 +261,7 @@ Loggable::progress_callback( &TLE::progress_cb, this );} {}
       label {Non Timeline XT}
       callback {if ( Fl::event_key() != FL_Escape )
 	timeline->command_quit();} open selected
-      xywh {204 266 1025 770} type Double resizable
+      xywh {-13 212 1025 770} type Double resizable
       code0 {o->xclass( APP_NAME );}
       class TLE_Window size_range {947 300 0 0} visible
     } {
@@ -717,14 +717,20 @@ ab.run();}
               label PLAYHEAD
               private xywh {301 30 137 41} box FLAT_BOX color 47
               code0 {o->type( Clock::HMS );}
-              code1 {o->run( &transport->frame );}
+              code1 {_Pragma("GCC diagnostic push")
+_Pragma("GCC diagnostic ignored \\"-Waddress-of-packed-member\\"")
+            o->run( &transport->frame );
+_Pragma("GCC diagnostic pop")}
               class Clock
             }
             Fl_Box {} {
               label PLAYHEAD
               xywh {440 30 137 41} box FLAT_BOX color 47
               code0 {o->type( Clock::BBT );}
-              code1 {o->run( &transport->frame );}
+              code1 {_Pragma("GCC diagnostic push")
+_Pragma("GCC diagnostic ignored \\"-Waddress-of-packed-member\\"")
+            o->run( &transport->frame );
+_Pragma("GCC diagnostic pop")}
               class Clock
             }
           }
