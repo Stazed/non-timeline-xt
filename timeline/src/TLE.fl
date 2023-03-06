@@ -100,7 +100,7 @@ decl {\#include "../../FL/About_Dialog.H"} {private local
 decl {extern char project_display_name[256];} {private global
 } 
 
-decl {\#include "../../nonlib/nsm.h"} {selected private local
+decl {\#include "../../nonlib/nsm.h"} {private local
 } 
 
 decl {extern nsm_client_t *nsm;} {private global
@@ -258,12 +258,12 @@ Loggable::progress_callback( &TLE::progress_cb, this );} {}
   Function {make_window()} {open
   } {
     Fl_Window main_window {
-      label {Non Timeline}
+      label {Non Timeline XT}
       callback {if ( Fl::event_key() != FL_Escape )
-	timeline->command_quit();} open
-      xywh {204 266 1025 770} type Double hide resizable
+	timeline->command_quit();} open selected
+      xywh {204 266 1025 770} type Double resizable
       code0 {o->xclass( APP_NAME );}
-      class TLE_Window size_range {947 300 0 0}
+      class TLE_Window size_range {947 300 0 0} visible
     } {
       Fl_Group {} {open
         xywh {0 -53 1025 126} box FLAT_BOX

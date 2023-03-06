@@ -62,16 +62,14 @@ nsm_client_t *nsm;
 char *instance_name = NULL;
 
 /* TODO: put these in a header */
-#define USER_CONFIG_DIR ".non-daw/"
+#define USER_CONFIG_DIR ".non-timeline-xt/"
 
-const char *APP_NAME = "Non-Timeline";
-const char *APP_TITLE = "The Non-Timeline";
+const char *APP_NAME = "Non-Timeline-XT";
+const char *APP_TITLE = "The Non-Timeline-XT";
 
 const char COPYRIGHT[]  = "Copyright (C) 2008-2013 Jonathan Moore Liles";
 
 const double NSM_CHECK_INTERVAL = 0.25f;
-
-#define PACKAGE "non"
 
 #include "const.h"
 #include "../../nonlib/debug.h"
@@ -137,13 +135,14 @@ check_sigterm ( void * )
 int
 main ( int argc, char **argv )
 {
+#if 0
     if ( !strcmp( argv[0], "non-daw" ) )
     {
         /* use old app name and title */
         APP_NAME = "Non-DAW";
         APP_TITLE = "The Non-DAW";
     }
-
+#endif
     printf( "%s %s -- %s\n", APP_TITLE, VERSION, COPYRIGHT );
 
     if ( ! Fl::visual( FL_DOUBLE | FL_RGB ) )

@@ -70,8 +70,10 @@ public:
             int M = S / 60; S -= M * 60;
             int H = M / 60; M -= H * 60;
             int HS = ((int)(S * 100)) - (((int)S) * 100);
-
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-truncation"
             snprintf( dst, n, "%02d:%02d:%02.0f:%02d", H, M, S, HS );
+#pragma GCC diagnostic pop
         }
 
     static void
@@ -81,8 +83,10 @@ public:
 
             int M = S / 60; S -= M * 60;
             int H = M / 60; M -= H * 60;
-
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-truncation"
             snprintf( dst, n, "%02d:%02d:%06.3f", H, M, S );
+#pragma GCC diagnostic pop
         }
 
     static void
@@ -95,8 +99,10 @@ public:
     frame_to_BBT ( char *dst, int n, nframes_t frame )
         {
             struct BBT bbt = timeline->solve_tempomap( frame ).bbt;
-
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-truncation"
             snprintf( dst, n, "%03d|%1d|%04d", bbt.bar + 1, bbt.beat + 1, bbt.tick );
+#pragma GCC diagnostic pop
         }
 
 

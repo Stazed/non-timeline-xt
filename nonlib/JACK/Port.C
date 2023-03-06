@@ -320,7 +320,7 @@ namespace JACK
         snprintf( jackname, sizeof(jackname), "%s%s%s", _trackname ? _trackname : "", _trackname ? "/" : "", _name );
 
         if ( _port )
-            return 0 == jack_port_set_name( _port, jackname );
+            return 0 == jack_port_rename(_client->jack_client(), _port, jackname );
         else
             return false;
     }
