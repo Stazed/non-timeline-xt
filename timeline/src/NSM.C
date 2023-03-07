@@ -109,6 +109,18 @@ command_broadcast ( const char *path, lo_message msg, void * /* userdata */ )
 
 }
 
+static void
+command_hide_gui( void* )
+{
+    timeline->command_hide_gui();
+}
+
+static void
+command_show_gui( void* )
+{
+    timeline->command_show_gui();
+}
+
 void
 set_nsm_callbacks ( nsm_client_t *nsm )
 {
@@ -116,4 +128,6 @@ set_nsm_callbacks ( nsm_client_t *nsm )
     nsm_set_save_callback( nsm, command_save, 0 );
     nsm_set_broadcast_callback( nsm, command_broadcast, 0 );
     nsm_set_session_is_loaded_callback( nsm, command_session_is_loaded, 0 );
+    nsm_set_show_callback( nsm, command_show_gui, 0 );
+    nsm_set_hide_callback( nsm, command_hide_gui, 0 );
 }

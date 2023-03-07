@@ -113,36 +113,68 @@ check_nsm ( void * v )
     Fl::repeat_timeout( NSM_CHECK_INTERVAL, check_nsm, v );
 }
 
-static int got_sigterm = 0;
+// Signal handlers
+static volatile int got_sigterm = 0;
+bool shut_down = false;
 
-void
-sigterm_handler ( int )
+void sigterm_handler(int sig)
 {
-    got_sigterm = 1;
-    Fl::awake();
+    // handle signal type
+    if (sig == SIGINT || sig == SIGTERM || sig == SIGHUP)
+    {
+        got_sigterm = 1;
+//        Fl::awake();
+    }
 }
 
-void
-check_sigterm ( void * )
+bool install_signal_handlers()
 {
+    struct sigaction action;
+    memset(&action, 0, sizeof (action));
+    action.sa_handler = sigterm_handler;
+
+    if (sigaction(SIGINT, &action, NULL) == -1)
+    {
+        WARNING("sigaction() failed: ");
+        return false;
+    }
+
+    if (sigaction(SIGTERM, &action, NULL) == -1)
+    {
+        WARNING("sigaction() failed: ");
+        return false;
+    }
+
+    if (sigaction(SIGHUP, &action, NULL) == -1)
+    {
+        WARNING("sigaction() failed: ");
+        return false;
+    }
+    
+    return true;
+}
+
+void check_signals(void *usrPtr)
+{
+    // process signals
+    Timeline *a_timeline = NULL;
+
+    a_timeline = static_cast<Timeline *>(usrPtr);
+
+    if (!a_timeline)
+        return;
+
     if ( got_sigterm )
     {
         MESSAGE( "Got SIGTERM, quitting..." );
-        timeline->command_quit();
+        a_timeline->command_quit();
+        shut_down = true;
     }
 }
 
 int
 main ( int argc, char **argv )
 {
-#if 0
-    if ( !strcmp( argv[0], "non-daw" ) )
-    {
-        /* use old app name and title */
-        APP_NAME = "Non-DAW";
-        APP_TITLE = "The Non-DAW";
-    }
-#endif
     printf( "%s %s -- %s\n", APP_TITLE, VERSION, COPYRIGHT );
 
     if ( ! Fl::visual( FL_DOUBLE | FL_RGB ) )
@@ -156,9 +188,7 @@ main ( int argc, char **argv )
     Thread thread( "UI" );
     thread.set();
 
-    signal( SIGTERM, sigterm_handler );
-    signal( SIGHUP, sigterm_handler );
-    signal( SIGINT, sigterm_handler );
+    install_signal_handlers();
 
     fl_register_images();
 
@@ -175,8 +205,6 @@ main ( int argc, char **argv )
     LOG_REGISTER_CREATE( Cursor_Point        );
     LOG_REGISTER_CREATE( Cursor_Region       );
     LOG_REGISTER_CREATE( Track               );
-
-    signal( SIGPIPE, SIG_IGN );
 
     if ( ! ensure_dirs() )
         FATAL( "Cannot create required directories" );
@@ -236,7 +264,7 @@ main ( int argc, char **argv )
     timeline->init_osc( osc_port );
 
     tle->main_window->show( 0, NULL );
-   
+
     char *nsm_url = getenv( "NSM_URL" );
 
     if ( nsm_url )
@@ -249,7 +277,7 @@ main ( int argc, char **argv )
             if ( optind < argc )
                 WARNING( "Loading files from the command-line is incompatible with session management, ignoring." );
 
-            nsm_send_announce( nsm, APP_NAME, ":progress:switch:", argv[0] );
+            nsm_send_announce( nsm, APP_NAME, ":optional-gui:progress:switch:", argv[0] );
 
             /* poll so we can keep OSC handlers running in the GUI thread and avoid extra sync */
             Fl::add_timeout( NSM_CHECK_INTERVAL, check_nsm, NULL );
@@ -266,12 +294,15 @@ main ( int argc, char **argv )
         }
     }
 
-    Fl::add_check( check_sigterm );
+    Fl::add_check( check_signals, &timeline );
 
-    Fl::run();
-    
+    while ( ! shut_down && !timeline->exit_program )
+    {
+        Fl::wait(2147483.648);         /* magic number means forever */
+    }
+
     /* cleanup for valgrind's sake */
-
+    
     delete timeline;
     timeline = NULL;
 

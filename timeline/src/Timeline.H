@@ -125,6 +125,7 @@ class Timeline : public Fl_Group
 
 public:
 
+    bool exit_program;
     RWLock track_lock;                                          /* tracks/sequences */
     RWLock sequence_lock;                                       /* sequence contents */
 
@@ -278,6 +279,9 @@ public:
     bool command_new ( const char *name, const char *display_name );
     bool command_save ( void );
     void command_quit ( void );
+
+    void command_hide_gui ( void );
+    void command_show_gui ( void );
 
     /* OSC */
     

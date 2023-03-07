@@ -627,6 +627,8 @@ Timeline::Timeline ( int X, int Y, int W, int H, const char* L ) : BASE( X, Y, W
 {
     Loggable::snapshot_callback( &Timeline::snapshot, this );
 
+    exit_program = false;
+
     edit_cursor_track = NULL;
     punch_cursor_track = NULL;
     play_cursor_track = NULL;
@@ -2094,6 +2096,8 @@ Timeline::command_quit ( void )
     command_save();
   
     while ( Fl::first_window() ) Fl::first_window()->hide();
+
+    exit_program = true;
 }
 
 void
@@ -2244,6 +2248,8 @@ Timeline::say_hello ( void )
                         instance_name );
         
         nsm_send_broadcast( nsm, m );
+        
+        nsm_send_is_shown(nsm);
     }
 }
 
@@ -2288,3 +2294,24 @@ Timeline::process_osc ( void )
     sequence_lock.unlock();
 }
 
+void
+Timeline::command_hide_gui( void )
+{
+    while ( Fl::first_window() )
+    {
+        DMESSAGE("GOT NSM COMMAND HIDE");
+        Fl::first_window()->hide();
+    }
+    
+    nsm_send_is_hidden(nsm);
+}
+
+void
+Timeline::command_show_gui( void )
+{
+    DMESSAGE("GOT NSM COMMAND SHOW");
+    window()->show();
+   // tle->main_window->show( 0, NULL );
+    
+    nsm_send_is_shown(nsm);
+}
