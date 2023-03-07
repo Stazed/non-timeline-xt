@@ -2297,6 +2297,9 @@ Timeline::process_osc ( void )
 void
 Timeline::command_hide_gui( void )
 {
+    if ( transport->recording )
+        return;
+
     while ( Fl::first_window() )
     {
         DMESSAGE("GOT NSM COMMAND HIDE");
