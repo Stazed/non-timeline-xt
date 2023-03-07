@@ -7,3 +7,4 @@ Terminal=false
 Type=Application
 Icon=non-timeline-xt
 Categories=AudioVideo;Audio;
+X-NSM-capable=true
