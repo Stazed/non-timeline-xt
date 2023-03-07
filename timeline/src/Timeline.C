@@ -2094,7 +2094,7 @@ Timeline::command_quit ( void )
     track_lock.unlock();
 
     command_save();
-  
+
     while ( Fl::first_window() ) Fl::first_window()->hide();
 
     exit_program = true;
@@ -2249,7 +2249,7 @@ Timeline::say_hello ( void )
         
         nsm_send_broadcast( nsm, m );
         
-        nsm_send_is_shown(nsm);
+        nsm_send_is_hidden(nsm);
     }
 }
 

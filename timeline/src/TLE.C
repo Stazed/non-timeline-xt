@@ -60,7 +60,16 @@ TLE_Window::~TLE_Window() {
 
 void TLE::cb_main_window_i(TLE_Window*, void*) {
   if ( Fl::event_key() != FL_Escape )
-	timeline->command_quit();
+{
+    if ( timeline->session_manager_name() != NULL )
+    {
+        timeline->command_hide_gui();
+    }
+    else
+    {
+        timeline->command_quit();
+    }
+};
 }
 void TLE::cb_main_window(TLE_Window* o, void* v) {
   ((TLE*)(o->user_data()))->cb_main_window_i(o,v);
@@ -564,7 +573,14 @@ void TLE::save() {
 }
 
 void TLE::quit() {
-  timeline->command_quit();
+  if ( timeline->session_manager_name() != NULL )
+  {
+      timeline->command_hide_gui();
+  }
+  else
+  {
+      timeline->command_quit();
+  }
 }
 
 void TLE::open( const char *name ) {

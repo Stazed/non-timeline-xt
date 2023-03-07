@@ -263,9 +263,12 @@ main ( int argc, char **argv )
 
     timeline->init_osc( osc_port );
 
-    tle->main_window->show( 0, NULL );
-
     char *nsm_url = getenv( "NSM_URL" );
+
+    if ( !nsm_url )
+    {
+        tle->main_window->show( 0, NULL );
+    }
 
     if ( nsm_url )
     {
