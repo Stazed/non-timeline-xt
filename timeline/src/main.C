@@ -115,7 +115,7 @@ check_nsm ( void * v )
 
 // Signal handlers
 static volatile int got_sigterm = 0;
-bool shut_down = false;
+bool b_exit_program = false;
 
 void sigterm_handler(int sig)
 {
@@ -168,7 +168,7 @@ void check_signals(void *usrPtr)
     {
         MESSAGE( "Got SIGTERM, quitting..." );
         a_timeline->command_quit();
-        shut_down = true;
+        b_exit_program = true;
     }
 }
 
@@ -299,7 +299,7 @@ main ( int argc, char **argv )
 
     Fl::add_check( check_signals, &timeline );
 
-    while ( ! shut_down && !timeline->exit_program )
+    while ( !b_exit_program && !timeline->exit_program )
     {
         Fl::wait(2147483.648);         /* magic number means forever */
     }
