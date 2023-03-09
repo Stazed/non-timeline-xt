@@ -154,20 +154,16 @@ bool install_signal_handlers()
     return true;
 }
 
-void check_signals(void *usrPtr)
+void check_signals( void* )
 {
     // process signals
-    Timeline *a_timeline = NULL;
-
-    a_timeline = static_cast<Timeline *>(usrPtr);
-
-    if (!a_timeline)
+    if (!timeline)
         return;
 
     if ( got_sigterm )
     {
         MESSAGE( "Got SIGTERM, quitting..." );
-        a_timeline->command_quit();
+        timeline->command_quit();
         b_exit_program = true;
     }
 }
@@ -297,7 +293,7 @@ main ( int argc, char **argv )
         }
     }
 
-    Fl::add_check( check_signals, &timeline );
+    Fl::add_check( check_signals );
 
     while ( !b_exit_program && !timeline->exit_program )
     {
