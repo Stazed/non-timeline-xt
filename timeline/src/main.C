@@ -244,6 +244,23 @@ main ( int argc, char **argv )
         }
     }
 
+    /* Test check - check to see if jack is running before we go further.
+       This is useful if user fails to start jack and attempts to load or
+       create a project which would then print a FATAL error to the terminal
+       and segfault. If the user was running the program from the .desktop
+       file without terminal, the message was never seen, and segfaulting is
+       always a bad idea. Instead we show a fl_message and gracefully exit.*/
+    jack_client_t *test_client;
+    if (( test_client = jack_client_open ( "TestJACK", (jack_options_t)0, NULL )) == 0 )
+    {
+        fl_message("Cannot make a Jack client. Is JACK running?");
+        return 0;
+    }
+    else    // jack is running so close the test client
+    {
+        jack_client_close ( test_client );
+    }
+
     /* we don't really need a pointer for this */
     // will be created on project new/open
     engine = NULL;
