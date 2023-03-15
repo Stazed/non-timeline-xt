@@ -196,45 +196,6 @@ void TLE::cb_Compact(Fl_Menu_* o, void* v) {
   ((TLE*)(o->parent()->parent()->user_data()))->cb_Compact_i(o,v);
 }
 
-void TLE::cb_Import_i(Fl_Menu_*, void*) {
-  if ( !Project::open() )
-{
-	fl_alert( "You must create a new project before importing" );
-	return;
-}
-
-if ( timeline->ntracks() )
-{
-	fl_alert( "You can only import into an empty session!" );
-	return;
-}
-
-
-pid_t pid;
-if ( ! (pid = fork()) )
-{
-	exit( system( "import-ardour-session_gui" ) );
-}
-
-char *path = strdup( Project::path() );
-
-Project::close();
-
-int status;
-
-while ( 0 == waitpid( pid, &status, WNOHANG ) )
-{
-	Fl::wait(0.2);
-}
-
-Project::open(path);
-
-free(path);
-}
-void TLE::cb_Import(Fl_Menu_* o, void* v) {
-  ((TLE*)(o->parent()->parent()->user_data()))->cb_Import_i(o,v);
-}
-
 void TLE::cb_Quit_i(Fl_Menu_*, void*) {
   quit();
 }
@@ -486,9 +447,6 @@ Fl_Menu_Item TLE::menu_menubar[] = {
  {"&New", 0,  (Fl_Callback*)TLE::cb_New, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"&Open", 0,  (Fl_Callback*)TLE::cb_Open, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"&Compact", 0,  (Fl_Callback*)TLE::cb_Compact, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"I&mport", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
- {"Import Ardour Session", 0,  (Fl_Callback*)TLE::cb_Import, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {0,0,0,0,0,0,0,0,0},
  {"&Export", 0,  0, 0, 81, FL_NORMAL_LABEL, 0, 14, 0},
  {"Project", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Range", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},

@@ -277,15 +277,15 @@ Loggable::progress_callback( &TLE::progress_cb, this );} {}
     {
         timeline->command_quit();
     }
-}} open selected
-      xywh {1 212 1025 770} type Double resizable
+}} open
+      xywh {655 229 1025 770} type Double resizable
       code0 {o->xclass( APP_NAME );}
       class TLE_Window size_range {947 300 0 0} visible
     } {
       Fl_Group {} {open
         xywh {0 -53 1025 126} box FLAT_BOX
       } {
-        Fl_Menu_Bar menubar {open
+        Fl_Menu_Bar menubar {open selected
           private xywh {0 0 1025 25}
         } {
           Submenu {} {
@@ -404,48 +404,6 @@ if ( n != 2 )
 	
 Project::compact();}
               xywh {25 25 40 25}
-            }
-            Submenu {} {
-              label {I&mport} open
-              xywh {20 20 74 25}
-            } {
-              MenuItem {} {
-                label {Import Ardour Session}
-                callback {if ( !Project::open() )
-{
-	fl_alert( "You must create a new project before importing" );
-	return;
-}
-
-if ( timeline->ntracks() )
-{
-	fl_alert( "You can only import into an empty session!" );
-	return;
-}
-
-
-pid_t pid;
-if ( ! (pid = fork()) )
-{
-	exit( system( "import-ardour-session_gui" ) );
-}
-
-char *path = strdup( Project::path() );
-
-Project::close();
-
-int status;
-
-while ( 0 == waitpid( pid, &status, WNOHANG ) )
-{
-	Fl::wait(0.2);
-}
-
-Project::open(path);
-
-free(path);}
-                xywh {20 20 40 25}
-              }
             }
             Submenu {} {
               label {&Export} open

@@ -81,8 +81,6 @@ private:
   static void cb_Open(Fl_Menu_*, void*);
   void cb_Compact_i(Fl_Menu_*, void*);
   static void cb_Compact(Fl_Menu_*, void*);
-  void cb_Import_i(Fl_Menu_*, void*);
-  static void cb_Import(Fl_Menu_*, void*);
   void cb_Quit_i(Fl_Menu_*, void*);
   static void cb_Quit(Fl_Menu_*, void*);
   void cb_Undo_i(Fl_Menu_*, void*);
