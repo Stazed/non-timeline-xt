@@ -277,7 +277,7 @@ Loggable::progress_callback( &TLE::progress_cb, this );} {}
     {
         timeline->command_quit();
     }
-}} open
+}} open selected
       xywh {655 229 1025 770} type Double resizable
       code0 {o->xclass( APP_NAME );}
       class TLE_Window size_range {947 300 0 0} visible
@@ -285,7 +285,7 @@ Loggable::progress_callback( &TLE::progress_cb, this );} {}
       Fl_Group {} {open
         xywh {0 -53 1025 126} box FLAT_BOX
       } {
-        Fl_Menu_Bar menubar {open selected
+        Fl_Menu_Bar menubar {
           private xywh {0 0 1025 25}
         } {
           Submenu {} {
@@ -404,19 +404,6 @@ if ( n != 2 )
 	
 Project::compact();}
               xywh {25 25 40 25}
-            }
-            Submenu {} {
-              label {&Export} open
-              xywh {5 5 74 25} hide deactivate
-            } {
-              MenuItem {} {
-                label Project
-                xywh {5 5 40 25}
-              }
-              MenuItem {} {
-                label Range
-                xywh {15 15 40 25}
-              }
             }
             MenuItem {} {
               label {&Quit}
@@ -839,13 +826,12 @@ _Pragma("GCC diagnostic pop")}
   }
   decl {void menubar_cb ( void )} {private local
   }
-  Function {update_menu()} {private
+  Function {update_menu()} {open private
   } {
     code {Fl_Menu_Bar *m = menubar;
 
 if ( ! Project::open() )
 {
-	find_item( m, "&Project/&Export" )->deactivate();
 	find_item( m, "&Project/&Compact" )->deactivate();
 	find_item( m, "&Project/&Info" )->deactivate();
 	
@@ -857,7 +843,6 @@ if ( ! Project::open() )
 }
 else
 {
-	find_item( m, "&Project/&Export" )->activate();
 	find_item( m, "&Project/&Compact" )->activate();
 	find_item( m, "&Project/&Info" )->activate();
 

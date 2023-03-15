@@ -447,10 +447,6 @@ Fl_Menu_Item TLE::menu_menubar[] = {
  {"&New", 0,  (Fl_Callback*)TLE::cb_New, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"&Open", 0,  (Fl_Callback*)TLE::cb_Open, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"&Compact", 0,  (Fl_Callback*)TLE::cb_Compact, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"&Export", 0,  0, 0, 81, FL_NORMAL_LABEL, 0, 14, 0},
- {"Project", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"Range", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {0,0,0,0,0,0,0,0,0},
  {"&Quit", 0x40071,  (Fl_Callback*)TLE::cb_Quit, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0},
  {"&Edit", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
@@ -895,7 +891,6 @@ void TLE::update_menu() {
   
   if ( ! Project::open() )
   {
-  	find_item( m, "&Project/&Export" )->deactivate();
   	find_item( m, "&Project/&Compact" )->deactivate();
   	find_item( m, "&Project/&Info" )->deactivate();
   	
@@ -907,7 +902,6 @@ void TLE::update_menu() {
   }
   else
   {
-  	find_item( m, "&Project/&Export" )->activate();
   	find_item( m, "&Project/&Compact" )->activate();
   	find_item( m, "&Project/&Info" )->activate();
   
