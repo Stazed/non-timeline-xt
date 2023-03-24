@@ -93,3 +93,5 @@ install (TARGETS non-timeline-xt RUNTIME DESTINATION bin)
 
 install (FILES non-timeline.desktop.in
     DESTINATION share/applications RENAME non-timeline-xt.desktop)
+
+install (PROGRAMS bin/import-external-sources.sh DESTINATION bin RENAME import-external-sources)

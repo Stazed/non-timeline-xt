@@ -1,6 +1,7 @@
 #!/bin/sh
 
 # Copyright (C) 2008 Jonathan Moore Liles                                     #
+# Copyright (C) 2023 Stazed                                                   #
 #                                                                             #
 # This program is free software; you can redistribute it and/or modify it     #
 # under the terms of the GNU General Public License as published by the       #
@@ -16,19 +17,14 @@
 # with This program; see the file COPYING.  If not,write to the Free Software #
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  #
 
-## import-external-sources
-#
-# June 2008, Jonathan Moore Liles
-#
-# Simple script to scan a compacted Non-DAW project and copy external
-# sources into the project directory.
-#
+
 # USAGE:
 #
-#     $ import-external-sources ~/audio/'The Best Song Ever'
-
-DRY_RUN=no
-ONLY_COMPACTED=no
+#   $ import-external-sources ~/audio/'The Best Song Ever' --dry-run
+#
+#   -- to print list of SYMLINKS to be imported
+#
+#   Remove --dry-run to execute.
 
 fatal ()
 {
@@ -38,38 +34,7 @@ fatal ()
     exit 1
 }
 
-cleanup ()
-{
-    rm -f "${TEMP}/external-sources"
-}
-
-import_sources ()
-{
-    local FILE
-    while read FILE
-    do
-        if [ $DRY_RUN = yes ]
-        then
-            echo "Would import: ${FILE}"
-        else
-            echo "Importing source \"${FILE}\"..."
-            cp "${FILE}" sources
-            [ -f "${FILE}.peak" ] && cp "${FILE}.peak" sources
-
-            ( echo "%s':source \"${FILE}\"':source \"${FILE##*/}\"'"; echo -e "\nwq" ) |
-            ed -s "history"
-        fi
-    done
-}
-
-[ $# -gt 0 ] || fatal "Usage: $0 [--dry-run] path/to/project"
-
-if [ "$1" = --dry-run ]
-then
-    DRY_RUN=yes
-    shift 1
-fi
-
+# The command line project location
 PROJECT="$1"
 
 cd "$PROJECT" || fatal "No such project"
@@ -78,17 +43,29 @@ cd "$PROJECT" || fatal "No such project"
 
 [ -f .lock ] && fatal "Project appears to be in use"
 
-if [ $ONLY_COMPACTED = yes ]
-then
-    grep -v '\(^\{\|\}$\)\|create' history && fatal "Not a compacted project"
+# change into sources directory
+cd sources
+
+if [ "$2" = --dry-run ]
+    then
+        echo "Would import the following files:"
+        find . -type l -ls
+    else
+        # Make a temporary directory for copying.
+        mkdir tmp
+
+        # Find all symlinks and copy to temp directory.
+        # The copy will convert the symlink to the source of the link.
+        find -type l -exec cp -t  tmp/ {} +
+
+        # Remove the symlinks from sources directory.
+        find -type l | xargs rm || echo "Nothing to do..."
+
+        # Move the temporary directory items to sources.
+        mv tmp/*.* . || echo "NO SYMLINKS FOUND"
+
+        # Remove the tmp directory.
+        rmdir tmp
 fi
 
-echo "Scanning \"${PROJECT}\"..."
 
-sed -n 's/^\s*Audio_Region .* create :source "\([^"]\+\)".*$/\1/; /^\//p' history | sort | uniq > "${TEMP}/external-sources"
-
-import_sources < "${TEMP}/external-sources"
-
-cleanup
-
-echo "Done."
