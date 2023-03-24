@@ -95,3 +95,4 @@ install (FILES non-timeline.desktop.in
     DESTINATION share/applications RENAME non-timeline-xt.desktop)
 
 install (PROGRAMS bin/import-external-sources.sh DESTINATION bin RENAME import-external-sources)
+install (PROGRAMS bin/remove-unused-sources.sh DESTINATION bin RENAME remove-unused-sources)

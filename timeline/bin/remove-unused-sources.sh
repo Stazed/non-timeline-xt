@@ -32,15 +32,26 @@
 #     This script will not ask for comfirmation! It will ruthlessly
 #     delete all unused sources! You have been warned.
 #
+# OPTIONS:
+#     -m default, the unused sources are moved to /project/unused-sources.
+#     -d will delete the unused-sources directory.
+#     -n will do a dry-run and will list the files to be removed from the sources.
+#     -c run the script even if the project is not compacted
+
 
 DRY_RUN=
-ONLY_COMPACTED=
+ONLY_COMPACTED=1
 MOVE=1
+ERROR=
+
+
+TEMP=/tmp
 
 fatal ()
 {
     echo Error: "$1"
     echo 'Aborting!'
+    ERROR=1
     cleanup
     exit 1
 }
@@ -48,6 +59,14 @@ fatal ()
 cleanup ()
 {
     rm -f "${TEMP}/all-sources" "${TEMP}/used-sources"
+
+    if [ "$MOVE" = 1 ]  # -m default copy to unused-sources directory
+        then
+            if [ "$DRY_RUN" != 1 ] && [ "$ERROR" != 1 ] # don't print if we never moved sources
+                then
+                    echo "Unused sources moved to ${PROJECT}/unused-sources"
+            fi
+    fi
 }
 
 set_diff ()
@@ -107,7 +126,7 @@ do
 	d) MOVE= ;;
         m) MOVE=1 ;;
         n) DRY_RUN=1 ;;
-        c) ONLY_COMPACTED=1 ;;
+        c) ONLY_COMPACTED= ;;
 	\?) usage ;;
         *) echo "$o" && usage ;;
     esac
@@ -131,11 +150,14 @@ fi
 
 echo "Scanning \"${PROJECT}\"..."
 
-sed -n 's/^\s*Audio_Region.* :source "\([^"]\+\)".*$/\1/p' history | sort | uniq > "${TEMP}/used-sources"
+sed 's/^\s*Audio_Region.* :source "\(.*\)".*/\1/' snapshot | sort | uniq > "${TEMP}/used-sources"
 
 cd sources || fatal "Can't change to source directory"
 
-[ "$MOVE" = 1 ] && mkdir ../unused-sources 2>/dev/null
+if [ "$DRY_RUN" != 1 ]  # don't make the unused-sources directory if this is a dry run
+    then
+        [ "$MOVE" = 1 ] && mkdir ../unused-sources 2>/dev/null
+fi
 
 ls -1 | grep -v '\.peak$' | sort > "${TEMP}/all-sources"
 
