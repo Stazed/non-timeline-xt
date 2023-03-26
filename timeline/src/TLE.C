@@ -411,7 +411,7 @@ void TLE::cb_Manual(Fl_Menu_* o, void* v) {
 }
 
 void TLE::cb_About_i(Fl_Menu_*, void*) {
-  About_Dialog ab( PIXMAP_PATH "/non-timeline/icon-256x256.png" );
+  About_Dialog ab( PIXMAP_PATH "/non-timeline-xt/icon-256x256.png" );
 
             ab.logo_box->label( VERSION );
 

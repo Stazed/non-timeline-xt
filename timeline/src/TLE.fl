@@ -277,7 +277,7 @@ Loggable::progress_callback( &TLE::progress_cb, this );} {}
     {
         timeline->command_quit();
     }
-}} open
+}} open selected
       xywh {740 106 1025 770} type Double resizable
       code0 {o->xclass( APP_NAME );}
       class TLE_Window size_range {947 300 0 0} visible
@@ -644,7 +644,7 @@ timeline->redraw();}
             }
             MenuItem {} {
               label {&About}
-              callback {About_Dialog ab( PIXMAP_PATH "/non-timeline/icon-256x256.png" );
+              callback {About_Dialog ab( PIXMAP_PATH "/non-timeline-xt/icon-256x256.png" );
 
             ab.logo_box->label( VERSION );
 
@@ -990,8 +990,7 @@ if ( p != oldp )
 
 snprintf( pat, 256, "file://%s/non-timeline-xt/%s.html", DOCUMENT_PATH, file );
 
-open_url( pat );} {selected
-    }
+open_url( pat );} {}
   }
 } 
 
