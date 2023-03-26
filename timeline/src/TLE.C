@@ -415,12 +415,12 @@ void TLE::cb_About_i(Fl_Menu_*, void*) {
 
             ab.logo_box->label( VERSION );
 
-        ab.title->label( "Non Timeline" );
+        ab.title->label( "Non Timeline XT" );
 
-        ab.copyright->label( "Copyright (C) 2008-2013 Jonathan Moore Liles" );
-        ab.credits->label( "Non Timeline was written from scratch by\nJonathan Moore Liles for his own use\n(see the manual).\n\nNobody planned. Nobody helped.\nYou can help now by donating time, money,\nand/or replacing the rest of Linux Audio\nwith fast, light, reliable alternatives.\n" );
+        ab.copyright->label( "Copyright (C) 2008-2021 Jonathan Moore Liles\n Copyright (C) 2022-2023 Stazed" );
+        ab.credits->label( "Legacy Non Timeline was written by\nJonathan Moore Liles.\n\n Non Timeline XT by Stazed." );
 
-        ab.website_url->label( "http://non.tuxfamily.org" );
+        ab.website_url->label( "https://github.com/Stazed/non-timeline-xt" );
 
 ab.run();
 }

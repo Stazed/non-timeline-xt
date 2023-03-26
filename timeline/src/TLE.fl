@@ -277,15 +277,15 @@ Loggable::progress_callback( &TLE::progress_cb, this );} {}
     {
         timeline->command_quit();
     }
-}} open selected
-      xywh {655 229 1025 770} type Double resizable
+}} open
+      xywh {189 207 1025 770} type Double resizable
       code0 {o->xclass( APP_NAME );}
       class TLE_Window size_range {947 300 0 0} visible
     } {
       Fl_Group {} {open
         xywh {0 -53 1025 126} box FLAT_BOX
       } {
-        Fl_Menu_Bar menubar {
+        Fl_Menu_Bar menubar {selected
           private xywh {0 0 1025 25}
         } {
           Submenu {} {
@@ -648,12 +648,12 @@ timeline->redraw();}
 
             ab.logo_box->label( VERSION );
 
-        ab.title->label( "Non Timeline" );
+        ab.title->label( "Non Timeline XT" );
 
-        ab.copyright->label( "Copyright (C) 2008-2013 Jonathan Moore Liles" );
-        ab.credits->label( "Non Timeline was written from scratch by\\nJonathan Moore Liles for his own use\\n(see the manual).\\n\\nNobody planned. Nobody helped.\\nYou can help now by donating time, money,\\nand/or replacing the rest of Linux Audio\\nwith fast, light, reliable alternatives.\\n" );
+        ab.copyright->label( "Copyright (C) 2008-2021 Jonathan Moore Liles\\n Copyright (C) 2022-2023 Stazed" );
+        ab.credits->label( "Legacy Non Timeline was written by\\nJonathan Moore Liles.\\n\\n Non Timeline XT by Stazed." );
 
-        ab.website_url->label( "http://non.tuxfamily.org" );
+        ab.website_url->label( "https://github.com/Stazed/non-timeline-xt" );
 
 ab.run();}
               xywh {5 5 40 25}

@@ -63,10 +63,10 @@ Fl_Double_Window* About_Dialog::make_window( const char *logo_filename ) {
       } // Fl_Group* o
       { Fl_Group* o = new Fl_Group(2, 378, 553, 268, "License");
         o->hide();
-        { copyright = new Fl_Box(43, 389, 462, 22, "COPYRIGHT");
+        { copyright = new Fl_Box(43, 380, 462, 32, "COPYRIGHT");
           copyright->labeltype(FL_SHADOW_LABEL);
           copyright->labelfont(1);
-          copyright->labelsize(18);
+          copyright->labelsize(10);
         } // Fl_Box* copyright
         { Fl_Box* o = new Fl_Box(10, 414, 535, 225, "This program is free software; you can redistribute it and/or modify it under\
  the terms of the GNU General Public License as published by the Free Software\
@@ -99,7 +99,7 @@ FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more\
     { Fl_Return_Button* o = new Fl_Return_Button(400, 660, 76, 30, "Rock");
       o->callback((Fl_Callback*)cb_Rock);
     } // Fl_Return_Button* o
-    { website_url = new Fl_Button(125, 660, 245, 30, "http://non-daw.tuxfamily.org");
+    { website_url = new Fl_Button(90, 660, 300, 30, "https://github.com/Stazed/non-timeline-xt");
       website_url->color((Fl_Color)14);
       website_url->labeltype(FL_SHADOW_LABEL);
       website_url->labelcolor((Fl_Color)6);

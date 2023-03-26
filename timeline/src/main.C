@@ -67,7 +67,8 @@ char *instance_name = NULL;
 const char *APP_NAME = "Non-Timeline-XT";
 const char *APP_TITLE = "The Non-Timeline-XT";
 
-const char COPYRIGHT[]  = "Copyright (C) 2008-2013 Jonathan Moore Liles";
+const char COPYRIGHT[]  = "Copyright (C) 2008-2021 Jonathan Moore Liles";
+const char COPYRIGHT2[] = "Copyright (C) 2022-2023 Stazed";
 
 const double NSM_CHECK_INTERVAL = 0.25f;
 
@@ -171,7 +172,8 @@ void check_signals( void* )
 int
 main ( int argc, char **argv )
 {
-    printf( "%s %s -- %s\n", APP_TITLE, VERSION, COPYRIGHT );
+    printf( "%s %s\n", APP_TITLE, VERSION );
+    printf( "%s\n%s\n", COPYRIGHT, COPYRIGHT2 );
 
     if ( ! Fl::visual( FL_DOUBLE | FL_RGB ) )
     {
