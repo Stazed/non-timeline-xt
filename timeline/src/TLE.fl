@@ -278,14 +278,14 @@ Loggable::progress_callback( &TLE::progress_cb, this );} {}
         timeline->command_quit();
     }
 }} open
-      xywh {189 207 1025 770} type Double resizable
+      xywh {740 106 1025 770} type Double resizable
       code0 {o->xclass( APP_NAME );}
       class TLE_Window size_range {947 300 0 0} visible
     } {
       Fl_Group {} {open
         xywh {0 -53 1025 126} box FLAT_BOX
       } {
-        Fl_Menu_Bar menubar {selected
+        Fl_Menu_Bar menubar {
           private xywh {0 0 1025 25}
         } {
           Submenu {} {
@@ -988,9 +988,10 @@ if ( p != oldp )
   } {
     code {char pat[256];
 
-snprintf( pat, 256, "file://%s/non-timeline/%s.html", DOCUMENT_PATH, file );
+snprintf( pat, 256, "file://%s/non-timeline-xt/%s.html", DOCUMENT_PATH, file );
 
-open_url( pat );} {}
+open_url( pat );} {selected
+    }
   }
 } 
 

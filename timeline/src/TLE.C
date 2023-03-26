@@ -1047,7 +1047,7 @@ void TLE::progress_cb( int p ) {
 void TLE::show_help_dialog( const char *file ) {
   char pat[256];
   
-  snprintf( pat, 256, "file://%s/non-timeline/%s.html", DOCUMENT_PATH, file );
+  snprintf( pat, 256, "file://%s/non-timeline-xt/%s.html", DOCUMENT_PATH, file );
   
   open_url( pat );
 }
