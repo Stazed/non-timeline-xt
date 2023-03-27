@@ -1154,7 +1154,7 @@ Fl_Double_Window* Project_Info_Dialog::make_window() {
       logo_box->labelfont(1);
       logo_box->labelsize(18);
       logo_box->align(Fl_Align(FL_ALIGN_CENTER|FL_ALIGN_INSIDE));
-      o->image( Fl_Shared_Image::get( PIXMAP_PATH "/non-timeline/icon-256x256.png" ) );
+      o->image( Fl_Shared_Image::get( PIXMAP_PATH "/non-timeline-xt/icon-256x256.png" ) );
       o->label( NULL );
     } // Fl_Box* logo_box
     { Fl_Text_Editor* o = notes_field = new Fl_Text_Editor(20, 420, 480, 245, "Notes:");

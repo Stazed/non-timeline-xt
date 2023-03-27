@@ -1027,7 +1027,7 @@ if ( logo_box->image() )
 }} open
       private xywh {527 298 520 710} type Double hide modal
     } {
-      Fl_Group {} {open
+      Fl_Group {} {
         xywh {25 30 470 75}
       } {
         Fl_Value_Output {} {
@@ -1072,7 +1072,7 @@ if ( logo_box->image() )
       Fl_Box logo_box {
         label {<LOGO>}
         private xywh {18 117 485 268} color 53 labelfont 1 labelsize 18 align 16
-        code0 {o->image( Fl_Shared_Image::get( PIXMAP_PATH "/non-timeline/icon-256x256.png" ) );}
+        code0 {o->image( Fl_Shared_Image::get( PIXMAP_PATH "/non-timeline-xt/icon-256x256.png" ) );}
         code1 {o->label( NULL );}
       }
       Fl_Text_Editor notes_field {
