@@ -68,4 +68,9 @@ To uninstall:
     sudo make uninstall
 ```
 
+For package maintainers, if you are building generic binary packages to be used on different architectures,
+then NativeOptimizations must be disabled:
 
+```bash
+    cmake -DNativeOptimizations=OFF ..
+```
