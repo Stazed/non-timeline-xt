@@ -1,0 +1,36 @@
+# Maintainer: Your name here <your@email.here>
+# To use:makepkg -si
+
+pkgname=non-timeline-xt
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="Jack timeline editor (non-timeline) with eXTras"
+arch=('x86_64' 'i686')
+url="https://github.com/Stazed/non-timeline-xt"
+license=('GPL2')
+groups=('multimedia')
+provides=("${pkgname}")
+conflicts=("${pkgname}")
+depends=('ntk' 'jack' 'liblo' 'libsigc++' 'hicolor-icon-theme' 'libsndfile')
+makedepends=('git' 'cmake' 'libxpm')
+source=("git+https://Stazed@github.com/Stazed/non-timeline-xt.git#branch=main")
+md5sums=('SKIP')
+
+pkgver() {
+  cd "$srcdir/${pkgname}"
+  git describe --long --tags | sed 's/Release-//;s/-/./g'
+}
+
+build() {
+  mkdir -p "$srcdir/build"
+  cd "$srcdir/build"
+  cmake "$srcdir/${pkgname}" \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX="/usr"
+  make
+}
+
+package() {
+  cd "$srcdir/build"
+  make DESTDIR="$pkgdir" install
+}
