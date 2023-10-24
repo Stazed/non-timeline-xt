@@ -21,7 +21,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include "debug.h"
+
+#include "../nonlib/debug.h"
+
 
 namespace MIDI
 {

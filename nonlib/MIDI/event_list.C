@@ -17,7 +17,8 @@
 /* Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 /*******************************************************************************/
 
-#include "debug.h"
+#include "../nonlib/debug.h"
+
 #include "event_list.H"
 
 /* The operations we perform on event lists are clumsy with STL lists

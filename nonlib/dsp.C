@@ -34,7 +34,7 @@ static const int ALIGNMENT = 16;
 sample_t *
 buffer_alloc ( nframes_t size )
 {
-    void *p;
+    void *p = NULL;
     
     posix_memalign( &p, ALIGNMENT, size * sizeof( sample_t ) );
 
@@ -215,7 +215,8 @@ buffer_get_peak ( const sample_t * __restrict__ buf, nframes_t nframes )
 void
 buffer_copy ( sample_t * __restrict__ dst, const sample_t * __restrict__ src, nframes_t nframes )
 {
-    memcpy( dst, src, nframes * sizeof( sample_t ) );
+    if ( dst != NULL && src != NULL )
+        memcpy( dst, src, nframes * sizeof( sample_t ) );
 }
 
 void

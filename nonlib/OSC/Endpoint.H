@@ -20,7 +20,9 @@
 #pragma once
 
 #include <lo/lo.h>
-#include "../Thread.H"
+
+#include "../nonlib/Thread.H"
+
 #include <list>
 #include <string>
 #include <stdlib.h>
@@ -114,6 +116,12 @@ namespace OSC
         float max;
         float default_value;
     };
+    struct Parameter_Infos
+    {
+        const char *label;
+        int type;
+    };
+
 
     class Endpoint;
     class Signal;
@@ -129,6 +137,7 @@ namespace OSC
     };
 
     typedef int (*signal_handler) ( float value, void *user_data );
+    typedef int (*signal_feedback_handler) ( void *user_data );
 
     class Signal
     {
@@ -161,8 +170,10 @@ namespace OSC
         Direction _direction;
 
         signal_handler _handler;
+        signal_feedback_handler _feedback_handler;
         void *_user_data;
         Parameter_Limits _parameter_limits;
+        Parameter_Infos _parameter_infos;
         
         void (*_connection_state_callback)(OSC::Signal *, void*);
         void *_connection_state_userdata;
@@ -201,11 +212,14 @@ namespace OSC
 
         /* publishes value to targets */
         void value ( float v );
+        void value_no_callback ( float v );
         /* get current value */
         float value ( void ) const { return _value; }
 
         bool is_connected_to ( const Signal *s ) const;
         
+        void set_infos ( const char *label, int type );
+
         friend class Endpoint;
     };
 
@@ -279,6 +293,7 @@ namespace OSC
         static int osc_sig_disconnect ( const char *path, const char *types, lo_arg **argv, int argc, lo_message msg, void *user_data );
         static int osc_sig_connect ( const char *path, const char *types, lo_arg **argv, int argc, lo_message msg, void *user_data );
         static int osc_sig_hello ( const char *path, const char *types, lo_arg **argv, int argc, lo_message msg, void *user_data );
+        static int osc_sig_infos ( const char *path, const char *types, lo_arg **argv, int argc, lo_message msg, void *user_data );
 
 
         Peer * add_peer ( const char *name, const char *url );
@@ -348,7 +363,7 @@ namespace OSC
 //        bool connect_signal ( OSC::Signal *s, const char *peer_name, int signal_id );
         bool connect_signal ( OSC::Signal *s, const char *peer_and_path );
 
-        Signal * add_signal ( const char *path, Signal::Direction dir, float min, float max, float default_value, signal_handler handler, void *user_data );
+        Signal * add_signal ( const char *path, Signal::Direction dir, float min, float max, float default_value, signal_handler handler, signal_feedback_handler feedback_handler, void *user_data );
         Method *add_method ( const char *path, const char *typespec, lo_method_handler handler, void *user_data, const char *argument_description );
         void del_method ( const char *path, const char *typespec );
         void del_method ( Method* method );
@@ -404,6 +419,10 @@ namespace OSC
         int send ( lo_address to, const char *path, const char *v1, const char *v2, int v3, float v4, float v5, float v6 );
 
         int send ( lo_address to, const char *path, const char *v1, const char *v2, const char *v3, int v4, float v5, float v6, float v7 );
+
+        // reply signature for /signal/infos
+        int send ( lo_address to, const char *path, const char *v1, const char *v2, int v3, const char *v4 );
+
 
         void peer_scan_complete_callback ( void(*_cb)(void*), void *userdata) 
             {

@@ -18,7 +18,9 @@
 /*******************************************************************************/
 
 #include <lo/lo.h>
-#include "../debug.h"
+
+#include "../nonlib/debug.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -27,8 +29,6 @@
 #include <math.h>
 
 #include "Endpoint.H"
-
-#include "../Thread.H"
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 
@@ -180,7 +180,23 @@ namespace OSC
     /*         return NULL; */
     /* } */
     /*  */
-
+
+    void
+    Signal::value_no_callback ( float f )
+    {
+        if ( f == _value )
+            return;
+
+        _value = f;
+    }
+
+    void
+    Signal::set_infos ( const char *label, int type)
+    {
+        _parameter_infos.label = label;
+        _parameter_infos.type = type;
+    }
+
 
     void
     Endpoint::error_handler(int num, const char *msg, const char *path)
@@ -225,6 +241,7 @@ namespace OSC
         add_method( "/signal/removed", "s", &Endpoint::osc_sig_removed, this, "" );
         add_method( "/signal/created", "ssfff", &Endpoint::osc_sig_created, this, "" );
         add_method( "/signal/list", NULL, &Endpoint::osc_signal_lister, this, "" );
+        add_method( "/signal/infos", "s", &Endpoint::osc_sig_infos, this, "" );
         add_method( "/reply", NULL, &Endpoint::osc_reply, this, "" );
         add_method( NULL, NULL, &Endpoint::osc_generic, this, "" );
 
@@ -560,10 +577,17 @@ namespace OSC
             o = (Signal*)user_data;
             f = argv[0]->f;
         }
+        else if ( ! strcmp( types, "i" ) )
+        {
+            /* accept a value for signal named in path */
+            o = (Signal*)user_data;
+            f = argv[0]->i;
+        }
         else if ( ! types || 0 == types[0] )
         {
             /* reply with current value */
             o = (Signal*)user_data;
+            if (o->_feedback_handler != NULL) o->_feedback_handler(o->_user_data);
             o->_endpoint->send( lo_message_get_source( msg ), "/reply", path, o->value() );
             return 0;
         }
@@ -572,12 +596,35 @@ namespace OSC
             return -1;
         }
 
-        o->_value = f;
+        if (o->_direction == Signal::Input)
+        {
+            o->_value = f;
 
-        if ( o->_handler )
-            o->_handler( f, o->_user_data );
+            if ( o->_handler )
+                o->_handler( f, o->_user_data );
+        }
+
         
         return 1;
+    }
+
+    int
+    Endpoint::osc_sig_infos ( const char *path, const char *types, lo_arg **argv, int argc, lo_message msg, void *user_data )
+    {
+        Endpoint *ep = (Endpoint*)user_data;
+
+        for ( std::list<Signal*>::const_iterator i = ep->_signals.begin(); i != ep->_signals.end(); ++i )
+        {
+            Signal *o = *i;
+
+            if (! strcmp( o->path(), &argv[0]->s) )
+            {
+                ((Endpoint*)user_data)->send( lo_message_get_source( msg ), "/reply", path, o->path(), o->_parameter_infos.type, o->_parameter_infos.label );
+                return 0;
+            }
+        }
+
+        return 0;
     }
 
     const char**
@@ -714,6 +761,11 @@ namespace OSC
 //                    DMESSAGE( "recording value %f", argv[0]->f );
                     i->second.current_value = argv[0]->f;
                 }
+                else if ( !strcmp(types, "i" ))
+                {
+//                    DMESSAGE( "recording value %i", argv[0]->i );
+                    i->second.current_value = argv[0]->i;
+                }
 
 		/* FIXME: this was intended to break feedback cycles, but it actually
 		 results in some feedback values not being sent at all */
@@ -754,7 +806,7 @@ namespace OSC
         const char *prefix = NULL;
 	int skip = 0;
 	bool batch_mode = true;
-	int start;
+	int start = 0;
 
 	const int count = SCAN_BATCH_SIZE;
 	
@@ -1092,7 +1144,7 @@ namespace OSC
     }
 
     Signal *
-    Endpoint::add_signal ( const char *path, Signal::Direction dir, float min, float max, float default_value, signal_handler handler, void *user_data )
+    Endpoint::add_signal ( const char *path, Signal::Direction dir, float min, float max, float default_value, signal_handler handler, signal_feedback_handler feedback_handler, void *user_data )
     {
         char *s;
         asprintf( &s, "%s%s", name() ? name() : "", path );
@@ -1102,6 +1154,7 @@ namespace OSC
         free(s);
 
         o->_handler = handler;
+        o->_feedback_handler = feedback_handler;
         o->_user_data = user_data;
         o->_endpoint = this;
 
@@ -1550,5 +1603,10 @@ namespace OSC
     Endpoint::send ( lo_address to, const char *path, int v1, int v2, float v3 )
     {
         return lo_send_from( to, _server, LO_TT_IMMEDIATE, path, "iif", v1, v2, v3 );
+    }
+    int
+    Endpoint::send ( lo_address to, const char *path, const char *v1, const char *v2, int v3, const char *v4 )
+    {
+        return lo_send_from( to, _server, LO_TT_IMMEDIATE, path, "ssis", v1, v2, v3, v4 );
     }
 }

@@ -26,7 +26,8 @@
 #include <errno.h>
 
 #include <assert.h>
-#include "../debug.h"
+
+#include "../nonlib/debug.h"
 
 namespace JACK
 {
@@ -199,8 +200,8 @@ namespace JACK
 #ifdef HAVE_JACK_METADATA
         if ( _type == CV )
         {
-                jack_uuid_t uuid = jack_port_uuid( _port );
-                jack_set_property( _client->jack_client(), uuid, "http://jackaudio.org/metadata/signal-type", "CV", "text/plain" );
+            jack_uuid_t uuid = jack_port_uuid( _port );
+            jack_set_property( _client->jack_client(), uuid, "http://jackaudio.org/metadata/signal-type", "CV", "text/plain" );
         }
 #endif
 
@@ -276,16 +277,17 @@ namespace JACK
     Port::deactivate ( void )
     {
         if ( _port )
-				{
+        {
 #ifdef HAVE_JACK_METADATA
             if ( _type == CV )
-						{
-                     jack_uuid_t uuid = jack_port_uuid(_port);
-										 jack_remove_property(_client->jack_client(), uuid, "http://jackaudio.org/metadata/signal-type");
-						}
+            {
+                jack_uuid_t uuid = jack_port_uuid(_port);
+                jack_remove_property(_client->jack_client(), uuid, "http://jackaudio.org/metadata/signal-type");
+            }
 #endif
-            jack_port_unregister( _client->jack_client(), _port );
-				}
+            if(_client->jack_client())
+                jack_port_unregister( _client->jack_client(), _port );
+        }
 
         _port = 0;
     }
@@ -354,6 +356,9 @@ namespace JACK
     const char **
     Port::connections ( void )
     {
+        if(stop_process)
+            return NULL;
+
         ASSERT( _port, "Attempt to get connections of null port" );
 
         return jack_port_get_connections( _port );

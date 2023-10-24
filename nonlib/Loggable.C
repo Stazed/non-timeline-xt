@@ -49,6 +49,8 @@ bool Loggable::_snapshotting = false;
 int Loggable::_snapshot_count = 0;
 #endif
 
+bool _is_pasting = false;   // Extern - see note in Loggable.H
+
 bool Loggable::_readonly = false;
 FILE *Loggable::_fp;
 unsigned int Loggable::_log_id = 0;
@@ -195,11 +197,11 @@ Loggable::load_unjournaled_state ( void )
 
 /** replay journal or snapshot */
 bool
-Loggable::replay ( const char *file )
+Loggable::replay ( const char *file, bool need_clear )
 {
     if ( FILE *fp = fopen( file, "r" ) )
     {
-        bool r = replay( fp );
+        bool r = replay( fp, need_clear );
 
         fclose( fp );
 
@@ -209,10 +211,13 @@ Loggable::replay ( const char *file )
         return false;
 }
 
-/** replay journal or snapshot */
+/** replay journal or snapshot, or import strip, pasted strip */
 bool
-Loggable::replay ( FILE *fp )
+Loggable::replay ( FILE *fp, bool need_clear )
 {
+    /* Set the pasting flag  */
+    _is_pasting = true;
+
     char *buf = NULL;
 
     struct stat st;
@@ -245,8 +250,13 @@ Loggable::replay ( FILE *fp )
     if ( _progress_callback )
         _progress_callback( 0, _progress_callback_arg );
 
-    clear_dirty();
+    /* Import strip and paste strip should not clear dirty */
+    if( need_clear )
+        clear_dirty();
 
+    /* Unset the pasting flag since we are done */
+    _is_pasting = false;
+    
     return true;
 }
 
@@ -262,7 +272,10 @@ Loggable::close ( void )
         _fp = NULL;
     }
 
-    if ( ! snapshot( "snapshot" ) )
+    std::string full_path = project_directory;
+    full_path += "/snapshot";
+
+    if ( ! snapshot( full_path.c_str() ) )
         WARNING( "Failed to create snapshot" );
 
     if ( ! save_unjournaled_state() )
@@ -599,19 +612,25 @@ Loggable::snapshot ( const char *name )
     FILE *fp;
 
     char *tmp  = NULL;
-    
+
     {
-	const char *filename = basename(name);
-	char *dir = (char*)malloc( (strlen(name) - strlen(filename)) + 1 );
-	strncpy( dir, name, strlen(name) - strlen(filename) );
-	
-	asprintf( &tmp, "%s#%s", dir, filename );
-	free(dir);
+        const char *filename = basename(name);
+        char *dir = (char*)malloc( (strlen(name) - strlen(filename)) + 1 );
+
+_Pragma("GCC diagnostic push")
+_Pragma("GCC diagnostic ignored \"-Wstringop-overflow=\"")
+        strncpy( dir, name, strlen(name) - strlen(filename) );
+_Pragma("GCC diagnostic pop")
+
+        /* Create tmp file with '#' in front of the file name -
+         to be later renamed if all goes well */
+        asprintf( &tmp, "%s#%s", dir, filename );
+        free(dir);
     }
 
     if ( ! ( fp = fopen( tmp, "w" ) ))
     {
-	DWARNING( "Could not open file for writing: %s", tmp );
+        DWARNING( "Could not open file for writing: %s", tmp );
         return false;
     }
 
@@ -619,7 +638,12 @@ Loggable::snapshot ( const char *name )
 
     fclose( fp );
 
-    rename( tmp, name );
+    /* Do not rename the temp file and clobber existing file if something went wrong */
+    if(r)
+    {
+        /* Looks like all went well, so rename the temp file to the correct name */
+        rename( tmp, name );
+    }
 
     free(tmp);
 
@@ -658,7 +682,8 @@ Loggable::log ( const char *fmt, ... )
 
     if ( NULL == buf )
     {
-        buf_size = 1024;
+        /* We limit parameters to 100 for LV2, was 1024. > 100 use custom data */
+        buf_size = 4096;
         buf = (char*)malloc( buf_size );
     }
 
@@ -688,6 +713,7 @@ Loggable::log ( const char *fmt, ... )
 
     if ( '\n' == buf[i-1] )
     {
+       // DMESSAGE("log buf transaction push = %s", buf);
         _transaction.push( strdup( buf ) );
         i = 0;
     }
@@ -718,6 +744,8 @@ Loggable::flush ( void )
     while ( ! _transaction.empty() )
     {
         char *s = _transaction.front();
+
+      //  printf("_transaction.front s = %s\n", s);
 
         _transaction.pop();
 

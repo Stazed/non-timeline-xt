@@ -33,6 +33,14 @@
 
 // #include "types.h"
 
+/* On occasion, rapid CTRL-V paste would apply second paste before first was completed.
+   Giving a - FATAL "Attempt to create object with an ID (0x%X) that already exists"  error.
+   This _is_pasting flag is set when paste first occurs, and is unset when completed.
+   Any attempt by the user to paste when true is ignored - only applies to Mixer */
+extern bool _is_pasting;
+
+extern std::string project_directory;
+
 typedef void (progress_func)( int, void * );
 typedef void (snapshot_func)( void * );
 typedef void (dirty_func)( int, void * );
@@ -150,17 +158,17 @@ private:
     void record_unjournaled ( void ) const;
     static bool load_unjournaled_state ( void );
 
-    static bool replay ( FILE *fp );
+    static bool replay ( FILE *fp, bool need_clear = true );
 
     static void signal_dirty ( int v ) { if ( _dirty_callback ) _dirty_callback( v, _dirty_callback_arg ); }
-    static void set_dirty ( void ) {  signal_dirty( ++_dirty ); }
     static void clear_dirty ( void ) {  signal_dirty( _dirty = 0 ); }
 
 public:
     
+    static void set_dirty ( void ) {  signal_dirty( ++_dirty ); }
     static bool readonly ( void ) { return _readonly; }
 
-    static bool replay ( const char *name );
+    static bool replay ( const char *name, bool need_clear = true );
 
     static bool snapshot( FILE * fp );
     static bool snapshot( const char *name );
