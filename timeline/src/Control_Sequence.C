@@ -153,7 +153,7 @@ Control_Sequence::update_osc_path ( void )
  
     if ( !_osc_output() )
     {
-        OSC::Signal *t = timeline->osc->add_signal( path, OSC::Signal::Output, 0, 1, 0, NULL, NULL );
+        OSC::Signal *t = timeline->osc->add_signal( path, OSC::Signal::Output, 0, 1, 0, NULL, NULL, NULL );
                
         _osc_output( t );
     }

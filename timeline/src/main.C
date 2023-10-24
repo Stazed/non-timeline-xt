@@ -61,6 +61,9 @@ nsm_client_t *nsm;
 
 char *instance_name = NULL;
 
+/* Not used by timeline - needed for extern to be compatible with non-mixer-xt*/
+std::string project_directory = "";
+
 /* TODO: put these in a header */
 #define USER_CONFIG_DIR ".non-timeline-xt/"
 
