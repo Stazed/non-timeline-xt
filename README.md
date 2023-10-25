@@ -17,6 +17,15 @@ Dependencies :
 * libsndfile1-dev
 * jack2
 
+Getting nonlib:
+---------------
+
+The nonlib library has been moved to a submodule repository. You must get nonlib by executing the following.
+
+```bash
+    git submodule update --init nonlib
+```
+
 Getting NTK:
 ------------
 
@@ -25,7 +34,7 @@ Your distribution may have the NTK library. If not, then do the following to bui
 If you just cloned the non-timeline-xt repository or just executed git pull, then you should also run :
 
 ```bash
-    git submodule update --init
+    git submodule update --init lib/ntk
 ```
 
 to pull down the latest NTK code required by Non. Git does *not* do this automatically.
