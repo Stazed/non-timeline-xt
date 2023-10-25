@@ -2,7 +2,7 @@
 # To use:makepkg -si
 
 pkgname=non-timeline-xt
-pkgver=1.0.0
+pkgver=1.0.1
 pkgrel=1
 pkgdesc="Jack timeline editor (non-timeline) with eXTras"
 arch=('x86_64' 'i686')
@@ -19,6 +19,11 @@ md5sums=('SKIP')
 pkgver() {
   cd "$srcdir/${pkgname}"
   git describe --long --tags | sed 's/Release-//;s/-/./g'
+}
+
+prepare() {
+    cd "$srcdir/${pkgname}"
+    git submodule update --init nonlib
 }
 
 build() {
