@@ -2,7 +2,7 @@
 # To use:makepkg -si
 
 pkgname=non-timeline-xt
-pkgver=1.0.1
+pkgver=1.0.2
 pkgrel=1
 pkgdesc="Jack timeline editor (non-timeline) with eXTras"
 arch=('x86_64' 'i686')
