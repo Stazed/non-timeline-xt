@@ -1280,9 +1280,18 @@ Track::handle ( int m )
                     char *s2;
                     asprintf(&s2, "jack.port://%s\r\n",
 			     output[i].jack_name() );
-		    
-                    s = (char*)realloc( s, strlen( s ) + strlen( s2 ) + 1 ); 
-                    strcat( s, s2 );
+
+                    char *tmp = (char*)realloc( s, strlen( s ) + strlen( s2 ) + 1 );
+
+                    if(tmp == NULL)
+                    {
+                        free ( s );
+                    }
+                    else
+                    {
+                        s = tmp;
+                        strcat( s, s2 );
+                    }
 
                     free( s2 );
                 }
