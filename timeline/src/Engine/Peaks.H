@@ -62,7 +62,8 @@ class Peaks
 
         peakbuffer ( )
             {
-                size = len = 0;
+                size = len = offset = 0;
+                buf = NULL;
             }
     };
     

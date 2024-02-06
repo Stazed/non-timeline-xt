@@ -290,7 +290,7 @@ Track::set ( Log_Entry &e )
             armed( atoi( v ) );
         else if ( ! strcmp( s, ":sequence" ) )
         {
-            int i;
+            unsigned int i;
             sscanf( v, "%X", &i );
 
             if ( i )

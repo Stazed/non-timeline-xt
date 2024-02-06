@@ -141,7 +141,7 @@ Sequence::sort ( void )
 Sequence_Widget *
 Sequence::overlaps ( Sequence_Widget *r )
 {
-    for ( list <Sequence_Widget *>::const_iterator i = _widgets.begin(); i != _widgets.end(); i++ )
+    for ( list <Sequence_Widget *>::const_iterator i = _widgets.begin(); i != _widgets.end(); ++i )
     {
         if ( *i == r ) continue;
         if ( (*i)->overlaps( r ) )
@@ -238,7 +238,7 @@ Sequence::snap ( Sequence_Widget *r )
         const int rx1 = r->start();
         const int rx2 = r->start() + r->length();
 
-        for ( list <Sequence_Widget*>::const_iterator i = _widgets.begin(); i != _widgets.end(); i++ )
+        for ( list <Sequence_Widget*>::const_iterator i = _widgets.begin(); i != _widgets.end(); ++i )
         {
             const Sequence_Widget *w = (*i);
 
@@ -567,7 +567,7 @@ Sequence::handle ( int m )
 const Sequence_Widget *
         Sequence::next ( nframes_t from ) const
     {
-        for ( list <Sequence_Widget*>::const_iterator i = _widgets.begin(); i != _widgets.end(); i++ )
+        for ( list <Sequence_Widget*>::const_iterator i = _widgets.begin(); i != _widgets.end(); ++i )
 //            if ( (*i)->start() >= from )
             if ( (*i)->start() > from )
                 return *i;
@@ -582,7 +582,7 @@ const Sequence_Widget *
 const Sequence_Widget *
         Sequence::prev ( nframes_t from ) const
     {
-        for ( list <Sequence_Widget*>::const_reverse_iterator i = _widgets.rbegin(); i != _widgets.rend(); i++ )
+        for ( list <Sequence_Widget*>::const_reverse_iterator i = _widgets.rbegin(); i != _widgets.rend(); ++i )
             if ( (*i)->start() < from )
                 return *i;
 

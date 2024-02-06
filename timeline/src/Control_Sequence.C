@@ -299,7 +299,7 @@ Control_Sequence::set ( Log_Entry &e )
 
         if ( ! strcmp( ":track", s ) )
         {
-            int i;
+            unsigned int i;
             sscanf( v, "%X", &i );
             Track *t = (Track*)Loggable::find( i );
 
@@ -390,10 +390,10 @@ Control_Sequence::draw_curve ( bool filled )
     wl.sort( Sequence_Widget::sort_func );
 
     list <Sequence_Widget *>::const_iterator e = wl.end();
-    e--;
+    --e;
 
     if ( wl.size() )
-        for ( list <Sequence_Widget *>::const_iterator r = wl.begin(); ; r++ )
+        for ( list <Sequence_Widget *>::const_iterator r = wl.begin(); ; ++r )
         {
             const int ry = (*r)->y();
             const long rx = (*r)->curve_x();
@@ -495,7 +495,7 @@ Control_Sequence::draw ( void )
 
     if ( interpolation() == None || _highlighted == this || Fl::focus() == this )
     {
-        for ( list <Sequence_Widget *>::const_iterator r = _widgets.begin();  r != _widgets.end(); r++ )
+        for ( list <Sequence_Widget *>::const_iterator r = _widgets.begin();  r != _widgets.end(); ++r )
         {
             if ( (*r)->x() + (*r)->w() >= bx && 
                  (*r)->x() <= bw + bw )
@@ -506,7 +506,7 @@ Control_Sequence::draw ( void )
     }
     else
     {
-        for ( list <Sequence_Widget *>::const_iterator r = _widgets.begin();  r != _widgets.end(); r++ )
+        for ( list <Sequence_Widget *>::const_iterator r = _widgets.begin();  r != _widgets.end(); ++r )
         {
             if ( (*r)->selected() )
             {

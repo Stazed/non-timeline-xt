@@ -171,7 +171,7 @@ Audio_Sequence::set ( Log_Entry &e )
 
         if ( ! strcmp( ":track", s ) )
         {
-            int i;
+            unsigned int i;
             sscanf( v, "%X", &i );
             Track *t = (Track*)Loggable::find( i );
 
@@ -212,7 +212,7 @@ Audio_Sequence::draw ( void )
     fl_push_clip( drawable_x(), y(), drawable_w(), h() );
 
     /* draw crossfades */
-    for ( list <Sequence_Widget *>::const_iterator r = _widgets.begin();  r != _widgets.end(); r++ )
+    for ( list <Sequence_Widget *>::const_iterator r = _widgets.begin();  r != _widgets.end(); ++r )
     {
         Sequence_Widget *o = overlaps( *r );
 

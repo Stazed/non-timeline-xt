@@ -88,6 +88,7 @@ Sequence_Widget::operator= ( const Sequence_Widget &rhs )
     _sequence     = rhs._sequence;
     _box_color = rhs._box_color;
     _color     = rhs._color;
+    _drag = NULL;
 
     if ( rhs._label )
         _label = strdup( rhs._label );
@@ -148,7 +149,7 @@ Sequence_Widget::set ( Log_Entry &e )
         }
         else if ( ! strcmp( s, ":sequence" ) )
         {
-            int i;
+            unsigned int i;
             sscanf( v, "%X", &i );
             Sequence *t = (Sequence*)Loggable::find( i );
 
@@ -355,7 +356,7 @@ Sequence_Widget::dispatch ( int m )
 
         int r = 0;
 
-        for ( list <Sequence_Widget *>::iterator i = _selection.begin(); i != _selection.end(); i++ )
+        for ( list <Sequence_Widget *>::iterator i = _selection.begin(); i != _selection.end(); ++i )
             if ( *i != this )
                 r |= (*i)->handle( m );
 

@@ -30,6 +30,7 @@ protected:
 
     Control_Point ( )
         {
+            _y = 0.0f;
             _box_color = FL_WHITE;
         }
 

@@ -47,7 +47,7 @@ protected:
 
                 if ( ! strcmp( ":track", s ) )
                 {
-                    int i;
+                    unsigned int i;
                     sscanf( v, "%X", &i );
                     Track *t = (Track*)Loggable::find( i );
 

@@ -45,7 +45,7 @@ public:
     time ( nframes_t when )
         {
             for ( list <Sequence_Widget *>::const_reverse_iterator i = _widgets.rbegin();
-                  i != _widgets.rend(); i++ )
+                  i != _widgets.rend(); ++i )
             {
                 if ( (*i)->offset() < when )
                     return ((Time_Point*)(*i))->time();
