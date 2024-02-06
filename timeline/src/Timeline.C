@@ -1299,7 +1299,7 @@ Timeline::draw_cursors ( Cursor_Sequence *o ) const
     {
         for ( std::list<Sequence_Widget*>::const_iterator i = o->_widgets.begin();
               i != o->_widgets.end();
-              i++ )
+              ++i )
         {
             if ( Timeline::draw_with_cursor_overlay )
             {
@@ -2021,7 +2021,7 @@ Timeline::apply_track_order ( void )
     int j = 0;
     for ( std::list<Track*>::const_iterator i = tl.begin();
           i != tl.end();
-          i++, j++ )
+          ++i, ++j )
         a[j] = *i;
 
     update_track_order();

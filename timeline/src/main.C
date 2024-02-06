@@ -96,6 +96,7 @@ ensure_dirs ( void )
 
 #include <signal.h>
 
+#if 0
 void
 shift ( char **argv, int *argc, int n )
 {
@@ -107,6 +108,7 @@ shift ( char **argv, int *argc, int n )
     argv[ i ] = 0;
     argc -= n;
 }
+#endif // 0
 
 extern Timeline *timeline;
 

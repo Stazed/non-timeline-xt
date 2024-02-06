@@ -60,6 +60,7 @@ public:
             _stop_frame = JACK_MAX_FRAMES;
             _frames_written = 0;
             _first_frame = 0;
+            _af = NULL;
         }
 
     virtual ~Record_DS ( ) { shutdown(); }

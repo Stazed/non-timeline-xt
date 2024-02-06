@@ -386,6 +386,7 @@ Peaks::Peaks ( Audio_File *c )
     _first_block_pending = false;
     _mipmaps_pending = false;
     _clip = c;
+    _fpp = 0.0f;
     _peak_writer = NULL;
     _peakfile = new Peakfile();
 }
@@ -865,6 +866,7 @@ Peaks::Builder::make_peaks_mipmap ( void )
     if ( ! ( fp = fopen( pn, "r+" ) ) )
     {
         WARNING( "could not open peakfile for appending: %s.", strerror( errno ) );
+        fclose( rfp );
         free( pn );
         return false;
     }
@@ -877,6 +879,7 @@ Peaks::Builder::make_peaks_mipmap ( void )
     if ( ftello( fp ) == sizeof( peakfile_block_header ) )
     {
         DWARNING( "truncated peakfile. Programming error?" );
+        fclose( rfp );
         return false;
     }
 
