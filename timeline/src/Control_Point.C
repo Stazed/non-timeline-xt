@@ -20,6 +20,7 @@
 #include <FL/fl_draw.H>
 
 #include "Control_Point.H"
+#include "Track.H"
 
 
 
@@ -78,7 +79,21 @@ Control_Point::draw_box ( void )
     else
         fl_color( box_color() );
 
-    fl_pie( x() - ( abs_w() / 2 ), y() - ( h() / 2 ), abs_w(), h(), 0, 360 );
+    int Y = y();
+
+    // To adjust the control point size based on the track size
+    Track *t = timeline->track_under( Y );
+
+    int size = 0;
+    if(t)
+    {
+        size = t->size();
+    }
+
+    int W = abs_w() + size;
+    int H = h() + size;
+
+    fl_pie( x() - ( W / 2 ), Y - ( H / 2 ), W, H, 0, 360 );
 
     if ( this == Sequence_Widget::belowmouse() ||
          this == Sequence_Widget::pushed() )
