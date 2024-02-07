@@ -58,10 +58,10 @@ public:
     /* only for playback thread */
     nframes_t when ( void ) const { return _range.start; }
 
-    long abs_w ( void ) const { return 8; }
+    long abs_w ( void ) const { return 10; }
 
     int y ( void ) const { return parent()->y() + ((float)parent()->h() * _y); }
-    int h ( void ) const { return 8; }
+    int h ( void ) const { return 10; }
 
     virtual void draw_box ( void );
     virtual int handle ( int m );
