@@ -53,7 +53,6 @@ const int PROJECT_VERSION = 2;
 
 extern char *instance_name;
 extern std::string project_directory;
-extern char *user_config_dir;
 
 
 const char *Project::_errstr[] =
