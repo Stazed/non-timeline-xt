@@ -53,6 +53,10 @@ Tempo_Sequence::handle ( int m )
     if ( r )
         return r;
 
+    // Need to get the event here rather than inside the case because
+    // when inside the case, the popup window event is returned.
+    int X = Fl::event_x();
+
     switch ( m )
     {
         case FL_PUSH:
@@ -63,8 +67,8 @@ Tempo_Sequence::handle ( int m )
                 if ( Tempo_Point::edit( &t ) )
                 {
                     timeline->sequence_lock.wrlock();
-                    
-                    new Tempo_Point( timeline->x_to_offset( Fl::event_x() ), t );
+
+                    new Tempo_Point( timeline->x_to_offset( X ), t );
 
                     timeline->sequence_lock.unlock();
 

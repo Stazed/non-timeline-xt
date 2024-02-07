@@ -56,6 +56,10 @@ Time_Sequence::handle ( int m )
     if ( r )
         return r;
 
+    // Need to get the event here rather than inside the case because
+    // when inside the case, the popup window event is returned.
+    int X = Fl::event_x();
+
     switch ( m )
     {
         case FL_PUSH:
@@ -67,7 +71,7 @@ Time_Sequence::handle ( int m )
                 {
                     timeline->sequence_lock.wrlock();
 
-                    new Time_Point( timeline->x_to_offset( Fl::event_x() ), t.beats_per_bar, t.beat_type );
+                    new Time_Point( timeline->x_to_offset( X ), t.beats_per_bar, t.beat_type );
 
                     timeline->sequence_lock.unlock();
 
