@@ -52,7 +52,8 @@ extern TLE *tle;
 const int PROJECT_VERSION = 2;
 
 extern char *instance_name;
-
+extern std::string project_directory;
+extern char *user_config_dir;
 
 
 const char *Project::_errstr[] =
@@ -278,6 +279,8 @@ Project::open ( const char *name )
     close();
 
     chdir( name );
+
+    project_directory = name;
 
     if ( ! acquire_lock( &_lockfd, ".lock" ) )
         return E_LOCKED;
