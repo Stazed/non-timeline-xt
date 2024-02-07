@@ -270,6 +270,9 @@ Sequence_Widget::draw_label ( const char *label, Fl_Align align, Fl_Color color,
     int W = w();
     int H = h();
 
+    // To adjust the label size based on the track size
+    Track *t = timeline->track_under( Y );
+
     if ( align & FL_ALIGN_CLIP ) fl_push_clip( X, Y, W, H );
 
     X += xo;
@@ -282,7 +285,11 @@ Sequence_Widget::draw_label ( const char *label, Fl_Align align, Fl_Color color,
     lab.type = FL_NORMAL_LABEL;
     lab.value = label;
     lab.font = FL_HELVETICA_ITALIC;
-    lab.size = 9;
+
+    if(t)
+        lab.size = 9 + t->size();
+    else
+        lab.size = 9;
 
     int lw = 0, lh = 0;
 
