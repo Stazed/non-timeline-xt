@@ -22,25 +22,24 @@
  * Created on February 7, 2024, 7:43 PM
  */
 
+#include <FL/Fl.H>
 #include "Region_Volume_Editor.H"
 
-
 Region_Volume_Editor::Region_Volume_Editor(float &scale) : 
-    Fl_Menu_Window (100, 50, "Edit Volume"),
+    Fl_Menu_Window (75, 58, "Edit Volume"),
     _scale(scale)
 {
     set_modal();
 
-    Fl_Spinner *si = _si = new Fl_Spinner( 10, 18, 80, 24, "Volume" );
-    si->align( Fl_Align(FL_ALIGN_TOP) );
-    si->when( FL_WHEN_ENTER_KEY );
-    si->type(FL_FLOAT_INPUT);
-    si->minimum(0);
-    si->maximum(5);
-    si->step(0.01);
-    si->callback( &Region_Volume_Editor::enter_cb, (void*)this );
+    Fl_Float_Input *fi = _fi = new Fl_Float_Input( 12, 0 + 24, 50, 24, "Volume" );
+    fi->align( FL_ALIGN_TOP );
+    fi->when( FL_WHEN_NOT_CHANGED | FL_WHEN_ENTER_KEY );
+    fi->callback( &Region_Volume_Editor::enter_cb, (void*)this );
 
-    si->value( scale );
+    char pat[10];
+    snprintf( pat, sizeof( pat ), "%.2f", scale );
+
+    fi->value( pat );
 
     end();
 
@@ -52,11 +51,4 @@ Region_Volume_Editor::Region_Volume_Editor(float &scale) :
 
 Region_Volume_Editor::~Region_Volume_Editor()
 {
-}
-
-int
-Region_Volume_Editor::handle ( int m )
-{
-    DMESSAGE("GET HERE %d", m);
-    return Fl_Menu_Window::handle(m);
 }

@@ -24,9 +24,8 @@
 #pragma once
 
 #include <FL/Fl_Menu_Window.H>
-#include <FL/Fl_Spinner.H>
-
-#include "../../nonlib/debug.h"
+#include <FL/Fl_Float_Input.H>
+#include <cstdio>
 
 class Region_Volume_Editor : public Fl_Menu_Window
 {
@@ -41,7 +40,7 @@ public:
 private:
     
     float &_scale;
-    Fl_Spinner *_si;
+    Fl_Float_Input *_fi;
 
     static void
     enter_cb ( Fl_Widget *, void *v )
@@ -52,13 +51,9 @@ private:
     void
     enter_cb ( void )
     {
-        _scale = _si->value();
-
+        sscanf( _fi->value(), "%f", &_scale );
         hide();
     }
-
-protected:
-    int handle ( int m );
 };
 
 
