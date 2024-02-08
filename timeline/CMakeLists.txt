@@ -49,6 +49,7 @@ set (ProgSources
     src/OSC_Transmit_Thread.C
     src/OSC_Receive_Thread.C
     src/Project.C
+    src/Region_Volume_Editor.C
     src/Sequence.C
     src/Sequence_Point.C
     src/Sequence_Region.C

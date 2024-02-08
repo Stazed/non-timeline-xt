@@ -166,6 +166,7 @@ public:
     Fl_Align align ( void ) const { return  (Fl_Align)(FL_ALIGN_LEFT | FL_ALIGN_BOTTOM | FL_ALIGN_INSIDE | FL_ALIGN_CLIP ); }
 
     void normalize ( void );
+    void set_volume( void );
     void split ( nframes_t where );
     bool recording ( void ) const;
 

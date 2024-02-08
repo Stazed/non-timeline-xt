@@ -33,6 +33,7 @@
 #include "Engine/Audio_File.H"
 #include "Transport.H"
 #include "const.h"
+#include "Region_Volume_Editor.H"
 #include "../../nonlib/debug.h"
 #include "../../FL/focus_frame.H"
 
@@ -289,6 +290,8 @@ Audio_Region::menu_cb ( const Fl_Menu_ *m )
         normalize();
     else if ( ! strcmp( picked, "/Denormalize" ) )
         _scale = 1.0;
+    else if ( ! strcmp( picked, "/Set volume" ) )
+        set_volume();
     else if ( ! strcmp( picked, "/Range from" ) )
         timeline->range( start(), length() );
     else if ( ! strcmp( picked, "/Trim left to playhead" ) )
@@ -379,6 +382,7 @@ _Pragma("GCC diagnostic ignored \"-Wmissing-field-initializers\"")
             { "Clear loop point", 0, 0, 0, 0 == _loop ? FL_MENU_INACTIVE : 0 },
             { "Normalize", 'n', 0, 0 },
             { "Denormalize", FL_SHIFT + 'n', 0, 0, 1.0 == _scale ? FL_MENU_INACTIVE : 0 },
+            { "Set volume", 'v', 0, 0 },
             { "Range from", FL_CTRL + 'r', 0, 0, FL_MENU_DIVIDER },
             { "Trim left to playhead", '{', 0, 0 },
             { "Trim right to playhead", '}', 0, 0 },
@@ -1022,8 +1026,17 @@ Audio_Region::normalize ( void )
                 _scale = f;
         }
     }
-
+    
     /* FIXME: wrong place for this? */
+    sequence()->handle_widget_change( start(), length() );
+    redraw();
+}
+
+void
+Audio_Region::set_volume( void )
+{
+    Region_Volume_Editor ti( _scale );
+
     sequence()->handle_widget_change( start(), length() );
     redraw();
 }
