@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head>
-<meta name="generator" content="Bluefish 2.2.12" >
+<meta name="generator" content="Bluefish 2.2.14" >
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="mup.css">
 <title>Non Timeline XT User Manual</title>
@@ -75,9 +75,13 @@ Jonathan Moore Liles <a href="mailto:male@tuxfamily.org">&lt;male@tuxfamily.org&
 
 <li><a href="#n:1.1.10.1.6.">1.1.10.1.6. Normalize</a>
 
-<li><a href="#n:1.1.10.1.7.">1.1.10.1.7. Fade</a>
+<li><a href="#n:1.1.10.1.7.">1.1.10.1.7. Set Volume</a>
 
-<li><a href="#n:1.1.10.1.8.">1.1.10.1.8. Loop</a>
+<li><a href="#n:1.1.10.1.8.">1.1.10.1.8. Denormalize</a>
+
+<li><a href="#n:1.1.10.1.9.">1.1.10.1.9. Fade</a>
+
+<li><a href="#n:1.1.10.1.10.">1.1.10.1.10. Loop</a>
 
 </ul></ul><li><a href="#n:1.1.11.">1.1.11. Annotation</a>
 
@@ -316,7 +320,18 @@ Hold <tt>Ctrl+Shift</tt> and drag the region. Instead of moving on the timeline,
 <p>
 Hit <tt>N</tt> while a region is focused to normalize it (or <tt>Ctrl+Middle-click</tt>). Normalizing a region means automatically setting its gain as high as possible without exceeding the standard floating point audio dynamic range of +1 to -1 (corresponding to 0dBFS). Any peaks exceeding this range at this stage will appear in bright red.
 </p>
-<h5 id="n:1.1.10.1.7.">1.1.10.1.7. Fade</h5>
+
+<h5 id="n:1.1.10.1.7.">1.1.10.1.7. Set Volume</h5>
+<p>
+Hit <tt>V</tt> while a region is focused to show a volume editor. You can use the editor to enter a specific volume for the region. When manually setting the volume, any peaks exceeding the normalized range (clipping) will appear in bright red.
+</P>
+
+<h5 id="n:1.1.10.1.8.">1.1.10.1.8. Denormalize</h5>
+<p>
+Hit <tt>Shift+N</tt> to reset the volume to the default recorded amount of 1.0.
+</P>
+
+<h5 id="n:1.1.10.1.9.">1.1.10.1.9. Fade</h5>
 <center><div class="fig image"><table id="Fig.1.11" border=1>
 <caption>
 <strong>Fig. 1.11.</strong> A Region with Fades
@@ -331,7 +346,7 @@ Each region has fade in and out curves. Position the mouse pointer over the desi
 <li><span>Sigmoid</span>
 <li><span>Logarithmic</span>
 <li><span>Parabolic</span>
-</ol><h5 id="n:1.1.10.1.8.">1.1.10.1.8. Loop</h5>
+</ol><h5 id="n:1.1.10.1.10.">1.1.10.1.10. Loop</h5>
 <center><div class="fig image"><table id="Fig.1.12" border=1>
 <caption>
 <strong>Fig. 1.12.</strong> Looped region
