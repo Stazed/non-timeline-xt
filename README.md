@@ -2,7 +2,7 @@ Non-Timeline-XT
 ============
 
 
-Non-Timeline-XT is a reboot of original Non-Timeline with some eXTras. Currently the only changes are moving to cmake build and adding NSM optional gui feature.
+Non-Timeline-XT is a reboot of original Non-Timeline with some eXTras.
 
 
 Non-Timeline-XT build instructions:
