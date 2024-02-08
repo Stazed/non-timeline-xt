@@ -417,7 +417,7 @@ void TLE::cb_About_i(Fl_Menu_*, void*) {
 
         ab.title->label( "Non Timeline XT" );
 
-        ab.copyright->label( "Copyright (C) 2008-2021 Jonathan Moore Liles\n Copyright (C) 2022-2023 Stazed" );
+        ab.copyright->label( "Copyright (C) 2008-2021 Jonathan Moore Liles\n Copyright (C) 2022-2024 Stazed" );
         ab.credits->label( "Legacy Non Timeline was written by\nJonathan Moore Liles.\n\n Non Timeline XT by Stazed." );
 
         ab.website_url->label( "https://github.com/Stazed/non-timeline-xt" );

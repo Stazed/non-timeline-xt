@@ -71,7 +71,7 @@ const char *APP_NAME = "Non-Timeline-XT";
 const char *APP_TITLE = "The Non-Timeline-XT";
 
 const char COPYRIGHT[]  = "Copyright (C) 2008-2021 Jonathan Moore Liles";
-const char COPYRIGHT2[] = "Copyright (C) 2022-2023 Stazed";
+const char COPYRIGHT2[] = "Copyright (C) 2022-2024 Stazed";
 
 const double NSM_CHECK_INTERVAL = 0.25f;
 

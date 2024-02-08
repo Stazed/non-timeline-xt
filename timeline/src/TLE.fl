@@ -277,8 +277,8 @@ Loggable::progress_callback( &TLE::progress_cb, this );} {}
     {
         timeline->command_quit();
     }
-}} open selected
-      xywh {740 106 1025 770} type Double resizable
+}} open
+      xywh {399 114 1025 770} type Double resizable
       code0 {o->xclass( APP_NAME );}
       class TLE_Window size_range {947 300 0 0} visible
     } {
@@ -650,17 +650,17 @@ timeline->redraw();}
 
         ab.title->label( "Non Timeline XT" );
 
-        ab.copyright->label( "Copyright (C) 2008-2021 Jonathan Moore Liles\\n Copyright (C) 2022-2023 Stazed" );
+        ab.copyright->label( "Copyright (C) 2008-2021 Jonathan Moore Liles\\n Copyright (C) 2022-2024 Stazed" );
         ab.credits->label( "Legacy Non Timeline was written by\\nJonathan Moore Liles.\\n\\n Non Timeline XT by Stazed." );
 
         ab.website_url->label( "https://github.com/Stazed/non-timeline-xt" );
 
-ab.run();}
+ab.run();} selected
               xywh {5 5 40 25}
             }
           }
         }
-        Fl_Pack {} {open
+        Fl_Pack {} {
           xywh {1 27 584 46} type HORIZONTAL
           code0 {o->spacing( 10 );}
         } {
@@ -671,7 +671,7 @@ ab.run();}
             code1 {o->labeltype( FL_NO_LABEL );}
             class Transport
           }
-          Fl_Pack clocks_pack {open
+          Fl_Pack clocks_pack {
             private xywh {295 30 290 41} type HORIZONTAL
             code0 {o->spacing( 2 );}
           } {
@@ -702,7 +702,7 @@ _Pragma("GCC diagnostic pop")}
           xywh {585 32 155 40} resizable
           code0 {o->labeltype( FL_NO_LABEL );}
         }
-        Fl_Group {} {open
+        Fl_Group {} {
           xywh {850 23 175 50}
         } {
           Fl_Box {} {
@@ -739,7 +739,7 @@ _Pragma("GCC diagnostic pop")}
             code0 {o->type( FL_VERTICAL );}
           }
         }
-        Fl_Group {} {open
+        Fl_Group {} {
           xywh {740 31 115 40}
         } {
           Fl_Button solo_blinker {
@@ -789,7 +789,7 @@ _Pragma("GCC diagnostic pop")}
           class Fl_Button
         }
       }
-      Fl_Group progress_group {open
+      Fl_Group progress_group {
         xywh {295 352 450 79} hide
       } {
         Fl_Progress progress {
@@ -826,7 +826,7 @@ _Pragma("GCC diagnostic pop")}
   }
   decl {void menubar_cb ( void )} {private local
   }
-  Function {update_menu()} {open private
+  Function {update_menu()} {private
   } {
     code {Fl_Menu_Bar *m = menubar;
 
