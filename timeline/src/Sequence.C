@@ -612,14 +612,34 @@ const Sequence_Widget *
     }
 
 /** select all widgets intersecting with the range defined by the
- * pixel coordinates X through W */
+ * pixel coordinates X through W, and for control widgets Y through H */
     void
-        Sequence::select_range ( int X, int W )
+        Sequence::select_range ( int X, int W, int Y, int H )
     {
         nframes_t sts = x_to_offset( X );
         nframes_t ets = sts + timeline->x_to_ts( W );
 
         for ( list <Sequence_Widget *>::const_reverse_iterator r = _widgets.rbegin();  r != _widgets.rend(); ++r )
+        {
             if ( ! ( (*r)->start() > ets || (*r)->start() + (*r)->length() < sts ) )
-                (*r)->select();
+            {   
+                bool is_control = false;
+                if ((Y != -1) && (H != -1)) // Control is only one to send Y & H
+                    is_control = true;
+
+                if( is_control )
+                {
+                    int y_bottom = Y + H;
+                    int r_bottom = (*r)->start_y() + (*r)->height();
+                    int r_y = (*r)->start_y();
+
+                //    DMESSAGE("YYY = %d: Start Y = %d: y_bottom = %d: r_bottom = %d", Y, r_y, y_bottom, r_bottom);
+
+                    if( (Y <= r_y &&  (y_bottom >= r_y || y_bottom >= r_bottom ) ) )
+                        (*r)->select();
+                }
+                else
+                    (*r)->select(); // Audio regions
+            }
+        }
     }

@@ -112,7 +112,7 @@ public:
     void remove ( Sequence_Widget *r );
     void add ( Sequence_Widget *r );
 
-    void select_range ( int X, int W );
+    void select_range ( int X, int W, int Y = -1, int H = -1 );
 
     void remove_selected ( void );
 

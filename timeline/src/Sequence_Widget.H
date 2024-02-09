@@ -260,6 +260,8 @@ public:
 
     void start ( nframes_t where );
     void length ( nframes_t v ) { _r->length = v; }
+    int start_y ( void ) const { return y(); }
+    int height ( void ) const { return h(); }
     virtual nframes_t length ( void ) const { return _r->length; }
     void offset ( nframes_t v ) { _r->offset = v; }
     nframes_t offset ( void ) const { return _r->offset; }

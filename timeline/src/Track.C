@@ -732,7 +732,7 @@ Track::select ( int X, int Y, int W, int H,
 
             if ( merge_control ||
                  ( c->y() >= Y && c->y() + c->h() <= Y + H  ) )
-                c->select_range( X, W );
+                c->select_range( X, W, Y, H );  // control sends Y & H also
         }
 }
 
