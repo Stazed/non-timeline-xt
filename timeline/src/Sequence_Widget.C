@@ -423,7 +423,7 @@ Sequence_Widget::handle ( int m )
 
                 return 1;
             }
-            else if ( test_press( FL_BUTTON1 ) || test_press( FL_BUTTON1 + FL_CTRL ) )
+            else if ( test_press( FL_BUTTON1 ) || test_press( FL_BUTTON1 + FL_CTRL ) || test_press( FL_BUTTON1 + FL_ALT ) )
             {
                 /* traditional selection model */
                 if ( Fl::event_ctrl() )
@@ -523,6 +523,11 @@ Sequence_Widget::handle ( int m )
                     }
                 }
 
+                return 1;
+            }
+            else if(test_press( FL_BUTTON1 + FL_ALT ))
+            {
+                // Control point fixed horizontal axis & aligned vertical with vertical dragging
                 return 1;
             }
             else

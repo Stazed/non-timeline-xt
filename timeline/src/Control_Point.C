@@ -18,6 +18,7 @@
 /*******************************************************************************/
 
 #include <FL/fl_draw.H>
+#include "../../FL/test_press.H"
 
 #include "Control_Point.H"
 #include "Track.H"
@@ -131,11 +132,16 @@ Control_Point::handle ( int m )
         case FL_DRAG:
         {
             if ( nselected() > 1 )
-                // only allow horizontal movement when part of a selection...
-                break;
+            {
+                // If multiple items then only allow horizontal movement with FL_BUTTON1.
+                // If FL_BUTTON1 + FL_ALT, then selected control points will all align vertically
+                // while fixed on the horizontal axis, and can be dragged vertically.
+                if(!test_press( FL_BUTTON1 + FL_ALT ))
+                    break;  // horizontal only
+            }
 
             int Y = Fl::event_y() - parent()->y();
-            
+
             if ( Y >= 0 && Y < parent()->h() )
             {
                 _y = (float)Y / parent()->h();
