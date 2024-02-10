@@ -375,7 +375,7 @@ Sequence::handle ( int m )
                         break;
                 }
             }
-
+ 
             if ( Sequence_Widget::belowmouse() )
                 return Sequence_Widget::belowmouse()->dispatch( m );
 
@@ -647,7 +647,20 @@ const Sequence_Widget *
     }
 
     void
-    Sequence::nudge_selected(bool up)
+    Sequence::nudge_selected(bool left)
+    {
+        for ( list <Sequence_Widget *>::const_reverse_iterator i = _widgets.rbegin();  i != _widgets.rend(); ++i )
+        {
+            Sequence_Widget *w = (*i);
+            if (w->selected() )
+            {
+                w->nudge_some(left);
+            }
+        }
+    }
+
+    void
+    Sequence::nudge_control_selected(bool up)
     {
         for ( list <Sequence_Widget *>::const_reverse_iterator i = _widgets.rbegin();  i != _widgets.rend(); ++i )
         {

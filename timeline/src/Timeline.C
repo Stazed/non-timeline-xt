@@ -476,6 +476,22 @@ Timeline::menu_cb ( Fl_Menu_ *m )
         /* FIXME: only needs to damage the location of the old cursor! */
         redraw();
     }
+    else if ( ! strcmp( picked, "Nudge selected left" ) )
+    {
+        nudge_selected(true);
+    }
+    else if ( ! strcmp( picked, "Nudge selected right" ) )
+    {
+        nudge_selected(false);
+    }
+    else if ( ! strcmp( picked, "Pan selected left" ) )
+    {
+        
+    }
+    else if ( ! strcmp( picked, "Pan selected right" ) )
+    {
+        
+    }
     else if ( ! strcmp( picked, "Playhead left beat" ) )
     {
         nframes_t f = transport->frame;
@@ -657,6 +673,10 @@ Timeline::Timeline ( int X, int Y, int W, int H, const char* L ) : BASE( X, Y, W
     menu->add( "Playhead to mouse", 'p', 0, 0 );
     menu->add( "Edit start to mouse", '[', 0, 0 );
     menu->add( "Edit end to mouse", ']', 0, 0 );
+    menu->add( "Nudge selected left", FL_ALT + FL_Left, 0, 0 );
+    menu->add( "Nudge selected right", FL_ALT + FL_Right, 0, 0 );
+    menu->add( "Pan selected left", FL_META + FL_Left, 0, 0 );
+    menu->add( "Pan selected right", FL_META + FL_Right, 0, 0 );
     menu->add( "Playhead left beat", FL_SHIFT + FL_Left, 0, 0 );
     menu->add( "Playhead right beat", FL_SHIFT + FL_Right, 0, 0 );
     menu->add( "Playhead left bar", FL_CTRL + FL_SHIFT + FL_Left, 0, 0 );
@@ -1629,6 +1649,16 @@ void
 Timeline::select_none ( void )
 {
     Sequence_Widget::select_none();
+}
+
+void
+Timeline::nudge_selected( bool left)
+{
+    for ( int i = tracks->children(); i-- ; )
+    {
+        Track *t = (Track*)tracks->child( i );
+        t->nudge_selected(left);
+    }
 }
 
 int

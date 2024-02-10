@@ -113,8 +113,9 @@ public:
     void add ( Sequence_Widget *r );
 
     void select_range ( int X, int W, int Y = -1, int H = -1 );
-    
-    void nudge_selected(bool up);
+
+    void nudge_selected(bool left);
+    void nudge_control_selected(bool up);
 
     void remove_selected ( void );
 
