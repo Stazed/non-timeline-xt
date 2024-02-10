@@ -239,6 +239,7 @@ public:
     Track * track_under ( int Y );
     
     void nudge_selected( bool left);
+    void pan_selected(bool left);
 
     int nselected ( void ) const;
     void delete_selected ( void );

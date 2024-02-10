@@ -486,11 +486,11 @@ Timeline::menu_cb ( Fl_Menu_ *m )
     }
     else if ( ! strcmp( picked, "Pan selected left" ) )
     {
-        
+        pan_selected(true);
     }
     else if ( ! strcmp( picked, "Pan selected right" ) )
     {
-        
+        pan_selected(false);
     }
     else if ( ! strcmp( picked, "Playhead left beat" ) )
     {
@@ -1658,6 +1658,16 @@ Timeline::nudge_selected( bool left)
     {
         Track *t = (Track*)tracks->child( i );
         t->nudge_selected(left);
+    }
+}
+
+void
+Timeline::pan_selected(bool left)
+{
+    for ( int i = tracks->children(); i-- ; )
+    {
+        Track *t = (Track*)tracks->child( i );
+        t->pan_selected(left);
     }
 }
 

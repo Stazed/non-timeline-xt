@@ -747,6 +747,16 @@ Track::nudge_selected(bool left)
 }
 
 void
+Track::pan_selected(bool left)
+{
+    Sequence *s = sequence();
+    if ( !s )
+        return;
+
+    s->pan_selected(left);
+}
+
+void
 Track::nudge_selected_controls(bool up)
 {
     for ( int i = control->children(); i--; )

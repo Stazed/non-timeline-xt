@@ -180,6 +180,7 @@ public:
     void begin_drag ( const Drag &d );
     void end_drag ( void );
     void nudge_some(bool left);
+    void pan_some(bool left);
 
     int dispatch ( int m );
 

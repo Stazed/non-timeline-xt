@@ -658,6 +658,19 @@ const Sequence_Widget *
             }
         }
     }
+    
+    void
+    Sequence::pan_selected(bool left)
+    {
+        for ( list <Sequence_Widget *>::const_reverse_iterator i = _widgets.rbegin();  i != _widgets.rend(); ++i )
+        {
+            Sequence_Widget *w = (*i);
+            if (w->selected() )
+            {
+                w->pan_some(left);
+            }
+        }
+    }
 
     void
     Sequence::nudge_control_selected(bool up)

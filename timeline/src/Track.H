@@ -173,6 +173,7 @@ public:
     void select ( int X, int Y, int W, int H, bool include_control, bool merge_control );
     
     void nudge_selected(bool left);
+    void pan_selected(bool left);
     void nudge_selected_controls(bool up);
 
     int size ( void ) const { return _size; }

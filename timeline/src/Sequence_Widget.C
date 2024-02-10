@@ -236,6 +236,37 @@ Sequence_Widget::nudge_some(bool left)
     _log.release();
 }
 
+void
+Sequence_Widget::pan_some(bool left)
+{
+    Logger _log( this );    // FIXME do we really want to log each miniscule change???
+    _log.hold();
+    timeline->sequence_lock.wrlock();
+    int Of = _r->offset;
+    if(left)
+    {
+        Of -= 2000;
+    }
+    else
+    {
+        Of += 2000;
+    }
+
+    if(Of <= 0)
+        Of = 0;
+
+    _r->offset = Of;
+
+    if ( _sequence )
+    {
+        _sequence->handle_widget_change( _r->start, _r->length );
+        _sequence->damage( FL_DAMAGE_USER1 );
+    }
+
+    timeline->sequence_lock.unlock();
+    _log.release();
+}
+
 /** set position of widget on the timeline. */
 void
 Sequence_Widget::start ( nframes_t where )
