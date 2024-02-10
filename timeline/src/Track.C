@@ -736,6 +736,15 @@ Track::select ( int X, int Y, int W, int H,
         }
 }
 
+void
+Track::nudge_selected_controls(bool up)
+{
+    for ( int i = control->children(); i--; )
+    {
+        Control_Sequence *c = (Control_Sequence*)control->child( i );
+        c->nudge_selected(up);
+    }
+}
 
 void
 Track::menu_cb ( Fl_Widget *w, void *v )

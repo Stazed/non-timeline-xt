@@ -30,11 +30,13 @@
 
 #include "const.h"
 #include "../../nonlib/debug.h"
+#include "Control_Point.H"
 
 using namespace std;
 
-
+class Control_Point;
 
+
 queue <Sequence_Widget *> Sequence::_delete_queue;
 
 
@@ -640,6 +642,35 @@ const Sequence_Widget *
                 }
                 else
                     (*r)->select(); // Audio regions
+            }
+        }
+    }
+
+    void
+    Sequence::nudge_selected(bool up)
+    {
+        for ( list <Sequence_Widget *>::const_reverse_iterator i = _widgets.rbegin();  i != _widgets.rend(); ++i )
+        {
+            Control_Point *r = (Control_Point*)(*i);
+            if (r->selected() )
+            {
+                float Y = r->control();
+
+                if(up)
+                    Y -= 0.01;
+                else
+                    Y += 0.01;
+
+            //    DMESSAGE("Y = %f", Y);
+
+                if ( Y >= 0.99 )
+                    Y = 0.99;
+
+                if( Y <= 0.00 )
+                    Y = 0.00;
+
+                r->control(Y);
+                r->redraw();
             }
         }
     }
