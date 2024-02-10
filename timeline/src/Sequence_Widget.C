@@ -214,11 +214,11 @@ Sequence_Widget::nudge_some(bool left)
     int X = _r->start;
     if(left)
     {
-        X -= 200;
+        X -= 2000;
     }
     else
     {
-        X += 200;
+        X += 2000;
     }
 
     if(X <= 0)
