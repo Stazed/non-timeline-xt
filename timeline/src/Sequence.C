@@ -673,13 +673,30 @@ const Sequence_Widget *
     }
 
     void
-    Sequence::nudge_control_selected(bool up)
+    Sequence::nudge_control_selected_X(bool left)
+    {
+        for ( list <Sequence_Widget *>::const_reverse_iterator i = _widgets.rbegin();  i != _widgets.rend(); ++i )
+        {
+            Sequence_Widget *w = (*i);
+            if (w->selected() )
+            {
+                w->nudge_some(left);
+            }
+        }
+    }
+
+    void
+    Sequence::nudge_control_selected_Y(bool up)
     {
         for ( list <Sequence_Widget *>::const_reverse_iterator i = _widgets.rbegin();  i != _widgets.rend(); ++i )
         {
             Control_Point *r = (Control_Point*)(*i);
             if (r->selected() )
             {
+                Logger _log( r );    // FIXME do we really want to log each miniscule change???
+                 _log.hold();
+                timeline->sequence_lock.wrlock();
+
                 float Y = r->control();
 
                 if(up)
@@ -697,6 +714,9 @@ const Sequence_Widget *
 
                 r->control(Y);
                 r->redraw();
+                
+                timeline->sequence_lock.unlock();
+                _log.release();
             }
         }
     }

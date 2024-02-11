@@ -744,6 +744,12 @@ Track::nudge_selected(bool left)
         return;
 
     s->nudge_selected(left);
+    
+    for ( int i = control->children(); i--; )
+    {
+        Control_Sequence *c = (Control_Sequence*)control->child( i );
+        c->nudge_control_selected_X(left);
+    }
 }
 
 void
@@ -762,7 +768,7 @@ Track::nudge_selected_controls(bool up)
     for ( int i = control->children(); i--; )
     {
         Control_Sequence *c = (Control_Sequence*)control->child( i );
-        c->nudge_control_selected(up);
+        c->nudge_control_selected_Y(up);
     }
 }
 

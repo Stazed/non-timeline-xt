@@ -116,7 +116,8 @@ public:
 
     void nudge_selected(bool left);
     void pan_selected(bool left);
-    void nudge_control_selected(bool up);
+    void nudge_control_selected_X(bool left);
+    void nudge_control_selected_Y(bool up);
 
     void remove_selected ( void );
 
