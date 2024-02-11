@@ -77,14 +77,19 @@ bool Timeline::playback_latency_compensation = false;
 
 const float UPDATE_FREQ = 1.0f / 18.0f;
 
+/** g_snapshot is used for flagging the arrow nudging for very small amounts.
+    Used with key-repeat it can cause significant spam in history if every
+    repeat is logged. So this is used to flag start of nudging (log_start)
+    and upon key-up of modifier ALT/META we check it to send log_end().
+ */
 bool g_snapshot = false;     // extern
 extern const char *instance_name;
 extern TLE *tle;
 
 
-/** return the combined height of all visible children of (veritcal)
+/** return the combined height of all visible children of (vertical)
     pack, /p/. This is necessary because pack sizes are adjusted only
-    when the relevant areas are exposes. */
+    when the relevant areas are exposed. */
 static int
 pack_visible_height ( const Fl_Pack *p )
 {
