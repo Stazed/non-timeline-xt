@@ -83,6 +83,8 @@ Stazed <a href="mailto:stazed@mapson.com">&lt;stazed@mapson.com&gt;</a><br>
 
 <li><a href="#n:1.1.10.1.10.">1.1.10.1.10. Loop</a>
 
+<li><a href="#n:1.1.10.1.11.">1.1.10.1.11. Nudging</a>
+
 </ul></ul><li><a href="#n:1.1.11.">1.1.11. Annotation</a>
 
 <li><a href="#n:1.1.12.">1.1.12. Automation</a>
@@ -251,7 +253,10 @@ The clocks tell you precisely where the playhead is. There are several clock typ
 The tempo map serves a dual purpose. Firstly, it provides enough information about the musical structure of your project for Non Timeline XT to perform intelligent snapping and draw helpful measure lines. Secondly, the tempo map is communicated to other JACK clients at playback time via the JACK Timebase API, so that MIDI accompaniment can follow along to the tempo changes in your song.
 </p>
 <p>
-Clicking on an empty part of the time or tempo sequences will prompt you for the parameters of a new time or tempo point to be inserted at that position. Hit <tt>Escape</tt> to cancel the insertion. Right-click on a time or tempo point to edit its value. Existing points can be dragged freely.
+Clicking on an empty part of the time or tempo sequences will prompt you for the parameters of a new time or
+tempo point to be inserted at that position. Hit <tt>Escape</tt> to cancel the insertion.
+Right-click on a time or tempo point to edit its value. <tt>CTRL+Right Button</tt> to remove a time or tempo point.
+ Existing points can be dragged freely.
 </p>
 <h3 id="n:1.1.8.">1.1.8. Tracks</h3>
 <center><div class="fig image"><table id="Fig.1.9" border=1>
@@ -262,7 +267,14 @@ Clicking on an empty part of the time or tempo sequences will prompt you for the
 <tr><td><img src="track-header.png" alt="fig. 1.9"></td></tr>
 </table></div></center>
 <p>
-Add a track to the timeline by pressing the <tt>A</tt> key. Right-clicking on the track header will bring up a context menu by which you can configure the number of channels used by this track. Click on the track name to change it. The <tt>T</tt>akes menu lists all the takes associated with a track. The circular record-enable button is used to arm a track for recording. Only armed tracks will be recorded onto when the master record-enable button on the transport is activated and the transport is started. The 'm' toggle button is mute, the 's' button is solo. Multiple tracks can be soloed at once. <tt>Shift+Mousewheel</tt> will adjust the track height. Remove a track by selecting 'Remove' from its context menu.
+Add a track to the timeline by pressing the <tt>A</tt> key. Right-clicking on the track header will bring up a
+ context menu by which you can configure the number of channels used by this track. Click on the track name 
+ to change it. The <tt>T</tt>akes menu lists all the takes associated with a track. The 'r' record-enable
+ button is used to arm a track for recording. Only armed tracks will be recorded onto when the master record-enable
+ button on the transport is activated and the transport is started. The 'm' toggle button is mute, the 's' button is solo.
+ Multiple tracks can be soloed at once. <tt>ALT+Mousewheel</tt> will adjust the track height.
+ <tt>CTRL+Mousewheel</tt> will adjust the track length (zoom).
+ Remove a track by selecting 'Remove' from its context menu.
 </p>
 <h4 id="n:1.1.8.1.">1.1.8.1. Recording</h4>
 <center><div class="fig image"><table id="Fig.1.10" border=1>
@@ -359,6 +371,12 @@ Each region has fade in and out curves. Position the mouse pointer over the desi
 <p>
 Instead of requiring you to duplicate a small region 100 times to achieve a looping effect, Non Timeline XT supports looping directly. First, adjust the region duration to cover the amount of time you would like it to loop for. Then, position the mouse pointer over the first place the loop should repeat (i.e. the first bar line after the start of the region) and hit <tt>L</tt>. This will set the loop point for this region, which will be indicated by two white arrows. At playback, the portion of the region before the loop point will loop for the duration of the region.
 </p>
+
+</ol><h5 id="n:1.1.10.1.11.">1.1.10.1.11. Nudging</h5>
+<p>
+For nudging selected audio regions in very small increments, use <tt>ALT+Left/Right Arrows</tt>. For nudge panning of selected regions use <tt>META+Left/Right Arrows</tt>.
+</p>
+
 <h3 id="n:1.1.11.">1.1.11. Annotation</h3>
 <center><div class="fig image"><table id="Fig.1.13" border=1>
 <caption>
@@ -427,7 +445,14 @@ When its Interpolation mode is set to <i>None</i>, a Control Sequence will outpu
 </p>
 <h4 id="n:1.1.12.3.">1.1.12.3. Editing Control Points</h4>
 <p>
-If you wish to drag Control Points on a fixed horizontal axis, use <tt>ALT+Left</tt>. You can select multiple points with box select <tt>Ctrl+Left</tt>, then use <tt>ALT+Left</tt> to grab a single selected point. This will allow you to drag all selected points on a fixed horizontal and will align the points with equal vertical intensity.
+If you wish to drag Control Points up and down on a fixed horizontal axis, use <tt>ALT+Left Button</tt>.
+ You can select multiple points with box select <tt>Ctrl+Left Button</tt>,
+ then use <tt>ALT+Left Button</tt> to grab a single selected point. 
+ This will allow you to drag vertically all selected points on a fixed horizontal and will align the points with
+ equal vertical intensity. Dragging multiple selected points with no modifier will move them on a
+ fixed vertical axis. You can nudge selected points in small increments using the arrow keys with <tt>ALT+Left/Right/Up/Down Arrows</tt>.
+ When nudging with the arrows, if not in sequence with other tracks (i.e. only Control Track), then the track must be 
+ in focus. Use <tt>Tab</tt> and <tt>Shift-Tab</tt> to cycle the track focus.
 </p>
 </div>
 </body>
