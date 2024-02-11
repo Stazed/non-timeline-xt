@@ -114,8 +114,11 @@ public:
 
     void select_range ( int X, int W, int Y = -1, int H = -1 );
 
+    void log_seq_nudges();
     void nudge_selected(bool left);
     void pan_selected(bool left);
+
+    void log_control_nudges();
     void nudge_control_selected_X(bool left);
     void nudge_control_selected_Y(bool up);
 

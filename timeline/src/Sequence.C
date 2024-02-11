@@ -36,10 +36,10 @@ using namespace std;
 
 class Control_Point;
 
-
+extern bool g_snapshot;
+
 queue <Sequence_Widget *> Sequence::_delete_queue;
 
-
 
 Sequence::Sequence ( Track *track, const char *name ) : Fl_Group( 0, 0, 0, 0 ), Loggable( true  )
 {
@@ -380,6 +380,30 @@ Sequence::handle ( int m )
                 return Sequence_Widget::belowmouse()->dispatch( m );
 
             break;
+        case FL_KEYUP:
+        {
+            if(Fl::event_key() == FL_Alt_L || Fl::event_key() == FL_Alt_R)    // nudge left/right, up/down
+            {
+                if(g_snapshot)
+                {
+                    g_snapshot = false;
+                    timeline->nudge_snapshot();
+                    return 1;
+                }
+            }
+
+            if(Fl::event_key() == FL_Meta_L || Fl::event_key() == FL_Meta_R)    // pan left/right
+            {
+                if(g_snapshot)
+                {
+                    g_snapshot = false;
+                    timeline->nudge_snapshot();
+                    return 1;
+                }
+            }
+
+            return 0;
+        }
         case FL_NO_EVENT:
             /* garbage from overlay window */
             return 0;
@@ -647,6 +671,21 @@ const Sequence_Widget *
     }
 
     void
+    Sequence::log_seq_nudges()
+    {
+        for ( list <Sequence_Widget *>::const_reverse_iterator i = _widgets.rbegin();  i != _widgets.rend(); ++i )
+        {
+            Sequence_Widget *w = (*i);
+
+            if ( w->nudge_dirty() )
+            {
+                w->log_end();
+                w->clear_nudge();
+            }
+        }
+    }
+
+    void
     Sequence::nudge_selected(bool left)
     {
         for ( list <Sequence_Widget *>::const_reverse_iterator i = _widgets.rbegin();  i != _widgets.rend(); ++i )
@@ -673,6 +712,20 @@ const Sequence_Widget *
     }
 
     void
+    Sequence::log_control_nudges()
+    {
+        for ( list <Sequence_Widget *>::const_reverse_iterator i = _widgets.rbegin();  i != _widgets.rend(); ++i )
+        {
+            Control_Point *w = (Control_Point*)(*i);
+            if ( w->nudge_dirty() )
+            {
+                w->log_end();
+                w->clear_nudge();
+            }
+        }
+    }
+
+    void
     Sequence::nudge_control_selected_X(bool left)
     {
         for ( list <Sequence_Widget *>::const_reverse_iterator i = _widgets.rbegin();  i != _widgets.rend(); ++i )
@@ -693,9 +746,13 @@ const Sequence_Widget *
             Control_Point *r = (Control_Point*)(*i);
             if (r->selected() )
             {
-                Logger _log( r );    // FIXME do we really want to log each miniscule change???
-                 _log.hold();
                 timeline->sequence_lock.wrlock();
+
+                if(!r->nudge_dirty())
+                {
+                    r->set_nudge();
+                    r->log_start();
+                }
 
                 float Y = r->control();
 
@@ -714,9 +771,8 @@ const Sequence_Widget *
 
                 r->control(Y);
                 r->redraw();
-                
+
                 timeline->sequence_lock.unlock();
-                _log.release();
             }
         }
     }

@@ -310,6 +310,8 @@ public:
     char * get_unique_track_name ( const char *name );
     Track * track_by_name ( const char *name );
 
+    void nudge_snapshot ( void );
+
 private:
     
     void add_take_for_armed_tracks();

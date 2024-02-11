@@ -27,7 +27,6 @@
 
 using namespace std;
 
-
 
 list <Sequence_Widget *> Sequence_Widget::_selection;
 Sequence_Widget * Sequence_Widget::_current = NULL;
@@ -35,7 +34,6 @@ Sequence_Widget * Sequence_Widget::_pushed = NULL;
 Sequence_Widget * Sequence_Widget::_belowmouse = NULL;
 Fl_Color Sequence_Widget::_selection_color = FL_MAGENTA;
 
-
 
 Sequence_Widget::Sequence_Widget ( )
 {
@@ -208,9 +206,14 @@ Sequence_Widget::end_drag ( void )
 void
 Sequence_Widget::nudge_some(bool left)
 {
-    Logger _log( this );    // FIXME do we really want to log each miniscule change???
-    _log.hold();
     timeline->sequence_lock.wrlock();
+
+    if(!nudge_dirty())
+    {
+        set_nudge();
+        log_start();
+    }
+
     int X = _r->start;
     if(left)
     {
@@ -233,15 +236,19 @@ Sequence_Widget::nudge_some(bool left)
     }
 
     timeline->sequence_lock.unlock();
-    _log.release();
 }
 
 void
 Sequence_Widget::pan_some(bool left)
 {
-    Logger _log( this );    // FIXME do we really want to log each miniscule change???
-    _log.hold();
     timeline->sequence_lock.wrlock();
+    
+    if(!nudge_dirty())
+    {
+        set_nudge();
+        log_start();
+    }
+
     int Of = _r->offset;
     if(left)
     {
@@ -264,7 +271,6 @@ Sequence_Widget::pan_some(bool left)
     }
 
     timeline->sequence_lock.unlock();
-    _log.release();
 }
 
 /** set position of widget on the timeline. */

@@ -65,7 +65,6 @@ extern nsm_client_t *nsm;
 #define BX this->x()
 #define BY this->y()
 
-
 
 bool Timeline::draw_with_measure_lines = true;
 bool Timeline::draw_with_cursor_overlay = true;
@@ -78,10 +77,10 @@ bool Timeline::playback_latency_compensation = false;
 
 const float UPDATE_FREQ = 1.0f / 18.0f;
 
+bool g_snapshot = false;     // extern
 extern const char *instance_name;
 extern TLE *tle;
 
-
 
 /** return the combined height of all visible children of (veritcal)
     pack, /p/. This is necessary because pack sizes are adjusted only
@@ -261,6 +260,16 @@ void
 Timeline::reset_range ( void )
 {
     delete edit_cursor_track->active_cursor();
+}
+
+void
+Timeline::nudge_snapshot ( void )
+{
+    for ( int i = tracks->children(); i-- ; )
+    {
+        Track *t = (Track*)tracks->child( i );
+        t->log_nudges();
+    }
 }
 
 /** callback used by Loggable class to create a snapshot of system
@@ -478,18 +487,22 @@ Timeline::menu_cb ( Fl_Menu_ *m )
     }
     else if ( ! strcmp( picked, "Nudge selected left" ) )
     {
+        g_snapshot = true;
         nudge_selected(true);
     }
     else if ( ! strcmp( picked, "Nudge selected right" ) )
     {
+        g_snapshot = true;
         nudge_selected(false);
     }
     else if ( ! strcmp( picked, "Pan selected left" ) )
     {
+        g_snapshot = true;
         pan_selected(true);
     }
     else if ( ! strcmp( picked, "Pan selected right" ) )
     {
+        g_snapshot = true;
         pan_selected(false);
     }
     else if ( ! strcmp( picked, "Playhead left beat" ) )

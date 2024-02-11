@@ -48,9 +48,9 @@
 #include "../../FL/menu_popup.H"
 
 extern char *instance_name;
+extern bool g_snapshot;
 
 
-
 static Fl_Color
 random_color ( void )
 {
@@ -59,14 +59,12 @@ random_color ( void )
 
 static Fl_Menu_Button _menu( 0, 0, 0, 0, "Track" );
 
-
 
 int Track::_soloing = 0;
 
 const char *Track::capture_format = "Wav 24";
 bool Track::colored_tracks = true;
 
-
 
 Track::Track ( const char *L, int channels ) :
     Fl_Group ( 0, 0, 0, 0, 0 )
@@ -737,6 +735,22 @@ Track::select ( int X, int Y, int W, int H,
 }
 
 void
+Track::log_nudges ( void )
+{
+    for ( int i = control->children(); i--; )
+    {
+        Control_Sequence *c = (Control_Sequence*)control->child( i );
+        c->log_control_nudges();
+    }
+
+    Sequence *s = sequence();
+    if ( !s )
+        return;
+
+    s->log_seq_nudges();
+}
+
+void
 Track::nudge_selected(bool left)
 {
     Sequence *s = sequence();
@@ -765,6 +779,8 @@ Track::pan_selected(bool left)
 void
 Track::nudge_selected_controls(bool up)
 {
+    g_snapshot  = true;
+
     for ( int i = control->children(); i--; )
     {
         Control_Sequence *c = (Control_Sequence*)control->child( i );
