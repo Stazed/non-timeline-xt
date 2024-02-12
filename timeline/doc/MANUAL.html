@@ -267,10 +267,11 @@ Right-click on a time or tempo point to edit its value. <tt>CTRL+Right Button</t
 <tr><td><img src="track-header.png" alt="fig. 1.9"></td></tr>
 </table></div></center>
 <p>
-Add a track to the timeline by pressing the <tt>A</tt> key. Right-clicking on the track header will bring up a
- context menu by which you can configure the number of channels used by this track. Click on the track name 
- to change it. The <tt>T</tt>akes menu lists all the takes associated with a track. The 'r' record-enable
- button is used to arm a track for recording. Only armed tracks will be recorded onto when the master record-enable
+Add a track to the timeline by pressing the <tt>A</tt> key. Right-clicking on the track header or selecting the 'Menu' button
+ will bring up a context menu by which you can configure the number of channels used by this track. Click on the track name 
+ to change it. Grab and drag the connector nodules to the right of the name to and from non-mixer-xt to make jack audio connections.
+ The <tt>'c-'</tt> button will hide the control track header. The <tt>'t+'</tt> button will list all the takes associated with a track.
+ The 'r' record-enable button is used to arm a track for recording. Only armed tracks will be recorded onto when the master record-enable
  button on the transport is activated and the transport is started. The 'm' toggle button is mute, the 's' button is solo.
  Multiple tracks can be soloed at once. <tt>ALT+Mousewheel</tt> will adjust the track height.
  <tt>CTRL+Mousewheel</tt> will adjust the track length (zoom).
@@ -316,7 +317,7 @@ Position the mouse pointer where you would like the region split and perform <tt
 </p>
 <h5 id="n:1.1.10.1.2.">1.1.10.1.2. Duplicate</h5>
 <p>
-Drag a region (or selection) with the mousse while holding the <tt>Ctrl</tt> key to duplicate it.
+Drag a region (or selection) with the mouse while holding the <tt>Ctrl</tt> key to duplicate it.
 </p>
 <h5 id="n:1.1.10.1.3.">1.1.10.1.3. Delete</h5>
 <p>
@@ -397,8 +398,25 @@ Add an annotation sequence to a track by right-clicking on the track header to b
 <tr><td><img src="automation.png" alt="fig. 1.14"></td></tr>
 </table></div></center>
 <p>
-Each track may have any number of control sequences attached to it. A control sequence comprises a series of points in time (X axis) and intensity (Y axis). Add a control sequence to a track by picking <i>Add control</i> from its context menu. A control sequence may be named by right clicking on it to bring up the context menu, then picking <i>Rename</i>. The output of a control sequence can be set to one of two modes <i>Control Voltage (JACK)</i> or <i>Control Signal (OSC)</i>.
+Each track may have any number of control sequences attached to it. A control sequence comprises a series of points in time (X axis)
+and intensity (Y axis). Add a control sequence to a track by picking <i>Add control</i> from its context menu. A control sequence may
+be renamed by clicking on the name. You can also select <i>Rename</i> from the context menu. The output of a control sequence can be
+set to one of two modes <i>Control Voltage (JACK)</i> or <i>Control Signal (OSC)</i>. The labeled button to the right of the menu button
+will indicate which mode is being used. Click the 'X' button to remove a control track.
 </p>
+
+
+<div class=admonition>
+<table width=100%>
+<tr><td>NON-MIXER_XT CONNECTIONS:
+Automation for non-timeline-xt is designed to work directly with non-mixer-xt from within a non-session (Ray Session, New Session Manager, Agordejo).
+When within a non-session selecting the menu button or right click will show a 'Connect To' submenu. You can traverse the menu to select what the automation will
+control. If non-timeline-xt is not running inside a non-session, the 'Connect To' submenu will not be available.
+</td></table>
+</div>
+
+
+
 <div class=admonition>
 <table width=100%>
 <tr><td>NOTE:
