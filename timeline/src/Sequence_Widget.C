@@ -34,6 +34,8 @@ Sequence_Widget * Sequence_Widget::_pushed = NULL;
 Sequence_Widget * Sequence_Widget::_belowmouse = NULL;
 Fl_Color Sequence_Widget::_selection_color = FL_MAGENTA;
 
+const int C_NUDGE_AMOUNT = 2000;
+
 
 Sequence_Widget::Sequence_Widget ( )
 {
@@ -218,11 +220,11 @@ Sequence_Widget::nudge_some(bool left)
     int X = _r->start;
     if(left)
     {
-        X -= 2000;
+        X -= C_NUDGE_AMOUNT;
     }
     else
     {
-        X += 2000;
+        X += C_NUDGE_AMOUNT;
     }
 
     if(X <= 0)
@@ -253,11 +255,11 @@ Sequence_Widget::pan_some(bool left)
     int Of = _r->offset;
     if(left)
     {
-        Of += 2000;
+        Of += C_NUDGE_AMOUNT;
     }
     else
     {
-        Of -= 2000;
+        Of -= C_NUDGE_AMOUNT;
     }
 
     if(Of <= 0)
