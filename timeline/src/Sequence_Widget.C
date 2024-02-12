@@ -253,11 +253,11 @@ Sequence_Widget::pan_some(bool left)
     int Of = _r->offset;
     if(left)
     {
-        Of -= 2000;
+        Of += 2000;
     }
     else
     {
-        Of += 2000;
+        Of -= 2000;
     }
 
     if(Of <= 0)
