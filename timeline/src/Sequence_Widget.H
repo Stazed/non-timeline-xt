@@ -124,9 +124,8 @@ class Sequence_Widget : public Loggable
     static Sequence_Widget * _original;                            /* the original of the /pushed/ widget */
     static Sequence_Widget * _belowmouse;                          /* the widget below the mouse cursor */
 
-
     static Fl_Color _selection_color;
-
+    bool _nudge_dirty;
 
 protected:
     
@@ -181,6 +180,10 @@ public:
     void end_drag ( void );
     void nudge_some(bool left);
     void pan_some(bool left);
+    
+    void set_nudge ( void ) { _nudge_dirty = true; }
+    void clear_nudge ( void ) { _nudge_dirty = false; }
+    bool nudge_dirty ( void ) { return _nudge_dirty; }
 
     int dispatch ( int m );
 

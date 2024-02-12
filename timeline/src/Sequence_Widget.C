@@ -37,6 +37,7 @@ Fl_Color Sequence_Widget::_selection_color = FL_MAGENTA;
 
 Sequence_Widget::Sequence_Widget ( )
 {
+    _nudge_dirty = false;
     _label = 0;
     _sequence = NULL;
 
