@@ -1587,6 +1587,26 @@ Timeline::redraw_playhead ( void )
                     transport->stop();
         }
     }
+    else if ( transport->recording && transport->jack_transport_rolling )
+    {
+        // In this case transport->rolling says jack is stopped while we were recording.
+        // The flag transport->jack_transport_rolling indicates that the transport
+        // SHOULD be rolling, BUT IT IS NOT, probably stopped by another client while
+        // recording. So we need to call transport->stop() to activate() the timeline
+        // and log, etc as if the stop was initiated by timeline internally.
+        // Or activate() never gets called and it appears that the timeline is frozen.
+        // Also punch_out() and Loggable::block_end() do not get called which can corrupt
+        // the journal.
+        // In other words, really bad things happen!!!.
+        // Also we cannot just check transport->rolling since there is a delay between
+        // the actual button press to record and jack transport actually rolling. 
+        // This timeout can be called before jack transport actually is started and
+        // transport->rolling will be false. So transport->jack_transport_rolling is
+        // needed and is set when we actually get confirmation from jack query that
+        // jack is rolling when recording.
+        transport->stop();
+        DMESSAGE("Called stop");
+    }
 
     int playhead_x = ts_to_x( transport->frame );
 

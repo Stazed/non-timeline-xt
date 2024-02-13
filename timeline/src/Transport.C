@@ -24,13 +24,13 @@
 
 #include "Engine/Engine.H"
 
-
 
 Transport::Transport ( int X, int Y, int W, int H, const char *L )
     : Fl_Flowpack( X, Y, W, H, L )
 {
     recording = false;
     rolling = false;
+    jack_transport_rolling = false;
     _stop_disables_record = true;
 
     bar = 0;
@@ -155,8 +155,10 @@ Transport::update_record_state ( void )
 
     /* this covers the case where the record toggle button is
      * pressed while the transport is already rolling. Recording
-     * should begin or end on the next frame */
-    if ( rolling )
+     * should begin or end on the next frame. Also, checking 
+     * jack_transport_rolling in the event the transport was
+     * stopped by another client */
+    if ( rolling || jack_transport_rolling )
     {
         if ( ! recording && w->value() )
         {
@@ -263,6 +265,11 @@ Transport::poll ( void )
     ts = engine->transport_query( this );
 
     rolling = ts == JackTransportRolling;
+    
+    if(rolling && recording && !jack_transport_rolling)
+    {
+        jack_transport_rolling = true;
+    }
 }
 
 void

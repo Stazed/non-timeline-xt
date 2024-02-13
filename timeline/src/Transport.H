@@ -75,6 +75,7 @@ public:
 
     volatile bool rolling;
     volatile bool recording;
+    volatile bool jack_transport_rolling;
 
     void poll ( void );
     void locate ( nframes_t frame );

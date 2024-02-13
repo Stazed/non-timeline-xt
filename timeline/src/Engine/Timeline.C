@@ -160,6 +160,7 @@ Timeline::stop ( void )
     activate();
 
     transport->recording = false;
+    transport->jack_transport_rolling = false;
 }
 
 
