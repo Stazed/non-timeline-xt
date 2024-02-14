@@ -1561,30 +1561,40 @@ Timeline::redraw_playhead ( void )
 
     if ( transport->rolling )
     {
-        if ( play_cursor_track->active_cursor() )
+        // The case when jack transport is started by another client when recording is enabled.
+        // So we call record here which will set transport->recording = true and actually
+        // start recording. Allows recording to be started by other jack clients.
+        if(transport->rec_enabled() && !transport->recording)
         {
-            if ( transport->loop_enabled() )
+            record();
+        }
+        else
+        {
+            if ( play_cursor_track->active_cursor() )
             {
-                if ( transport->frame > playback_end() )
+                if ( transport->loop_enabled() )
                 {
-                    if ( ! seek_pending() )
+                    if ( transport->frame > playback_end() )
                     {
-                        if ( transport->recording )
+                        if ( ! seek_pending() )
                         {
-                            stop();
-                            transport->locate( playback_home() );
-                            record();
-                        }
-                        else
-                        {
-                            transport->locate( playback_home() );
+                            if ( transport->recording )
+                            {
+                                stop();
+                                transport->locate( playback_home() );
+                                record();
+                            }
+                            else
+                            {
+                                transport->locate( playback_home() );
+                            }
                         }
                     }
                 }
+                else
+                    if ( transport->frame > playback_end() )
+                        transport->stop();
             }
-            else
-                if ( transport->frame > playback_end() )
-                    transport->stop();
         }
     }
     else if ( transport->recording && transport->jack_transport_rolling )
