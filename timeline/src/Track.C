@@ -779,8 +779,6 @@ Track::pan_selected(bool left)
 void
 Track::nudge_selected_controls(bool up)
 {
-    g_snapshot  = true;
-
     for ( int i = control->children(); i--; )
     {
         Control_Sequence *c = (Control_Sequence*)control->child( i );

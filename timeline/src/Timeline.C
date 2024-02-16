@@ -510,6 +510,16 @@ Timeline::menu_cb ( Fl_Menu_ *m )
         g_snapshot = true;
         pan_selected(false);
     }
+    else if ( ! strcmp( picked, "Nudge selected controls up" ) )
+    {
+        g_snapshot = true;
+        nudge_controls(true);
+    }
+    else if ( ! strcmp( picked, "Nudge selected controls down" ) )
+    {
+        g_snapshot = true;
+        nudge_controls(false);
+    }
     else if ( ! strcmp( picked, "Playhead left beat" ) )
     {
         nframes_t f = transport->frame;
@@ -695,6 +705,8 @@ Timeline::Timeline ( int X, int Y, int W, int H, const char* L ) : BASE( X, Y, W
     menu->add( "Nudge selected right", FL_ALT + FL_Right, 0, 0 );
     menu->add( "Pan selected left", FL_META + FL_Left, 0, 0 );
     menu->add( "Pan selected right", FL_META + FL_Right, 0, 0 );
+    menu->add( "Nudge selected controls up", FL_ALT + FL_Up, 0, 0 );
+    menu->add( "Nudge selected controls down", FL_ALT + FL_Down, 0, 0 );
     menu->add( "Playhead left beat", FL_SHIFT + FL_Left, 0, 0 );
     menu->add( "Playhead right beat", FL_SHIFT + FL_Right, 0, 0 );
     menu->add( "Playhead left bar", FL_CTRL + FL_SHIFT + FL_Left, 0, 0 );
@@ -1716,6 +1728,16 @@ Timeline::pan_selected(bool left)
     {
         Track *t = (Track*)tracks->child( i );
         t->pan_selected(left);
+    }
+}
+
+void
+Timeline::nudge_controls( bool up)
+{
+    for ( int i = tracks->children(); i-- ; )
+    {
+        Track *t = (Track*)tracks->child( i );
+        t->nudge_selected_controls(up);
     }
 }
 

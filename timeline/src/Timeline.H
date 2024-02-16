@@ -240,6 +240,7 @@ public:
     
     void nudge_selected( bool left);
     void pan_selected(bool left);
+    void nudge_controls( bool up);
 
     int nselected ( void ) const;
     void delete_selected ( void );

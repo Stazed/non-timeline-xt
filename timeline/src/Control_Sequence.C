@@ -756,19 +756,6 @@ Control_Sequence::handle ( int m )
 {
     switch ( m )
     {
-        case FL_SHORTCUT:
-        case FL_KEYBOARD:
-            if (test_press(FL_Down + FL_ALT))
-            {
-                _track->nudge_selected_controls(false);
-                return 1;
-            }
-            if (test_press(FL_Up + FL_ALT))
-            {
-                _track->nudge_selected_controls(true);
-                return 1;
-            }
-            break;
         case FL_ENTER:
             break;
         case FL_LEAVE:

@@ -23,7 +23,7 @@
 #include "Control_Point.H"
 #include "Track.H"
 
-
+
 
 Control_Point::Control_Point ( Sequence *t, nframes_t when, float y )
 {
