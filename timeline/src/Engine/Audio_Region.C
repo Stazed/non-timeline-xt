@@ -374,10 +374,19 @@ Audio_Region::write ( nframes_t nframes )
     return nframes;
 }
 
-/** finalize region capture. Assumes that this *is* a captured region
-    and that no other regions refer to the same source */
+/** Finalize region capture. Assumes that this *is* a captured region
+    and that no other regions refer to the same source. Original timeline
+    used (frame - _range_start) to calculate _range_length. This would
+    result in invalid length being calculated if the frame was less than
+    _range_start (i.e. negative, for an unsigned variable). The negative
+    would be interpreted as a very large positive which caused the region
+    to freeze and could not be moved or cropped.  The frame could be less
+    than _range_start if the transport was repositioned by another jack
+    client upon transport stop (i.e. default behavior of seq42). So now
+    the length is set based on _clip->length() which is the actual recorded
+    length. Also, using _clip->length() seems more valid... */
 bool
-Audio_Region::finalize ( nframes_t frame )
+Audio_Region::finalize ( nframes_t /* frame */)
 {
     THREAD_ASSERT( Capture );
 
@@ -385,7 +394,8 @@ Audio_Region::finalize ( nframes_t frame )
 
     timeline->sequence_lock.wrlock();
 
-    _range.length = frame - _range.start;
+ //   _range.length = frame - _range.start; // original timeline
+    _range.length = _clip->length();
 
     timeline->sequence_lock.unlock();
 

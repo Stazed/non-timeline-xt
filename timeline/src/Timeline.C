@@ -1018,7 +1018,7 @@ Timeline::prev_line ( nframes_t *frame, bool bar ) const
     return true;
 }
 
-
+
 
 /** given screen pixel coordinate /x/ return frame offset into
  * timeline, taking into account the current scroll position, widget
