@@ -80,7 +80,7 @@ const float UPDATE_FREQ = 1.0f / 18.0f;
 /** g_snapshot is used for flagging the arrow nudging for very small amounts.
     Used with key-repeat it can cause significant spam in history if every
     repeat is logged. So this is used to flag start of nudging (log_start)
-    and upon key-up of modifier ALT/META we check it to send log_end().
+    and upon key-up of modifier ALT we check it to send log_end().
  */
 bool g_snapshot = false;     // extern
 extern const char *instance_name;
@@ -703,8 +703,8 @@ Timeline::Timeline ( int X, int Y, int W, int H, const char* L ) : BASE( X, Y, W
     menu->add( "Edit end to mouse", ']', 0, 0 );
     menu->add( "Nudge selected left", FL_ALT + FL_Left, 0, 0 );
     menu->add( "Nudge selected right", FL_ALT + FL_Right, 0, 0 );
-    menu->add( "Pan selected left", FL_META + FL_Left, 0, 0 );
-    menu->add( "Pan selected right", FL_META + FL_Right, 0, 0 );
+    menu->add( "Pan selected left", FL_ALT + FL_SHIFT + FL_Left, 0, 0 );
+    menu->add( "Pan selected right", FL_ALT + FL_SHIFT + FL_Right, 0, 0 );
     menu->add( "Nudge selected controls up", FL_ALT + FL_Up, 0, 0 );
     menu->add( "Nudge selected controls down", FL_ALT + FL_Down, 0, 0 );
     menu->add( "Playhead left beat", FL_SHIFT + FL_Left, 0, 0 );

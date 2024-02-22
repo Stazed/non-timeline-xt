@@ -392,16 +392,6 @@ Sequence::handle ( int m )
                 }
             }
 
-            if(Fl::event_key() == FL_Meta_L || Fl::event_key() == FL_Meta_R)    // pan left/right
-            {
-                if(g_snapshot)
-                {
-                    g_snapshot = false;
-                    timeline->nudge_snapshot();
-                    return 1;
-                }
-            }
-
             return 0;
         }
         case FL_NO_EVENT:
