@@ -248,7 +248,15 @@ Audio_Region::menu_cb ( const Fl_Menu_ *m )
         nframes_t edit_start = timeline->range_start();
         nframes_t edit_end = timeline->range_end();
 
+        /* If no edit cursor then ignore */
         if(!edit_start || !edit_end)
+            return;
+
+        /* If edit cursor does not overlap the region in any way, ignore */
+        if(edit_start >= _r->start + _r->length)
+            return;
+
+        if(edit_end <= _r->start)
             return;
 
         redraw();
