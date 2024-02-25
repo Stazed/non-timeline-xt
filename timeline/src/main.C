@@ -61,7 +61,7 @@ nsm_client_t *nsm;
 
 char *instance_name = NULL;
 
-/* Not used by timeline - needed for extern to be compatible with non-mixer-xt*/
+/* needed for extern to be compatible with non-mixer-xt*/
 std::string project_directory = "";
 
 /* TODO: put these in a header */
@@ -267,7 +267,7 @@ main ( int argc, char **argv )
     {
         jack_client_close ( test_client );
     }
-
+ 
     /* we don't really need a pointer for this */
     // will be created on project new/open
     engine = NULL;
