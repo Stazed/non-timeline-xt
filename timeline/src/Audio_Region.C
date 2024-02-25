@@ -245,9 +245,15 @@ Audio_Region::menu_cb ( const Fl_Menu_ *m )
     }
     else if ( ! strcmp( picked, "/Crop to range" ) )
     {
+        nframes_t edit_start = timeline->range_start();
+        nframes_t edit_end = timeline->range_end();
+
+        if(!edit_start || !edit_end)
+            return;
+
         redraw();
-	trim_left( timeline->range_start() );
-	trim_right( timeline->range_end() );
+	trim_left( edit_start );
+	trim_right( edit_end );
     }
     else if ( ! strcmp( picked, "/Fade in to mouse" ) )
     {
