@@ -71,11 +71,15 @@ Stazed <a href="mailto:stazed@mapson.com">&lt;stazed@mapson.com&gt;</a><br>
 
 <li><a href="#n:1.1.10.1.4.">1.1.10.1.4. Trim</a>
 
+<li><a href="#n:1.1.10.1.4.1">1.1.10.1.4.1 Crop</a>
+
 <li><a href="#n:1.1.10.1.5.">1.1.10.1.5. Pan</a>
 
 <li><a href="#n:1.1.10.1.6.">1.1.10.1.6. Normalize</a>
 
 <li><a href="#n:1.1.10.1.7.">1.1.10.1.7. Set Volume</a>
+
+<li><a href="#n:1.1.10.1.7.1">1.1.10.1.7.1 Gain Drag</a>
 
 <li><a href="#n:1.1.10.1.8.">1.1.10.1.8. Denormalize</a>
 
@@ -162,14 +166,22 @@ Active cursors are displayed the the cursor strip along the top of the timeline.
 <tr><td><img src="range.png" alt="fig. 1.4"></td></tr>
 </table></div></center>
 <p>
-The edit cursor defines a region to apply an operation to. The edit cursor is also used to define the region other cursors, such as Punch and Playback, are created from.
+The edit cursor defines a region to apply an operation to. The edit cursor is also used to define the region other cursors,
+such as Punch and Playback, are created from.
 </p>
 <p>
-<tt>Ctrl+[</tt> moves the beginning of the edit cursor to the position of the playhead.  <tt>Ctrl+]</tt> moves the end of the edit cursor to the position of the playhead.
+<tt>Ctrl+[</tt> moves the beginning of the edit cursor to the position of the playhead.
+<tt>Ctrl+]</tt> moves the end of the edit cursor to the position of the playhead.
 </p>
 <p>
-The edit cursor ends can be set individually with the mouse by positioning the pointer over the desired location and pressing <tt>[</tt> or <tt>]</tt>. Alternatively, both may be set at once by holding the <tt>r</tt> key and left-click+dragging the selection rectangle.
+The edit cursor ends can be set individually with the mouse by positioning the pointer over the desired location
+and pressing <tt>[</tt> or <tt>]</tt>. Alternatively, both may be set at once by holding the <tt>r</tt> key and 
+left-click+dragging the selection rectangle.
 </p>
+<p>
+You can set the edit cursor range to any focused region range by <tt>CTRL+R</tt>.
+</p>
+
 <h4 id="n:1.1.3.2.">1.1.3.2. Playback Cursor</h4>
 <p>
 <p>
@@ -313,7 +325,9 @@ for i in ~/projects/*; do remove-unused-sources "$i" & done
 <h4 id="n:1.1.10.1.">1.1.10.1. Editing</h4>
 <h5 id="n:1.1.10.1.1.">1.1.10.1.1. Split</h5>
 <p>
-Position the mouse pointer where you would like the region split and perform <tt>Shift+Middle-click</tt>. This will divide the region at the mouse pointer.
+Position the mouse pointer where you would like the region split and perform <tt>Shift+Middle-click</tt> or '<tt>S</tt>' key.
+This will divide the region at the mouse pointer. You can also split a region at the transport play line with
+<tt>Shift+S</tt>. The region must be focused under the mouse if splitting on the transport line.
 </p>
 <h5 id="n:1.1.10.1.2.">1.1.10.1.2. Duplicate</h5>
 <p>
@@ -325,7 +339,16 @@ Drag a region (or selection) with the mouse while holding the <tt>Ctrl</tt> key 
 </p>
 <h5 id="n:1.1.10.1.4.">1.1.10.1.4. Trim</h5>
 <p>
-Hold down <tt>Shift</tt> and click on part of a region with the left mouse button. This trims the region start to the position of the mouse pointer. Continue holding <tt>Shift</tt> and drag to continuously trim the region start point. Do the same with the right mouse button to trim the region end.
+Hold down <tt>Shift</tt> and click on part of a region with the left mouse button.
+This trims the region start to the position of the mouse pointer.
+Continue holding <tt>Shift</tt> and drag to continuously trim the region start point.
+Do the same with the right mouse button to trim the region end.
+Use <tt>{</tt> to trim a region from left to the playhead. Use <tt>}</tt> to trim a region from right to the playhead. 
+</p>
+<h5 id="n:1.1.10.1.4.1">1.1.10.1.4.1 Crop</h5>
+<p>
+With a region focused under the mouse, you can crop it to the range of the Edit Cursor with '<tt>C</tt>' key. The Edit Cursor region must
+overlap the focused region for cropping to work.
 </p>
 <h5 id="n:1.1.10.1.5.">1.1.10.1.5. Pan</h5>
 <p>
@@ -339,6 +362,11 @@ Hit <tt>N</tt> while a region is focused to normalize it (or <tt>Ctrl+Middle-cli
 <h5 id="n:1.1.10.1.7.">1.1.10.1.7. Set Volume</h5>
 <p>
 Hit <tt>V</tt> while a region is focused to show a volume editor. You can use the editor to enter a specific volume for the region. When manually setting the volume, any peaks exceeding the normalized range (clipping) will appear in bright red.
+</P>
+
+<h5 id="n:1.1.10.1.7.1">1.1.10.1.7.1 Gain Drag</h5>
+<p>
+Hold down <tt>G</tt> and <tt>Left-click</tt> drag up and down on a region to adjust the gain level.
 </P>
 
 <h5 id="n:1.1.10.1.8.">1.1.10.1.8. Denormalize</h5>
