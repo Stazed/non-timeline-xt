@@ -245,6 +245,7 @@ Audio_Region::menu_cb ( const Fl_Menu_ *m )
     }
     else if ( ! strcmp( picked, "/Crop to range" ) )
     {
+        redraw();
 	trim_left( timeline->range_start() );
 	trim_right( timeline->range_end() );
     }
