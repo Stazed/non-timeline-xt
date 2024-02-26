@@ -322,8 +322,10 @@ Audio_Region::menu_cb ( const Fl_Menu_ *m )
     else if ( ! strcmp( picked, "/Split at playhead" ) )
     {
         redraw();
-	
         split( transport->frame );
+
+        /* To update the below_mouse() widget as the split may have changed it */
+        sequence()->handle(FL_MOVE);
     }
     else if ( ! strcmp( picked, "/Loop point at playhead" ) )
     {

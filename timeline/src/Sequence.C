@@ -463,7 +463,7 @@ Sequence::handle ( int m )
                 {
                     if ( Sequence_Widget::belowmouse() )
                         Sequence_Widget::belowmouse()->handle( FL_LEAVE );
-                    
+
                     Sequence_Widget::belowmouse( r );
                     
                     if ( r )
