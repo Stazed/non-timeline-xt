@@ -703,7 +703,7 @@ Control_Sequence::peer_callback( OSC::Signal *sig,  OSC::Signal::State state, vo
 
         unescape_url( path );
 
-        asprintf( &s, "%s/%s", peer_prefix, path );
+        asprintf( &s, "%s%s", peer_prefix, path );
 
         peer_menu->add( s, 0, NULL, (void*)( sig ), 0 );
 
