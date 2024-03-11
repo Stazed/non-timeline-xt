@@ -189,7 +189,7 @@ add_subdirectory(timeline/doc)
 ##Summarize The Full Configuration
 message(STATUS)
 message(STATUS "=========================================================")
-message(STATUS "Build Configuration for non-mixer-xt -${PACKAGE_VERSION} for ${CMAKE_SYSTEM_NAME}")
+message(STATUS "Build Configuration for non-timeline-xt -${PACKAGE_VERSION} for ${CMAKE_SYSTEM_NAME}")
 message(STATUS "=========================================================")
 message(STATUS)
 
