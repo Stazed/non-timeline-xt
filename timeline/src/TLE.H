@@ -32,7 +32,11 @@ public:
 };
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Menu_Bar.H>
-#include "FL/Fl_Theme_Chooser.H"
+
+#ifndef FLTK_SUPPORT    // FIXME use fluid
+    #include "FL/Fl_Theme_Chooser.H"
+#endif
+
 #include <FL/Fl_Pack.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Progress.H>

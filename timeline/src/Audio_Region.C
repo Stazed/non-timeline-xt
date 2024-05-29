@@ -600,8 +600,11 @@ Audio_Region::draw ( void )
         /* Fl_Color c = fl_color_average( FL_DARK1, */
         /*                                Audio_Region::inherit_track_color ? sequence()->track()->color() :  _box_color, */
         /*                                0.75f ); */
-    
+#ifdef FLTK_SUPPORT
+        fl_color( fl_rgb_color( 20,20,20 ) );
+#else
         fl_color( fl_color_add_alpha( fl_rgb_color( 20,20,20 ), 127 ) );
+#endif
 
         draw_fade( _fade_in, Fade::In, false, X, W );
         draw_fade( _fade_out, Fade::Out, false, X, W );
@@ -718,8 +721,11 @@ Audio_Region::draw ( void )
 	const int lx = sequence()->drawable_x() + timeline->ts_to_x( ( this->start() + _loop ) - timeline->xoffset );
 
 	const int pw = 8;
-
+#ifdef FLTK_SUPPORT
+        fl_color( fl_color_average( FL_CYAN, FL_WHITE, 0.80f ) );
+#else
 	fl_color( fl_color_add_alpha( fl_color_average( FL_CYAN, FL_WHITE, 0.80f ), 127 ) );
+#endif
 		
 	fl_begin_polygon();
 		
@@ -741,13 +747,20 @@ Audio_Region::draw ( void )
 
     if ( _adjusting_gain > 0.0f )
     {
+#ifdef FLTK_SUPPORT
+        fl_color( FL_DARK1 );
+#else
         fl_color( fl_color_add_alpha( FL_DARK1, 127 ) );
+#endif
 
         fl_rectf( X, ( y() + h() ) - ( h() * ( _scale * 0.25 ) ), X + W, y() + h() );
 
         fl_line_style( FL_DASH, 1 );
-        
+#ifdef FLTK_SUPPORT
+        fl_color( FL_GREEN );
+#else
         fl_color( fl_color_add_alpha( FL_GREEN, 200 ) );
+#endif
         
         float j = 5;
 
@@ -766,7 +779,11 @@ Audio_Region::draw ( void )
 	
 	/* fl_color( fl_color_add_alpha( FL_WHITE, 127 ) ); */
 	/* fl_color( FL_BACKGROUND_COLOR ); */
+#ifdef FLTK_SUPPORT
+        fl_color( FL_WHITE );
+#else
 	fl_color( fl_color_add_alpha( FL_WHITE, 127 ) );
+#endif
 
 	fl_begin_polygon();
 

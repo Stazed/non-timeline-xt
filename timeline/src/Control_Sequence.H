@@ -39,7 +39,7 @@ class Control_Sequence : public Sequence
 
 public:
 
-    enum Curve_Type { None, Linear, Quadratic };
+    enum Curve_Type { No_Type, Linear, Quadratic };
 
     enum Mode { 
         CV,

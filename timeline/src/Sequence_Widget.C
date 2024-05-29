@@ -413,8 +413,11 @@ Sequence_Widget::draw_label ( const char *label, Fl_Align align, Fl_Color color,
         else
             Y += ( h() / 2 ) - ( ( lh + bh ) / 2 );
     }
-
+#ifdef FLTK_SUPPORT
+    fl_draw_box( b, ( X - dx ), Y - by, lw + bw, lh + bh, FL_DARK1  );
+#else
     fl_draw_box( b, ( X - dx ), Y - by, lw + bw, lh + bh, fl_color_add_alpha( FL_DARK1, 150 )  );
+#endif
 
     fl_color( color );
 

@@ -27,6 +27,7 @@
 #include <FL/Fl.H>
 #include "Audio_Sequence.H"
 #include "Waveform.H"
+#include <cairo.h>
 
 #include <list>
 using namespace std;

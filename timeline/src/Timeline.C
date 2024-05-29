@@ -28,7 +28,11 @@
 #include <FL/Fl_Widget.H>
 #include <FL/fl_draw.H>
 #include <FL/Fl_Menu_Button.H>
-#include <FL/Fl_Panzoomer.H>
+#ifdef FLTK_SUPPORT
+    #include "../../FL/Fl_Panzoomer.H"
+#else
+    #include <FL/Fl_Panzoomer.H>
+#endif
 #include <FL/Fl_Tile.H>
 #include <FL/Fl_File_Chooser.H>
 
@@ -60,6 +64,10 @@
 
 #include "../../nonlib/nsm.h"
 extern nsm_client_t *nsm;
+
+#ifdef FLTK_SUPPORT
+typedef unsigned char fl_damage_t;
+#endif
 
 #define BASE Fl_Group
 #define BX this->x()
@@ -1079,8 +1087,11 @@ Timeline::draw_measure_cb ( nframes_t frame, const BBT &bbt, void *v )
     }
     else
 	c = mc;
-
+#ifdef FLTK_SUPPORT
+    fl_color(  c );
+#else
     fl_color( fl_color_add_alpha( c, 127 ) );
+#endif
     
     const int x = timeline->ts_to_x( frame - timeline->xoffset ) + Track::width();
 
@@ -1353,13 +1364,21 @@ Timeline::draw_cursors ( Cursor_Sequence *o ) const
         {
             if ( Timeline::draw_with_cursor_overlay )
             {
+#ifdef FLTK_SUPPORT
+                fl_color(  (*i)->box_color() );
+#else
                 fl_color( fl_color_add_alpha( (*i)->box_color(), 25 ) );
+#endif
                 
                 fl_rectf( (*i)->line_x(), tracks->y(), (*i)->abs_w(), tracks->h() );
             }
             else
             {
+#ifdef FLTK_SUPPORT
+                fl_color( (*i)->box_color() );
+#else
                 fl_color( fl_color_add_alpha( (*i)->box_color(), 127  ));
+#endif
                 
                 fl_line( (*i)->line_x(), tracks->y(), (*i)->line_x(), tracks->y() + tracks->h() );
                 

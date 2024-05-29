@@ -295,7 +295,11 @@ void TLE::cb_12(Fl_Menu_* o, void* v) {
 }
 
 void TLE::cb_Theme_i(Fl_Menu_*, void*) {
+#ifdef FLTK_SUPPORT
+   // FIXME
+#else
   fl_theme_chooser();
+#endif
 }
 void TLE::cb_Theme(Fl_Menu_* o, void* v) {
   ((TLE*)(o->parent()->parent()->user_data()))->cb_Theme_i(o,v);
@@ -767,8 +771,13 @@ _Pragma("GCC diagnostic pop")
           solo_blinker->labelcolor(FL_GRAY0);
           solo_blinker->align(Fl_Align(FL_ALIGN_CENTER));
           solo_blinker->when(FL_WHEN_RELEASE);
+#ifdef FLTK_SUPPORT
+          o->box( FL_ROUNDED_BOX );
+          o->down_box( FL_ROUNDED_BOX );
+#else
           o->box( FL_ASYM_BOX );
           o->down_box( FL_ASYM_BOX );
+#endif
           o->ignore_input( true );
         } // Fl_Blink_Button* solo_blinker
         { Fl_Blink_Button* o = rec_blinker = new Fl_Blink_Button(800, 53, 50, 15, "REC");
@@ -782,8 +791,13 @@ _Pragma("GCC diagnostic pop")
           rec_blinker->labelcolor(FL_GRAY0);
           rec_blinker->align(Fl_Align(FL_ALIGN_CENTER));
           rec_blinker->when(FL_WHEN_RELEASE);
+#ifdef FLTK_SUPPORT
+          o->box( FL_ROUNDED_BOX );
+          o->down_box( FL_ROUNDED_BOX );
+#else
           o->box( FL_ASYM_BOX );
           o->down_box( FL_ASYM_BOX );
+#endif
           o->ignore_input( true );
         } // Fl_Blink_Button* rec_blinker
         { Fl_Blink_Button* o = selected_blinker = new Fl_Blink_Button(745, 53, 50, 15, "SEL");
@@ -797,8 +811,13 @@ _Pragma("GCC diagnostic pop")
           selected_blinker->labelcolor(FL_GRAY0);
           selected_blinker->align(Fl_Align(FL_ALIGN_CENTER));
           selected_blinker->when(FL_WHEN_RELEASE);
+#ifdef FLTK_SUPPORT
+          o->box( FL_ROUNDED_BOX );
+          o->down_box( FL_ROUNDED_BOX );
+#else
           o->box( FL_ASYM_BOX );
           o->down_box( FL_ASYM_BOX );
+#endif
           o->ignore_input( true );
         } // Fl_Blink_Button* selected_blinker
         { Fl_Blink_Button* o = seek_blinker = new Fl_Blink_Button(745, 33, 50, 15, "SEEK");
@@ -812,8 +831,13 @@ _Pragma("GCC diagnostic pop")
           seek_blinker->labelcolor(FL_GRAY0);
           seek_blinker->align(Fl_Align(FL_ALIGN_CENTER));
           seek_blinker->when(FL_WHEN_RELEASE);
+#ifdef FLTK_SUPPORT
+          o->box( FL_ROUNDED_BOX );
+          o->down_box( FL_ROUNDED_BOX );
+#else
           o->box( FL_ASYM_BOX );
           o->down_box( FL_ASYM_BOX );
+#endif
           o->ignore_input( true );
         } // Fl_Blink_Button* seek_blinker
         o->end();

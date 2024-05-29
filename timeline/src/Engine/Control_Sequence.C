@@ -99,7 +99,7 @@ Control_Sequence::play ( sample_t *buf, nframes_t frame, nframes_t nframes )
         
             float incr;
         
-            if ( interpolation() != None )
+            if ( interpolation() != No_Type )
                 incr = ( y2 - y1 ) / (float)len;
             else
                 incr = 0.0f;

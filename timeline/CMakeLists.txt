@@ -67,26 +67,68 @@ set (ProgSources
     src/main.C
 )
 
-set(ExternLibraries
-    ${NTK_IMAGES_LIBRARIES}
-    ${NTK_LIBRARIES}
-    ${JACK_LINK_LIBRARIES}
-    ${CMAKE_THREAD_LIBS_INIT}
-    ${SNDFILE_LIBRARIES}
-    ${LIBLO_LIBRARIES}
-    dl
-    m
-)
+if(BuildFLTK)
+    set(FLTK_PanZoomer  ../FL/Fl_Panzoomer.cxx)
+endif(BuildFLTK)
 
-add_executable (non-timeline-xt ${ProgSources} src/main.C)
+add_executable (non-timeline-xt ${ProgSources} ${FLTK_PanZoomer} src/main.C)
 
-target_include_directories (
-    non-timeline-xt PRIVATE
-    ${NTK_INCLUDE_DIRS}
-    ${JACK_INCLUDE_DIRS}
-    ${SNDFILE_INCLUDE_DIRS}
-    ${LIBLO_INCLUDE_DIRS}
-)
+if(BuildFLTK)
+    set(ExternLibraries
+        ${FLTK_LIBRARIES}
+        ${FLTK_IMAGES_LIBRARY}
+        ${FONTCONFIG_LIBRARIES}
+        ${Cairo_LIBRARIES}
+        ${JACK_LINK_LIBRARIES}
+        ${CMAKE_THREAD_LIBS_INIT}
+        ${SNDFILE_LIBRARIES}
+        ${LIBLO_LIBRARIES}
+        ${XFT_LIBRARIES}
+        ${XRENDER_LIBRARIES}
+        ${XPM_LIBRARIES}
+        cairo
+        fontconfig
+        Xrender
+        jpeg
+        png
+        z
+        dl
+        m
+    )
+
+    target_include_directories (
+        non-timeline-xt PRIVATE
+        ${FLTK_INCLUDE_DIR}
+        ${Cairo_INCLUDE_DIRS}
+        ${Fontconfig_INCLUDE_DIR}
+        ${JACK_INCLUDE_DIRS}
+        ${SNDFILE_INCLUDE_DIRS}
+        ${LIBLO_INCLUDE_DIRS}
+        ${XFT_INCLUDE_DIRS}
+        ${XRENDER_INCLUDE_DIRS}
+        ${XPM_INCLUDE_DIRS}
+    )
+#NTK
+else(BuildFLTK)
+    set(ExternLibraries
+        ${NTK_IMAGES_LIBRARIES}
+        ${NTK_LIBRARIES}
+        ${JACK_LINK_LIBRARIES}
+        ${CMAKE_THREAD_LIBS_INIT}
+        ${SNDFILE_LIBRARIES}
+        ${LIBLO_LIBRARIES}
+        dl
+        m
+    )
+
+    target_include_directories (
+        non-timeline-xt PRIVATE
+        ${NTK_INCLUDE_DIRS}
+        ${JACK_INCLUDE_DIRS}
+        ${SNDFILE_INCLUDE_DIRS}
+        ${LIBLO_INCLUDE_DIRS}
+    )
+endif(BuildFLTK)
 
 target_link_libraries (non-timeline-xt ${ExternLibraries})
 install (TARGETS non-timeline-xt RUNTIME DESTINATION bin)

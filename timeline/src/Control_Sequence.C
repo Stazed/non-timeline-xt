@@ -471,11 +471,15 @@ Control_Sequence::draw ( void )
     if ( box() != FL_NO_BOX )
         draw_box();
 
-    if ( interpolation() != None )
+    if ( interpolation() != No_Type )
     {
         if ( draw_with_polygon )
         {
+#ifdef FLTK_SUPPORT
+            fl_color( color  );
+#else
             fl_color( fl_color_add_alpha( color, 60 ) );
+#endif
 
             fl_begin_complex_polygon();
             draw_curve( true );
@@ -493,7 +497,7 @@ Control_Sequence::draw ( void )
         fl_line_style( FL_SOLID, 0 );
     }
 
-    if ( interpolation() == None || _highlighted == this || Fl::focus() == this )
+    if ( interpolation() == No_Type || _highlighted == this || Fl::focus() == this )
     {
         for ( list <Sequence_Widget *>::const_iterator r = _widgets.begin();  r != _widgets.end(); ++r )
         {
@@ -583,7 +587,7 @@ Control_Sequence::menu_cb ( const Fl_Menu_ *m )
     else if ( ! strcmp( picked, "Interpolation/Linear" ) )
         interpolation( Linear );
     else if ( ! strcmp( picked, "Interpolation/None" ) )
-        interpolation( None );
+        interpolation( No_Type );
     else if ( ! strcmp( picked, "Mode/Control Signal (OSC)" ))
         mode( OSC );
     else if ( ! strcmp( picked, "Mode/Control Voltage (JACK)" ) )
@@ -737,7 +741,7 @@ Control_Sequence::menu ( void )
         add_osc_peers_to_menu( &_menu, "Connect To" );
     }
     
-    _menu.add( "Interpolation/None", 0, 0, 0, FL_MENU_RADIO | ( interpolation() == None ? FL_MENU_VALUE : 0 ) );
+    _menu.add( "Interpolation/None", 0, 0, 0, FL_MENU_RADIO | ( interpolation() == No_Type ? FL_MENU_VALUE : 0 ) );
     _menu.add( "Interpolation/Linear", 0, 0, 0, FL_MENU_RADIO | ( interpolation() == Linear ? FL_MENU_VALUE : 0 ) );
     _menu.add( "Mode/Control Voltage (JACK)", 0, 0, 0 ,FL_MENU_RADIO | ( mode() == CV ? FL_MENU_VALUE : 0 ) );
     _menu.add( "Mode/Control Signal (OSC)", 0, 0, 0 , FL_MENU_RADIO | ( mode() == OSC ? FL_MENU_VALUE : 0 ) );
