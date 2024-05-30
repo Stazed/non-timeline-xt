@@ -1,6 +1,6 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0300 
-header_name {.H} 
+version 1.0309
+header_name {.H}
 code_name {.C}
 comment {//
 // Copyright (C) 2008-2010 Jonathan Moore Liles
@@ -20,97 +20,97 @@ comment {//
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //
 } {in_source in_header
-} 
+}
 
 decl {const float STATUS_UPDATE_FREQ = 0.5f;} {private local
-} 
+}
 
 decl {class Fl_Flowpack;} {public global
-} 
+}
 
 decl {\#include <unistd.h>} {private local
-} 
+}
 
 decl {\#include <sys/types.h>} {private local
-} 
+}
 
 decl {\#include <sys/wait.h>} {private local
-} 
+}
 
 decl {\#include <FL/Fl_Overlay_Window.H>} {private local
-} 
+}
 
 decl {\#include "../../FL/Fl_Menu_Settings.H"} {private local
-} 
+}
 
 decl {\#include "Timeline.H"} {private local
-} 
+}
 
 decl {\#include "Transport.H"} {private local
-} 
+}
 
 decl {\#include "../../nonlib/Loggable.H"} {private local
-} 
+}
 
 decl {\#include "Project.H"} {private local
-} 
+}
 
 decl {\#include "Clock.H"} {public local
-} 
+}
 
 decl {\#include "../../FL/Fl_Flowpack.H"} {private local
-} 
+}
 
 decl {\#include "../../FL/New_Project_Dialog.H"} {private local
-} 
+}
 
 decl {\#include "Track.H" // for capture_format} {private local
-} 
+}
 
 decl {\#include "Waveform.H" // for options} {private local
-} 
+}
 
 decl {\#include "Audio_Region.H" // for options} {private local
-} 
+}
 
 decl {\#include "Control_Sequence.H" // for options} {private local
-} 
+}
 
 decl {\#include <FL/Fl_File_Chooser.H>} {private local
-} 
+}
 
 decl {\#include <FL/Fl_Shared_Image.H>} {private local
-} 
+}
 
 decl {\#include <FL/Fl.H>} {private local
-} 
+}
 
 decl {\#include <FL/fl_ask.H>} {private local
-} 
+}
 
 decl {\#include "Engine/Engine.H"} {private local
-} 
+}
 
 decl {\#include "Engine/Audio_File.H" // for supported formats} {private local
-} 
+}
 
 decl {\#include "../../FL/About_Dialog.H"} {private local
-} 
+}
 
 decl {extern char project_display_name[256];} {private global
-} 
+}
 
 decl {\#include "../../nonlib/nsm.h"} {private local
-} 
+}
 
 decl {extern nsm_client_t *nsm;} {private global
-} 
+}
 
 decl {extern char *user_config_dir;} {private global
-} 
+}
 
 decl {extern char *APP_NAME;} {private global
-} 
+}
 
 class TLE_Window {open : {public Fl_Overlay_Window}
 } {
@@ -126,7 +126,7 @@ class TLE_Window {open : {public Fl_Overlay_Window}
   } {
     code {} {}
   }
-} 
+}
 
 class TLE {open
 } {
@@ -277,8 +277,8 @@ Loggable::progress_callback( &TLE::progress_cb, this );} {}
     {
         timeline->command_quit();
     }
-}} open
-      xywh {399 114 1025 770} type Double resizable
+}} open selected
+      xywh {451 123 1025 770} type Double resizable
       code0 {o->xclass( APP_NAME );}
       class TLE_Window size_range {947 300 0 0} visible
     } {
@@ -501,9 +501,15 @@ Project::compact();}
             }
             MenuItem {} {
               label {&Theme}
-              callback {fl_theme_chooser();}
+              callback {\#ifdef FLTK_SUPPORT
+   // FIXME
+\#else
+   fl_theme_chooser();
+\#endif}
               xywh {15 15 40 24}
-              code0 {\#include "FL/Fl_Theme_Chooser.H"}
+              code0 {\#ifndef FLTK_SUPPORT
+   \#include "FL/Fl_Theme_Chooser.H"
+\#endif}
             }
           }
           Submenu {} {
@@ -655,7 +661,7 @@ timeline->redraw();}
 
         ab.website_url->label( "https://github.com/Stazed/non-timeline-xt" );
 
-ab.run();} selected
+ab.run();}
               xywh {5 5 40 25}
             }
           }
@@ -744,38 +750,30 @@ _Pragma("GCC diagnostic pop")}
         } {
           Fl_Button solo_blinker {
             label SOLO
-            xywh {800 33 50 15} box BORDER_BOX down_box BORDER_BOX color 74 selection_color 92 labelfont 1 labelsize 11 labelcolor 32
+            xywh {800 33 50 15} box ROUNDED_BOX down_box ROUNDED_BOX color 74 selection_color 92 labelfont 1 labelsize 11 labelcolor 32
             code0 {\#include "../../FL/Fl_Blink_Button.H"}
-            code1 {o->box( FL_ASYM_BOX );}
-            code2 {o->down_box( FL_ASYM_BOX );}
-            code3 {o->ignore_input( true );}
+            code1 {o->ignore_input( true );}
             class Fl_Blink_Button
           }
           Fl_Button rec_blinker {
             label REC
-            xywh {800 53 50 15} box BORDER_BOX down_box BORDER_BOX color 72 selection_color 88 labelfont 1 labelsize 11 labelcolor 32
+            xywh {800 53 50 15} box ROUNDED_BOX down_box ROUNDED_BOX color 72 selection_color 88 labelfont 1 labelsize 11 labelcolor 32
             code0 {\#include "../../FL/Fl_Blink_Button.H"}
-            code1 {o->box( FL_ASYM_BOX );}
-            code2 {o->down_box( FL_ASYM_BOX );}
-            code3 {o->ignore_input( true );}
+            code1 {o->ignore_input( true );}
             class Fl_Blink_Button
           }
           Fl_Button selected_blinker {
             label SEL
-            xywh {745 53 50 15} box BORDER_BOX down_box BORDER_BOX color 13 selection_color 5 labelfont 1 labelsize 11 labelcolor 32
+            xywh {745 53 50 15} box ROUNDED_BOX down_box ROUNDED_BOX color 13 selection_color 5 labelfont 1 labelsize 11 labelcolor 32
             code0 {\#include "../../FL/Fl_Blink_Button.H"}
-            code1 {o->box( FL_ASYM_BOX );}
-            code2 {o->down_box( FL_ASYM_BOX );}
-            code3 {o->ignore_input( true );}
+            code1 {o->ignore_input( true );}
             class Fl_Blink_Button
           }
           Fl_Button seek_blinker {
             label SEEK
-            xywh {745 33 50 15} box BORDER_BOX down_box BORDER_BOX color 10 selection_color 2 labelfont 1 labelsize 11 labelcolor 32
+            xywh {745 33 50 15} box ROUNDED_BOX down_box ROUNDED_BOX color 10 selection_color 2 labelfont 1 labelsize 11 labelcolor 32
             code0 {\#include "../../FL/Fl_Blink_Button.H"}
-            code1 {o->box( FL_ASYM_BOX );}
-            code2 {o->down_box( FL_ASYM_BOX );}
-            code3 {o->ignore_input( true );}
+            code1 {o->ignore_input( true );}
             class Fl_Blink_Button
           }
         }
@@ -992,14 +990,14 @@ snprintf( pat, 256, "file://%s/non-timeline-xt/%s.html", DOCUMENT_PATH, file );
 
 open_url( pat );} {}
   }
-} 
+}
 
 Function {set_theme_dark()} {C return_type void
 } {
   code {Fl::background2( 100, 100, 100 );
         Fl::background( 50, 50, 50 );
         Fl::foreground( 255, 255, 255 );} {}
-} 
+}
 
 class Project_Info_Dialog {open
 } {
@@ -1095,4 +1093,4 @@ window->do_callback();}
       }
     }
   }
-} 
+}
