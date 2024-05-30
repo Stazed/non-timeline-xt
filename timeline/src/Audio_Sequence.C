@@ -27,7 +27,10 @@
 #include <FL/Fl.H>
 #include "Audio_Sequence.H"
 #include "Waveform.H"
+
+#ifdef FLTK_SUPPORT
 #include <cairo.h>
+#endif
 
 #include <list>
 using namespace std;
@@ -235,8 +238,10 @@ Audio_Sequence::draw ( void )
                              (o->x() + o->w()) - (*r)->x(),
                              o->h() );
 
+                // This is for overlapping audio regions - changes color on overlap
                 if ( b.w > 0 )
                 {
+#ifndef FLTK_SUPPORT    // FIXME for some reason FLTK does not define Fl::cairo_cc()
                     cairo_t *cc = Fl::cairo_cc();
                 
                     cairo_set_operator( cc, CAIRO_OPERATOR_HSL_COLOR ); 
@@ -246,6 +251,7 @@ Audio_Sequence::draw ( void )
                     cairo_fill( cc );
 
                     cairo_set_operator( cc, CAIRO_OPERATOR_OVER );
+#endif
                 }
             }
         }
