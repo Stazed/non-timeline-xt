@@ -1366,11 +1366,14 @@ Timeline::draw_cursors ( Cursor_Sequence *o ) const
             {
 #ifdef FLTK_SUPPORT
                 fl_color(  (*i)->box_color() );
+                // Draw two rectangles, one pixel each for better visibility
+                fl_rect( (*i)->line_x(), tracks->y(), (*i)->abs_w(), tracks->h() );
+                fl_rect( (*i)->line_x()+1, tracks->y()+1, (*i)->abs_w()-2, tracks->h()-2 );
+                
 #else
                 fl_color( fl_color_add_alpha( (*i)->box_color(), 25 ) );
-#endif
-                
                 fl_rectf( (*i)->line_x(), tracks->y(), (*i)->abs_w(), tracks->h() );
+#endif
             }
             else
             {

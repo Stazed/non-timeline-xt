@@ -28,10 +28,6 @@
 #include "Audio_Sequence.H"
 #include "Waveform.H"
 
-#ifdef FLTK_SUPPORT
-#include <cairo.h>
-#endif
-
 #include <list>
 using namespace std;
 
@@ -227,21 +223,38 @@ Audio_Sequence::draw ( void )
 /*                 if ( o->x() == (*r)->x() && o->w() == (*r)->w() ) */
 /*                     printf( "complete superposition\n" ); */
 
-                if ( o->contains( *r ) )
+              //  if ( o->contains( *r ) )
                     /* completely inside */
-                    continue;
+              //      continue;
 
                 ++xfades;
-
-                Rectangle b( (*r)->x(),
-                             o->y(),
-                             (o->x() + o->w()) - (*r)->x(),
-                             o->h() );
-
+                
+                Rectangle b;
+                if ( o->contains( *r ) )
+                {
+                    /* Completely inside, so lets show it overlap anyway, instead of hiding it,
+                     * because it is hard to tell if there are more than one region if they are
+                     * the same size and no highlighting or duplicated */
+                    b.x = (*r)->x();
+                    b.y = (*r)->y();
+                    b.w = (*r)->w();
+                    b.h = (*r)->h();
+                }
+                else
+                {
+                    b.x = (*r)->x();
+                    b.y = o->y();
+                    b.w = (o->x() + o->w()) - (*r)->x();
+                    b.h = o->h();
+                }
                 // This is for overlapping audio regions - changes color on overlap
                 if ( b.w > 0 )
                 {
-#ifndef FLTK_SUPPORT    // FIXME for some reason FLTK does not define Fl::cairo_cc()
+#ifdef FLTK_SUPPORT
+                    // Draw two rectangles, one pixel each for better visibility
+                    fl_rect( b.x, b.y, b.w, b.h, FL_YELLOW );
+                    fl_rect( b.x + 1, b.y + 1, b.w - 2, b.h - 2, FL_YELLOW );
+#else
                     cairo_t *cc = Fl::cairo_cc();
                 
                     cairo_set_operator( cc, CAIRO_OPERATOR_HSL_COLOR ); 
