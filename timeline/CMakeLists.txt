@@ -77,7 +77,6 @@ if(BuildFLTK)
     set(ExternLibraries
         ${FLTK_LIBRARIES}
         ${FLTK_IMAGES_LIBRARY}
-        ${Cairo_LIBRARY}
         ${JACK_LINK_LIBRARIES}
         ${CMAKE_THREAD_LIBS_INIT}
         ${SNDFILE_LIBRARIES}
@@ -89,7 +88,6 @@ if(BuildFLTK)
     target_include_directories (
         non-timeline-xt PRIVATE
         ${FLTK_INCLUDE_DIR}
-        ${Cairo_INCLUDE_DIR}
         ${JACK_INCLUDE_DIRS}
         ${SNDFILE_INCLUDE_DIRS}
         ${LIBLO_INCLUDE_DIRS}

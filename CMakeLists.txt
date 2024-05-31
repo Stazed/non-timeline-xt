@@ -65,12 +65,9 @@ pkg_check_modules(JACK REQUIRED jack>=0.115.6)
 pkg_check_modules(LIBLO liblo>=0.26 REQUIRED)
 pkg_check_modules(SNDFILE REQUIRED sndfile)
 
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-
 if(BuildFLTK)
     SET(FLTK_SKIP_OPENGL TRUE)
     find_package(FLTK REQUIRED)
-    find_package(Cairo REQUIRED)
     if(FLTK_FOUND)
         mark_as_advanced(FORCE FLTK_BASE_LIBRARY)
         mark_as_advanced(FORCE FLTK_CONFIG_SCRIPT)
@@ -82,8 +79,6 @@ if(BuildFLTK)
         mark_as_advanced(FORCE FLTK_INCLUDE_DIR)
         mark_as_advanced(FORCE FLTK_MATH_LIBRARY)
         add_definitions(-D'FLTK_SUPPORT=1')
-#        add_definitions(-D'FLTK_USE_CAIRO=1') #FIXME
-#        add_definitions(-D'FLTK_HAVE_CAIRO=1') #FIXME
     endif(FLTK_FOUND)
 else(BuildFLTK)
     pkg_check_modules(NTK ntk REQUIRED)
