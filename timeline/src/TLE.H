@@ -32,9 +32,11 @@ public:
 };
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Menu_Bar.H>
-#ifndef FLTK_SUPPORT
-   #include "FL/Fl_Theme_Chooser.H"
-#endif
+#ifdef FLTK_SUPPORT
+   #include "../../FL/Fl_Theme_Chooser.H"
+#else
+    #include "FL/Fl_Theme_Chooser.H"
+ #endif
 #include <FL/Fl_Pack.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Progress.H>

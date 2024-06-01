@@ -295,11 +295,7 @@ void TLE::cb_12(Fl_Menu_* o, void* v) {
 }
 
 void TLE::cb_Theme_i(Fl_Menu_*, void*) {
-  #ifdef FLTK_SUPPORT
-   // FIXME
-#else
-   fl_theme_chooser();
-#endif
+  fl_theme_chooser();
 }
 void TLE::cb_Theme(Fl_Menu_* o, void* v) {
   ((TLE*)(o->parent()->parent()->user_data()))->cb_Theme_i(o,v);

@@ -278,7 +278,7 @@ Loggable::progress_callback( &TLE::progress_cb, this );} {}
         timeline->command_quit();
     }
 }} open selected
-      xywh {451 123 1025 770} type Double resizable
+      xywh {509 134 1025 770} type Double resizable
       code0 {o->xclass( APP_NAME );}
       class TLE_Window size_range {947 300 0 0} visible
     } {
@@ -501,15 +501,13 @@ Project::compact();}
             }
             MenuItem {} {
               label {&Theme}
-              callback {\#ifdef FLTK_SUPPORT
-   // FIXME
-\#else
-   fl_theme_chooser();
-\#endif}
+              callback {fl_theme_chooser();}
               xywh {15 15 40 24}
-              code0 {\#ifndef FLTK_SUPPORT
-   \#include "FL/Fl_Theme_Chooser.H"
-\#endif}
+              code0 {\#ifdef FLTK_SUPPORT
+   \#include "../../FL/Fl_Theme_Chooser.H"
+\#else
+    \#include "FL/Fl_Theme_Chooser.H"
+ \#endif}
             }
           }
           Submenu {} {

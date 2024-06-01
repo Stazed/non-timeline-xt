@@ -68,10 +68,18 @@ set (ProgSources
 )
 
 if(BuildFLTK)
-    set(FLTK_PanZoomer  ../FL/Fl_Panzoomer.C)
+    set(FLTK_specific
+        ../FL/Fl_Panzoomer.C
+        ../FL/Fl_Theme_Chooser.cxx
+        ../FL/Fl_Theme.cxx
+        ../FL/Clean_Theme.cxx
+        ../FL/Crystal_Theme.cxx
+        ../FL/Gleam_Theme.cxx
+        ../FL/themes.cxx
+    )
 endif(BuildFLTK)
 
-add_executable (non-timeline-xt ${ProgSources} ${FLTK_PanZoomer} src/main.C)
+add_executable (non-timeline-xt ${ProgSources} ${FLTK_specific} src/main.C)
 
 if(BuildFLTK)
     set(ExternLibraries

@@ -51,6 +51,10 @@
 
 #include "../../nonlib/nsm.h"
 
+#ifdef FLTK_SUPPORT
+#include "../../FL/themes.H"
+#endif
+
 extern void set_nsm_callbacks ( nsm_client_t *nsm );
 
 Engine *engine;
@@ -318,6 +322,11 @@ main ( int argc, char **argv )
     }
 
     Fl::add_check( check_signals );
+
+#ifdef FLTK_SUPPORT
+    fl_register_themes();
+    fl_apply_theme();
+#endif
 
     while ( !b_exit_program && !timeline->exit_program )
     {
