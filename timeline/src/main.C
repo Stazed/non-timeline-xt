@@ -325,7 +325,6 @@ main ( int argc, char **argv )
 
 #ifdef FLTK_SUPPORT
     fl_register_themes();
-    fl_apply_theme();
 #endif
 
     while ( !b_exit_program && !timeline->exit_program )
