@@ -1468,7 +1468,7 @@ Timeline::draw ( void )
     
     if ( c & FL_DAMAGE_ALL )
     {
-        DMESSAGE( "complete redraw" );
+       // DMESSAGE( "complete redraw" );
 
         draw_box( box(), BX, BY, w(), h(), color() );
 
