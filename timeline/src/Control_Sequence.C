@@ -432,9 +432,11 @@ Control_Sequence::draw_box ( void )
 
 //    fl_rectf( X, Y, W, H, fl_color_average( FL_BLACK, FL_BACKGROUND_COLOR, 0.3 ) );
 //    fl_rectf( X,Y,W,H, fl_color_average( FL_BLACK, FL_WHITE, 0.90 ) );
+#ifndef FLTK_SUPPORT
+    // FLTK draws the background before calling this since no transparency, so only for NTK
     fl_rectf( X,Y,W,H, FL_DARK1 );
-    
-    
+#endif
+
     if ( draw_with_grid )
     {
         fl_color( FL_GRAY );
@@ -453,7 +455,7 @@ void
 Control_Sequence::draw ( void )
 {
     fl_push_clip( drawable_x(), y(), drawable_w(), h() );
-    
+
     const int bx = x();
     const int by = y() + Fl::box_dy( box() );
     const int bw = w();
@@ -468,9 +470,15 @@ Control_Sequence::draw ( void )
     const Fl_Color color = active ? this->color() : fl_inactive( this->color() );
 //    const Fl_Color selection_color = active ? this->selection_color() : fl_inactive( this->selection_color() );
 
+#ifdef FLTK_SUPPORT
+    // Background only first for FLTK
     if ( box() != FL_NO_BOX )
-        draw_box();
-
+        fl_rectf( X,Y,W,H, FL_DARK1 );
+#else
+    // NTK draws everything before since it can overlay transparent
+    if ( box() != FL_NO_BOX )
+        draw_box(); 
+#endif
     if ( interpolation() != No_Type )
     {
         if ( draw_with_polygon )
@@ -480,7 +488,6 @@ Control_Sequence::draw ( void )
 #else
             fl_color( fl_color_add_alpha( color, 60 ) );
 #endif
-
             fl_begin_complex_polygon();
             draw_curve( true );
             fl_end_complex_polygon();
@@ -489,13 +496,19 @@ Control_Sequence::draw ( void )
 
         fl_color( fl_color_average( FL_WHITE, color, 0.5 ) );
         fl_line_style( FL_SOLID, 2 );
-        
+
         fl_begin_line();
         draw_curve( false );
         fl_end_line();
 
         fl_line_style( FL_SOLID, 0 );
     }
+
+#ifdef FLTK_SUPPORT
+    // Grid lines after polygon and before control points
+    if ( box() != FL_NO_BOX )
+        draw_box();
+#endif
 
     if ( interpolation() == No_Type || _highlighted == this || Fl::focus() == this )
     {
@@ -504,7 +517,7 @@ Control_Sequence::draw ( void )
             if ( (*r)->x() + (*r)->w() >= bx && 
                  (*r)->x() <= bw + bw )
             {
-                (*r)->draw_box();
+                (*r)->draw_box();   // control points eventually
             }
         }
     }
@@ -517,14 +530,14 @@ Control_Sequence::draw ( void )
                 if ( (*r)->x() + (*r)->w() >= bx && 
                      (*r)->x() <= bw + bw )
                 {
-                    (*r)->draw_box();
+                    (*r)->draw_box();   // control points eventually
                 }
             }
         }
     }
 
     fl_pop_clip();
-    
+
     if ( damage() & ~DAMAGE_SEQUENCE )
     {
         Fl_Group::draw_children();
