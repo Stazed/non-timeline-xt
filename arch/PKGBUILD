@@ -2,7 +2,7 @@
 # To use:makepkg -si
 
 pkgname=non-timeline-xt
-pkgver=1.0.2
+pkgver=2.0.0
 pkgrel=1
 pkgdesc="Jack timeline editor (non-timeline) with eXTras"
 arch=('x86_64' 'i686')
@@ -11,7 +11,7 @@ license=('GPL2')
 groups=('multimedia')
 provides=("${pkgname}")
 conflicts=("${pkgname}")
-depends=('ntk' 'jack' 'liblo' 'libsigc++' 'hicolor-icon-theme' 'libsndfile')
+depends=('fltk' 'jack' 'liblo' 'libsigc++' 'hicolor-icon-theme' 'libsndfile')
 makedepends=('git' 'cmake' 'libxpm')
 source=("git+https://Stazed@github.com/Stazed/non-timeline-xt.git#branch=main")
 md5sums=('SKIP')
