@@ -1065,14 +1065,17 @@ Timeline::draw_measure_cb ( nframes_t frame, const BBT &bbt, void *v )
 
     if ( o->panzoomer->zoom() >= 15 )
         return;
-    
+
     Fl_Color mc = FL_LIGHT3;
     Fl_Color bc = FL_LIGHT2;
     Fl_Color c;
     Fl_Color ct = fl_contrast( mc, FL_BACKGROUND_COLOR );
 
+    bool light_theme = false;
+
     if ( FL_BLACK == ct )
     {
+        light_theme = true;
 	/* in a light color scheme mode */
 	mc = fl_rgb_color(30,30,30);
 	bc = FL_DARK3;
@@ -1088,11 +1091,15 @@ Timeline::draw_measure_cb ( nframes_t frame, const BBT &bbt, void *v )
     else
 	c = mc;
 #ifdef FLTK_SUPPORT
-    fl_color(  c );
+    // soften the grid lines some
+    if(light_theme)
+        fl_color( fl_color_average(c, FL_WHITE, .50f) );
+    else
+        fl_color( fl_color_average(c, FL_BLACK, .50f) );
 #else
     fl_color( fl_color_add_alpha( c, 127 ) );
 #endif
-    
+
     const int x = timeline->ts_to_x( frame - timeline->xoffset ) + Track::width();
 
     fl_line( x, 0, x, 2000 );
