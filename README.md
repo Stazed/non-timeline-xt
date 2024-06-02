@@ -1,8 +1,13 @@
 Non-Timeline-XT
-============
+===============
+
+Screenshot
+----------
+
+![screenshot](https://raw.github.com/Stazed/non-timeline-xt/main/timeline/doc/non-timeline-xt-2.0.0.png "Non-Timeline-XT Release 2.0.0")
 
 
-Non-Timeline-XT is a reboot of original Non-Timeline with some eXTras.
+Non-Timeline-XT is a reboot of original Non-Timeline with some eXTras. Beginning with version 2.0.0 the default build will use the FLTK library instead of NTK.
 
 
 Non-Timeline-XT build instructions:
@@ -10,12 +15,19 @@ Non-Timeline-XT build instructions:
 
 Dependencies :
 
+For fltk build:
+* fltk
+* fltk-dev
+
+For NTK build:
 * ntk
+
+
 * liblo
 * liblo-dev
 * libsndfile1
 * libsndfile1-dev
-* jack2
+* jack2       (Need development packages also)
 
 Getting submodules (nonlib and FL):
 ---------------
@@ -50,6 +62,15 @@ To uninstall:
 
 ```bash
     sudo make uninstall
+```
+
+To build with NTK:
+```bash
+    mkdir build
+    cd build
+    cmake -DBuildFLTK=OFF ..
+    make
+    sudo make install
 ```
 
 For package maintainers, if you are building generic binary packages to be used on different architectures,

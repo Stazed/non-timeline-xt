@@ -3,7 +3,7 @@
 cmake_minimum_required(VERSION 3.5.1)
 project (non-timeline-xt)
 
-set (PACKAGE_VERSION "1.0.4")
+set (PACKAGE_VERSION "2.0.0")
 
 set (CMAKE_SKIP_RULE_DEPENDENCY OFF)
 
@@ -23,7 +23,7 @@ option (EnableOptimizations "Enable optimizations" ON)
 option (EnableSSE "Enable SSE (default=automatic check)" ON)
 option (EnableSSE2 "Enable SSE2 (default=automatic check)" ON)
 option (NativeOptimizations "Enable native CPU optimizations" ON)
-option (BuildFLTK "Use FLTK toolkit for build" OFF)
+option (BuildFLTK "Use FLTK toolkit for build" ON)
 
 
 set(CMAKE_BUILD_TYPE "Release")
@@ -83,14 +83,6 @@ if(BuildFLTK)
 else(BuildFLTK)
     pkg_check_modules(NTK ntk REQUIRED)
     pkg_check_modules(NTK_IMAGES ntk_images REQUIRED)
-
-#FIXME
-#    find_program(FLTK_FLUID_EXECUTABLE ntk-fluid)
-#    if(FLTK_FLUID_EXECUTABLE)
-#        message(STATUS "Found NTK fluid")
-#    else(FLTK_FLUID_EXECUTABLE)
-#        message(STATUS "NTK fluid not found")
-#    endif(FLTK_FLUID_EXECUTABLE)
 endif(BuildFLTK)
 
 
