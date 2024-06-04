@@ -67,7 +67,10 @@ set (ProgSources
     src/main.C
 )
 
-if(BuildFLTK)
+if(EnableNTK)
+    message (STATUS "USING NTK BUILD")
+else(EnableNTK)
+    message (STATUS "USING FLTK BUILD")
     set(FLTK_specific
         ../FL/Fl_Panzoomer.C
         ../FL/Fl_Theme_Chooser.cxx
@@ -77,31 +80,11 @@ if(BuildFLTK)
         ../FL/Gleam_Theme.cxx
         ../FL/themes.cxx
     )
-endif(BuildFLTK)
+endif(EnableNTK)
 
 add_executable (non-timeline-xt ${ProgSources} ${FLTK_specific} src/main.C)
 
-if(BuildFLTK)
-    set(ExternLibraries
-        ${FLTK_LIBRARIES}
-        ${FLTK_IMAGES_LIBRARY}
-        ${JACK_LINK_LIBRARIES}
-        ${CMAKE_THREAD_LIBS_INIT}
-        ${SNDFILE_LIBRARIES}
-        ${LIBLO_LIBRARIES}
-        dl
-        m
-    )
-
-    target_include_directories (
-        non-timeline-xt PRIVATE
-        ${FLTK_INCLUDE_DIR}
-        ${JACK_INCLUDE_DIRS}
-        ${SNDFILE_INCLUDE_DIRS}
-        ${LIBLO_INCLUDE_DIRS}
-    )
-#NTK
-else(BuildFLTK)
+if(EnableNTK)
     set(ExternLibraries
         ${NTK_IMAGES_LIBRARIES}
         ${NTK_LIBRARIES}
@@ -120,7 +103,28 @@ else(BuildFLTK)
         ${SNDFILE_INCLUDE_DIRS}
         ${LIBLO_INCLUDE_DIRS}
     )
-endif(BuildFLTK)
+
+else(EnableNTK) #FLTK
+    set(ExternLibraries
+        ${FLTK_LIBRARIES}
+        ${FLTK_IMAGES_LIBRARY}
+        ${JACK_LINK_LIBRARIES}
+        ${CMAKE_THREAD_LIBS_INIT}
+        ${SNDFILE_LIBRARIES}
+        ${LIBLO_LIBRARIES}
+        dl
+        m
+    )
+
+    target_include_directories (
+        non-timeline-xt PRIVATE
+        ${FLTK_INCLUDE_DIR}
+        ${JACK_INCLUDE_DIRS}
+        ${SNDFILE_INCLUDE_DIRS}
+        ${LIBLO_INCLUDE_DIRS}
+    )
+endif(EnableNTK)
+
 
 target_link_libraries (non-timeline-xt ${ExternLibraries})
 install (TARGETS non-timeline-xt RUNTIME DESTINATION bin)

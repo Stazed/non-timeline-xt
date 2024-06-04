@@ -7,7 +7,9 @@ Screenshot
 ![screenshot](https://raw.github.com/Stazed/non-timeline-xt/main/timeline/doc/non-timeline-xt-2.0.0.png "Non-Timeline-XT Release 2.0.0")
 
 
-Non-Timeline-XT is a reboot of original Non-Timeline with some eXTras. Beginning with version 2.0.0 the default build will use the FLTK library instead of NTK.
+Non-Timeline-XT is a reboot of original Non-Timeline with some eXTras.
+
+Beginning with version 2.0.0 the default build will use the FLTK library instead of NTK.
 
 
 Non-Timeline-XT build instructions:
@@ -68,7 +70,7 @@ To build with NTK:
 ```bash
     mkdir build
     cd build
-    cmake -DBuildFLTK=OFF ..
+    cmake -DEnableNTK=ON ..
     make
     sudo make install
 ```
