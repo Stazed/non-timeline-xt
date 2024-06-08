@@ -24,7 +24,7 @@ For fltk build:
 For NTK build:
 * ntk
 
-
+Other Dependencies:
 * liblo
 * liblo-dev
 * libsndfile1
