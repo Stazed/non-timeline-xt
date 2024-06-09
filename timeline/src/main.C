@@ -69,7 +69,7 @@ char *instance_name = NULL;
 std::string project_directory = "";
 
 /* TODO: put these in a header */
-#define USER_CONFIG_DIR ".non-timeline-xt/"
+#define USER_CONFIG_DIR "non-timeline-xt/"
 
 const char *APP_NAME = "Non-Timeline-XT";
 const char *APP_TITLE = "The Non-Timeline-XT";
@@ -89,7 +89,7 @@ char *user_config_dir;
 static int
 ensure_dirs ( void )
 {
-    asprintf( &user_config_dir, "%s/%s", getenv( "HOME" ), USER_CONFIG_DIR );
+    asprintf( &user_config_dir, "%s/.config/%s", getenv( "HOME" ), USER_CONFIG_DIR );
 
     int r = mkdir( user_config_dir, 0777 );
 
@@ -324,7 +324,7 @@ main ( int argc, char **argv )
     Fl::add_check( check_signals );
 
 #ifdef FLTK_SUPPORT
-    fl_register_themes();
+    fl_register_themes(USER_CONFIG_DIR);
 #endif
 
     while ( !b_exit_program && !timeline->exit_program )
