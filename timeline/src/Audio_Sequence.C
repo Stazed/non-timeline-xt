@@ -252,7 +252,7 @@ Audio_Sequence::draw ( void )
                     b.w = (o->x() + o->w()) - (*r)->x();
                     b.h = o->h();
                 }
-                // This is for overlapping audio regions - changes color on overlap
+                // This is for overlapping audio regions - changes color yellow shade on overlap
                 if ( b.w > 0 )
                 {
 #ifdef FLTK_SUPPORT
@@ -261,8 +261,7 @@ Audio_Sequence::draw ( void )
                              Fl_Window::current()->w(), Fl_Window::current()->h());
 
                     cairo_t *cc = cairo_create (Xsurface);
-                    cairo_set_operator( cc, CAIRO_OPERATOR_HSL_COLOR ); 
-                    cairo_set_source_rgba( cc, 1, 1, 0, 0.80 );
+                    cairo_set_source_rgba( cc, 1, 1, 0, 0.35 );
                     cairo_rectangle( cc, b.x, b.y, b.w, b.h );
 
                     cairo_fill( cc );

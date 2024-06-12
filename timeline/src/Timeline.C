@@ -1383,7 +1383,6 @@ Timeline::draw_cursors ( Cursor_Sequence *o ) const
                          Fl_Window::current()->w(), Fl_Window::current()->h());
 
                 cairo_t *cc = cairo_create (Xsurface);
-                cairo_set_operator( cc, CAIRO_OPERATOR_HSL_COLOR );
 
                 unsigned rgb = Fl::get_color( (*i)->box_color() );
 
@@ -1391,7 +1390,7 @@ Timeline::draw_cursors ( Cursor_Sequence *o ) const
                 unsigned g =  (rgb>> 16)& 0xFF;
                 unsigned b =  (rgb>> 8)& 0xFF;
 
-                cairo_set_source_rgba( cc, (double)r, (double)g, (double)b, 0.60 );
+                cairo_set_source_rgba( cc, (double)r, (double)g, (double)b, 0.20 );
 
                 // 200 is the width of the track header, so don't draw over the header
                 int line_x = (*i)->line_x() < 200 ?  200 : (*i)->line_x();
@@ -1400,8 +1399,8 @@ Timeline::draw_cursors ( Cursor_Sequence *o ) const
                 // Don't allow width to go into negative or it draws over the header
                 abs_w = abs_w < 0 ? 0 : abs_w;
 
-            //    DMESSAGE("ABS_W = %d", abs_w);
-            //    DMESSAGE("line_x = %d: tracks-x = %d: tracks-w = %d", (*i)->line_x(), tracks->x(), tracks->w());
+                //    DMESSAGE("ABS_W = %d", abs_w);
+                //    DMESSAGE("line_x = %d: tracks-x = %d: tracks-w = %d", (*i)->line_x(), tracks->x(), tracks->w());
 
                 cairo_rectangle( cc, line_x, tracks->y(), abs_w, tracks->h() );
  
@@ -1411,7 +1410,7 @@ Timeline::draw_cursors ( Cursor_Sequence *o ) const
 
                 cairo_surface_destroy(Xsurface);
                 cairo_destroy(cc);      
-#else
+#else   // NTK
                 fl_color( fl_color_add_alpha( (*i)->box_color(), 25 ) );
                 fl_rectf( (*i)->line_x(), tracks->y(), (*i)->abs_w(), tracks->h() );
 #endif
@@ -1511,7 +1510,6 @@ Timeline::draw ( void )
     
     if ( c & FL_DAMAGE_ALL )
     {
-        // FLTK seems to constantly indicate FL_DAMAGE_ALL appx every .5 seconds - FIXME why???
         // DMESSAGE( "complete redraw" );
 
         draw_box( box(), BX, BY, w(), h(), color() );
@@ -1527,14 +1525,8 @@ Timeline::draw ( void )
         
         fl_pop_clip();
 
-#ifdef FLTK_SUPPORT
-        if ( Timeline::draw_with_cursor_overlay )
-            draw_overlay();
-        else
-            redraw_overlay();   // For FLTK this causes flicker when using cairo overlay, cause we get a constant redraw
-#else
         redraw_overlay();
-#endif
+
         goto done;
     }
 
