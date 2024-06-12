@@ -108,6 +108,7 @@ else(EnableNTK) #FLTK
     set(ExternLibraries
         ${FLTK_LIBRARIES}
         ${FLTK_IMAGES_LIBRARY}
+        ${LIBCAIRO_LIBRARIES}
         ${JACK_LINK_LIBRARIES}
         ${CMAKE_THREAD_LIBS_INIT}
         ${SNDFILE_LIBRARIES}
@@ -119,6 +120,7 @@ else(EnableNTK) #FLTK
     target_include_directories (
         non-timeline-xt PRIVATE
         ${FLTK_INCLUDE_DIR}
+        ${LIBCAIRO_INCLUDE_DIRS}
         ${JACK_INCLUDE_DIRS}
         ${SNDFILE_INCLUDE_DIRS}
         ${LIBLO_INCLUDE_DIRS}

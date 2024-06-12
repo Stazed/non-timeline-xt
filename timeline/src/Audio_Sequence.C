@@ -25,6 +25,12 @@
 #include <sys/time.h>
 #include <FL/fl_ask.H>
 #include <FL/Fl.H>
+
+#ifdef FLTK_SUPPORT
+    #include <cairo.h>
+    #include <cairo-xlib.h>
+#endif
+
 #include "Audio_Sequence.H"
 #include "Waveform.H"
 
@@ -42,7 +48,6 @@ using namespace std;
 
 #include "../../nonlib/string_util.h"
 
-
 
 const char *
 Audio_Sequence::name ( void ) const
@@ -251,9 +256,21 @@ Audio_Sequence::draw ( void )
                 if ( b.w > 0 )
                 {
 #ifdef FLTK_SUPPORT
-                    // Draw two rectangles, one pixel each for better visibility
-                    fl_rect( b.x, b.y, b.w, b.h, FL_YELLOW );
-                    fl_rect( b.x + 1, b.y + 1, b.w - 2, b.h - 2, FL_YELLOW );
+                    cairo_surface_t* Xsurface = cairo_xlib_surface_create
+                            (fl_display, fl_window, fl_visual->visual,
+                             Fl_Window::current()->w(), Fl_Window::current()->h());
+
+                    cairo_t *cc = cairo_create (Xsurface);
+                    cairo_set_operator( cc, CAIRO_OPERATOR_HSL_COLOR ); 
+                    cairo_set_source_rgba( cc, 1, 1, 0, 0.80 );
+                    cairo_rectangle( cc, b.x, b.y, b.w, b.h );
+
+                    cairo_fill( cc );
+
+                    cairo_set_operator( cc, CAIRO_OPERATOR_OVER );
+                    
+                    cairo_surface_destroy(Xsurface);
+                    cairo_destroy(cc);
 #else
                     cairo_t *cc = Fl::cairo_cc();
                 
