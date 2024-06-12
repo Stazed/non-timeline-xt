@@ -301,15 +301,15 @@ Sequence::draw ( void )
     for ( list <Sequence_Widget *>::const_iterator r = _widgets.begin();  r != _widgets.end(); ++r )
             (*r)->draw_box();
 
-
-    for ( list <Sequence_Widget *>::const_iterator r = _widgets.begin();  r != _widgets.end(); ++r )
-            (*r)->draw();
-
     int X, Y, W, H;
 
     fl_clip_box( x(), y(), w(), h(), X, Y, W, H );
 
     timeline->draw_measure_lines( X, Y, W, H );
+
+    // This will draw tempo, annotation labels, so for better visibility, draw them after the measure lines
+    for ( list <Sequence_Widget *>::const_iterator r = _widgets.begin();  r != _widgets.end(); ++r )
+            (*r)->draw();
 
     for ( list <Sequence_Widget *>::const_iterator r = _widgets.begin();  r != _widgets.end(); ++r )
         (*r)->draw_label();
