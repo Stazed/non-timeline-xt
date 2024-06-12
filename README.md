@@ -20,6 +20,8 @@ Dependencies :
 For fltk build:
 * fltk
 * fltk-dev
+* cairo
+* cairo-dev
 
 For NTK build:
 * ntk
