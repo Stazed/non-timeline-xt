@@ -33,6 +33,12 @@
 #else
     #include <FL/Fl_Panzoomer.H>
 #endif
+
+#ifdef FLTK_SUPPORT
+    #include <cairo.h>
+    #include <cairo-xlib.h>
+#endif
+
 #include <FL/Fl_Tile.H>
 #include <FL/Fl_File_Chooser.H>
 
@@ -1372,17 +1378,45 @@ Timeline::draw_cursors ( Cursor_Sequence *o ) const
             if ( Timeline::draw_with_cursor_overlay )
             {
 #ifdef FLTK_SUPPORT
-                fl_color(  (*i)->box_color() );
-                // Draw two rectangles, one pixel each for better visibility
-                fl_rect( (*i)->line_x(), tracks->y(), (*i)->abs_w(), tracks->h() );
-                fl_rect( (*i)->line_x()+1, tracks->y()+1, (*i)->abs_w()-2, tracks->h()-2 );
-                
+                cairo_surface_t* Xsurface = cairo_xlib_surface_create
+                        (fl_display, fl_window, fl_visual->visual,
+                         Fl_Window::current()->w(), Fl_Window::current()->h());
+
+                cairo_t *cc = cairo_create (Xsurface);
+                cairo_set_operator( cc, CAIRO_OPERATOR_HSL_COLOR );
+
+                unsigned rgb = Fl::get_color( (*i)->box_color() );
+
+                unsigned r =  (rgb>> 24)& 0xFF;
+                unsigned g =  (rgb>> 16)& 0xFF;
+                unsigned b =  (rgb>> 8)& 0xFF;
+
+                cairo_set_source_rgba( cc, (double)r, (double)g, (double)b, 0.60 );
+
+                // 200 is the width of the track header, so don't draw over the header
+                int line_x = (*i)->line_x() < 200 ?  200 : (*i)->line_x();
+                int abs_w = (*i)->abs_w() - ( line_x - (*i)->line_x()  );
+
+                // Don't allow width to go into negative or it draws over the header
+                abs_w = abs_w < 0 ? 0 : abs_w;
+
+            //    DMESSAGE("ABS_W = %d", abs_w);
+            //    DMESSAGE("line_x = %d: tracks-x = %d: tracks-w = %d", (*i)->line_x(), tracks->x(), tracks->w());
+
+                cairo_rectangle( cc, line_x, tracks->y(), abs_w, tracks->h() );
+ 
+                cairo_fill( cc );
+
+                cairo_set_operator( cc, CAIRO_OPERATOR_OVER );
+
+                cairo_surface_destroy(Xsurface);
+                cairo_destroy(cc);      
 #else
                 fl_color( fl_color_add_alpha( (*i)->box_color(), 25 ) );
                 fl_rectf( (*i)->line_x(), tracks->y(), (*i)->abs_w(), tracks->h() );
 #endif
             }
-            else
+            else    // draw lines instead of overlay 2 pixels wide
             {
 #ifdef FLTK_SUPPORT
                 fl_color( (*i)->box_color() );
@@ -1391,8 +1425,10 @@ Timeline::draw_cursors ( Cursor_Sequence *o ) const
 #endif
                 
                 fl_line( (*i)->line_x(), tracks->y(), (*i)->line_x(), tracks->y() + tracks->h() );
+                fl_line( (*i)->line_x() + 1, tracks->y(), (*i)->line_x() + 1, tracks->y() + tracks->h() );  // Double thickness +1
                 
                 fl_line( (*i)->line_x() + (*i)->abs_w(), tracks->y(), (*i)->line_x() + (*i)->abs_w(), tracks->y() + tracks->h() );
+                fl_line( (*i)->line_x() + (*i)->abs_w() - 1, tracks->y(), (*i)->line_x() + (*i)->abs_w() - 1, tracks->y() + tracks->h() );  // Double -1
             }
         }
     }
@@ -1475,7 +1511,8 @@ Timeline::draw ( void )
     
     if ( c & FL_DAMAGE_ALL )
     {
-       // DMESSAGE( "complete redraw" );
+        // FLTK seems to constantly indicate FL_DAMAGE_ALL appx every .5 seconds - FIXME why???
+        // DMESSAGE( "complete redraw" );
 
         draw_box( box(), BX, BY, w(), h(), color() );
 
@@ -1489,9 +1526,15 @@ Timeline::draw ( void )
         draw_child(*tile);
         
         fl_pop_clip();
-        
+
+#ifdef FLTK_SUPPORT
+        if ( Timeline::draw_with_cursor_overlay )
+            draw_overlay();
+        else
+            redraw_overlay();   // For FLTK this causes flicker when using cairo overlay, cause we get a constant redraw
+#else
         redraw_overlay();
-        
+#endif
         goto done;
     }
 
