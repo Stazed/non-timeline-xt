@@ -44,7 +44,6 @@ using std::list;
 #include <FL/Fl_Menu_Button.H>
 #include "../../FL/menu_popup.H"
 
-
 
 #define DAMAGE_SEQUENCE FL_DAMAGE_USER1
 #define DAMAGE_HEADER FL_DAMAGE_USER2
@@ -58,7 +57,6 @@ Control_Sequence::Control_Sequence (  ) : Sequence( 0 )
     init();
 }
 
-
 
 Control_Sequence::Control_Sequence ( Track *track, const char *name ) : Sequence( 0 )
 {
@@ -261,7 +259,7 @@ Control_Sequence::get ( Log_Entry &e ) const
 {
     e.add( ":track", _track );
     e.add( ":name", name() );
-    e.add( ":color", color() );
+    e.add( ":color", Fl_Widget::color());
 }
 
 void
