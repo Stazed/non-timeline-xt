@@ -775,9 +775,9 @@ _Pragma("GCC diagnostic pop")
       } // Fl_Group* o
       { Fl_Group* o = new Fl_Group(660, 31, 194, 40);
         { follow_transport = new Fl_Button(662, 33, 76, 35, "Follow Playhead");
-          follow_transport->tooltip("Toggle to follow transport playhead - Shortcut \'F4\'");
+          follow_transport->tooltip("Toggle to follow transport playhead - Shortcut \'F6\'");
           follow_transport->type(1);
-          follow_transport->shortcut(0xffc1);
+          follow_transport->shortcut(0xffc3);
           follow_transport->selection_color((Fl_Color)137);
           follow_transport->labelsize(12);
           follow_transport->callback((Fl_Callback*)cb_follow_transport);

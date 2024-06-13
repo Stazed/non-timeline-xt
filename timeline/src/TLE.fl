@@ -760,7 +760,7 @@ if(Timeline::follow_playhead)
    m->set();
 else
    m->clear();}
-            tooltip {Toggle to follow transport playhead - Shortcut 'F4'} xywh {662 33 76 35} type Toggle shortcut 0xffc1 selection_color 137 labelsize 12 align 128
+            tooltip {Toggle to follow transport playhead - Shortcut 'F6'} xywh {662 33 76 35} type Toggle shortcut 0xffc3 selection_color 137 labelsize 12 align 128
           }
           Fl_Button solo_blinker {
             label SOLO
