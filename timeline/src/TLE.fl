@@ -188,6 +188,8 @@ if ( Project::open() )
 
 update_menu();
 
+follow_transport->value(Timeline::follow_playhead);
+
 project_name->redraw();} {}
   }
   Function {run()} {} {
@@ -248,6 +250,7 @@ asprintf( &path, "%s/options", user_config_dir );
 ((Fl_Menu_Settings*)menubar)->load( menubar->find_item( "&Options" ), path );
 free( path );
 
+follow_transport->value(Timeline::follow_playhead);
 
 menubar->add( "&Timeline", 0, 0, const_cast< Fl_Menu_Item *>( timeline->menu->menu() ), FL_SUBMENU_POINTER );
 
@@ -278,7 +281,7 @@ Loggable::progress_callback( &TLE::progress_cb, this );} {}
         timeline->command_quit();
     }
 }} open selected
-      xywh {509 134 1025 770} type Double resizable
+      xywh {489 128 1025 770} type Double resizable
       code0 {o->xclass( APP_NAME );}
       class TLE_Window size_range {947 300 0 0} visible
     } {
@@ -305,7 +308,8 @@ pi.run();}
             } {
               MenuItem {} {
                 label {&Follow Playhead}
-                callback {Timeline::follow_playhead = menu_picked_value( o );}
+                callback {Timeline::follow_playhead = menu_picked_value( o );
+follow_transport->value(Timeline::follow_playhead);}
                 xywh {45 45 40 25} type Toggle value 1
               }
               MenuItem {} {
@@ -744,8 +748,20 @@ _Pragma("GCC diagnostic pop")}
           }
         }
         Fl_Group {} {
-          xywh {740 31 115 40}
+          xywh {660 31 194 40}
         } {
+          Fl_Button follow_transport {
+            label {Follow Playhead}
+            callback {Timeline::follow_playhead = !Timeline::follow_playhead;
+
+Fl_Menu_Item *m = const_cast<Fl_Menu_Item*>( menubar->find_item( "&Project/Se&ttings/&Follow Playhead" ) );
+
+if(Timeline::follow_playhead)
+   m->set();
+else
+   m->clear();}
+            tooltip {Toggle to follow transport playhead - Shortcut 'F4'} xywh {664 33 76 35} type Toggle shortcut 0xffc1 selection_color 137 labelsize 12 align 128
+          }
           Fl_Button solo_blinker {
             label SOLO
             xywh {800 33 50 15} box ROUNDED_BOX down_box ROUNDED_BOX color 74 selection_color 92 labelfont 1 labelsize 11 labelcolor 32

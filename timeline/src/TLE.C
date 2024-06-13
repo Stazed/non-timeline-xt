@@ -86,6 +86,7 @@ void TLE::cb_Info(Fl_Menu_* o, void* v) {
 
 void TLE::cb_Follow_i(Fl_Menu_* o, void*) {
   Timeline::follow_playhead = menu_picked_value( o );
+follow_transport->value(Timeline::follow_playhead);
 }
 void TLE::cb_Follow(Fl_Menu_* o, void* v) {
   ((TLE*)(o->parent()->parent()->user_data()))->cb_Follow_i(o,v);
@@ -510,6 +511,20 @@ Fl_Menu_Item TLE::menu_menubar[] = {
  {0,0,0,0,0,0,0,0,0}
 };
 
+void TLE::cb_follow_transport_i(Fl_Button*, void*) {
+  Timeline::follow_playhead = !Timeline::follow_playhead;
+
+Fl_Menu_Item *m = const_cast<Fl_Menu_Item*>( menubar->find_item( "&Project/Se&ttings/&Follow Playhead" ) );
+
+if(Timeline::follow_playhead)
+   m->set();
+else
+   m->clear();
+}
+void TLE::cb_follow_transport(Fl_Button* o, void* v) {
+  ((TLE*)(o->parent()->parent()->parent()->user_data()))->cb_follow_transport_i(o,v);
+}
+
 void TLE::save_options() {
   const char options_filename[] = "options";
     // const char state_filename[] = "state";
@@ -565,6 +580,8 @@ void TLE::load_timeline_settings() {
   	((Fl_Menu_Settings*)menubar)->load( menubar->find_item( "&Project/Se&ttings" ), "options" );
   
   update_menu();
+  
+  follow_transport->value(Timeline::follow_playhead);
   
   project_name->redraw();
 }
@@ -627,6 +644,7 @@ TLE::TLE() {
   ((Fl_Menu_Settings*)menubar)->load( menubar->find_item( "&Options" ), path );
   free( path );
   
+  follow_transport->value(Timeline::follow_playhead);
   
   menubar->add( "&Timeline", 0, 0, const_cast< Fl_Menu_Item *>( timeline->menu->menu() ), FL_SUBMENU_POINTER );
   
@@ -755,7 +773,16 @@ _Pragma("GCC diagnostic pop")
         } // Fl_Progress* disk_usage_progress
         o->end();
       } // Fl_Group* o
-      { Fl_Group* o = new Fl_Group(740, 31, 115, 40);
+      { Fl_Group* o = new Fl_Group(660, 31, 194, 40);
+        { follow_transport = new Fl_Button(664, 33, 76, 35, "Follow Playhead");
+          follow_transport->tooltip("Toggle to follow transport playhead - Shortcut \'F4\'");
+          follow_transport->type(1);
+          follow_transport->shortcut(0xffc1);
+          follow_transport->selection_color((Fl_Color)137);
+          follow_transport->labelsize(12);
+          follow_transport->callback((Fl_Callback*)cb_follow_transport);
+          follow_transport->align(Fl_Align(FL_ALIGN_WRAP));
+        } // Fl_Button* follow_transport
         { Fl_Blink_Button* o = solo_blinker = new Fl_Blink_Button(800, 33, 50, 15, "SOLO");
           solo_blinker->box(FL_ROUNDED_BOX);
           solo_blinker->down_box(FL_ROUNDED_BOX);

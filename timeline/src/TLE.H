@@ -40,6 +40,7 @@ public:
 #include <FL/Fl_Pack.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl_Progress.H>
+#include <FL/Fl_Button.H>
 #include "../../FL/Fl_Blink_Button.H"
 
 class TLE {
@@ -149,6 +150,11 @@ private:
   Fl_Progress *playback_buffer_progress;
   Fl_Progress *disk_usage_progress;
 public:
+  Fl_Button *follow_transport;
+private:
+  inline void cb_follow_transport_i(Fl_Button*, void*);
+  static void cb_follow_transport(Fl_Button*, void*);
+public:
   Fl_Blink_Button *solo_blinker;
   Fl_Blink_Button *rec_blinker;
   Fl_Blink_Button *selected_blinker;
@@ -179,7 +185,6 @@ extern "C" { void set_theme_dark(); }
 #include <FL/Fl_Output.H>
 #include "../../nonlib/file.h"
 #include <FL/Fl_Text_Editor.H>
-#include <FL/Fl_Button.H>
 
 class Project_Info_Dialog {
 public:
