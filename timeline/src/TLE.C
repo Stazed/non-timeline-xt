@@ -774,7 +774,7 @@ _Pragma("GCC diagnostic pop")
         o->end();
       } // Fl_Group* o
       { Fl_Group* o = new Fl_Group(660, 31, 194, 40);
-        { follow_transport = new Fl_Button(664, 33, 76, 35, "Follow Playhead");
+        { follow_transport = new Fl_Button(662, 33, 76, 35, "Follow Playhead");
           follow_transport->tooltip("Toggle to follow transport playhead - Shortcut \'F4\'");
           follow_transport->type(1);
           follow_transport->shortcut(0xffc1);
