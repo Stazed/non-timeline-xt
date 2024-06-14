@@ -291,7 +291,11 @@ public:
     /** convert a screen x coord into an start into the region */
     nframes_t x_to_offset ( int X )
         {
-            return timeline->x_to_ts( scroll_x() + ( X - _sequence->drawable_x() ) ) - _r->start;
+            nframes_t xts = timeline->x_to_ts( scroll_x() + ( X - _sequence->drawable_x() ) );
+
+            // Don't go below 0 as nframes_t is unsigned - intermittent cause of region or control point
+            // jumping to beginning of track when drag was attempted.
+            return xts > _r->start ? (xts - _r->start) : 0;
         }
 
     int active_r ( void ) const { return _sequence->active_r(); }

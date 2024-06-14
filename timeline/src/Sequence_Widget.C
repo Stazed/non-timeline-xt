@@ -550,14 +550,8 @@ Sequence_Widget::handle ( int m )
 
                 int64_t s = (int64_t)of - _drag->offset;
 
-                // For some reason using s < 0 would result in an incorrect condition, i.e. s would be greater than 0
-                // but the if() incorrectly succeeded. Very strange and intermittent. Reversing the logic seems to have
-                // fixed it???
-                if ( 0 > s )
-                {
-                    DMESSAGE("GOT S = %d: _drag->offset = %d: OF = %d", s, _drag->offset, of );
+                if ( s < 0 )
                     s = 0;
-                }
 
                 start(s);
                 
