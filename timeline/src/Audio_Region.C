@@ -838,6 +838,20 @@ Audio_Region::draw_label ( void )
 void
 Audio_Region::split ( nframes_t where )
 {
+    /* Don't allow split if 'where' is outside of focused region. This can
+       happen if user uses keyboard shortcuts to move transport as they
+       are trying to split a region into multiple parts. The focused region
+       would be the original region. On a second split, if the user is 
+       trying to split the secondary region and focus is still on original,
+       the split would lengthen the original and fail to split the wanted
+       secondary. This causes overlaps and is confusing. We cannot determine
+       which region is to be split from the transport line itself, since it
+       can span multiple tracks and thus multiple regions. Also if 'where' is
+       the transport playhead which does not bisect focused region, then
+       splitting would duplicate the focused region */
+    if(where >= (_r->start + _r->length) || where <= _r->start)
+        return;
+    
     block_start();
     
     nframes_t old_fade_in = _fade_in.length;
