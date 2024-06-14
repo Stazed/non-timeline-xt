@@ -49,7 +49,7 @@ public:
   void save_options();
   void save();
   void quit();
-  void open( const char *name );
+  bool open( const char *name );
   void save_timeline_settings();
 private:
   void reset_timeline_settings( void );

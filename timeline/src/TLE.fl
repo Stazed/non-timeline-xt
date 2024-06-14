@@ -159,8 +159,9 @@ else
     timeline->command_quit();
 }} {}
   }
-  Function {open( const char *name )} {} {
-    code {timeline->command_load( name, NULL );} {}
+  Function {open( const char *name )} {open return_type bool
+  } {
+    code {return timeline->command_load( name, NULL );} {}
   }
   Function {save_timeline_settings()} {open
   } {
@@ -281,7 +282,7 @@ Loggable::progress_callback( &TLE::progress_cb, this );} {}
         timeline->command_quit();
     }
 }} open selected
-      xywh {489 128 1025 770} type Double resizable
+      xywh {540 132 1025 770} type Double resizable
       code0 {o->xclass( APP_NAME );}
       class TLE_Window size_range {947 300 0 0} visible
     } {
@@ -394,9 +395,26 @@ main_window->redraw();}
 
 const char *name = fl_dir_chooser( "Open Project", path );
 
-free( path );
+if(open( name ))
+{
+   std::string s_name(name);
+   std::size_t found = s_name.find_last_of("/\\\\");
 
-open( name );}
+   std::string s_base_dir = s_name.substr(0, found);
+
+   if ( path )
+   {
+       // If the path to opened project is different from default, then update the default path
+       if( strcmp( path, s_base_dir.c_str() ) )
+       {
+           write_line( user_config_dir, "default_path", s_base_dir.c_str() );
+       }
+   }
+   else    // No path previously set, so set it now
+       write_line( user_config_dir, "default_path", s_base_dir.c_str() );
+}
+
+free( path );}
               xywh {15 15 40 25}
             }
             MenuItem {} {

@@ -177,9 +177,26 @@ void TLE::cb_Open_i(Fl_Menu_*, void*) {
 
 const char *name = fl_dir_chooser( "Open Project", path );
 
-free( path );
+if(open( name ))
+{
+   std::string s_name(name);
+   std::size_t found = s_name.find_last_of("/\\");
 
-open( name );
+   std::string s_base_dir = s_name.substr(0, found);
+
+   if ( path )
+   {
+       // If the path to opened project is different from default, then update the default path
+       if( strcmp( path, s_base_dir.c_str() ) )
+       {
+           write_line( user_config_dir, "default_path", s_base_dir.c_str() );
+       }
+   }
+   else    // No path previously set, so set it now
+       write_line( user_config_dir, "default_path", s_base_dir.c_str() );
+}
+
+free( path );
 }
 void TLE::cb_Open(Fl_Menu_* o, void* v) {
   ((TLE*)(o->parent()->parent()->user_data()))->cb_Open_i(o,v);
@@ -552,8 +569,8 @@ void TLE::quit() {
   }
 }
 
-void TLE::open( const char *name ) {
-  timeline->command_load( name, NULL );
+bool TLE::open( const char *name ) {
+  return timeline->command_load( name, NULL );
 }
 
 void TLE::save_timeline_settings() {
