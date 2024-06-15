@@ -252,6 +252,7 @@ asprintf( &path, "%s/options", user_config_dir );
 free( path );
 
 follow_transport->value(Timeline::follow_playhead);
+snap_toggle_bypass->value(!Timeline::snap_toggle_bypass);
 
 menubar->add( "&Timeline", 0, 0, const_cast< Fl_Menu_Item *>( timeline->menu->menu() ), FL_SUBMENU_POINTER );
 
@@ -282,7 +283,7 @@ Loggable::progress_callback( &TLE::progress_cb, this );} {}
         timeline->command_quit();
     }
 }} open selected
-      xywh {540 132 1025 770} type Double resizable
+      xywh {809 239 1025 770} type Double resizable
       code0 {o->xclass( APP_NAME );}
       class TLE_Window size_range {947 300 0 0} visible
     } {
@@ -765,11 +766,11 @@ _Pragma("GCC diagnostic pop")}
             code0 {o->type( FL_VERTICAL );}
           }
         }
-        Fl_Group {} {
+        Fl_Group {} {open
           xywh {660 31 194 40}
         } {
           Fl_Button follow_transport {
-            label {Follow Playhead}
+            label Playhead
             callback {Timeline::follow_playhead = !Timeline::follow_playhead;
 
 Fl_Menu_Item *m = const_cast<Fl_Menu_Item*>( menubar->find_item( "&Project/Se&ttings/&Follow Playhead" ) );
@@ -778,7 +779,12 @@ if(Timeline::follow_playhead)
    m->set();
 else
    m->clear();}
-            tooltip {Toggle to follow transport playhead - Shortcut 'F6'} xywh {662 33 76 35} type Toggle shortcut 0xffc3 selection_color 137 labelsize 12 align 128
+            tooltip {Toggle to follow transport playhead - Shortcut 'F6'} xywh {662 33 76 15} type Toggle shortcut 0xffc3 selection_color 137 labelsize 12 align 128
+          }
+          Fl_Button snap_toggle_bypass {
+            label Snap
+            callback {Timeline::snap_toggle_bypass = !o->value();}
+            tooltip {Toggle to bypass snapping- Shortcut 'F7'} xywh {662 53 76 15} type Toggle shortcut 0xffc4 selection_color 58 labelsize 12 align 128
           }
           Fl_Button solo_blinker {
             label SOLO

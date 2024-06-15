@@ -231,6 +231,9 @@ abs_diff ( nframes_t n1, nframes_t n2 )
 void
 Sequence::snap ( Sequence_Widget *r )
 {
+    if( Timeline::snap_toggle_bypass )
+        return;
+
     const int snap_pixels = 10;
     const nframes_t snap_frames = timeline->x_to_ts( snap_pixels );
 

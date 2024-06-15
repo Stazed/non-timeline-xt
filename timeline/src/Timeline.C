@@ -85,6 +85,7 @@ bool Timeline::draw_with_cursor_overlay = true;
 Timeline::snap_e Timeline::snap_to = Bars;
 bool Timeline::snapping_on_hold = false;
 bool Timeline::snap_magnetic = true;
+bool Timeline::snap_toggle_bypass = false;
 bool Timeline::follow_playhead = true;
 bool Timeline::center_playhead = true;
 bool Timeline::playback_latency_compensation = false;

@@ -158,6 +158,7 @@ public:
     static snap_e snap_to;
     static bool snapping_on_hold;
     static bool snap_magnetic;
+    static bool snap_toggle_bypass;
     static bool follow_playhead;
     static bool center_playhead;
     static bool playback_latency_compensation;

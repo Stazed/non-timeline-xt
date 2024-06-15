@@ -542,6 +542,13 @@ void TLE::cb_follow_transport(Fl_Button* o, void* v) {
   ((TLE*)(o->parent()->parent()->parent()->user_data()))->cb_follow_transport_i(o,v);
 }
 
+void TLE::cb_snap_toggle_bypass_i(Fl_Button* o, void*) {
+  Timeline::snap_toggle_bypass = !o->value();
+}
+void TLE::cb_snap_toggle_bypass(Fl_Button* o, void* v) {
+  ((TLE*)(o->parent()->parent()->parent()->user_data()))->cb_snap_toggle_bypass_i(o,v);
+}
+
 void TLE::save_options() {
   const char options_filename[] = "options";
     // const char state_filename[] = "state";
@@ -662,6 +669,7 @@ TLE::TLE() {
   free( path );
   
   follow_transport->value(Timeline::follow_playhead);
+  snap_toggle_bypass->value(!Timeline::snap_toggle_bypass);
   
   menubar->add( "&Timeline", 0, 0, const_cast< Fl_Menu_Item *>( timeline->menu->menu() ), FL_SUBMENU_POINTER );
   
@@ -791,7 +799,7 @@ _Pragma("GCC diagnostic pop")
         o->end();
       } // Fl_Group* o
       { Fl_Group* o = new Fl_Group(660, 31, 194, 40);
-        { follow_transport = new Fl_Button(662, 33, 76, 35, "Follow Playhead");
+        { follow_transport = new Fl_Button(662, 33, 76, 15, "Playhead");
           follow_transport->tooltip("Toggle to follow transport playhead - Shortcut \'F6\'");
           follow_transport->type(1);
           follow_transport->shortcut(0xffc3);
@@ -800,6 +808,15 @@ _Pragma("GCC diagnostic pop")
           follow_transport->callback((Fl_Callback*)cb_follow_transport);
           follow_transport->align(Fl_Align(FL_ALIGN_WRAP));
         } // Fl_Button* follow_transport
+        { snap_toggle_bypass = new Fl_Button(662, 53, 76, 15, "Snap");
+          snap_toggle_bypass->tooltip("Toggle to bypass snapping- Shortcut \'F7\'");
+          snap_toggle_bypass->type(1);
+          snap_toggle_bypass->shortcut(0xffc4);
+          snap_toggle_bypass->selection_color((Fl_Color)58);
+          snap_toggle_bypass->labelsize(12);
+          snap_toggle_bypass->callback((Fl_Callback*)cb_snap_toggle_bypass);
+          snap_toggle_bypass->align(Fl_Align(FL_ALIGN_WRAP));
+        } // Fl_Button* snap_toggle_bypass
         { Fl_Blink_Button* o = solo_blinker = new Fl_Blink_Button(800, 33, 50, 15, "SOLO");
           solo_blinker->box(FL_ROUNDED_BOX);
           solo_blinker->down_box(FL_ROUNDED_BOX);

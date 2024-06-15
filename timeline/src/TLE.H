@@ -155,6 +155,11 @@ private:
   inline void cb_follow_transport_i(Fl_Button*, void*);
   static void cb_follow_transport(Fl_Button*, void*);
 public:
+  Fl_Button *snap_toggle_bypass;
+private:
+  inline void cb_snap_toggle_bypass_i(Fl_Button*, void*);
+  static void cb_snap_toggle_bypass(Fl_Button*, void*);
+public:
   Fl_Blink_Button *solo_blinker;
   Fl_Blink_Button *rec_blinker;
   Fl_Blink_Button *selected_blinker;
