@@ -130,6 +130,7 @@ class Sequence_Widget : public Loggable
 protected:
     
     char *_label;
+    bool _can_resize_label;
 
     Sequence *_sequence;                                              /* track this region belongs to */
    

@@ -41,6 +41,7 @@ Sequence_Widget::Sequence_Widget ( )
 {
     _nudge_dirty = false;
     _label = 0;
+    _can_resize_label = true;
     _sequence = NULL;
 
     _r = &_range;
@@ -357,10 +358,17 @@ Sequence_Widget::draw_label ( const char *label, Fl_Align align, Fl_Color color,
     lab.value = label;
     lab.font = FL_HELVETICA_ITALIC;
 
-    if(t)
-        lab.size = 9 + t->size();
-    else
-        lab.size = 9;
+    if (_can_resize_label)
+    {
+        if(t)
+            lab.size = 9 + t->size();
+        else
+            lab.size = 9;
+    }
+    else    // Tempo and Time point labels are fixed size
+    {
+        lab.size = 11;
+    }
 
     int lw = 0, lh = 0;
 

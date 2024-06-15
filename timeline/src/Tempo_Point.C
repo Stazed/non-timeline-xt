@@ -25,12 +25,14 @@
 
 Tempo_Point::Tempo_Point ( )
 {
+    _can_resize_label = false;
     timeline->tempo_track->add( this );
 }
 
 Tempo_Point::Tempo_Point ( nframes_t when, float bpm )
 {
     _tempo = bpm;
+    _can_resize_label = false;
 
     _make_label();
 

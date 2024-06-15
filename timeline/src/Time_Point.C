@@ -25,11 +25,13 @@
 
 Time_Point::Time_Point ( ) : _time( 4, 4 )
 {
+    _can_resize_label = false;
     timeline->time_track->add( this );
 }
 
 Time_Point::Time_Point ( nframes_t when, int bpb, int note ) : _time( bpb, note )
 {
+    _can_resize_label = false;
     _make_label();
 
     timeline->time_track->add( this );
