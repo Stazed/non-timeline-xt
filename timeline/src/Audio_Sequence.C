@@ -244,6 +244,19 @@ Audio_Sequence::draw ( void )
                     b.y = (*r)->y();
                     b.w = (*r)->w();
                     b.h = (*r)->h();
+#ifdef FLTK_SUPPORT
+                    // Keep overlap from scrolling before track beginning into the track header region
+                    // magic number 200 = track header width
+                    if (b.x < 200)
+                    {
+                        b.w = b.w - (200 - b.x);
+                        b.x = 200;
+                    }
+
+                    // This is to keep the overlap from scrolling above the audio track into the cursor tracks
+                    // magic number 165 = 24 * 5 (cursor tracks) + 45 (transport)
+                    b.y = b.y < 165 ? 165 : b.y;
+#endif
                 }
                 else
                 {
@@ -251,6 +264,18 @@ Audio_Sequence::draw ( void )
                     b.y = o->y();
                     b.w = (o->x() + o->w()) - (*r)->x();
                     b.h = o->h();
+
+#ifdef FLTK_SUPPORT
+                    // Keep overlap from scrolling before track beginning into the track header region
+                    if (b.x < 200)
+                    {
+                        b.w = b.w - (200 - b.x);
+                        b.x = 200;
+                    }
+
+                    // This is to keep the overlap from scrolling above the audio track into the cursor tracks
+                    b.y = b.y < 165 ? 165 : b.y;
+#endif
                 }
                 // This is for overlapping audio regions - changes color yellow shade on overlap
                 if ( b.w > 0 )
