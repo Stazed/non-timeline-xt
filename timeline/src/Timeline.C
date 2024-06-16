@@ -1404,10 +1404,13 @@ Timeline::draw_cursors ( Cursor_Sequence *o ) const
                 // Don't allow width to go into negative or it draws over the header
                 abs_w = abs_w < 0 ? 0 : abs_w;
 
+                // This is to keep the overlap from scrolling above the audio track into the cursor tracks
+                int ty = tracks->y() < 165 ? 165 : tracks->y();
+
                 //    DMESSAGE("ABS_W = %d", abs_w);
                 //    DMESSAGE("line_x = %d: tracks-x = %d: tracks-w = %d", (*i)->line_x(), tracks->x(), tracks->w());
 
-                cairo_rectangle( cc, line_x, tracks->y(), abs_w, tracks->h() );
+                cairo_rectangle( cc, line_x, ty, abs_w, tracks->h() );
  
                 cairo_fill( cc );
 
