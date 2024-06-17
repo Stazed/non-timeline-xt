@@ -162,6 +162,9 @@ public:
     static bool follow_playhead;
     static bool center_playhead;
     static bool playback_latency_compensation;
+#ifdef FLTK_SUPPORT
+    static bool need_overlay_redraw;
+#endif
 
     Tempo_Sequence *tempo_track;
     Time_Sequence  *time_track;

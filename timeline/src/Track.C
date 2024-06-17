@@ -282,7 +282,11 @@ Track::set ( Log_Entry &e )
         else if ( ! strcmp( s, ":color" ) )
         {
             color( (Fl_Color)atoll( v ) );
+#ifdef FLTK_SUPPORT
+            timeline->redraw_overlay();
+#else
             redraw();
+#endif
         }
         else if ( ! strcmp( s, ":show-all-takes" ) )
             show_all_takes( atoi( v ) );
@@ -877,7 +881,11 @@ Track::menu_cb ( const Fl_Menu_ *m )
             color( fl_rgb_color( r, g, b ) );
         }
 
+#ifdef FLTK_SUPPORT
+        timeline->redraw_overlay();
+#else
         redraw();
+#endif
     }
     else if ( ! strcmp( picked, "Flags/Record" ) )
     {
@@ -1204,6 +1212,9 @@ Track::handle ( int m )
 	    if ( dragging != ((Track_Header*)child(0))->output_connector_handle &&
 		 Fl::event_x() >= Track::width() )
             {
+#ifdef FLTK_SUPPORT
+                timeline->redraw_overlay();
+#endif
                 return Fl_Group::handle(m);
             }
 	    else
@@ -1221,7 +1232,11 @@ Track::handle ( int m )
             /* if ( ! Fl::event_inside(this) )// && this == receptive_to_drop ) */
             /* { */
                 receptive_to_drop = 0;
+#ifdef FLTK_SUPPORT
+                timeline->redraw_overlay();
+#else
                 redraw();
+#endif
                 Fl::selection_owner(0);
             /* } */
             return 1;
@@ -1245,7 +1260,11 @@ Track::handle ( int m )
         case FL_DND_RELEASE:
 	    dragging = NULL;
             receptive_to_drop = 0;
+#ifdef FLTK_SUPPORT
+            timeline->redraw_overlay();
+#else
             redraw();
+#endif
             Fl::selection_owner(0);
             return 1;
         case FL_DND_DRAG:
@@ -1261,20 +1280,32 @@ Track::handle ( int m )
             
             {
                 receptive_to_drop = ((Track_Header*)child(0))->input_connector_handle;
+#ifdef FLTK_SUPPORT
+                timeline->redraw_overlay();
+#else
                 redraw();
+#endif
                 return 1;
             }
             else
             {
                 receptive_to_drop = NULL;
+#ifdef FLTK_SUPPORT
+                timeline->redraw_overlay();
+#else
                 redraw();
+#endif
                 return 0;
             }
         }
         case FL_PASTE:
         {
             receptive_to_drop = 0;
+#ifdef FLTK_SUPPORT
+            timeline->redraw_overlay();
+#else
             redraw();
+#endif
 
             if (! Fl::event_inside( ((Track_Header*)child(0))->input_connector_handle ) )
                 return 0;

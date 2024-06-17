@@ -64,7 +64,11 @@ Control_Point::set ( Log_Entry &e )
         if ( ! strcmp( s, ":y" ) )
             _y = atof( v );
 
+#ifdef FLTK_SUPPORT
+        timeline->redraw_overlay();
+#else
         redraw();
+#endif
 
         //          _make_label();
     }
@@ -127,7 +131,11 @@ Control_Point::handle ( int m )
     switch ( m )
     {
         case FL_RELEASE:
+#ifdef FLTK_SUPPORT
+            timeline->redraw_overlay();
+#else
             redraw();
+#endif
             break;
         case FL_DRAG:
         {
@@ -145,7 +153,11 @@ Control_Point::handle ( int m )
             if ( Y >= 0 && Y < parent()->h() )
             {
                 _y = (float)Y / parent()->h();
+#ifdef FLTK_SUPPORT
+                timeline->redraw_overlay();
+#else
                 redraw();
+#endif
             }
 
             break;

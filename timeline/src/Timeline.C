@@ -89,6 +89,9 @@ bool Timeline::snap_toggle_bypass = false;
 bool Timeline::follow_playhead = true;
 bool Timeline::center_playhead = true;
 bool Timeline::playback_latency_compensation = false;
+#ifdef FLTK_SUPPORT
+bool Timeline::need_overlay_redraw = false;
+#endif
 
 const float UPDATE_FREQ = 1.0f / 18.0f;
 
@@ -213,7 +216,12 @@ protected:
 void
 Timeline::redraw_overlay ( void )
 {
+#ifdef FLTK_SUPPORT
+    need_overlay_redraw = true;
+    damage(FL_DAMAGE_ALL);
+#else
     ((Fl_Overlay_Window*)window())->redraw_overlay();
+#endif
 }
 
 nframes_t 
@@ -342,20 +350,27 @@ Timeline::cb_scroll ( Fl_Widget * /* w */)
         _fpp = panzoomer->zoom();
 
         panzoomer->x_value( ts_to_x( under_mouse ) );
-
+#ifdef FLTK_SUPPORT
+        redraw_overlay();
+#else
         redraw();
+#endif
     }
 
     if ( _old_yposition != panzoomer->y_value() )
     {
-        tracks->position( tracks->x(), track_window->y() - (int)panzoomer->y_value() );  
+        tracks->position( tracks->x(), track_window->y() - (int)panzoomer->y_value() );
+#ifdef FLTK_SUPPORT
+        redraw_overlay();
+#else
         damage( FL_DAMAGE_SCROLL );
+#endif
     }
 
     if ( _old_xposition != x_to_ts( panzoomer->x_value() ))
     {
 #ifdef FLTK_SUPPORT
-        damage( FL_DAMAGE_SCROLL );
+        redraw_overlay();
 #else   // to force redraw of tempo, time marker, annotation labels for NTK
         damage( FL_DAMAGE_ALL );
 #endif
@@ -493,7 +508,11 @@ Timeline::menu_cb ( Fl_Menu_ *m )
 	fix_range();
 
         /* FIXME: only needs to damage the location of the old cursor! */
+#ifdef FLTK_SUPPORT
+        timeline->redraw_overlay();
+#else
         redraw();
+#endif
     }
     else if ( ! strcmp( picked, "Edit end to mouse" ) )
     {
@@ -507,7 +526,11 @@ Timeline::menu_cb ( Fl_Menu_ *m )
 	fix_range();
 
         /* FIXME: only needs to damage the location of the old cursor! */
+#ifdef FLTK_SUPPORT
+        timeline->redraw_overlay();
+#else
         redraw();
+#endif
     }
     else if ( ! strcmp( picked, "Nudge selected left" ) )
     {
@@ -575,7 +598,11 @@ Timeline::menu_cb ( Fl_Menu_ *m )
 
         range_start( t );
 
+#ifdef FLTK_SUPPORT
+        timeline->redraw_overlay();
+#else
         redraw();
+#endif
     }
     else if ( ! strcmp( picked, "Swap edit end and playhead" ) )
     {
@@ -585,19 +612,31 @@ Timeline::menu_cb ( Fl_Menu_ *m )
 
         range_end( t );
 
+#ifdef FLTK_SUPPORT
+        timeline->redraw_overlay();
+#else
         redraw();
+#endif
     }
     else if ( ! strcmp( picked, "Edit start to playhead" ) )
     {
         range_start( transport->frame );
 
+#ifdef FLTK_SUPPORT
+        timeline->redraw_overlay();
+#else
         redraw();
+#endif
     }
     else if ( ! strcmp( picked, "Edit end to playhead" ) )
     {
         range_end( transport->frame );
 
+#ifdef FLTK_SUPPORT
+        timeline->redraw_overlay();
+#else
         redraw();
+#endif
     }
     else if ( ! strcmp( picked, "Punch from edit" ) )
     {
@@ -611,7 +650,11 @@ Timeline::menu_cb ( Fl_Menu_ *m )
             Loggable::block_end();
         }
 
+#ifdef FLTK_SUPPORT
+        timeline->redraw_overlay();
+#else
         redraw();
+#endif
     }
     else if ( ! strcmp( picked, "Playback from edit" ) )
     {
@@ -634,11 +677,19 @@ Timeline::menu_cb ( Fl_Menu_ *m )
             Loggable::block_end();
         }
 
+#ifdef FLTK_SUPPORT
+        timeline->redraw_overlay();
+#else
         redraw();
+#endif
     }
     else if ( ! strcmp( picked, "Redraw" ) )
     {
+#ifdef FLTK_SUPPORT
+        timeline->redraw_overlay();
+#else
         redraw();
+#endif
     }
     else if ( ! strcmp( picked, "Import source at mouse" ) )
     {
@@ -1533,7 +1584,15 @@ Timeline::draw ( void )
         
         fl_pop_clip();
 
+#ifdef FLTK_SUPPORT
+        if(need_overlay_redraw)
+        {
+            need_overlay_redraw = false;
+            draw_overlay();
+        }
+#else
         redraw_overlay();
+#endif
 
         goto done;
     }

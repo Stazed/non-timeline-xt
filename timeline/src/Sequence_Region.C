@@ -104,7 +104,11 @@ Sequence_Region::trim_right ( nframes_t where )
 void
 Sequence_Region::trim ( enum trim_e t, int X )
 {
+#ifdef FLTK_SUPPORT
+    timeline->redraw_overlay();
+#else
     redraw();
+#endif
 
     nframes_t where = timeline->x_to_offset( X );
 
@@ -186,7 +190,11 @@ Sequence_Region::handle ( int m )
                         select();
                 }
 
+#ifdef FLTK_SUPPORT
+                timeline->redraw_overlay();
+#else
                 redraw();
+#endif
                 return 1;
             }
 

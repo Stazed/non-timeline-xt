@@ -100,7 +100,11 @@ Sequence_Widget::operator= ( const Sequence_Widget &rhs )
 
 Sequence_Widget::~Sequence_Widget ( )
 {
+#ifdef FLTK_SUPPORT
+    timeline->redraw_overlay();
+#else
     redraw();
+#endif
 
     if ( this == _pushed )
         _pushed = NULL;
@@ -285,7 +289,11 @@ Sequence_Widget::start ( nframes_t where )
 
     if  ( ! selected() )
     {
+#ifdef FLTK_SUPPORT
+        timeline->redraw_overlay();
+#else
         redraw();
+#endif
         _r->start = where;
     }
     else
@@ -552,8 +560,11 @@ Sequence_Widget::handle ( int m )
             }
             else if ( test_press( FL_BUTTON1 ) || test_press( FL_BUTTON1 + FL_CTRL ) )
             {
+#ifdef FLTK_SUPPORT
+                timeline->redraw_overlay();
+#else
                 redraw();
-
+#endif
                 const nframes_t of = timeline->x_to_offset( X );
 
                 int64_t s = (int64_t)of - _drag->offset;
@@ -638,7 +649,11 @@ Sequence_Widget::select ( void )
     _selection.push_back( this );
     _selection.sort( sort_func );
 
+#ifdef FLTK_SUPPORT
+    timeline->redraw_overlay();
+#else
     redraw();
+#endif
 }
 
 /** remove this widget from the selection */
@@ -646,7 +661,11 @@ void
 Sequence_Widget::deselect ( void )
 {
     _selection.remove( this );
+#ifdef FLTK_SUPPORT
+    timeline->redraw_overlay();
+#else
     redraw();
+#endif
 }
 
 bool
@@ -659,7 +678,11 @@ Sequence_Widget::selected ( void ) const
 void
 Sequence_Widget::remove ( void )
 {
+#ifdef FLTK_SUPPORT
+    timeline->redraw_overlay();
+#else
     redraw();
+#endif
     sequence()->queue_delete( this );
 }
 

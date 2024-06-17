@@ -134,7 +134,11 @@ Control_Sequence::name ( const char *s )
     else
         update_osc_path();
 
+#ifdef FLTK_SUPPORT
+    timeline->redraw_overlay();
+#else
     redraw();
+#endif
 }
 
 void
@@ -623,7 +627,11 @@ Control_Sequence::menu_cb ( const Fl_Menu_ *m )
             color( fl_rgb_color( r, g, b ) );
         }
 
+#ifdef FLTK_SUPPORT
+        timeline->redraw_overlay();
+#else
         redraw();
+#endif
     }
 }
 

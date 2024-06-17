@@ -258,8 +258,11 @@ Audio_Region::menu_cb ( const Fl_Menu_ *m )
 
         if(edit_end <= _r->start)
             return;
-
+#ifdef FLTK_SUPPORT
+        timeline->redraw_overlay();
+#else
         redraw();
+#endif
 	trim_left( edit_start );
 	trim_right( edit_end );
     }
@@ -311,17 +314,29 @@ Audio_Region::menu_cb ( const Fl_Menu_ *m )
         timeline->range( start(), length() );
     else if ( ! strcmp( picked, "/Trim left to playhead" ) )
     {
+#ifdef FLTK_SUPPORT
+        timeline->redraw_overlay();
+#else
         redraw();
+#endif
         trim_left( transport->frame );
     }
     else if ( ! strcmp( picked, "/Trim right to playhead" ) )
     {
+#ifdef FLTK_SUPPORT
+        timeline->redraw_overlay();
+#else
         redraw();
+#endif
         trim_right( transport->frame );
     }
     else if ( ! strcmp( picked, "/Split at playhead" ) )
     {
+#ifdef FLTK_SUPPORT
+        timeline->redraw_overlay();
+#else
         redraw();
+#endif
         split( transport->frame );
 
         /* To update the below_mouse() widget as the split may have changed it */
@@ -352,7 +367,11 @@ Audio_Region::menu_cb ( const Fl_Menu_ *m )
     else
         FATAL( "Unknown menu choice \"%s\"", picked );
 
+#ifdef FLTK_SUPPORT
+    timeline->redraw_overlay();
+#else
     redraw();
+#endif
 }
 
 #include "../../FL/test_press.H"
@@ -910,7 +929,11 @@ Audio_Region::handle ( int m )
             if ( _adjusting_gain > 0 )
             {
                 _adjusting_gain = 0;
+#ifdef FLTK_SUPPORT
+                timeline->redraw_overlay();
+#else
                 redraw();
+#endif
                 return 1;
             }
             break;
@@ -920,7 +943,11 @@ Audio_Region::handle ( int m )
                 if ( _adjusting_gain <= 0 )
                 {
                     _adjusting_gain = _scale;
+#ifdef FLTK_SUPPORT
+                    timeline->redraw_overlay();
+#else
                     redraw();
+#endif
                 }
                 return 1;
             }
@@ -931,7 +958,12 @@ Audio_Region::handle ( int m )
             if ( _adjusting_gain > 0 )
             {
                 _adjusting_gain = 0;
+                
+#ifdef FLTK_SUPPORT
+                timeline->redraw_overlay();
+#else
                 redraw();
+#endif
             }
             return Sequence_Region::handle( m );
         case FL_PUSH:
@@ -1005,7 +1037,11 @@ Audio_Region::handle ( int m )
                 if ( _scale < 0.01f )
                     _scale = 0.01f;
 
+#ifdef FLTK_SUPPORT
+                timeline->redraw_overlay();
+#else
                 redraw();
+#endif
                 return 1;
             }
 
@@ -1024,7 +1060,11 @@ Audio_Region::handle ( int m )
                         _r->offset = os - timeline->x_to_ts( d );
                 }
 
+#ifdef FLTK_SUPPORT
+                timeline->redraw_overlay();
+#else
                 redraw();
+#endif
                 return 1;
             }
 
@@ -1077,7 +1117,11 @@ Audio_Region::normalize ( void )
     
     /* FIXME: wrong place for this? */
     sequence()->handle_widget_change( start(), length() );
+#ifdef FLTK_SUPPORT
+    timeline->redraw_overlay();
+#else
     redraw();
+#endif
 }
 
 void
@@ -1086,5 +1130,9 @@ Audio_Region::set_volume( void )
     Region_Volume_Editor ti( _scale );
 
     sequence()->handle_widget_change( start(), length() );
+#ifdef FLTK_SUPPORT
+    timeline->redraw_overlay();
+#else
     redraw();
+#endif
 }

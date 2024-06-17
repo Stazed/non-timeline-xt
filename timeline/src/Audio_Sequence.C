@@ -281,20 +281,23 @@ Audio_Sequence::draw ( void )
                 if ( b.w > 0 )
                 {
 #ifdef FLTK_SUPPORT
-                    cairo_surface_t* Xsurface = cairo_xlib_surface_create
-                            (fl_display, fl_window, fl_visual->visual,
-                             Fl_Window::current()->w(), Fl_Window::current()->h());
+                    if(Timeline::need_overlay_redraw)
+                    {
+                        cairo_surface_t* Xsurface = cairo_xlib_surface_create
+                                (fl_display, fl_window, fl_visual->visual,
+                                 Fl_Window::current()->w(), Fl_Window::current()->h());
 
-                    cairo_t *cc = cairo_create (Xsurface);
-                    cairo_set_source_rgba( cc, 1, 1, 0, 0.35 );
-                    cairo_rectangle( cc, b.x, b.y, b.w, b.h );
+                        cairo_t *cc = cairo_create (Xsurface);
+                        cairo_set_source_rgba( cc, 1, 1, 0, 0.35 );
+                        cairo_rectangle( cc, b.x, b.y, b.w, b.h );
 
-                    cairo_fill( cc );
+                        cairo_fill( cc );
 
-                    cairo_set_operator( cc, CAIRO_OPERATOR_OVER );
-                    
-                    cairo_surface_destroy(Xsurface);
-                    cairo_destroy(cc);
+                        cairo_set_operator( cc, CAIRO_OPERATOR_OVER );
+
+                        cairo_surface_destroy(Xsurface);
+                        cairo_destroy(cc);
+                    }
 #else
                     cairo_t *cc = Fl::cairo_cc();
                 
@@ -398,7 +401,11 @@ Audio_Sequence::handle_paste ( const char *text )
             
     r->log_create();
 
+#ifdef FLTK_SUPPORT
+    timeline->redraw_overlay();
+#else
     redraw();
+#endif
             
     return 1;
 

@@ -187,7 +187,11 @@ Transport::cb_button ( Fl_Widget *w )
     else if ( w == _record_button )
         update_record_state();
     else if ( w == _punch_button )
+#ifdef FLTK_SUPPORT
+        timeline->redraw_overlay();
+#else
         timeline->redraw();
+#endif
 }
 
 void

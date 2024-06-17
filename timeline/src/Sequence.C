@@ -402,11 +402,19 @@ Sequence::handle ( int m )
             return 0;
         case FL_FOCUS:
             Fl_Group::handle( m );
+#ifdef FLTK_SUPPORT
+            timeline->redraw_overlay();
+#else
             redraw();
+#endif
             return 1;
         case FL_UNFOCUS:
             Fl_Group::handle( m );
+#ifdef FLTK_SUPPORT
+            timeline->redraw_overlay();
+#else
             redraw();
+#endif
             return 1;
         case FL_LEAVE:
 //            DMESSAGE( "leave" );
