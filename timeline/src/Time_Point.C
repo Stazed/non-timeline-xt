@@ -137,6 +137,7 @@ public:
     Time_Point_Editor ( time_sig *sig )
         : Fl_Menu_Window( 150, 110, "Edit Time" )
         {
+            _sucess = false;
             _sig = sig;
 
             set_modal();
