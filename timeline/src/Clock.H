@@ -192,7 +192,7 @@ public:
 
             const char *types[] = { "HMS", "BBT", "Timecode", "Sample" };
 
-            fl_color( fl_color_average( FL_WHITE, FL_GRAY, 0.50 ) );
+            fl_color(  FL_FOREGROUND_COLOR );
 
             switch ( type() )
             {

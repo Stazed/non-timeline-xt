@@ -283,11 +283,11 @@ Loggable::progress_callback( &TLE::progress_cb, this );} {}
         timeline->command_quit();
     }
 }} open selected
-      xywh {809 239 1025 770} type Double resizable
+      xywh {894 206 1025 770} type Double resizable
       code0 {o->xclass( APP_NAME );}
       class TLE_Window size_range {947 300 0 0} visible
     } {
-      Fl_Group {} {open
+      Fl_Group {} {
         xywh {0 -53 1025 126} box FLAT_BOX
       } {
         Fl_Menu_Bar menubar {
@@ -729,7 +729,7 @@ _Pragma("GCC diagnostic pop")}
           xywh {585 32 155 40} resizable
           code0 {o->labeltype( FL_NO_LABEL );}
         }
-        Fl_Group {} {
+        Fl_Group {} {open
           xywh {850 23 175 50}
         } {
           Fl_Box {} {
@@ -817,7 +817,7 @@ else
         }
         Fl_Box stats_box {
           label {<stats>}
-          xywh {745 0 235 25} labelsize 13 labelcolor 53 align 88
+          xywh {745 0 235 25} labelsize 13 align 88
         }
         Fl_Button sm_blinker {
           label SM
@@ -845,7 +845,7 @@ else
       }
       Fl_Box project_name {
         label {<project name>}
-        private xywh {440 0 305 24} labeltype SHADOW_LABEL labelfont 2
+        private xywh {440 0 305 24} labelfont 2
         code0 {o->label( Project::name() );}
       }
     }
@@ -1068,12 +1068,12 @@ if ( logo_box->image() )
       } {
         Fl_Value_Output {} {
           label {Sample Rate}
-          xywh {35 30 90 25} labeltype SHADOW_LABEL align 1
+          xywh {35 30 90 25} align 1
           code0 {o->value( timeline->sample_rate() );}
         }
         Fl_Output {} {
           label {Size of Journal}
-          xywh {175 30 100 25} box UP_BOX labeltype SHADOW_LABEL align 1
+          xywh {175 30 100 25} box UP_BOX align 1
           code0 {static char pat[40];}
           code1 {snprintf( pat, sizeof( pat ), "%.1fK", size( "history" ) / (float)1024 );}
           code2 {o->value( pat );}
@@ -1081,7 +1081,7 @@ if ( logo_box->image() )
         }
         Fl_Output {} {
           label {Created On}
-          xywh {315 30 180 25} box UP_BOX labeltype SHADOW_LABEL align 1 textfont 11 textsize 12
+          xywh {315 30 180 25} box UP_BOX align 1 textfont 11 textsize 12
           code0 {o->value( Project::created_on() );}
         }
         Fl_Output {} {
@@ -1098,7 +1098,7 @@ if ( logo_box->image() )
         }
         Fl_Output {} {
           label {Last Modified On}
-          xywh {315 80 180 25} box UP_BOX labeltype SHADOW_LABEL align 1 textfont 11 textsize 12
+          xywh {315 80 180 25} box UP_BOX align 1 textfont 11 textsize 12
           code0 {time_t t = modification_time( "history" );}
           code1 {static char s[40];}
           code2 {ctime_r( &t, s ); s[ strlen( s ) - 1 ] = 0;}

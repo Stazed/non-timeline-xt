@@ -873,7 +873,6 @@ _Pragma("GCC diagnostic pop")
       } // Fl_Group* o
       { stats_box = new Fl_Box(745, 0, 235, 25, "<stats>");
         stats_box->labelsize(13);
-        stats_box->labelcolor((Fl_Color)53);
         stats_box->align(Fl_Align(72|FL_ALIGN_INSIDE));
       } // Fl_Box* stats_box
       { sm_blinker = new Fl_Button(985, 6, 35, 15, "SM");
@@ -920,7 +919,6 @@ _Pragma("GCC diagnostic pop")
       timeline = o;
     } // Timeline* o
     { Fl_Box* o = project_name = new Fl_Box(440, 0, 305, 24, "<project name>");
-      project_name->labeltype(FL_SHADOW_LABEL);
       project_name->labelfont(2);
       o->label( Project::name() );
     } // Fl_Box* project_name
@@ -1156,13 +1154,11 @@ Fl_Double_Window* Project_Info_Dialog::make_window() {
     window->callback((Fl_Callback*)cb_window, (void*)(this));
     { Fl_Group* o = new Fl_Group(25, 30, 470, 75);
       { Fl_Value_Output* o = new Fl_Value_Output(35, 30, 90, 25, "Sample Rate");
-        o->labeltype(FL_SHADOW_LABEL);
         o->align(Fl_Align(FL_ALIGN_TOP));
         o->value( timeline->sample_rate() );
       } // Fl_Value_Output* o
       { Fl_Output* o = new Fl_Output(175, 30, 100, 25, "Size of Journal");
         o->box(FL_UP_BOX);
-        o->labeltype(FL_SHADOW_LABEL);
         o->align(Fl_Align(FL_ALIGN_TOP));
         static char pat[40];
         snprintf( pat, sizeof( pat ), "%.1fK", size( "history" ) / (float)1024 );
@@ -1170,7 +1166,6 @@ Fl_Double_Window* Project_Info_Dialog::make_window() {
       } // Fl_Output* o
       { Fl_Output* o = new Fl_Output(315, 30, 180, 25, "Created On");
         o->box(FL_UP_BOX);
-        o->labeltype(FL_SHADOW_LABEL);
         o->textfont(11);
         o->textsize(12);
         o->align(Fl_Align(FL_ALIGN_TOP));
@@ -1191,7 +1186,6 @@ Fl_Double_Window* Project_Info_Dialog::make_window() {
       } // Fl_Value_Output* o
       { Fl_Output* o = new Fl_Output(315, 80, 180, 25, "Last Modified On");
         o->box(FL_UP_BOX);
-        o->labeltype(FL_SHADOW_LABEL);
         o->textfont(11);
         o->textsize(12);
         o->align(Fl_Align(FL_ALIGN_TOP));

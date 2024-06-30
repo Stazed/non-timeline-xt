@@ -353,7 +353,6 @@ Sequence_Widget::draw_label ( const char *label, Fl_Align align, Fl_Color color,
     Fl_Label lab;
 
     lab.color = color;
-//    lab.type = FL_SHADOW_LABEL;
     lab.type = FL_NORMAL_LABEL;
     lab.value = label;
     lab.font = FL_HELVETICA_ITALIC;
