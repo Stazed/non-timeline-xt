@@ -98,7 +98,7 @@ const float UPDATE_FREQ = 1.0f / 18.0f;
     and upon key-up of modifier ALT we check it to send log_end().
  */
 bool g_snapshot = false;     // extern
-extern const char *instance_name;
+extern char *instance_name;
 extern TLE *tle;
 
 

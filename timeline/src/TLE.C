@@ -46,7 +46,7 @@ extern char project_display_name[256];
 #include "../../nonlib/nsm.h"
 extern nsm_client_t *nsm;
 extern char *user_config_dir;
-extern char *APP_NAME;
+extern const char *APP_NAME;
 
 TLE_Window::TLE_Window(int W, int H, const char *L ) : Fl_Overlay_Window( W, H, L ) {
 }
