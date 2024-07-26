@@ -71,7 +71,7 @@ Sequence_Widget::Sequence_Widget ( const Sequence_Widget &rhs ) : Loggable( rhs 
 
     _color = rhs._color;
     _box_color = rhs._box_color;
-    
+
     _sequence = NULL;
 
     if ( rhs._sequence )
@@ -275,6 +275,16 @@ Sequence_Widget::pan_some(bool left)
     }
 
     timeline->sequence_lock.unlock();
+}
+
+void
+Sequence_Widget::end_log_nudge( void )
+{
+    if ( nudge_dirty() )
+    {
+        log_end();
+        clear_nudge();
+    }
 }
 
 /** set position of widget on the timeline. */
@@ -543,7 +553,7 @@ Sequence_Widget::handle ( int m )
             {
                 /* duplication */
                 timeline->sequence_lock.wrlock();
-                sequence()->add( this->clone() );
+                this->clone();  // This will add
                 timeline->sequence_lock.unlock();
 
                 _drag->state = 1;
