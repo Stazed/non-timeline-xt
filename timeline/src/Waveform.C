@@ -71,7 +71,7 @@ Waveform::draw ( int X, int Y, int W, int H,
     if ( ! W )
         return;
 #ifdef FLTK_SUPPORT
-    fg_color =  fg_color;
+   // fg_color =  fg_color;
 #else
     fg_color = fl_color_add_alpha( Fl::get_color( fg_color ), 200 );
 #endif
