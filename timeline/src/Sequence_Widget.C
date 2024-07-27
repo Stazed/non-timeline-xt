@@ -217,7 +217,6 @@ Sequence_Widget::nudge_some(bool left)
     if(!nudge_dirty())
     {
         set_nudge();
-        DMESSAGE("LOG START pointer = %p", this);
         log_start();
     }
 
@@ -285,7 +284,6 @@ Sequence_Widget::end_log_nudge( void )
 {
     if ( nudge_dirty() )
     {
-        DMESSAGE("LOG END pointer = %p: label = %s", this, this->label());
         log_end();
         clear_nudge();
     }
