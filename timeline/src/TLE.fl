@@ -283,11 +283,11 @@ Loggable::progress_callback( &TLE::progress_cb, this );} {}
         timeline->command_quit();
     }
 }} open selected
-      xywh {924 176 1025 770} type Double resizable
+      xywh {894 176 1025 770} type Double resizable
       code0 {o->xclass( APP_NAME );}
       class TLE_Window size_range {947 300 0 0} visible
     } {
-      Fl_Group {} {
+      Fl_Group {} {open
         xywh {0 -53 1025 126} box FLAT_BOX
       } {
         Fl_Menu_Bar menubar {
@@ -729,7 +729,7 @@ _Pragma("GCC diagnostic pop")}
           xywh {585 32 155 40} resizable
           code0 {o->labeltype( FL_NO_LABEL );}
         }
-        Fl_Group {} {open
+        Fl_Group {} {
           xywh {850 23 175 50}
         } {
           Fl_Box {} {
@@ -766,7 +766,7 @@ _Pragma("GCC diagnostic pop")}
             code0 {o->type( FL_VERTICAL );}
           }
         }
-        Fl_Group {} {open
+        Fl_Group {} {
           xywh {660 31 194 40}
         } {
           Fl_Button follow_transport {
@@ -815,8 +815,12 @@ else
             class Fl_Blink_Button
           }
         }
-        Fl_Box stats_box {
+        Fl_Button stats_box {
           label {<stats>}
+          callback {if ( engine && ! engine->zombified() )
+{
+    engine->clear_xruns();
+}}
           xywh {745 0 235 25} labelsize 13 align 88
         }
         Fl_Button sm_blinker {

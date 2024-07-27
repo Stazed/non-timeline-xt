@@ -164,7 +164,11 @@ public:
   Fl_Blink_Button *rec_blinker;
   Fl_Blink_Button *selected_blinker;
   Fl_Blink_Button *seek_blinker;
-  Fl_Box *stats_box;
+  Fl_Button *stats_box;
+private:
+  inline void cb_stats_box_i(Fl_Button*, void*);
+  static void cb_stats_box(Fl_Button*, void*);
+public:
   Fl_Button *sm_blinker;
   Fl_Group *progress_group;
 private:

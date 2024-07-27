@@ -549,6 +549,16 @@ void TLE::cb_snap_toggle_bypass(Fl_Button* o, void* v) {
   ((TLE*)(o->parent()->parent()->parent()->user_data()))->cb_snap_toggle_bypass_i(o,v);
 }
 
+void TLE::cb_stats_box_i(Fl_Button*, void*) {
+  if ( engine && ! engine->zombified() )
+{
+    engine->clear_xruns();
+};
+}
+void TLE::cb_stats_box(Fl_Button* o, void* v) {
+  ((TLE*)(o->parent()->parent()->user_data()))->cb_stats_box_i(o,v);
+}
+
 void TLE::save_options() {
   const char options_filename[] = "options";
     // const char state_filename[] = "state";
@@ -871,10 +881,11 @@ _Pragma("GCC diagnostic pop")
         } // Fl_Blink_Button* seek_blinker
         o->end();
       } // Fl_Group* o
-      { stats_box = new Fl_Box(745, 0, 235, 25, "<stats>");
+      { stats_box = new Fl_Button(745, 0, 235, 25, "<stats>");
         stats_box->labelsize(13);
+        stats_box->callback((Fl_Callback*)cb_stats_box);
         stats_box->align(Fl_Align(72|FL_ALIGN_INSIDE));
-      } // Fl_Box* stats_box
+      } // Fl_Button* stats_box
       { sm_blinker = new Fl_Button(985, 6, 35, 15, "SM");
         sm_blinker->box(FL_ROUNDED_BOX);
         sm_blinker->down_box(FL_ROUNDED_BOX);
