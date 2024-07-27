@@ -109,7 +109,7 @@ decl {extern nsm_client_t *nsm;} {private global
 decl {extern char *user_config_dir;} {private global
 }
 
-decl {extern char *APP_NAME;} {private global
+decl {extern const char *APP_NAME;} {private global
 }
 
 class TLE_Window {open : {public Fl_Overlay_Window}
