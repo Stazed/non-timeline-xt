@@ -705,11 +705,7 @@ const Sequence_Widget *
         for ( list <Sequence_Widget *>::const_reverse_iterator i = _widgets.rbegin();  i != _widgets.rend(); ++i )
         {
             Control_Point *w = (Control_Point*)(*i);
-            if ( w->nudge_dirty() )
-            {
-                w->log_end();
-                w->clear_nudge();
-            }
+            w->end_log_nudge();
         }
     }
 
