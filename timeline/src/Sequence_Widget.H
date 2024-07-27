@@ -182,6 +182,7 @@ public:
     void nudge_some(bool left);
     void pan_some(bool left);
     void end_log_nudge( void );
+    void start_log_nudge (void );
     
     void set_nudge ( void ) { _nudge_dirty = true; }
     void clear_nudge ( void ) { _nudge_dirty = false; }

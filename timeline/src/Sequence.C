@@ -732,11 +732,7 @@ const Sequence_Widget *
             {
                 timeline->sequence_lock.wrlock();
 
-                if(!r->nudge_dirty())
-                {
-                    r->set_nudge();
-                    r->log_start();
-                }
+                r->start_log_nudge();
 
                 float Y = r->control();
 

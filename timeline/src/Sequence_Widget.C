@@ -214,11 +214,7 @@ Sequence_Widget::nudge_some(bool left)
 {
     timeline->sequence_lock.wrlock();
 
-    if(!nudge_dirty())
-    {
-        set_nudge();
-        log_start();
-    }
+    start_log_nudge();
 
     int X = _r->start;
     if(left)
@@ -249,11 +245,7 @@ Sequence_Widget::pan_some(bool left)
 {
     timeline->sequence_lock.wrlock();
     
-    if(!nudge_dirty())
-    {
-        set_nudge();
-        log_start();
-    }
+    start_log_nudge();
 
     int Of = _r->offset;
     if(left)
@@ -277,6 +269,16 @@ Sequence_Widget::pan_some(bool left)
     }
 
     timeline->sequence_lock.unlock();
+}
+
+void
+Sequence_Widget::start_log_nudge (void )
+{
+    if(!nudge_dirty())
+    {
+        set_nudge();
+        log_start();
+    }
 }
 
 void
