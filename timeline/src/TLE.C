@@ -986,6 +986,22 @@ void TLE::update_status() {
   update_progress( playback_buffer_progress, pbp, timeline->total_output_buffer_percent() );
   update_progress( cpu_load_progress, clp, engine ? engine->cpu_load() : 0 );
   
+  {  // Color gradients for CPU
+    float l = cpu_load_progress->value();
+    l = l * .01;
+    if ( l > 1.0) { l = 1.0; } /* prevents strange colors at high dsp load */
+    /*
+    for gradients see http://www.winti.de/php/farben/
+    r: 0 .. 240
+    g: 192 .. 0
+    b: 0
+    */
+   int r = (int)   0 + (240 -   0) * l;
+   int g = (int) 192 + (0   - 192) * l;
+   int b = 0;
+   cpu_load_progress->selection_color( fl_rgb_color( r,g,b ) );
+  }
+  
   if ( Project::open() )
      update_progress( disk_usage_progress, dup, percent_used( Project::path() ) );
   else
