@@ -73,8 +73,8 @@ Sequence_Region::trim_left ( nframes_t where )
 {
     nframes_t f = where;
  
-    /* snap to beat/bar lines */
-    if ( timeline->nearest_line( &f ) )
+    /* snap to beat/bar lines if not bypassed */
+    if ( timeline->nearest_line( &f ) && !Timeline::snap_toggle_bypass )
         where = f;
 
     if ( where > _r->start + _r->length )
@@ -91,8 +91,8 @@ Sequence_Region::trim_right ( nframes_t where )
 {
     nframes_t f = where;
 
-    /* snap to beat/bar lines */
-    if ( timeline->nearest_line( &f ) )
+    /* snap to beat/bar lines if not bypassed */
+    if ( timeline->nearest_line( &f ) && !Timeline::snap_toggle_bypass )
         where = f;
 
     if ( where < _r->start )
