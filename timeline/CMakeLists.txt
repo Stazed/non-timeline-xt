@@ -105,17 +105,27 @@ if(EnableNTK)
     )
 
 else(EnableNTK) #FLTK
-    set(ExternLibraries
-        ${FLTK_LIBRARIES}
-        ${FLTK_IMAGES_LIBRARY}
-        ${LIBCAIRO_LIBRARIES}
-        ${JACK_LINK_LIBRARIES}
-        ${CMAKE_THREAD_LIBS_INIT}
-        ${SNDFILE_LIBRARIES}
-        ${LIBLO_LIBRARIES}
-        dl
-        m
-    )
+    if(EnableFLTKStatic)
+        set(ExternLibraries
+            ${FLTK_LIBRARIES}
+            ${FLTK_IMAGES_LIBRARY}
+            ${LIBCAIRO_LIBRARIES}
+            ${JACK_LINK_LIBRARIES}
+            ${CMAKE_THREAD_LIBS_INIT}
+            ${SNDFILE_LIBRARIES}
+            ${LIBLO_LIBRARIES}
+            ${FONTCONFIG_LIBRARIES}
+            ${XFT_LIBRARIES}
+            ${XRENDER_LIBRARIES}
+            ${XINERAMA_LIBRARIES}
+            fontconfig
+            Xcursor
+            Xfixes
+            jpeg
+            png
+            dl
+            m
+        )
 
     target_include_directories (
         non-timeline-xt PRIVATE
@@ -124,11 +134,41 @@ else(EnableNTK) #FLTK
         ${JACK_INCLUDE_DIRS}
         ${SNDFILE_INCLUDE_DIRS}
         ${LIBLO_INCLUDE_DIRS}
+        ${FONTCONFIG_INCLUDE_DIRS}
+        ${XFT_INCLUDE_DIRS}
+        ${XRENDER_INCLUDE_DIRS}
+        ${XINERAMA_INCLUDE_DIRS}
     )
+    else(EnableFLTKStatic)  # Dynamic
+        set(ExternLibraries
+            ${FLTK_LIBRARIES}
+            ${FLTK_IMAGES_LIBRARY}
+            ${LIBCAIRO_LIBRARIES}
+            ${JACK_LINK_LIBRARIES}
+            ${CMAKE_THREAD_LIBS_INIT}
+            ${SNDFILE_LIBRARIES}
+            ${LIBLO_LIBRARIES}
+            dl
+            m
+        )
+
+        target_include_directories (
+            non-timeline-xt PRIVATE
+            ${FLTK_INCLUDE_DIR}
+            ${LIBCAIRO_INCLUDE_DIRS}
+            ${JACK_INCLUDE_DIRS}
+            ${SNDFILE_INCLUDE_DIRS}
+            ${LIBLO_INCLUDE_DIRS}
+        )
+    endif(EnableFLTKStatic)
 endif(EnableNTK)
 
+if(EnableFLTKStatic)
+    target_link_libraries (non-timeline-xt ${FLTK_STATIC} ${FLTK_STATIC_IMAGES} ${ExternLibraries})
+else(EnableFLTKStatic)
+    target_link_libraries (non-timeline-xt ${ExternLibraries})
+endif(EnableFLTKStatic)
 
-target_link_libraries (non-timeline-xt ${ExternLibraries})
 install (TARGETS non-timeline-xt RUNTIME DESTINATION bin)
 
 
