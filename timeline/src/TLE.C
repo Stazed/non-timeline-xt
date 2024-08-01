@@ -431,7 +431,12 @@ void TLE::cb_Manual(Fl_Menu_* o, void* v) {
 void TLE::cb_About_i(Fl_Menu_*, void*) {
   About_Dialog ab( PIXMAP_PATH "/non-timeline-xt/icon-256x256.png" );
 
-            ab.logo_box->label( VERSION );
+	std::string s_logo = BUILD_TYPE_CMAKE;
+        s_logo += " ";
+        s_logo += VERSION;
+        s_logo += "\n";
+        s_logo += BUILD_TYPE;
+        ab.logo_box->label( s_logo.c_str() );
 
         ab.title->label( "Non Timeline XT" );
 
