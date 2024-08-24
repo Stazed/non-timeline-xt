@@ -1,6 +1,10 @@
 
 /*******************************************************************************/
-/* Copyright (C) 2008 Jonathan Moore Liles                                     */
+/* Copyright (C) 2008-2021 Jonathan Moore Liles (as "Non-Timeline")            */
+/* Copyright (C) 2023- Stazed                                                  */
+/*                                                                             */
+/* This file is part of Non-Timeline-XT                                        */
+/*                                                                             */
 /*                                                                             */
 /* This program is free software; you can redistribute it and/or modify it     */
 /* under the terms of the GNU General Public License as published by the       */
@@ -74,8 +78,8 @@ std::string project_directory = "";
 const char *APP_NAME = "Non-Timeline-XT";
 const char *APP_TITLE = "The Non-Timeline-XT";
 
-const char COPYRIGHT[]  = "Copyright (C) 2008-2021 Jonathan Moore Liles";
-const char COPYRIGHT2[] = "Copyright (C) 2022-2024 Stazed";
+const char COPYRIGHT[]  = "Copyright (C) 2008-2021 Jonathan Moore Liles (as Non-Timeline)";
+const char COPYRIGHT2[] = "Copyright (C) 2023- Stazed (Non-Timeline-XT)";
 
 const double NSM_CHECK_INTERVAL = 0.25f;
 

@@ -1,5 +1,8 @@
 //
-// Copyright (C) 2008-2010 Jonathan Moore Liles
+// Copyright (C) 2008-2021 Jonathan Moore Liles (as "Non-Timeline")
+// Copyright (C) 2023- Stazed
+//
+// This file is part of Non-Timeline-XT
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
