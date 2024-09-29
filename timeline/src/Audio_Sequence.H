@@ -40,9 +40,9 @@ protected:
     void set ( Log_Entry &e );
 
     Audio_Sequence ( ) : Sequence( 0 )
-        {
-            init();
-        }
+    {
+        init();
+    }
 
     void handle_widget_change ( nframes_t start, nframes_t length );
 
@@ -56,31 +56,37 @@ protected:
 public:
 
     int handle_paste ( const char *text );
-    
+
     int handle ( int m );
 
     LOG_CREATE_FUNC( Audio_Sequence );
 
-    Audio_Sequence_Header * header ( void ) { return (Audio_Sequence_Header*)child(0); }
+    Audio_Sequence_Header * header ( void )
+    {
+        return (Audio_Sequence_Header*)child(0);
+    }
 
     Audio_Sequence ( Track *track, const char *name = 0 );
     ~Audio_Sequence ( );
 
-    Fl_Cursor cursor ( void ) const { return FL_CURSOR_DEFAULT; }
+    Fl_Cursor cursor ( void ) const
+    {
+        return FL_CURSOR_DEFAULT;
+    }
 
     virtual Sequence * clone_empty ( void )
-	{
-            Audio_Sequence *t = new Audio_Sequence( track() );
+    {
+        Audio_Sequence *t = new Audio_Sequence( track() );
 
-            return t;
-	}
-	
+        return t;
+    }
+
     virtual Sequence * clone_empty ( const char *name )
-        {
-            Audio_Sequence *t = new Audio_Sequence( track(), name );
+    {
+        Audio_Sequence *t = new Audio_Sequence( track(), name );
 
-            return t;
-        }
+        return t;
+    }
 
     virtual void name ( const char *s );
     virtual const char *name ( void ) const;

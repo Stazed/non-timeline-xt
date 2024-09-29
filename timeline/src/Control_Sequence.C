@@ -90,30 +90,30 @@ Control_Sequence::~Control_Sequence ( )
     track()->remove( this );
 
     if ( _output )
-    { 
+    {
         _output->shutdown();
 
         delete _output;
-        
+
         _output = NULL;
     }
 
     if ( _osc_output() )
     {
         OSC::Signal *t = _osc_output();
-        
+
         _osc_output( NULL );
-        
+
         delete t;
     }
 
     for ( list<char*>::iterator i = _persistent_osc_connections.begin();
-          i != _persistent_osc_connections.end();
-          ++i )
+            i != _persistent_osc_connections.end();
+            ++i )
     {
         free( *i );
     }
-    
+
     _persistent_osc_connections.clear();
 
     Loggable::block_end();
@@ -146,17 +146,17 @@ Control_Sequence::update_osc_path ( void )
 {
     char *path;
     asprintf( &path, "/track/%s/%s", track()->name(), name() );
-    
+
     char *s = escape_url( path );
-    
+
     free( path );
-    
+
     path = s;
- 
+
     if ( !_osc_output() )
     {
         OSC::Signal *t = timeline->osc->add_signal( path, OSC::Signal::Output, 0, 1, 0, NULL, NULL, NULL );
-               
+
         _osc_output( t );
     }
     else
@@ -181,7 +181,7 @@ Control_Sequence::update_port_name ( void )
         _output->terminal( true );
         needs_activation = true;
     }
-    
+
     if ( name() )
     {
         _output->trackname( track()->name() );
@@ -282,7 +282,7 @@ Control_Sequence::get_unjournaled ( Log_Entry &e ) const
     /*         s = _osc_output()->get_output_connection_peer_name_and_path(i); */
 
     /*         e.add( ":osc-output", s ); */
-        
+
     /*         free( s ); */
     /*     } */
     /* } */
@@ -338,7 +338,7 @@ Control_Sequence::mode ( Mode m )
         if ( _output )
         {
             _output->shutdown();
-            
+
             JACK::Port *t = _output;
 
             _output = NULL;
@@ -388,7 +388,7 @@ Control_Sequence::draw_curve ( bool filled )
     std::copy( _widgets.begin(), _widgets.end(), std::back_inserter( wl ) );
 
 //= new list <const Sequence_Widget *>(_widgets);
-    
+
     wl.sort( Sequence_Widget::sort_func );
 
     list <Sequence_Widget *>::const_iterator e = wl.end();
@@ -449,7 +449,7 @@ Control_Sequence::draw_box ( void )
                 fl_line( X, by + gy, X + W, by + gy );
 
     }
-   
+
     timeline->draw_measure_lines( X, Y, W, H );
 }
 
@@ -479,7 +479,7 @@ Control_Sequence::draw ( void )
 #else
     // NTK draws everything before since it can overlay transparent
     if ( box() != FL_NO_BOX )
-        draw_box(); 
+        draw_box();
 #endif
     if ( interpolation() != No_Type )
     {
@@ -516,8 +516,8 @@ Control_Sequence::draw ( void )
     {
         for ( list <Sequence_Widget *>::const_iterator r = _widgets.begin();  r != _widgets.end(); ++r )
         {
-            if ( (*r)->x() + (*r)->w() >= bx && 
-                 (*r)->x() <= bw + bw )
+            if ( (*r)->x() + (*r)->w() >= bx &&
+                    (*r)->x() <= bw + bw )
             {
                 (*r)->draw_box();   // control points eventually
             }
@@ -529,8 +529,8 @@ Control_Sequence::draw ( void )
         {
             if ( (*r)->selected() )
             {
-                if ( (*r)->x() + (*r)->w() >= bx && 
-                     (*r)->x() <= bw + bw )
+                if ( (*r)->x() + (*r)->w() >= bx &&
+                        (*r)->x() <= bw + bw )
                 {
                     (*r)->draw_box();   // control points eventually
                 }
@@ -566,9 +566,9 @@ Control_Sequence::menu_cb ( const Fl_Menu_ *m )
     m->item_pathname( picked, sizeof( picked ), m->mvalue() );
 
     if ( ! strncmp( picked, "Connect To/", strlen( "Connect To/" ) ) )
-    { 
+    {
         char *peer_name = index( picked, '/' ) + 1;
-    
+
         *index( peer_name, '/' ) = 0;
 
         const char *path = ((OSC::Signal*)m->mvalue()->user_data())->path();
@@ -576,13 +576,13 @@ Control_Sequence::menu_cb ( const Fl_Menu_ *m )
         /* if ( ! _osc_output()->is_connected_to( ((OSC::Signal*)m->mvalue()->user_data()) ) ) */
         {
             _persistent_osc_connections.push_back( strdup(path) );
-            
+
             connect_osc();
         }
         /* else */
         /* { */
         /*     timeline->osc->disconnect_signal( _osc_output(), path ); */
-            
+
         /*     for ( std::list<char*>::iterator i = _persistent_osc_connections.begin(); */
         /*           i != _persistent_osc_connections.end(); */
         /*           ++i ) */
@@ -594,10 +594,10 @@ Control_Sequence::menu_cb ( const Fl_Menu_ *m )
         /*             break; */
         /*         } */
         /*     } */
-            
+
         /*     //free( path ); */
         /* } */
-        
+
     }
     else if ( ! strcmp( picked, "Interpolation/Linear" ) )
         interpolation( Linear );
@@ -639,8 +639,8 @@ Control_Sequence::connect_osc ( void )
     if ( _persistent_osc_connections.size() )
     {
         for ( std::list<char*>::iterator i = _persistent_osc_connections.begin();
-              i != _persistent_osc_connections.end();
-              ++i )
+                i != _persistent_osc_connections.end();
+                ++i )
         {
             if ( ! timeline->osc->connect_signal( _osc_output(), *i ) )
             {
@@ -655,7 +655,7 @@ Control_Sequence::connect_osc ( void )
     }
 
     /* header()->outputs_indicator->value( _osc_output() && _osc_output()->connected() ); */
-  
+
     timeline->osc_receive_thread->unlock();
 }
 
@@ -668,14 +668,14 @@ Control_Sequence::process_osc ( void )
     if ( _osc_output() )
     {
         sample_t buf = 0;
-	        
+
         play( &buf, (nframes_t)transport->frame, (nframes_t) 1 );
 
-	/* only send value if it is significantly different from the last value sent */
-	if ( fabsf( _osc_output()->value() - (float)buf ) > 0.001 )
-	{
-	    _osc_output()->value( (float)buf );
-	}
+        /* only send value if it is significantly different from the last value sent */
+        if ( fabsf( _osc_output()->value() - (float)buf ) > 0.001 )
+        {
+            _osc_output()->value( (float)buf );
+        }
     }
 }
 
@@ -715,7 +715,7 @@ Control_Sequence::peer_callback( OSC::Signal *sig,  OSC::Signal::State state, vo
     {
         /* building menu */
 //        const char *name = sig->peer_name();
-   
+
         assert( sig->path() );
 
         char *path = strdup( sig->path() );
@@ -726,9 +726,9 @@ Control_Sequence::peer_callback( OSC::Signal *sig,  OSC::Signal::State state, vo
 
         peer_menu->add( s, 0, NULL, (void*)( sig ), 0 );
 
-                        /*     FL_MENU_TOGGLE | */
-                        /* ( ((Control_Sequence*)v)->_osc_output()->is_connected_to( sig ) ? FL_MENU_VALUE : 0 ) ); */
-    
+        /*     FL_MENU_TOGGLE | */
+        /* ( ((Control_Sequence*)v)->_osc_output()->is_connected_to( sig ) ? FL_MENU_VALUE : 0 ) ); */
+
         free( path );
 
         free( s );
@@ -745,26 +745,26 @@ Control_Sequence::add_osc_peers_to_menu ( Fl_Menu_Button *m, const char *prefix 
 }
 
 Fl_Menu_Button &
-Control_Sequence::menu ( void ) 
+Control_Sequence::menu ( void )
 {
     static Fl_Menu_Button _menu( 0, 0, 0, 0, "Control Sequence" );
 
     _menu.clear();
-    
+
     if ( mode() == OSC )
     {
         add_osc_peers_to_menu( &_menu, "Connect To" );
     }
-    
+
     _menu.add( "Interpolation/None", 0, 0, 0, FL_MENU_RADIO | ( interpolation() == No_Type ? FL_MENU_VALUE : 0 ) );
     _menu.add( "Interpolation/Linear", 0, 0, 0, FL_MENU_RADIO | ( interpolation() == Linear ? FL_MENU_VALUE : 0 ) );
-    _menu.add( "Mode/Control Voltage (JACK)", 0, 0, 0 ,FL_MENU_RADIO | ( mode() == CV ? FL_MENU_VALUE : 0 ) );
-    _menu.add( "Mode/Control Signal (OSC)", 0, 0, 0 , FL_MENU_RADIO | ( mode() == OSC ? FL_MENU_VALUE : 0 ) );
-    
+    _menu.add( "Mode/Control Voltage (JACK)", 0, 0, 0,FL_MENU_RADIO | ( mode() == CV ? FL_MENU_VALUE : 0 ) );
+    _menu.add( "Mode/Control Signal (OSC)", 0, 0, 0, FL_MENU_RADIO | ( mode() == OSC ? FL_MENU_VALUE : 0 ) );
+
     _menu.add( "Rename", 0, 0, 0 );
     _menu.add( "Color", 0, 0, 0 );
     _menu.add( "Remove", 0, 0, 0 );
-    
+
     _menu.callback( &Control_Sequence::menu_cb, (void*)this);
 
     return _menu;
@@ -775,34 +775,34 @@ Control_Sequence::handle ( int m )
 {
     switch ( m )
     {
-        case FL_ENTER:
-            break;
-        case FL_LEAVE:
-            _highlighted = 0;
-            damage( DAMAGE_SEQUENCE );
-            fl_cursor( FL_CURSOR_DEFAULT );
-            break;
-        case FL_MOVE:
-            if ( Fl::event_x() > drawable_x() )
+    case FL_ENTER:
+        break;
+    case FL_LEAVE:
+        _highlighted = 0;
+        damage( DAMAGE_SEQUENCE );
+        fl_cursor( FL_CURSOR_DEFAULT );
+        break;
+    case FL_MOVE:
+        if ( Fl::event_x() > drawable_x() )
+        {
+            if ( _highlighted != this )
             {
-                if ( _highlighted != this )
-                {
-                    _highlighted = this;
-                    damage( DAMAGE_SEQUENCE );
-                    fl_cursor( FL_CURSOR_CROSS );
-                }
+                _highlighted = this;
+                damage( DAMAGE_SEQUENCE );
+                fl_cursor( FL_CURSOR_CROSS );
             }
-            else
+        }
+        else
+        {
+            if ( _highlighted == this )
             {
-                if ( _highlighted == this )
-                {
-                    _highlighted = 0;
-                    damage( DAMAGE_SEQUENCE );
-                    fl_cursor( FL_CURSOR_DEFAULT );
-                }
+                _highlighted = 0;
+                damage( DAMAGE_SEQUENCE );
+                fl_cursor( FL_CURSOR_DEFAULT );
             }
-        default:
-            break;
+        }
+    default:
+        break;
     }
 
     Logger log(this);
@@ -814,32 +814,32 @@ Control_Sequence::handle ( int m )
 
     switch ( m )
     {
-        case FL_PUSH:
-        {
+    case FL_PUSH:
+    {
 
-            if ( Fl::event_x() >= drawable_x() &&
+        if ( Fl::event_x() >= drawable_x() &&
                 test_press( FL_BUTTON1 ) )
-            {
-                /* insert new control point */
-                timeline->sequence_lock.wrlock();
+        {
+            /* insert new control point */
+            timeline->sequence_lock.wrlock();
 
-                new Control_Point( this, timeline->xoffset + timeline->x_to_ts( Fl::event_x() - drawable_x() ), (float)(Fl::event_y() - y()) / h() );
-                
-                timeline->sequence_lock.unlock();
+            new Control_Point( this, timeline->xoffset + timeline->x_to_ts( Fl::event_x() - drawable_x() ), (float)(Fl::event_y() - y()) / h() );
 
-                return 1;
-            }
-            else if ( Fl::event_x() < drawable_x() &&
-                      test_press( FL_BUTTON3 ) )
-            {
-                menu_popup( &menu() );
+            timeline->sequence_lock.unlock();
 
-                return 1;
-            }
-
-            return Fl_Group::handle( m );
+            return 1;
         }
-        default:
-            return 0;
+        else if ( Fl::event_x() < drawable_x() &&
+                  test_press( FL_BUTTON3 ) )
+        {
+            menu_popup( &menu() );
+
+            return 1;
+        }
+
+        return Fl_Group::handle( m );
+    }
+    default:
+        return 0;
     }
 }

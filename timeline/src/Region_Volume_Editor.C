@@ -20,17 +20,17 @@
 /*******************************************************************************/
 
 
-/* 
+/*
  * File:   Region_Volume_Editor.C
  * Author: sspresto
- * 
+ *
  * Created on February 7, 2024, 7:43 PM
  */
 
 #include <FL/Fl.H>
 #include "Region_Volume_Editor.H"
 
-Region_Volume_Editor::Region_Volume_Editor(float &scale) : 
+Region_Volume_Editor::Region_Volume_Editor(float &scale) :
     Fl_Menu_Window (75, 58, "Edit Volume"),
     _scale(scale)
 {

@@ -39,7 +39,10 @@ public:
     virtual ~OSC_Transmit_Thread ( );
 
     void join ( void );
-    void shutdown ( void ) { _shutdown = true; }
+    void shutdown ( void )
+    {
+        _shutdown = true;
+    }
     void start ( void );
     void process ( void );
     static void *process ( void * );

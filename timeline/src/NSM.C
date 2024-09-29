@@ -39,28 +39,28 @@ extern Timeline *timeline;
 
 
 
-static int 
+static int
 command_save ( char **out_msg, void * /* userdata */ )
 {
-   if ( timeline->command_save() )
-       return ERR_OK;
-   else
-   {
-       *out_msg = strdup( "Failed to save for unknown reason");
-       return ERR_GENERAL;
-   }
+    if ( timeline->command_save() )
+        return ERR_OK;
+    else
+    {
+        *out_msg = strdup( "Failed to save for unknown reason");
+        return ERR_GENERAL;
+    }
 }
 
-static int 
+static int
 command_open ( const char *name, const char *display_name, const char *client_id, char **out_msg, void * /* userdata */ )
 {
     if ( instance_name )
         free( instance_name );
-    
+
     instance_name = strdup( client_id );
 
     timeline->osc->name( client_id );
-  
+
     int r = 0;
 
     if ( Project::validate( name ) )
@@ -83,7 +83,7 @@ command_open ( const char *name, const char *display_name, const char *client_id
             r = ERR_GENERAL;
         }
     }
-  
+
     timeline->say_hello();
 
 //    timeline->connect_osc();
@@ -100,7 +100,7 @@ command_session_is_loaded ( void * /* userdata */ )
 static int
 command_broadcast ( const char *path, lo_message msg, void * /* userdata */ )
 {
-     lo_message_get_argc( msg );
+    lo_message_get_argc( msg );
 //    lo_arg **argv = lo_message_get_argv( msg );
 
     if ( !strcmp( path, "/non/hello" ) )
@@ -108,7 +108,7 @@ command_broadcast ( const char *path, lo_message msg, void * /* userdata */ )
         timeline->handle_hello( msg );
         return 0;
     }
-    else 
+    else
         return -1;
 
 }

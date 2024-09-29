@@ -35,13 +35,13 @@ class Tempo_Point : public Sequence_Point
 
     void
     _make_label ( void )
-        {
-            char l[10];
+    {
+        char l[10];
 
-            snprintf( l, sizeof(l), "%.1f", _tempo );
+        snprintf( l, sizeof(l), "%.1f", _tempo );
 
-            label( l );
-        }
+        label( l );
+    }
 
 protected:
 
@@ -59,25 +59,37 @@ public:
 
     static bool edit ( float *tempo );
 
-    const BBT * bbt ( void ) const { return &_bbt; }
+    const BBT * bbt ( void ) const
+    {
+        return &_bbt;
+    }
 
     Tempo_Point ( nframes_t when, float bpm );
 
     virtual ~Tempo_Point ( );
 
     Tempo_Point ( const Tempo_Point &rhs ) : Sequence_Point( rhs )
-        {
-            _tempo = rhs._tempo;
-            _bbt = rhs._bbt;
+    {
+        _tempo = rhs._tempo;
+        _bbt = rhs._bbt;
 
-            log_create();
-        }
+        log_create();
+    }
 
 
     float tempo ( void ) const
-        { return _tempo; }
+    {
+        return _tempo;
+    }
     void  tempo ( float v )
-        { if ( v != _tempo ) { _tempo = v; _make_label(); timeline->redraw(); } }
+    {
+        if ( v != _tempo )
+        {
+            _tempo = v;
+            _make_label();
+            timeline->redraw();
+        }
+    }
 
     int handle ( int m );
 };

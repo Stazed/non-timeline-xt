@@ -204,7 +204,7 @@ Project::close ( void )
 
     if ( ! save() )
         return false;
-    
+
     Loggable::close();
 
 //    write_info();
@@ -213,7 +213,7 @@ Project::close ( void )
 
     *Project::_name = '\0';
     *Project::_created_on = '\0';
-    
+
     release_lock( &_lockfd, ".lock" );
 
     delete engine;
@@ -239,8 +239,8 @@ Project::validate ( const char *name )
     }
 
     if ( ! exists( "info" ) ||
-         ! exists( "history" ) ||
-         ! exists( "sources" ) )
+            ! exists( "history" ) ||
+            ! exists( "sources" ) )
 //         ! exists( "options" ) )
     {
         WARNING( "Not a Non-DAW project: \"%s\"", name );
@@ -259,12 +259,12 @@ Project::make_engine ( void )
         FATAL( "Engine should be null!" );
 
     engine = new Engine;
-    
+
     if ( ! engine->init( instance_name, JACK::Client::SLOW_SYNC | JACK::Client::TIMEBASE_MASTER  ))
         FATAL( "Could not connect to JACK!" );
-    
+
     timeline->sample_rate( engine->sample_rate() );
-    
+
     /* always start stopped (please imagine for me a realistic
      * scenario requiring otherwise */
     transport->stop();
@@ -296,11 +296,11 @@ Project::open ( const char *name )
     if ( ! read_info( &version, &rate, &creation_date, &created_by ) )
         return E_INVALID;
 
-    if ( strncmp( created_by, "The Non-DAW", strlen( "The Non-DAW" ) ) && 
-         strncmp( created_by, "Non-DAW", strlen( "Non-DAW" ) ) &&
-         strncmp( created_by, "Non-Timeline", strlen( "Non-Timeline" ) ) &&
-         strncmp( created_by, APP_TITLE, strlen( APP_TITLE ) ) && 
-         strncmp( created_by, APP_NAME, strlen( APP_NAME ) ) )
+    if ( strncmp( created_by, "The Non-DAW", strlen( "The Non-DAW" ) ) &&
+            strncmp( created_by, "Non-DAW", strlen( "Non-DAW" ) ) &&
+            strncmp( created_by, "Non-Timeline", strlen( "Non-Timeline" ) ) &&
+            strncmp( created_by, APP_TITLE, strlen( APP_TITLE ) ) &&
+            strncmp( created_by, APP_NAME, strlen( APP_NAME ) ) )
         return E_INVALID;
 
     if ( version > PROJECT_VERSION )
@@ -311,11 +311,11 @@ Project::open ( const char *name )
         /* FIXME: Version 1->2 adds Cursor_Sequence and Cursor_Point to default project... */
     }
 
-    /* normally, engine will be NULL after a close or on an initial open, 
+    /* normally, engine will be NULL after a close or on an initial open,
      but 'new' will have already created it to get the sample rate. */
     if ( ! engine )
         make_engine();
- 
+
     {
         Block_Timer timer( "Replayed journal" );
         if ( ! Loggable::open( "history" ) )

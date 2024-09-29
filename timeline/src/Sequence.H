@@ -89,17 +89,20 @@ public:
 
     nframes_t x_to_offset ( int X );
 
-    const char * name ( void ) const { return _name; }
+    const char * name ( void ) const
+    {
+        return _name;
+    }
     void name ( const char *s )
-        {
-            if ( _name ) free( _name );
-            _name = s ? strdup( s ) : NULL;
-            label( _name );
-            
-            /* for outside label */
-            if ( (Fl_Widget*)track() )
-                ((Fl_Widget*)track())->redraw();
-        }
+    {
+        if ( _name ) free( _name );
+        _name = s ? strdup( s ) : NULL;
+        label( _name );
+
+        /* for outside label */
+        if ( (Fl_Widget*)track() )
+            ((Fl_Widget*)track())->redraw();
+    }
 
     void sort ( void );
     void clear ( void );
@@ -110,8 +113,14 @@ public:
     const Sequence_Widget *next ( nframes_t from ) const;
     const Sequence_Widget *prev ( nframes_t from ) const;
 
-    Track *track ( void ) const { return _track; }
-    void track ( Track *t ) { _track = t; }
+    Track *track ( void ) const
+    {
+        return _track;
+    }
+    void track ( Track *t )
+    {
+        _track = t;
+    }
 
     void remove ( Sequence_Widget *r );
     void add ( Sequence_Widget *r );
@@ -128,36 +137,48 @@ public:
 
     void remove_selected ( void );
 
-    Fl_Color color ( void ) const { return this == Fl::focus() ? fl_color_average( FL_FOREGROUND_COLOR, Fl_Widget::color(), 0.20f ) : Fl_Widget::color(); }
-    void color ( Fl_Color v ) { Fl_Widget::color( v ); }
+    Fl_Color color ( void ) const
+    {
+        return this == Fl::focus() ? fl_color_average( FL_FOREGROUND_COLOR, Fl_Widget::color(), 0.20f ) : Fl_Widget::color();
+    }
+    void color ( Fl_Color v )
+    {
+        Fl_Widget::color( v );
+    }
 
-    const std::list <Sequence_Widget *> widgets ( void ) const { return _widgets; }
+    const std::list <Sequence_Widget *> widgets ( void ) const
+    {
+        return _widgets;
+    }
 
     void queue_delete ( Sequence_Widget *r )
-        {
-            _delete_queue.push( r );
-        }
+    {
+        _delete_queue.push( r );
+    }
 
     Sequence_Widget * overlaps ( Sequence_Widget *r );
 
     nframes_t length ( void ) const;
 
     virtual Sequence * clone ( void )
-        {
-            assert( 0 );
-            return NULL;
-        }
+    {
+        assert( 0 );
+        return NULL;
+    }
 
     virtual Sequence * clone_empty ( void )
-        {
-            return NULL;
-        }
+    {
+        return NULL;
+    }
 
     virtual void snap ( Sequence_Widget *r );
     virtual int handle ( int m );
     virtual void draw ( void );
     virtual void draw_box ( void );
 
-    virtual nframes_t process ( nframes_t ) { return 0; }
+    virtual nframes_t process ( nframes_t )
+    {
+        return 0;
+    }
 
 };

@@ -33,12 +33,12 @@ struct time_sig
     int beat_type;
 
     time_sig ( ) : beats_per_bar( 0 ), beat_type( 0 )
-        {
-        }
+    {
+    }
 
     time_sig ( int bpb, int note ) : beats_per_bar( bpb ), beat_type( note )
-        {
-        }
+    {
+    }
 };
 
 class Time_Point : public Sequence_Point
@@ -47,13 +47,13 @@ class Time_Point : public Sequence_Point
 
     void
     _make_label ( void )
-        {
-            char l[10];
-            
-            snprintf( l, sizeof(l), "%d/%d", _time.beats_per_bar, _time.beat_type );
+    {
+        char l[10];
 
-            label( l );
-        }
+        snprintf( l, sizeof(l), "%d/%d", _time.beats_per_bar, _time.beat_type );
+
+        label( l );
+    }
 
 
 protected:
@@ -79,12 +79,16 @@ public:
 
     void
     time ( int bpb, int note )
-        {
-            _time.beats_per_bar = bpb; _time.beat_type = note;
-            _make_label();
-            redraw();
-        }
-    time_sig time ( void ) const { return _time; }
+    {
+        _time.beats_per_bar = bpb;
+        _time.beat_type = note;
+        _make_label();
+        redraw();
+    }
+    time_sig time ( void ) const
+    {
+        return _time;
+    }
 
     int handle ( int m );
 

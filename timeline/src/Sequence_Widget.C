@@ -184,7 +184,7 @@ Sequence_Widget::begin_drag ( const Drag &d )
     timeline->sequence_lock.wrlock();
 
     /* copy current values */
-    
+
     _dragging_range = _range;
 
     /* tell display to use temporary */
@@ -198,7 +198,7 @@ Sequence_Widget::end_drag ( void )
 {
     /* swap in the new value */
     /* go back to playback and display using same values */
-    
+
     timeline->sequence_lock.wrlock();
 
     _range = _dragging_range;
@@ -248,7 +248,7 @@ void
 Sequence_Widget::pan_some(bool left)
 {
     timeline->sequence_lock.wrlock();
-    
+
     start_log_nudge();
 
     int Of = _r->offset;
@@ -499,145 +499,145 @@ Sequence_Widget::handle ( int m )
     int Y = Fl::event_y();
 
     if ( !active_r() )
-	/* don't mess with anything while recording... */
-	return 0;
-    
+        /* don't mess with anything while recording... */
+        return 0;
+
     Logger _log( this );
 
     switch ( m )
     {
-        case FL_ENTER:
-            fl_cursor( FL_CURSOR_HAND );
-            return 1;
-        case FL_LEAVE:
+    case FL_ENTER:
+        fl_cursor( FL_CURSOR_HAND );
+        return 1;
+    case FL_LEAVE:
 //            DMESSAGE( "leave" );
-            fl_cursor( sequence()->cursor() );
-            return 1;
-        case FL_PUSH:
+        fl_cursor( sequence()->cursor() );
+        return 1;
+    case FL_PUSH:
+    {
+        /* deletion */
+        if ( test_press( FL_BUTTON3 + FL_CTRL ) )
         {
-            /* deletion */
-            if ( test_press( FL_BUTTON3 + FL_CTRL ) )
-            {
-                remove();
-
-                return 1;
-            }
-            else if ( test_press( FL_BUTTON1 ) || test_press( FL_BUTTON1 + FL_CTRL ) || test_press( FL_BUTTON1 + FL_ALT ) )
-            {
-                /* traditional selection model */
-                if ( Fl::event_ctrl() )
-                    select();
-
-                fl_cursor( FL_CURSOR_MOVE );
-
-                /* movement drag */
-                return 1;
-            }
-
-            return 0;
-        }
-        case FL_RELEASE:
-
-            if ( _drag )
-            {
-                end_drag();
-                _log.release();
-            }
-
-            fl_cursor( FL_CURSOR_HAND );
+            remove();
 
             return 1;
-        case FL_DRAG:
-        {
-            Fl::event_key( 0 );
-
-            if ( ! _drag )
-            {
-                begin_drag ( Drag( X, Y, x_to_offset( X ), start() ) );
-                _log.hold();
-            }
-
-            if ( test_press( FL_BUTTON1 + FL_CTRL ) && ! _drag->state )
-            {
-                /* duplication */
-                timeline->sequence_lock.wrlock();
-                DMESSAGE("SW original = %p", this);
-                this->clone();  // This will add
-                timeline->sequence_lock.unlock();
-
-                _drag->state = 1;
-                return 1;
-            }
-            else if ( test_press( FL_BUTTON1 ) || test_press( FL_BUTTON1 + FL_CTRL ) )
-            {
-                redraw();
-
-                const nframes_t of = timeline->x_to_offset( X );
-
-                int64_t s = (int64_t)of - _drag->offset;
-
-                if ( s < 0 )
-                    s = 0;
-
-                start(s);
-                
-                if ( Sequence_Widget::_current == this )
-                    sequence()->snap( this );
-
-                if ( X >= sequence()->x() + sequence()->w() ||
-                     X <= sequence()->drawable_x() )
-                {
-                    /* this drag needs to scroll */
-
-                    int64_t pos = s - ( _drag->mouse_offset - _drag->offset );
-                    
-
-                    if ( X > sequence()->x() + sequence()->w() )
-                        pos -= timeline->x_to_ts( sequence()->drawable_w() );
-
-                    if ( s == 0 )
-                        pos = 0;
-
-                    if ( pos < 0 )
-                        pos = 0;
-
-                    timeline->xposition(timeline->ts_to_x(pos));
-                    
-                    /* timeline->redraw();  */
-                    sequence()->damage( FL_DAMAGE_USER1 );
-                }
-
-                if ( ! selected() || _selection.size() == 1 )
-                {
-                    /* track jumping */
-                    if ( Y > _sequence->y() + _sequence->h() || Y < _sequence->y() )
-                    {
-                        Track *t = timeline->track_under( Y );
-
-                        fl_cursor( FL_CURSOR_HAND );
-
-                        if ( t )
-                            t->handle( FL_ENTER );
-
-                        return 0;
-                    }
-                }
-
-                return 1;
-            }
-            else if(test_press( FL_BUTTON1 + FL_ALT ))
-            {
-                // Control point fixed horizontal axis & aligned vertical with vertical dragging
-                return 1;
-            }
-            else
-            {
-                DMESSAGE( "unknown" );
-                return 0;
-            }
         }
-        default:
+        else if ( test_press( FL_BUTTON1 ) || test_press( FL_BUTTON1 + FL_CTRL ) || test_press( FL_BUTTON1 + FL_ALT ) )
+        {
+            /* traditional selection model */
+            if ( Fl::event_ctrl() )
+                select();
+
+            fl_cursor( FL_CURSOR_MOVE );
+
+            /* movement drag */
+            return 1;
+        }
+
+        return 0;
+    }
+    case FL_RELEASE:
+
+        if ( _drag )
+        {
+            end_drag();
+            _log.release();
+        }
+
+        fl_cursor( FL_CURSOR_HAND );
+
+        return 1;
+    case FL_DRAG:
+    {
+        Fl::event_key( 0 );
+
+        if ( ! _drag )
+        {
+            begin_drag ( Drag( X, Y, x_to_offset( X ), start() ) );
+            _log.hold();
+        }
+
+        if ( test_press( FL_BUTTON1 + FL_CTRL ) && ! _drag->state )
+        {
+            /* duplication */
+            timeline->sequence_lock.wrlock();
+            DMESSAGE("SW original = %p", this);
+            this->clone();  // This will add
+            timeline->sequence_lock.unlock();
+
+            _drag->state = 1;
+            return 1;
+        }
+        else if ( test_press( FL_BUTTON1 ) || test_press( FL_BUTTON1 + FL_CTRL ) )
+        {
+            redraw();
+
+            const nframes_t of = timeline->x_to_offset( X );
+
+            int64_t s = (int64_t)of - _drag->offset;
+
+            if ( s < 0 )
+                s = 0;
+
+            start(s);
+
+            if ( Sequence_Widget::_current == this )
+                sequence()->snap( this );
+
+            if ( X >= sequence()->x() + sequence()->w() ||
+                    X <= sequence()->drawable_x() )
+            {
+                /* this drag needs to scroll */
+
+                int64_t pos = s - ( _drag->mouse_offset - _drag->offset );
+
+
+                if ( X > sequence()->x() + sequence()->w() )
+                    pos -= timeline->x_to_ts( sequence()->drawable_w() );
+
+                if ( s == 0 )
+                    pos = 0;
+
+                if ( pos < 0 )
+                    pos = 0;
+
+                timeline->xposition(timeline->ts_to_x(pos));
+
+                /* timeline->redraw();  */
+                sequence()->damage( FL_DAMAGE_USER1 );
+            }
+
+            if ( ! selected() || _selection.size() == 1 )
+            {
+                /* track jumping */
+                if ( Y > _sequence->y() + _sequence->h() || Y < _sequence->y() )
+                {
+                    Track *t = timeline->track_under( Y );
+
+                    fl_cursor( FL_CURSOR_HAND );
+
+                    if ( t )
+                        t->handle( FL_ENTER );
+
+                    return 0;
+                }
+            }
+
+            return 1;
+        }
+        else if(test_press( FL_BUTTON1 + FL_ALT ))
+        {
+            // Control point fixed horizontal axis & aligned vertical with vertical dragging
+            return 1;
+        }
+        else
+        {
+            DMESSAGE( "unknown" );
             return 0;
+        }
+    }
+    default:
+        return 0;
     }
 }
 

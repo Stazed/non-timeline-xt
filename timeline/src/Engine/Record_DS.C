@@ -68,7 +68,7 @@ Record_DS::write_block ( sample_t *buf, nframes_t nframes )
     {
         _capture = new Track::Capture;
 
-    /* if ( ! _capture->audio_file ) */
+        /* if ( ! _capture->audio_file ) */
         /* create the file */
         track()->record( _capture, _frame );
     }
@@ -120,38 +120,38 @@ again:
     {
         /* write remainder of buffer */
         write_block( buf + ((pS - bS) * channels()),
-                     bE - pS );        
+                     bE - pS );
 
         punching_in = false;
         punched_in = true;
     }
-    
+
     while ( wait_for_block() )
     {
         /* pull data from the per-channel ringbuffers and interlace it */
         size_t frames_to_read = nframes;
-        
+
         /* we read the entire block if a partial... */
         for ( int i = 0; i < channels(); i++ )
         {
             while ( jack_ringbuffer_read_space( _rb[ i ] ) < frames_to_read * sizeof( sample_t ) )
                 usleep( 10 * 1000 );
-            
+
             jack_ringbuffer_read( _rb[ i ], ((char*)cbuf), frames_to_read * sizeof( sample_t ) );
-            
+
             buffer_interleave_one_channel( buf,
-                                           cbuf, 
+                                           cbuf,
                                            i,
                                            channels(),
                                            frames_to_read);
         }
-       
+
         bS = _first_frame + frames_read;
 
         frames_read += frames_to_read;
 
         bE = _first_frame + frames_read;
-        
+
         if ( ! punched_in && bS > pS )
         {
             /* we're supposed to be punching in but don't have data
@@ -223,27 +223,27 @@ again:
     /*     } */
     /* } */
 
-  
-   
+
+
     if ( _capture )
     {
         DMESSAGE( "finalzing capture" );
         Track::Capture *c = _capture;
-        
+
         _capture = NULL;
-        
+
         /* now finalize the recording */
-        
+
 //        if ( c->audio_file )
         track()->finalize( c, _stop_frame );
 
         delete c;
     }
 
-    if ( ! _terminate ) 
+    if ( ! _terminate )
     {
         nframes_t in, out;
-        
+
         if ( timeline->next_punch( _stop_frame, &in, &out ) )
         {
             _frame = in;
@@ -252,7 +252,7 @@ again:
 
             punched_in = false;
             punching_out = false;
-            
+
             punching_in = bE > in;
 
             DMESSAGE( "Next punch: %lu:%lu", (unsigned long)in,(unsigned long)out );
@@ -285,8 +285,8 @@ Record_DS::start ( nframes_t frame, nframes_t start_frame, nframes_t stop_frame 
         return;
     }
 
-/*     /\* FIXME: safe to do this here? *\/ */
-/*     flush(); */
+    /*     /\* FIXME: safe to do this here? *\/ */
+    /*     flush(); */
 
     DMESSAGE( "recording started at frame %lu", (unsigned long)frame);
 
@@ -322,24 +322,24 @@ Record_DS::process ( nframes_t nframes )
     if ( ! ( _recording && _thread.running() ) )
         return 0;
 
-     /* if ( transport->frame < _frame  ) */
-     /*     return 0; */
+    /* if ( transport->frame < _frame  ) */
+    /*     return 0; */
 
-/*    DMESSAGE( "recording actually happening at %lu (start frame %lu)", (unsigned long)transport->frame, (unsigned long)_frame); */
+    /*    DMESSAGE( "recording actually happening at %lu (start frame %lu)", (unsigned long)transport->frame, (unsigned long)_frame); */
 
     nframes_t offset = 0;
 
-/*     if ( _frame > transport->frame && */
-/*          _frame < transport->frame + nframes ) */
-/*     { */
-/*         /\* The record start frame falls somewhere within the current */
-/*            buffer.  We must discard the unneeded portion and only */
-/*            stuff the part requested into the ringbuffer. *\/ */
+    /*     if ( _frame > transport->frame && */
+    /*          _frame < transport->frame + nframes ) */
+    /*     { */
+    /*         /\* The record start frame falls somewhere within the current */
+    /*            buffer.  We must discard the unneeded portion and only */
+    /*            stuff the part requested into the ringbuffer. *\/ */
 
-/*         offset = _frame - transport->frame; */
+    /*         offset = _frame - transport->frame; */
 
-/* /\*         DMESSAGE( "offset = %lu", (unsigned long)offset ); *\/ */
-/*     } */
+    /* /\*         DMESSAGE( "offset = %lu", (unsigned long)offset ); *\/ */
+    /*     } */
 
     const size_t offset_size = offset * sizeof( sample_t );
     const size_t block_size = ( nframes * sizeof( sample_t ) ) - offset_size;

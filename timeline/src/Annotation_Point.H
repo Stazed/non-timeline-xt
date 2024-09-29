@@ -36,33 +36,33 @@ protected:
 //    const char *class_label ( void ) { return "Annotation_Point"; }
 
     virtual void  get ( Log_Entry &e ) const
-        {
-            Sequence_Point::get( e );
+    {
+        Sequence_Point::get( e );
 
-            e.add( ":label", _label );
-        }
+        e.add( ":label", _label );
+    }
 
     void
     set ( Log_Entry &e )
+    {
+        Sequence_Point::set( e );
+
+        for ( int i = 0; i < e.size(); ++i )
         {
-            Sequence_Point::set( e );
+            const char *s, *v;
 
-            for ( int i = 0; i < e.size(); ++i )
-            {
-                const char *s, *v;
+            e.get( i, &s, &v );
 
-                e.get( i, &s, &v );
-
-                if ( ! strcmp( s, ":label" ) )
-                    label( v );
-            }
+            if ( ! strcmp( s, ":label" ) )
+                label( v );
+        }
 
 //            timeline->redraw();
-        }
+    }
 
     Annotation_Point ( )
-        {
-        }
+    {
+    }
 
 public:
 
@@ -71,53 +71,53 @@ public:
     SEQUENCE_WIDGET_CLONE_FUNC( Annotation_Point );
 
     Annotation_Point ( Sequence *sequence, nframes_t when, const char *label )
-        {
-            _sequence = NULL;
+    {
+        _sequence = NULL;
 
-            _r->start = when;
+        _r->start = when;
 
-            _label = strdup( label );
+        _label = strdup( label );
 
-            sequence->add( this );
+        sequence->add( this );
 
-            log_create();
-        }
+        log_create();
+    }
 
     Annotation_Point ( const Annotation_Point &rhs ) : Sequence_Point( rhs )
-        {
-            log_create();
-        }
+    {
+        log_create();
+    }
 
     ~Annotation_Point ( )
-        {
-            log_destroy();
-        }
+    {
+        log_destroy();
+    }
 
 
     int
     handle ( int m )
+    {
+        Logger _log( this );
+
+        if ( m == FL_PUSH && Fl::test_shortcut( FL_BUTTON3 ) && ! Fl::event_shift() )
         {
-            Logger _log( this );
+            const char *s = fl_input( "New label for mark:", label() );
 
-            if ( m == FL_PUSH && Fl::test_shortcut( FL_BUTTON3 ) && ! Fl::event_shift() )
-            {
-                const char *s = fl_input( "New label for mark:", label() );
+            if ( s )
+                label( s );
 
-                if ( s )
-                    label( s );
-
-                return 0;
-            }
-
-            int r = Sequence_Widget::handle( m );
-
-            if ( m == FL_RELEASE )
-            {
-                sequence()->sort();
-                redraw();
-            }
-
-            return r;
+            return 0;
         }
+
+        int r = Sequence_Widget::handle( m );
+
+        if ( m == FL_RELEASE )
+        {
+            sequence()->sort();
+            redraw();
+        }
+
+        return r;
+    }
 
 };

@@ -33,14 +33,14 @@
 #include <FL/fl_draw.H>
 #include <FL/Fl_Menu_Button.H>
 #ifdef FLTK_SUPPORT
-    #include "../../FL/Fl_Panzoomer.H"
+#include "../../FL/Fl_Panzoomer.H"
 #else
-    #include <FL/Fl_Panzoomer.H>
+#include <FL/Fl_Panzoomer.H>
 #endif
 
 #ifdef FLTK_SUPPORT
-    #include <cairo.h>
-    #include <cairo-xlib.h>
+#include <cairo.h>
+#include <cairo-xlib.h>
 #endif
 
 #include <FL/Fl_Tile.H>
@@ -153,61 +153,61 @@ draw_full_arrow_symbol ( Fl_Color color )
 
 
 
-class Timeline::Timeline_Panzoomer : public Fl_Panzoomer 
+class Timeline::Timeline_Panzoomer : public Fl_Panzoomer
 {
 public:
-_Pragma("GCC diagnostic push")
-_Pragma("GCC diagnostic ignored \"-Wunused-parameter\"")
+    _Pragma("GCC diagnostic push")
+    _Pragma("GCC diagnostic ignored \"-Wunused-parameter\"")
     Timeline_Panzoomer ( int X,int Y,int W,int H, const char *L=0)
         : Fl_Panzoomer(X,Y,W,H)
-        {
-        }
-_Pragma("GCC diagnostic pop")
+    {
+    }
+    _Pragma("GCC diagnostic pop")
 protected:
     void
     draw_background ( int X, int Y,int W, int H )
+    {
+        nframes_t ef = timeline->x_to_ts( _xmax );
+
+        double ty = Y;
+
+        for ( int i = 0; i < timeline->tracks->children(); i++ )
         {
-            nframes_t ef = timeline->x_to_ts( _xmax );
-            
-            double ty = Y;
-            
-            for ( int i = 0; i < timeline->tracks->children(); i++ )
-            {
-                Track *t = (Track*)timeline->tracks->child( i );
-                
-                Sequence *s = t->sequence();
-                
-                if ( !s )
-                    continue;
-                
-                fl_color( FL_DARK1 );
-                
-                const double scale = (double)H / ( pack_visible_height( timeline->tracks ) );
-                
+            Track *t = (Track*)timeline->tracks->child( i );
+
+            Sequence *s = t->sequence();
+
+            if ( !s )
+                continue;
+
+            fl_color( FL_DARK1 );
+
+            const double scale = (double)H / ( pack_visible_height( timeline->tracks ) );
+
 //        double th =  (double)H / timeline->tracks->children();
-                const double th = t->h() * scale;
-                
-                fl_line( X, ty,
-                         X + W, ty );
-                
-                for ( list <Sequence_Widget *>::const_iterator r = s->_widgets.begin(); 
-                      r != s->_widgets.end(); ++r )
-                {
-                    fl_rectf(
-                        X + ( W * ( (double)(*r)->start() / ef ) ),
-                        ty,
-                        W * ( (double)(*r)->length() / ef ),
-                        th,
-                        (*r)->actual_box_color());
-                }
-                
-                fl_font( FL_HELVETICA, th );
-                fl_color( FL_FOREGROUND_COLOR );
-                fl_draw( t->name(), X, ty, W, th, (Fl_Align)(FL_ALIGN_LEFT | FL_ALIGN_INSIDE ));
-                
-                ty += th;
+            const double th = t->h() * scale;
+
+            fl_line( X, ty,
+                     X + W, ty );
+
+            for ( list <Sequence_Widget *>::const_iterator r = s->_widgets.begin();
+                    r != s->_widgets.end(); ++r )
+            {
+                fl_rectf(
+                    X + ( W * ( (double)(*r)->start() / ef ) ),
+                    ty,
+                    W * ( (double)(*r)->length() / ef ),
+                    th,
+                    (*r)->actual_box_color());
             }
+
+            fl_font( FL_HELVETICA, th );
+            fl_color( FL_FOREGROUND_COLOR );
+            fl_draw( t->name(), X, ty, W, th, (Fl_Align)(FL_ALIGN_LEFT | FL_ALIGN_INSIDE ));
+
+            ty += th;
         }
+    }
 };
 
 
@@ -220,7 +220,7 @@ Timeline::redraw_overlay ( void )
     ((Fl_Overlay_Window*)window())->redraw_overlay();
 }
 
-nframes_t 
+nframes_t
 Timeline::range_start ( void ) const
 {
     if ( edit_cursor_track->active_cursor() )
@@ -230,8 +230,8 @@ Timeline::range_start ( void ) const
 }
 
 nframes_t
-Timeline::range_end ( void ) const 
-{ 
+Timeline::range_end ( void ) const
+{
     if ( edit_cursor_track->active_cursor() )
         return edit_cursor_track->active_cursor()->start() + edit_cursor_track->active_cursor()->length();
     else
@@ -261,7 +261,7 @@ Timeline::range_end ( nframes_t n )
 }
 
 /** return first frame of playback (might not be 0) */
-nframes_t 
+nframes_t
 Timeline::playback_home ( void ) const
 {
     if ( play_cursor_track->active_cursor() )
@@ -325,7 +325,7 @@ Timeline::adjust_panzoomer ( void )
                         tracks->w() - Track::width(),           /* window size */
                         0,                                      /* min */
                         max( ts_to_x( length() ), tracks->w() - Track::width() )/* max */
-        );
+                      );
 }
 
 void
@@ -352,7 +352,7 @@ Timeline::cb_scroll ( Fl_Widget * /* w */)
 
     if ( _old_yposition != panzoomer->y_value() )
     {
-        tracks->position( tracks->x(), track_window->y() - (int)panzoomer->y_value() );  
+        tracks->position( tracks->x(), track_window->y() - (int)panzoomer->y_value() );
         damage( FL_DAMAGE_SCROLL );
     }
 
@@ -406,7 +406,7 @@ Timeline::add_take_for_armed_tracks ( void )
     for ( int i = tracks->children(); i-- ; )
     {
         Track *t = (Track*)tracks->child( i );
-    
+
         if ( t->armed() && t->sequence()->_widgets.size() )
             t->sequence( new Audio_Sequence( t ) );
     }
@@ -425,7 +425,7 @@ Timeline::menu_cb ( Fl_Menu_ *m )
 
     const char *picked = m->mvalue()->label();
 
-/*     m->item_pathname( picked, sizeof( picked ) ); */
+    /*     m->item_pathname( picked, sizeof( picked ) ); */
 
     DMESSAGE( "%s", picked );
 
@@ -494,7 +494,7 @@ Timeline::menu_cb ( Fl_Menu_ *m )
             range_start( xoffset + x_to_ts( X ) );
         }
 
-	fix_range();
+        fix_range();
 
         /* FIXME: only needs to damage the location of the old cursor! */
         redraw();
@@ -508,7 +508,7 @@ Timeline::menu_cb ( Fl_Menu_ *m )
             range_end( xoffset + x_to_ts( X ) );
         }
 
-	fix_range();
+        fix_range();
 
         /* FIXME: only needs to damage the location of the old cursor! */
         redraw();
@@ -650,7 +650,7 @@ Timeline::menu_cb ( Fl_Menu_ *m )
         Fl::e_y = menu_event_y;
 
         Track *t = Timeline::event_inside();
-        
+
         if ( t )
         {
             const char *name = fl_file_chooser( "Import source", "*", NULL  );
@@ -662,9 +662,9 @@ Timeline::menu_cb ( Fl_Menu_ *m )
 
                 Fl::e_x = menu_event_x;
                 Fl::e_y = menu_event_y;
-        
+
                 t->sequence()->handle_paste(url);
-                
+
                 free(url);
             }
         }
@@ -714,7 +714,7 @@ Timeline::Timeline ( int X, int Y, int W, int H, const char* L ) : BASE( X, Y, W
 
     menu = new Fl_Menu_Button( 0, 0, 0, 0, "Timeline" );
 
-/*     menu->add( "Add Track", 0, 0, 0  ); */
+    /*     menu->add( "Add Track", 0, 0, 0  ); */
 
     int ruler_height = 0;
 
@@ -803,16 +803,16 @@ Timeline::Timeline ( int X, int Y, int W, int H, const char* L ) : BASE( X, Y, W
             play_cursor_track = o;
         }
 
-/*         { */
-/*             Annotation_Sequence *o = new Annotation_Sequence( 0, 24, 800, 24 ); */
+        /*         { */
+        /*             Annotation_Sequence *o = new Annotation_Sequence( 0, 24, 800, 24 ); */
 
-/*             o->color( fl_gray_ramp( 'F' ) ); */
+        /*             o->color( fl_gray_ramp( 'F' ) ); */
 
-/*             o->label( "Ruler" ); */
-/*             o->align( FL_ALIGN_LEFT ); */
+        /*             o->label( "Ruler" ); */
+        /*             o->align( FL_ALIGN_LEFT ); */
 
-/*             ruler_track = o; */
-/*         } */
+        /*             ruler_track = o; */
+        /*         } */
 
         rulers = o;
         o->end();
@@ -824,11 +824,11 @@ Timeline::Timeline ( int X, int Y, int W, int H, const char* L ) : BASE( X, Y, W
         o->size( o->w(), ruler_height );
     }
 
-    { 
+    {
         Fl_Tile *o = new Fl_Tile( X, rulers->y() + ruler_height, W, H - rulers->h() );
         o->box(FL_FLAT_BOX);
         o->when( FL_WHEN_RELEASE );
-        { 
+        {
             Fl_Group *o = new Fl_Group( X, rulers->y() + rulers->h(), W, ( H - rulers->h() ) - 50 );
             o->box(FL_FLAT_BOX);
             o->clip_children(true);
@@ -838,29 +838,29 @@ Timeline::Timeline ( int X, int Y, int W, int H, const char* L ) : BASE( X, Y, W
                 Fl_Pack *o = new Fl_Pack( X, rulers->y() + rulers->h(), W, 1 );
                 o->type( Fl_Pack::VERTICAL );
                 o->spacing( 1 );
-                
+
                 tracks = o;
                 o->end();
                 /* Fl_Group::current()->resizable( o ); */
             }
-            
+
             o->end();
             track_window = o;
         }
         {
-            Fl_Panzoomer *o = new Timeline_Panzoomer( X, 
-                                                track_window->y() + track_window->h(),
-                                                W,
-                                                50 );
-        
+            Fl_Panzoomer *o = new Timeline_Panzoomer( X,
+                track_window->y() + track_window->h(),
+                W,
+                50 );
+
             o->zoom_range( 1, 20 );
             o->zoom( 8 );
-        
+
             o->box( FL_FLAT_BOX );
             o->color( FL_DARK1 );
             o->type( FL_HORIZONTAL );
             o->callback( cb_scroll, this );
-        
+
             panzoomer = o;
         }
 
@@ -873,7 +873,7 @@ Timeline::Timeline ( int X, int Y, int W, int H, const char* L ) : BASE( X, Y, W
         o->resizable( spacebox );
 
         spacebox->resize( X, rulers->y() + ( ( H - rulers->h() ) - 50 ),
-            W, 125 );
+                          W, 125 );
 
         o->position( panzoomer->x(), panzoomer->y(),
                      panzoomer->x(), track_window->y() + track_window->h() );
@@ -932,7 +932,7 @@ nearest_line_snap_cb ( nframes_t frame, const BBT &bbt, void *arg )
         return;
 
     if ( Timeline::snap_magnetic &&
-         abs_diff( frame, n->original ) > timeline->x_to_ts( snap_pixel ) )
+            abs_diff( frame, n->original ) > timeline->x_to_ts( snap_pixel ) )
         return;
 
     if ( abs_diff( frame, n->original ) < abs_diff( n->original, n->closest ) )
@@ -1052,7 +1052,7 @@ Timeline::x_to_offset ( int x ) const
     int d = x - Track::width();
 
     int64_t r;
-    
+
     if ( d < 0 )
         r = (int64_t)xoffset - x_to_ts( 0 - d );
     else
@@ -1061,7 +1061,7 @@ Timeline::x_to_offset ( int x ) const
     if ( r > JACK_MAX_FRAMES )
         return JACK_MAX_FRAMES;
     else if ( r < 0 )
-            return 0;
+        return 0;
     else
         return r;
 }
@@ -1091,9 +1091,9 @@ Timeline::draw_measure_cb ( nframes_t frame, const BBT &bbt, void *v )
     if ( FL_BLACK == ct )
     {
         light_theme = true;
-	/* in a light color scheme mode */
-	mc = fl_rgb_color(30,30,30);
-	bc = FL_DARK3;
+        /* in a light color scheme mode */
+        mc = fl_rgb_color(30,30,30);
+        bc = FL_DARK3;
     }
 
     if ( bbt.beat )
@@ -1101,10 +1101,10 @@ Timeline::draw_measure_cb ( nframes_t frame, const BBT &bbt, void *v )
         if ( o->panzoomer->zoom() > 12 )
             return;
         else
-	    c = bc;
+            c = bc;
     }
     else
-	c = mc;
+        c = mc;
 #ifdef FLTK_SUPPORT
     // soften the grid lines some
     if(light_theme)
@@ -1131,11 +1131,11 @@ Timeline::update_tempomap ( void )
     _tempomap.clear();
 
     for ( list <Sequence_Widget *>::const_iterator i = time_track->_widgets.begin();
-          i != time_track->_widgets.end(); ++i )
+            i != time_track->_widgets.end(); ++i )
         _tempomap.push_back( *i );
 
     for ( list <Sequence_Widget *>::const_iterator i = tempo_track->_widgets.begin();
-          i != tempo_track->_widgets.end(); ++i )
+            i != tempo_track->_widgets.end(); ++i )
         _tempomap.push_back( *i );
 
     _tempomap.sort( Sequence_Widget::sort_func );
@@ -1182,7 +1182,7 @@ Timeline::render_tempomap( nframes_t start, nframes_t length, measure_line_callb
         return pos;
 
     for ( list <const Sequence_Widget *>::const_iterator i = _tempomap.begin();
-          i != _tempomap.end(); ++i )
+            i != _tempomap.end(); ++i )
     {
 
         if ( ! strcmp( (*i)->class_name(), "Tempo_Point" ) )
@@ -1315,13 +1315,13 @@ void
 Timeline::resize ( int X, int Y, int W, int H )
 {
     int old_panzoomer_h = panzoomer->h();
-    
+
     BASE::resize( X, Y, W, H );
 
     tile->resizable()->resize( X,
                                tile->y() + tile->h() - 150,
                                W, 125 );
-    
+
     panzoomer->resize( X,
                        tile->y() + tile->h() - old_panzoomer_h,
                        W,
@@ -1345,7 +1345,7 @@ Timeline::resize ( int X, int Y, int W, int H )
 
 void
 Timeline::add_cursor ( Cursor_Region *o )
-{    
+{
     if ( !strcmp( o->type(), "Edit" ) )
     {
         DMESSAGE( "Adding cursor to edit track" );
@@ -1354,12 +1354,12 @@ Timeline::add_cursor ( Cursor_Region *o )
     else if ( !strcmp( o->type(), "Punch" ) )
     {
         DMESSAGE( "Adding cursor to punch track" );
-        punch_cursor_track->add( o );       
+        punch_cursor_track->add( o );
     }
     else if ( !strcmp( o->type(), "Playback" ) )
     {
         DMESSAGE( "Adding cursor to punch track" );
-        play_cursor_track->add( o );       
+        play_cursor_track->add( o );
     }
 
 }
@@ -1381,15 +1381,15 @@ Timeline::draw_cursors ( Cursor_Sequence *o ) const
     if ( o && o->_widgets.size() > 0 )
     {
         for ( std::list<Sequence_Widget*>::const_iterator i = o->_widgets.begin();
-              i != o->_widgets.end();
-              ++i )
+                i != o->_widgets.end();
+                ++i )
         {
             if ( Timeline::draw_with_cursor_overlay )
             {
 #ifdef FLTK_SUPPORT
                 cairo_surface_t* Xsurface = cairo_xlib_surface_create
-                        (fl_display, fl_window, fl_visual->visual,
-                         Fl_Window::current()->w(), Fl_Window::current()->h());
+                                            (fl_display, fl_window, fl_visual->visual,
+                                             Fl_Window::current()->w(), Fl_Window::current()->h());
 
                 cairo_t *cc = cairo_create (Xsurface);
 
@@ -1415,13 +1415,13 @@ Timeline::draw_cursors ( Cursor_Sequence *o ) const
                 //    DMESSAGE("line_x = %d: tracks-x = %d: tracks-w = %d", (*i)->line_x(), tracks->x(), tracks->w());
 
                 cairo_rectangle( cc, line_x, ty, abs_w, tracks->h() );
- 
+
                 cairo_fill( cc );
 
                 cairo_set_operator( cc, CAIRO_OPERATOR_OVER );
 
                 cairo_surface_destroy(Xsurface);
-                cairo_destroy(cc);      
+                cairo_destroy(cc);
 #else   // NTK
                 fl_color( fl_color_add_alpha( (*i)->box_color(), 25 ) );
                 fl_rectf( (*i)->line_x(), tracks->y(), (*i)->abs_w(), tracks->h() );
@@ -1434,10 +1434,10 @@ Timeline::draw_cursors ( Cursor_Sequence *o ) const
 #else
                 fl_color( fl_color_add_alpha( (*i)->box_color(), 127  ));
 #endif
-                
+
                 fl_line( (*i)->line_x(), tracks->y(), (*i)->line_x(), tracks->y() + tracks->h() );
                 fl_line( (*i)->line_x() + 1, tracks->y(), (*i)->line_x() + 1, tracks->y() + tracks->h() );  // Double thickness +1
-                
+
                 fl_line( (*i)->line_x() + (*i)->abs_w(), tracks->y(), (*i)->line_x() + (*i)->abs_w(), tracks->y() + tracks->h() );
                 fl_line( (*i)->line_x() + (*i)->abs_w() - 1, tracks->y(), (*i)->line_x() + (*i)->abs_w() - 1, tracks->y() + tracks->h() );  // Double -1
             }
@@ -1456,13 +1456,13 @@ Timeline::draw_cursors ( void ) const
     if ( transport->punch_enabled() )
         draw_cursors( punch_cursor_track );
 }
- 
+
 
 void
 Timeline::draw ( void )
 {
     /* Any code that might affect the structures used for drawing from
-     * another thread must use Fl::lock()/unlock()! */ 
+     * another thread must use Fl::lock()/unlock()! */
     THREAD_ASSERT( UI );
 
 //    rdlock();
@@ -1489,27 +1489,27 @@ Timeline::draw ( void )
     if ( c & FL_DAMAGE_SCROLL )
     {
         {
-         /*         draw_child( *rulers ); */
+            /*         draw_child( *rulers ); */
 
             Y = track_window->y();
             H = track_window->h();
-            
-            
+
+
             if ( dx )
                 /* when scrolling horizontally, scroll rulers */
-                fl_scroll( rulers->x() + Track::width(), 
+                fl_scroll( rulers->x() + Track::width(),
                            rulers->y(),
                            rulers->w(),
                            rulers->h(), dx, 0, draw_clip_rulers, this );
- 
+
             if ( dy )
                 /* when scrolling vertically, also scroll track headers */
                 fl_scroll(
                     X,
-                    Y, 
-                    Track::width(), 
+                    Y,
+                    Track::width(),
                     H, 0, dy, draw_clip_tracks, this );
-           
+
             /* scroll sequences */
             fl_scroll( X + Track::width(),
                        Y,
@@ -1519,7 +1519,7 @@ Timeline::draw ( void )
     }
 
 //    panzoomer->redraw();
-    
+
     if ( c & FL_DAMAGE_ALL )
     {
         // DMESSAGE( "complete redraw" );
@@ -1534,7 +1534,7 @@ Timeline::draw ( void )
                       tile->h() );
 
         draw_child(*tile);
-        
+
         fl_pop_clip();
 
         redraw_overlay();
@@ -1556,9 +1556,9 @@ Timeline::draw ( void )
         /*     panzoomer->redraw(); */
 
         update_child(*tile);
-        
+
         fl_pop_clip();
-        
+
         redraw_overlay();
     }
 
@@ -1603,14 +1603,14 @@ Timeline::draw_cursor ( nframes_t frame, Fl_Color color, void (*symbol)(Fl_Color
     fl_line( x, y, x, y + h );
 
     fl_push_matrix();
-   
+
     fl_translate( x, y );
     fl_scale( 8, 4 );
-   
+
     symbol( color );
-   
+
     fl_pop_matrix();
-   
+
     fl_pop_clip();
 }
 
@@ -1622,7 +1622,7 @@ Timeline::next_punch ( nframes_t frame, nframes_t *in, nframes_t *out ) const
         return false;
 
     const Sequence_Widget *w = punch_cursor_track->next( frame );
-    
+
     if ( w && w->start() >= frame )
     {
         *in = w->start();
@@ -1679,9 +1679,8 @@ Timeline::redraw_playhead ( void )
                         }
                     }
                 }
-                else
-                    if ( transport->frame > playback_end() )
-                        transport->stop();
+                else if ( transport->frame > playback_end() )
+                    transport->stop();
             }
         }
     }
@@ -1697,7 +1696,7 @@ Timeline::redraw_playhead ( void )
         // the journal.
         // In other words, really bad things happen!!!.
         // Also we cannot just check transport->rolling since there is a delay between
-        // the actual button press to record and jack transport actually rolling. 
+        // the actual button press to record and jack transport actually rolling.
         // This timeout can be called before jack transport actually is started and
         // transport->rolling will be false. So transport->jack_transport_rolling is
         // needed and is set when we actually get confirmation from jack query that
@@ -1848,8 +1847,8 @@ int
 Timeline::handle_scroll ( int m )
 {
     if ( m == FL_KEYBOARD &&
-         Fl::event_key() != FL_Home &&
-         Fl::event_key() != FL_End )
+            Fl::event_key() != FL_Home &&
+            Fl::event_key() != FL_End )
         return menu->test_shortcut() || panzoomer->handle( m );
     else
         return 0;
@@ -1861,7 +1860,7 @@ Timeline::event_inside ( void )
     for ( int i = tracks->children(); i--; )
         if ( Fl::event_inside( tracks->child(i) ) )
             return (Track*)tracks->child(i);
-    
+
     return NULL;
 }
 
@@ -1871,173 +1870,173 @@ Timeline::handle ( int m )
     static Drag *drag = NULL;
     static bool range = false;
 
-/*     if ( m != FL_NO_EVENT ) */
-/*         DMESSAGE( "%s", event_name( m ) ); */
+    /*     if ( m != FL_NO_EVENT ) */
+    /*         DMESSAGE( "%s", event_name( m ) ); */
 
-/*     int r = BASE::handle( m ); */
+    /*     int r = BASE::handle( m ); */
 
     switch ( m )
     {
-        case FL_ENTER:
-            return 1;
-        case FL_LEAVE:
-            return 1;
-        case FL_KEYDOWN:
-            if ( Fl::event_state() & ( FL_ALT | FL_CTRL | FL_SHIFT ) )
-                /* we don't want any keys with modifiers... */
-                return 0;
-
-            if ( Fl::event_key() == 'r' )
-            {
-                range = true;
-                return 1;
-            }
-            else if ( Fl::event_key() == 's' )
-            {
-                snapping_on_hold = true;
-                return 1;
-            }
+    case FL_ENTER:
+        return 1;
+    case FL_LEAVE:
+        return 1;
+    case FL_KEYDOWN:
+        if ( Fl::event_state() & ( FL_ALT | FL_CTRL | FL_SHIFT ) )
+            /* we don't want any keys with modifiers... */
             return 0;
-        case FL_KEYUP:
-            if ( Fl::event_state() & ( FL_ALT | FL_CTRL | FL_SHIFT ) )
-                /* we don't want any keys with modifiers... */
-                return 0;
 
-            if ( Fl::event_key() == 'r' )
-            {
-                range = false;
-                return 1;
-            }
-            else if ( Fl::event_key() == 's' )
-            {
-                snapping_on_hold = false;
-                return 1;
-            }
-            return 0;
-//        case FL_KEYBOARD:
-        case FL_SHORTCUT:
+        if ( Fl::event_key() == 'r' )
         {
-            if ( Fl::event_state() & ( FL_ALT | FL_CTRL | FL_SHIFT ) )
-                /* we don't want any keys with modifiers... */
-                return 0;
+            range = true;
+            return 1;
+        }
+        else if ( Fl::event_key() == 's' )
+        {
+            snapping_on_hold = true;
+            return 1;
+        }
+        return 0;
+    case FL_KEYUP:
+        if ( Fl::event_state() & ( FL_ALT | FL_CTRL | FL_SHIFT ) )
+            /* we don't want any keys with modifiers... */
+            return 0;
 
-            switch ( Fl::event_key() )
+        if ( Fl::event_key() == 'r' )
+        {
+            range = false;
+            return 1;
+        }
+        else if ( Fl::event_key() == 's' )
+        {
+            snapping_on_hold = false;
+            return 1;
+        }
+        return 0;
+//        case FL_KEYBOARD:
+    case FL_SHORTCUT:
+    {
+        if ( Fl::event_state() & ( FL_ALT | FL_CTRL | FL_SHIFT ) )
+            /* we don't want any keys with modifiers... */
+            return 0;
+
+        switch ( Fl::event_key() )
+        {
+        case FL_Delete:
+        case FL_Home:
+        case FL_End:
+            /* keep scrollbar from eating these. */
+            return 0;
+        default:
+            return BASE::handle( m );
+        }
+
+        return 0;
+    }
+    default:
+    {
+        int r = BASE::handle( m );
+
+        if ( m != FL_RELEASE && r )
+            return r;
+
+        const int X = Fl::event_x();
+        const int Y = Fl::event_y();
+
+        switch ( m )
+        {
+        case FL_PUSH:
+        {
+            if (
+                Fl::event_x() >= Track::width() &&
+                ( test_press( FL_BUTTON1 ) || test_press( FL_BUTTON1 + FL_CTRL ) ))
             {
-                case FL_Delete:
-                case FL_Home:
-                case FL_End:
-                    /* keep scrollbar from eating these. */
-                    return 0;
-                default:
-                    return BASE::handle( m );
+                assert( ! drag );
+
+                drag = new Drag( X, Y );
+                _selection.x = X;
+                _selection.y = Y;
+
+                if ( ! Fl::event_ctrl() )
+                    select_none();
+
+                return 1;
+            }
+            else if ( test_press( FL_BUTTON3 ) )
+            {
+                {
+                    menu_event_x = X;
+                    menu_event_y = Y;
+
+                    Track *t = Timeline::event_inside();
+
+                    Fl_Menu_Item *mi = (Fl_Menu_Item*)menu->find_item("Import source at mouse");
+
+                    if ( t )
+                        mi->activate();
+                    else
+                        mi->deactivate();
+                }
+
+                menu_popup( menu );
+
+                return 1;
+            }
+        }
+
+        return 0;
+
+        case FL_DRAG:
+        {
+            int ox = X - drag->x;
+            int oy = Y - drag->y;
+
+            if ( ox < 0 )
+                _selection.x = X;
+            if ( oy < 0 )
+                _selection.y = Y;
+
+            _selection.w = abs( ox );
+            _selection.h = abs( oy );
+
+            if ( range )
+            {
+                range_start( x_to_offset( _selection.x ) );
+                range_end( x_to_offset( _selection.x + _selection.w ) );
+                redraw();
             }
 
-            return 0;
+            redraw_overlay();
+            return 1;
+
+            break;
+        }
+        case FL_RELEASE:
+        {
+            delete drag;
+            drag = NULL;
+
+            if ( range )
+            {
+                range_start( x_to_offset( _selection.x ) );
+                range_end( x_to_offset( _selection.x + _selection.w ) );
+                redraw();
+            }
+            else
+                select( _selection );
+
+            _selection.x = _selection.y =_selection.w = _selection.h = 0;
+
+            redraw_overlay();
+            return 1;
         }
         default:
-        {
-            int r = BASE::handle( m );
-
-            if ( m != FL_RELEASE && r )
-                return r;
-
-            const int X = Fl::event_x();
-            const int Y = Fl::event_y();
-
-            switch ( m )
-            {
-                case FL_PUSH:
-                {
-                    if (
-                        Fl::event_x() >= Track::width() &&
-                        ( test_press( FL_BUTTON1 ) || test_press( FL_BUTTON1 + FL_CTRL ) ))
-                    {
-                        assert( ! drag );
-                        
-                        drag = new Drag( X, Y );
-                        _selection.x = X;
-                        _selection.y = Y;
-                        
-                        if ( ! Fl::event_ctrl() )
-                            select_none();
-                        
-                        return 1;
-                    }
-                    else if ( test_press( FL_BUTTON3 ) )
-                    {
-                        {
-                            menu_event_x = X;
-                            menu_event_y = Y;
-                        
-                            Track *t = Timeline::event_inside();
-
-                            Fl_Menu_Item *mi = (Fl_Menu_Item*)menu->find_item("Import source at mouse");
-                        
-                            if ( t )
-                                mi->activate();
-                            else
-                                mi->deactivate();
-                        }
-                        
-                        menu_popup( menu );
-                        
-                        return 1;
-                    }
-                }
-                
-                return 0;
-            
-                case FL_DRAG:
-                {
-                    int ox = X - drag->x;
-                    int oy = Y - drag->y;
-
-                    if ( ox < 0 )
-                        _selection.x = X;
-                    if ( oy < 0 )
-                        _selection.y = Y;
-
-                    _selection.w = abs( ox );
-                    _selection.h = abs( oy );
-
-                    if ( range )
-                    {
-                        range_start( x_to_offset( _selection.x ) );
-                        range_end( x_to_offset( _selection.x + _selection.w ) );
-                        redraw();
-                    }
-
-                    redraw_overlay();
-                    return 1;
-
-                    break;
-                }
-                case FL_RELEASE:
-                {
-                    delete drag;
-                    drag = NULL;
-
-                    if ( range )
-                    {
-                        range_start( x_to_offset( _selection.x ) );
-                        range_end( x_to_offset( _selection.x + _selection.w ) );
-                        redraw();
-                    }
-                    else
-                        select( _selection );
-
-                    _selection.x = _selection.y =_selection.w = _selection.h = 0;
-
-                    redraw_overlay();
-                    return 1;
-                }
-                default:
-                    return 0;
-                    break;
-            }
-
             return 0;
+            break;
         }
+
+        return 0;
+    }
     }
 }
 
@@ -2086,7 +2085,7 @@ Timeline::length ( void ) const
     for ( int i = tracks->children(); i--; )
     {
         Sequence *t = ((Track*)tracks->child( i ))->sequence();
-        
+
         if ( t )
             l = max( l, ((Track*)tracks->child( i ))->sequence()->length() );
     }
@@ -2180,10 +2179,10 @@ Timeline::insert_track ( Track *track, int n )
     tracks->redraw();
 
     /* FIXME: why is this necessary? doesn't the above add do DAMAGE_CHILD? */
-//    redraw();    
+//    redraw();
 }
 
-static 
+static
 bool
 compare_tracks ( Track *a, Track *b )
 {
@@ -2196,18 +2195,18 @@ Timeline::apply_track_order ( void )
     /* wrlock(); */
 
     std::list<Track*> tl;
-    
+
     for ( int i = 0; i < tracks->children(); i++ )
         tl.push_back( (Track*)tracks->child( i ) );
 
     tl.sort(compare_tracks);
 
     Fl_Widget **a = const_cast<Fl_Widget**>(tracks->array());
-    
+
     int j = 0;
     for ( std::list<Track*>::const_iterator i = tl.begin();
-          i != tl.end();
-          ++i, ++j )
+            i != tl.end();
+            ++i, ++j )
         a[j] = *i;
 
     update_track_order();
@@ -2300,16 +2299,16 @@ Timeline::command_load ( const char *name, const char *display_name )
 {
     if ( ! name )
         return false;
-  
+
     track_lock.wrlock();
     int r = Project::open( name );
     track_lock.unlock();
 
     if ( r < 0 )
     {
-  	const char *s = Project::errstr( r );
-  	
-  	fl_alert( "Could not open project \"%s\":\n\n\t%s", name, s );
+        const char *s = Project::errstr( r );
+
+        fl_alert( "Could not open project \"%s\":\n\n\t%s", name, s );
 
         return false;
     }
@@ -2318,7 +2317,7 @@ Timeline::command_load ( const char *name, const char *display_name )
         Project::set_name ( display_name );
 
     apply_track_order();
-  
+
     return true;
 }
 
@@ -2341,7 +2340,7 @@ Timeline::command_new ( const char *name, const char *display_name )
     /* tle->update_menu(); */
 
     /* tle->main_window->redraw(); */
-    
+
     return b;
 }
 
@@ -2360,31 +2359,31 @@ int
 Timeline::init_osc ( const char *osc_port )
 {
     osc = new OSC::Endpoint();
-    
+
     if ( int r = osc->init( LO_UDP, osc_port ) )
         return r;
-    
+
     osc->owner = this;
-    
+
     char *url = osc->url();
     printf( "OSC=%s\n", url  );
     free(url);
-    
+
     osc->add_method( "/non/hello", "ssss", &Timeline::osc_non_hello, osc, "" );
-    
+
 //    osc->start();
-    
+
     if ( ! osc_transmit_thread )
     {
         osc_transmit_thread = new OSC_Transmit_Thread();
-        
+
         osc_transmit_thread->start();
     }
 
     if ( ! osc_receive_thread )
     {
         osc_receive_thread = new OSC_Receive_Thread();
-        
+
         osc_receive_thread->start();
     }
 
@@ -2392,7 +2391,7 @@ Timeline::init_osc ( const char *osc_port )
 }
 
 int
-Timeline::osc_non_hello ( const char *, const char *, lo_arg **, int , lo_message msg, void * )
+Timeline::osc_non_hello ( const char *, const char *, lo_arg **, int, lo_message msg, void * )
 {
     THREAD_ASSERT( OSC );
 
@@ -2414,7 +2413,7 @@ Timeline::handle_hello ( lo_message msg )
         const char *id = &argv[3]->s;
 
         MESSAGE( "Got hello from NON peer %s (%s) @ %s with ID \"%s\"", name, version, url, id );
-        
+
         osc->handle_hello( &argv[3]->s, &argv[0]->s );
     }
 }
@@ -2425,16 +2424,16 @@ Timeline::say_hello ( void )
     if ( nsm_is_active( nsm ) )
     {
         lo_message m = lo_message_new();
-        
+
         lo_message_add( m, "sssss",
                         "/non/hello",
                         osc->url(),
                         APP_NAME,
                         VERSION,
                         instance_name );
-        
+
         nsm_send_broadcast( nsm, m );
-        
+
         nsm_send_is_hidden(nsm);
     }
 }
@@ -2446,7 +2445,7 @@ Timeline::connect_osc ( void )
     for ( int i = tracks->children(); i-- ; )
     {
         Track *t = (Track*)tracks->child( i );
-        
+
         t->connect_osc();
     }
 }
@@ -2457,7 +2456,7 @@ Timeline::update_osc_connection_state ( void )
     for ( int i = tracks->children(); i-- ; )
     {
         Track *t = (Track*)tracks->child( i );
-        
+
         t->update_osc_connection_state();
     }
 }
@@ -2473,10 +2472,10 @@ Timeline::process_osc ( void )
     for ( int i = tracks->children(); i-- ; )
     {
         Track *t = (Track*)tracks->child( i );
-        
+
         t->process_osc();
     }
-    
+
     sequence_lock.unlock();
 }
 
@@ -2491,7 +2490,7 @@ Timeline::command_hide_gui( void )
         DMESSAGE("GOT NSM COMMAND HIDE");
         Fl::first_window()->hide();
     }
-    
+
     nsm_send_is_hidden(nsm);
 }
 
@@ -2500,7 +2499,7 @@ Timeline::command_show_gui( void )
 {
     DMESSAGE("GOT NSM COMMAND SHOW");
     window()->show();
-   // tle->main_window->show( 0, NULL );
-    
+    // tle->main_window->show( 0, NULL );
+
     nsm_send_is_shown(nsm);
 }

@@ -49,27 +49,35 @@ Transport::Transport ( int X, int Y, int W, int H, const char *L )
     frame_rate = 48000;
     frame = 0;
 
-    { _home_button = new Fl_Button(5, 5, 40, 44, "@|<");
+    {
+        _home_button = new Fl_Button(5, 5, 40, 44, "@|<");
     } // Fl_Button* _home_button
-    { _end_button = new Fl_Button(45, 5, 40, 44, "@>|");
+    {
+        _end_button = new Fl_Button(45, 5, 40, 44, "@>|");
     } // Fl_Button* _end_button
-    { _play_button = new Fl_Button(85, 5, 40, 44, "@>");
+    {
+        _play_button = new Fl_Button(85, 5, 40, 44, "@>");
     } // Fl_Button* _play_button
-    { _record_button = new Fl_Button(130, 5, 40, 44, "@circle");
+    {
+        _record_button = new Fl_Button(130, 5, 40, 44, "@circle");
     } // Fl_Button* _record_button
-    { _punch_button = new Fl_Button(175, 5, 38, 21, "Punch");
+    {
+        _punch_button = new Fl_Button(175, 5, 38, 21, "Punch");
         _punch_button->type(1);
         _punch_button->labelsize(10);
     } // Fl_Button* _punch_button
-    { _loop_button = new Fl_Button(175, 20, 38, 21, "Loop");
+    {
+        _loop_button = new Fl_Button(175, 20, 38, 21, "Loop");
         _loop_button->type(1);
         _loop_button->labelsize(10);
     } // Fl_Button* _loop_button
-    { _new_take_button = new Fl_Button(225, 5, 60, 21, "New Take");
+    {
+        _new_take_button = new Fl_Button(225, 5, 60, 21, "New Take");
         _new_take_button->type(1);
         _new_take_button->labelsize(10);
     } // Fl_Button* _new_take_button
-    { _freewheel_button = new Fl_Button(225, 5, 60, 21, "Freewheel");
+    {
+        _freewheel_button = new Fl_Button(225, 5, 60, 21, "Freewheel");
         _freewheel_button->type(1);
         _freewheel_button->labelsize(10);
     } // Fl_Button* _new_take_button
@@ -103,7 +111,7 @@ Transport::Transport ( int X, int Y, int W, int H, const char *L )
     o->when( FL_WHEN_CHANGED );
     o->color2( fl_color_average( FL_GRAY, FL_RED, 0.50 ));
     o->tooltip( "Toggle punch in/out recording mode" );
-    
+
     o = _loop_button;
     o->type( FL_TOGGLE_BUTTON );
     o->shortcut( 'L' );
@@ -132,7 +140,7 @@ Transport::Transport ( int X, int Y, int W, int H, const char *L )
     flowdown( true );
     vspacing( 1 );
     hspacing( 1 );
-             
+
     dolayout();
 }
 
@@ -159,7 +167,7 @@ Transport::update_record_state ( void )
 
     /* this covers the case where the record toggle button is
      * pressed while the transport is already rolling. Recording
-     * should begin or end on the next frame. Also, checking 
+     * should begin or end on the next frame. Also, checking
      * jack_transport_rolling in the event the transport was
      * stopped by another client */
     if ( rolling || jack_transport_rolling )
@@ -198,7 +206,7 @@ void
 Transport::toggle_record ( void )
 {
     _record_button->value( ! _record_button->value() );
-     update_record_state();
+    update_record_state();
 }
 
 bool
@@ -269,7 +277,7 @@ Transport::poll ( void )
     ts = engine->transport_query( this );
 
     rolling = ts == JackTransportRolling;
-    
+
     if(rolling && recording && !jack_transport_rolling)
     {
         jack_transport_rolling = true;
@@ -331,7 +339,7 @@ Transport::stop ( void )
     if ( engine )
     {
         engine->transport_stop();
-        
+
         if ( _freewheel_button->value() )
         {
             engine->freewheeling( false );

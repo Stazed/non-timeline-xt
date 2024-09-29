@@ -1,4 +1,4 @@
- 
+
 /*******************************************************************************/
 /* Copyright (C) 2008-2021 Jonathan Moore Liles (as "Non-Timeline")            */
 /* Copyright (C) 2023- Stazed                                                  */
@@ -71,7 +71,7 @@ Disk_Stream::Disk_Stream ( Track *track, float frame_rate, nframes_t nframes, in
     _frame_rate = frame_rate;
 
     sem_init( &_blocks, 0, 0 );
-        
+
     _resize_buffers( nframes, channels );
 }
 
@@ -81,7 +81,7 @@ Disk_Stream::~Disk_Stream ( )
 
 //    timeline->wrlock();
 
-     _track = NULL;
+    _track = NULL;
 
     sem_destroy( &_blocks );
 
@@ -107,7 +107,7 @@ Disk_Stream::base_flush ( bool is_output )
         jack_ringbuffer_reset( _rb[ i ] );
 
     sem_destroy( &_blocks );
-    
+
     if ( is_output )
         sem_init( &_blocks, 0, _total_blocks );
     else
@@ -134,7 +134,7 @@ Disk_Stream::shutdown ( void )
         DMESSAGE( "Sending terminate signal to diskthread." );
 
         _terminate = true;
-        
+
         /* try to wake the thread so it'll see that it's time to die */
         while ( _terminate )
         {

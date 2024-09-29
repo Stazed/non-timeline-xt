@@ -95,11 +95,11 @@ Audio_File::filename ( void ) const
 static bool is_poor_seeker ( const char * filename )
 {
     if ( ( strlen(filename) > 4 &&
-           ! strcasecmp( &filename[strlen(filename)-4], ".ogg" ) )
-         ||
-         ( strlen(filename) > 5 &&
-           ! strcasecmp( &filename[strlen(filename)-5], ".flac" ) )
-        )
+            ! strcasecmp( &filename[strlen(filename)-4], ".ogg" ) )
+            ||
+            ( strlen(filename) > 5 &&
+              ! strcasecmp( &filename[strlen(filename)-5], ".flac" ) )
+       )
     {
         return true;
     }
@@ -127,7 +127,7 @@ Audio_File::from_file ( const char * filename )
         if ( ( a = _open_files[ std::string( filename ) ] ) )
         {
             ++a->_refs;
-            
+
             return a;
         }
     }
@@ -184,7 +184,7 @@ Audio_File::read_peaks( float fpp, nframes_t start, nframes_t end, int *peaks, P
     *peaks = 0;
     *channels = 0;
     *pbuf = NULL;
-    
+
     if ( dummy() )
         return false;
     else

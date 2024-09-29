@@ -41,28 +41,31 @@ protected:
 
 public:
 
-    Fl_Cursor cursor ( void ) const { return FL_CURSOR_DEFAULT; }
+    Fl_Cursor cursor ( void ) const
+    {
+        return FL_CURSOR_DEFAULT;
+    }
 
     Time_Sequence ( int X, int Y, int W, int H );
 
     time_sig
     time ( nframes_t when )
+    {
+        for ( list <Sequence_Widget *>::const_reverse_iterator i = _widgets.rbegin();
+                i != _widgets.rend(); ++i )
         {
-            for ( list <Sequence_Widget *>::const_reverse_iterator i = _widgets.rbegin();
-                  i != _widgets.rend(); ++i )
-            {
-                if ( (*i)->offset() < when )
-                    return ((Time_Point*)(*i))->time();
-            }
-
-            return time_sig( 4, 4 );
+            if ( (*i)->offset() < when )
+                return ((Time_Point*)(*i))->time();
         }
+
+        return time_sig( 4, 4 );
+    }
 
     void
     time ( nframes_t when, int bpb, int note )
-        {
-            add( new Time_Point( when, bpb, note ) );
-        }
+    {
+        add( new Time_Point( when, bpb, note ) );
+    }
 
     void handle_widget_change ( nframes_t start, nframes_t length );
     int handle ( int m );

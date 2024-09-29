@@ -34,7 +34,8 @@ Cursor_Sequence::Cursor_Sequence( int X, int Y, int W, int H ) : Sequence ( X, Y
 
     box( FL_FLAT_BOX );
 
-    { Fl_Box *o = new Fl_Box( X, Y, Track::width(), H );
+    {
+        Fl_Box *o = new Fl_Box( X, Y, Track::width(), H );
         o->align( FL_ALIGN_RIGHT | FL_ALIGN_INSIDE );
         o->labelsize( 12 );
         o->labeltype( FL_NORMAL_LABEL );
@@ -86,16 +87,16 @@ Cursor_Sequence::handle ( int m )
 
     switch ( m )
     {
-        case FL_PUSH:
-            /* if ( Fl::event_button1() ) */
-            /* { */
-            /*     add( new Cursor_Point( timeline->x_to_offset( Fl::event_x() ), "NONE" ) ); */
-            /*     timeline->redraw(); */
-            /*     return 0; */
-            /* } */
-            return 0;
-        default:
-            return 0;
+    case FL_PUSH:
+        /* if ( Fl::event_button1() ) */
+        /* { */
+        /*     add( new Cursor_Point( timeline->x_to_offset( Fl::event_x() ), "NONE" ) ); */
+        /*     timeline->redraw(); */
+        /*     return 0; */
+        /* } */
+        return 0;
+    default:
+        return 0;
 
     }
 }

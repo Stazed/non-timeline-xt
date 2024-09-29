@@ -19,7 +19,7 @@
 /* Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 /*******************************************************************************/
 
-/* 
+/*
  * File:   Region_Volume_Editor.H
  * Author: sspresto
  *
@@ -43,7 +43,7 @@ public:
 
     virtual ~Region_Volume_Editor();
 private:
-    
+
     float &_scale;
     Fl_Float_Input *_fi;
 

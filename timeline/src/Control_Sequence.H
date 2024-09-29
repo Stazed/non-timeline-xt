@@ -45,7 +45,8 @@ public:
 
     enum Curve_Type { No_Type, Linear, Quadratic };
 
-    enum Mode { 
+    enum Mode
+    {
         CV,
         OSC,
         MIDI
@@ -55,7 +56,7 @@ private:
 
     static void cb_button ( Fl_Widget *w, void *v );
     void cb_button ( Fl_Widget *w );
-    
+
     JACK::Port *_output;
 
     /* these are used to cache the saved osc connection until the
@@ -63,16 +64,16 @@ private:
     std::list<char*> _persistent_osc_connections;
     /* osc output port */
     volatile void *__osc_output;
-    
+
     OSC::Signal *_osc_output ( void ) const
-        {
-            return (OSC::Signal *)__osc_output;
-        }
+    {
+        return (OSC::Signal *)__osc_output;
+    }
 
     void _osc_output ( OSC::Signal * s)
-        {
-            __osc_output = s;
-        }
+    {
+        __osc_output = s;
+    }
 
 
     static void peer_callback(  OSC::Signal *sig,  OSC::Signal::State state, void *v );
@@ -91,11 +92,11 @@ private:
     void menu_cb ( const Fl_Menu_ *m );
 
     Mode _mode;
-    
-    float _rate; 
+
+    float _rate;
 
 protected:
-    
+
     Control_Sequence ( );
 
     virtual void get ( Log_Entry &e ) const;
@@ -114,7 +115,10 @@ protected:
 
 public:
 
-    Control_Sequence_Header * header ( void ) { return (Control_Sequence_Header*)child(0); }
+    Control_Sequence_Header * header ( void )
+    {
+        return (Control_Sequence_Header*)child(0);
+    }
 
     virtual void name ( const char *s );
     virtual const char *name ( void ) const;
@@ -131,20 +135,32 @@ public:
     Control_Sequence ( Track *, const char *name = 0 );
     ~Control_Sequence ( );
 
-    Fl_Cursor cursor ( void ) const { return FL_CURSOR_CROSS; }
+    Fl_Cursor cursor ( void ) const
+    {
+        return FL_CURSOR_CROSS;
+    }
 
-    Curve_Type interpolation ( void ) const { return _interpolation; }
-    void interpolation ( Curve_Type v ) 
-        { 
-            _interpolation = v; 
-            damage( FL_DAMAGE_USER1 );
-        }
-    
-    Mode mode ( void ) const { return _mode; }
+    Curve_Type interpolation ( void ) const
+    {
+        return _interpolation;
+    }
+    void interpolation ( Curve_Type v )
+    {
+        _interpolation = v;
+        damage( FL_DAMAGE_USER1 );
+    }
+
+    Mode mode ( void ) const
+    {
+        return _mode;
+    }
     void mode ( Mode v );
 
     /* Engine */
-    void output ( JACK::Port *p ) { _output = p; }
+    void output ( JACK::Port *p )
+    {
+        _output = p;
+    }
     nframes_t play ( sample_t *buf, nframes_t frame, nframes_t nframes );
     nframes_t process ( nframes_t nframes );
 

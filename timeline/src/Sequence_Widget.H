@@ -45,7 +45,10 @@ struct Drag
     int64_t offset;
     int64_t mouse_offset;
 
-    Drag( int X, int Y, uint64_t offset=0, uint64_t mouse_offset = 0 ) : x( X ), y( Y ), offset( offset ), mouse_offset( mouse_offset ) { state = 0; }
+    Drag( int X, int Y, uint64_t offset=0, uint64_t mouse_offset = 0 ) : x( X ), y( Y ), offset( offset ), mouse_offset( mouse_offset )
+    {
+        state = 0;
+    }
 };
 
 /* most common position description. /offset/ is only used by Regions,
@@ -58,21 +61,21 @@ struct Range
 
     void
     set_left ( nframes_t f )
-        {
-            offset += f - start;
-            length -= f - start;
-            start = f;
-        }
+    {
+        offset += f - start;
+        length -= f - start;
+        start = f;
+    }
 
     void
     set_right ( nframes_t f )
-        {
-            length = f - start;
-        }
+    {
+        length = f - start;
+    }
 
     Range ( ) : start( 0 ), offset( 0 ), length( 0 )
-        {
-        }
+    {
+    }
 };
 
 /* Used by time/tempo points or any other child of Sequence_Widget
@@ -85,8 +88,8 @@ struct BBT
     unsigned short tick;
 
     BBT ( ) : bar( 0 ), beat( 0 ), tick( 0 )
-        {
-        }
+    {
+    }
 };
 
 
@@ -99,7 +102,7 @@ struct position_info
     int beats_per_bar;
     int beat_type;
     BBT bbt;
-    
+
     position_info() :
         tempo(0.0),
         beats_per_bar(0),
@@ -132,12 +135,12 @@ class Sequence_Widget : public Loggable
     bool _nudge_dirty;
 
 protected:
-    
+
     char *_label;
     bool _can_resize_label;
 
     Sequence *_sequence;                                              /* track this region belongs to */
-   
+
     Range _range;                                      /* always used by RT/osc threads */
     Range _dragging_range;                                          /* used when dragging */
 
@@ -166,7 +169,9 @@ public:
 
     bool selected ( void ) const;
     static int nselected ( void )
-        { return _selection.size(); }
+    {
+        return _selection.size();
+    }
     void select ( void );
     void deselect ( void );
     void remove ( void );
@@ -174,12 +179,27 @@ public:
     static void delete_selected ( void );
     static void select_none ( void );
 
-    static Sequence_Widget *current    ( void ) { return Sequence_Widget::_current; }
-    static Sequence_Widget *pushed     ( void ) { return Sequence_Widget::_pushed; }
-    static Sequence_Widget *belowmouse ( void ) { return Sequence_Widget::_belowmouse; }
+    static Sequence_Widget *current    ( void )
+    {
+        return Sequence_Widget::_current;
+    }
+    static Sequence_Widget *pushed     ( void )
+    {
+        return Sequence_Widget::_pushed;
+    }
+    static Sequence_Widget *belowmouse ( void )
+    {
+        return Sequence_Widget::_belowmouse;
+    }
 
-    static void pushed     ( Sequence_Widget *w ) { Sequence_Widget::_pushed     = w; }
-    static void belowmouse ( Sequence_Widget *w ) { Sequence_Widget::_belowmouse = w; }
+    static void pushed     ( Sequence_Widget *w )
+    {
+        Sequence_Widget::_pushed     = w;
+    }
+    static void belowmouse ( Sequence_Widget *w )
+    {
+        Sequence_Widget::_belowmouse = w;
+    }
 
     void begin_drag ( const Drag &d );
     void end_drag ( void );
@@ -187,155 +207,251 @@ public:
     void pan_some(bool left);
     void end_log_nudge( void );
     void start_log_nudge (void );
-    
-    void set_nudge ( void ) { _nudge_dirty = true; }
-    void clear_nudge ( void ) { _nudge_dirty = false; }
-    bool nudge_dirty ( void ) { return _nudge_dirty; }
+
+    void set_nudge ( void )
+    {
+        _nudge_dirty = true;
+    }
+    void clear_nudge ( void )
+    {
+        _nudge_dirty = false;
+    }
+    bool nudge_dirty ( void )
+    {
+        return _nudge_dirty;
+    }
 
     int dispatch ( int m );
 
-    Fl_Widget * parent ( void ) const { return _sequence; }
+    Fl_Widget * parent ( void ) const
+    {
+        return _sequence;
+    }
 
-    int scroll_x ( void ) const { return timeline->ts_to_x( timeline->xoffset ); }
-    nframes_t scroll_ts ( void ) const { return timeline->xoffset; }
+    int scroll_x ( void ) const
+    {
+        return timeline->ts_to_x( timeline->xoffset );
+    }
+    nframes_t scroll_ts ( void ) const
+    {
+        return timeline->xoffset;
+    }
 
-    virtual int y ( void ) const { return _sequence->y(); }
-    virtual int h ( void ) const { return _sequence->h(); }
+    virtual int y ( void ) const
+    {
+        return _sequence->y();
+    }
+    virtual int h ( void ) const
+    {
+        return _sequence->h();
+    }
 
     /* used by regions */
-    
+
     int get_x( nframes_t frame ) const
-        {
-            return  frame < timeline->xoffset ?
-                _sequence->drawable_x() - 10 : 
+    {
+        return  frame < timeline->xoffset ?
+                _sequence->drawable_x() - 10 :
                 min( _sequence->drawable_x() + _sequence->drawable_w(),
                      _sequence->drawable_x() + timeline->ts_to_x( frame - timeline->xoffset ) );
-        }
+    }
 
     virtual int x ( void ) const
-        {
-            return get_x( _r->start );
-        }
+    {
+        return get_x( _r->start );
+    }
 
     /* use this as x() when you need to draw lines between widgets. Clamped to -32767-32767 to match max canvas size of FLTK/NTK  */
     int line_x ( void ) const
-        {
-            return _r->start < timeline->xoffset ? 
-                max( -32767, _sequence->drawable_x() - timeline->ts_to_x( timeline->xoffset - _r->start )) :
-                min( 32767, _sequence->drawable_x() + timeline->ts_to_x( _r->start - timeline->xoffset  ));
-        }
+    {
+        return _r->start < timeline->xoffset ?
+               max( -32767, _sequence->drawable_x() - timeline->ts_to_x( timeline->xoffset - _r->start )) :
+               min( 32767, _sequence->drawable_x() + timeline->ts_to_x( _r->start - timeline->xoffset  ));
+    }
 
     /* same as above but un-clamped for cairo */
     long curve_x ( void ) const
-        {
-            return _r->start < timeline->xoffset ? 
-                _sequence->drawable_x() - timeline->ts_to_x( timeline->xoffset - _r->start ) :
-                _sequence->drawable_x() + timeline->ts_to_x( _r->start - timeline->xoffset  );
-        }
+    {
+        return _r->start < timeline->xoffset ?
+               _sequence->drawable_x() - timeline->ts_to_x( timeline->xoffset - _r->start ) :
+               _sequence->drawable_x() + timeline->ts_to_x( _r->start - timeline->xoffset  );
+    }
 
     virtual int w ( void ) const
-        {
+    {
 //            int tx = timeline->ts_to_x( _r->start );
 
-            long rw;
+        long rw;
 
-            if ( _r->start < timeline->xoffset )
-            {
-                if ( _r->start + _r->length < timeline->xoffset )
-                    rw = 0;
-                else
-                    rw = timeline->ts_to_x( ( _r->start + _r->length ) - timeline->xoffset ) + 10;
-            }
+        if ( _r->start < timeline->xoffset )
+        {
+            if ( _r->start + _r->length < timeline->xoffset )
+                rw = 0;
             else
-                rw = abs_w();
-
-            return (int)min( rw, (long)(_sequence->drawable_w()) + 20  );
+                rw = timeline->ts_to_x( ( _r->start + _r->length ) - timeline->xoffset ) + 10;
         }
+        else
+            rw = abs_w();
 
-    int abs_x ( void ) const { return timeline->ts_to_x( _r->start ); }
-    virtual long abs_w ( void ) const { return timeline->ts_to_x( _r->length ); }
+        return (int)min( rw, (long)(_sequence->drawable_w()) + 20  );
+    }
 
-    Fl_Color color ( void ) const { return _color; }
-    void color ( Fl_Color v ) { _color = v; }
-    virtual Fl_Color box_color ( void ) const { return _box_color; }
-    virtual void box_color ( Fl_Color v ) { _box_color = v; }
-    virtual Fl_Color selection_color ( void ) const { return _selection_color; }
-    virtual void selection_color ( Fl_Color v ) { _selection_color = v; }
-    virtual Fl_Color actual_box_color ( void ) const { return box_color(); }
+    int abs_x ( void ) const
+    {
+        return timeline->ts_to_x( _r->start );
+    }
+    virtual long abs_w ( void ) const
+    {
+        return timeline->ts_to_x( _r->length );
+    }
 
-    Sequence * sequence ( void ) const { return _sequence; }
-    void sequence ( Sequence *t ) { _sequence = t; }
+    Fl_Color color ( void ) const
+    {
+        return _color;
+    }
+    void color ( Fl_Color v )
+    {
+        _color = v;
+    }
+    virtual Fl_Color box_color ( void ) const
+    {
+        return _box_color;
+    }
+    virtual void box_color ( Fl_Color v )
+    {
+        _box_color = v;
+    }
+    virtual Fl_Color selection_color ( void ) const
+    {
+        return _selection_color;
+    }
+    virtual void selection_color ( Fl_Color v )
+    {
+        _selection_color = v;
+    }
+    virtual Fl_Color actual_box_color ( void ) const
+    {
+        return box_color();
+    }
 
-    nframes_t start ( void ) const { return _r->start; }
+    Sequence * sequence ( void ) const
+    {
+        return _sequence;
+    }
+    void sequence ( Sequence *t )
+    {
+        _sequence = t;
+    }
 
-/*     void start ( nframes_t o ) { _r->start = o; } */
+    nframes_t start ( void ) const
+    {
+        return _r->start;
+    }
+
+    /*     void start ( nframes_t o ) { _r->start = o; } */
 
     void start ( nframes_t where );
-    void length ( nframes_t v ) { _r->length = v; }
-    int start_y ( void ) const { return y(); }
-    int height ( void ) const { return h(); }
-    virtual nframes_t length ( void ) const { return _r->length; }
-    void offset ( nframes_t v ) { _r->offset = v; }
-    nframes_t offset ( void ) const { return _r->offset; }
+    void length ( nframes_t v )
+    {
+        _r->length = v;
+    }
+    int start_y ( void ) const
+    {
+        return y();
+    }
+    int height ( void ) const
+    {
+        return h();
+    }
+    virtual nframes_t length ( void ) const
+    {
+        return _r->length;
+    }
+    void offset ( nframes_t v )
+    {
+        _r->offset = v;
+    }
+    nframes_t offset ( void ) const
+    {
+        return _r->offset;
+    }
 
-    void set_left ( nframes_t v ) { _r->set_left( v ); }
-    void set_right ( nframes_t v ) { _r->set_right( v ); }
+    void set_left ( nframes_t v )
+    {
+        _r->set_left( v );
+    }
+    void set_right ( nframes_t v )
+    {
+        _r->set_right( v );
+    }
 
-    const char *label ( void ) const { return _label; }
+    const char *label ( void ) const
+    {
+        return _label;
+    }
     void label ( const char *s )
-        {
-            if ( _label )
-                free( _label );
-            
-            _label = NULL;
-            
-            if ( s )
-                _label = strdup( s );
-            
-            redraw();
-        }
+    {
+        if ( _label )
+            free( _label );
+
+        _label = NULL;
+
+        if ( s )
+            _label = strdup( s );
+
+        redraw();
+    }
 
     /** convert a screen x coord into an start into the region */
     nframes_t x_to_offset ( int X )
-        {
-            nframes_t xts = timeline->x_to_ts( scroll_x() + ( X - _sequence->drawable_x() ) );
+    {
+        nframes_t xts = timeline->x_to_ts( scroll_x() + ( X - _sequence->drawable_x() ) );
 
-            // Don't go below 0 as nframes_t is unsigned - intermittent cause of region or control point
-            // jumping to beginning of track when drag was attempted.
-            return xts > _r->start ? (xts - _r->start) : 0;
-        }
+        // Don't go below 0 as nframes_t is unsigned - intermittent cause of region or control point
+        // jumping to beginning of track when drag was attempted.
+        return xts > _r->start ? (xts - _r->start) : 0;
+    }
 
-    int active_r ( void ) const { return _sequence->active_r(); }
+    int active_r ( void ) const
+    {
+        return _sequence->active_r();
+    }
 
-/** returns true if widget /w/ begins and ends completely within the range of this widget */
+    /** returns true if widget /w/ begins and ends completely within the range of this widget */
     bool contains ( const Sequence_Widget *w ) const
-        {
-            return w->start() >= start() && w->start() + w->length() <= start() + length();
-        }
+    {
+        return w->start() >= start() && w->start() + w->length() <= start() + length();
+    }
 
-/** returns true of widget /w/ overlaps this widget in any place */
+    /** returns true of widget /w/ overlaps this widget in any place */
     bool overlaps ( const Sequence_Widget *w ) const
-        {
-            return ! ( w->start() > start() + length() || w->start() + w->length() < start() );
-        }
+    {
+        return ! ( w->start() > start() + length() || w->start() + w->length() < start() );
+    }
 
-    virtual Fl_Boxtype box ( void ) const { return FL_UP_BOX; }
-    virtual Fl_Align align ( void ) const { return (Fl_Align)0; }
+    virtual Fl_Boxtype box ( void ) const
+    {
+        return FL_UP_BOX;
+    }
+    virtual Fl_Align align ( void ) const
+    {
+        return (Fl_Align)0;
+    }
 
     virtual void
     redraw ( void )
-        {
-            if ( ! _sequence )
-                return;
+    {
+        if ( ! _sequence )
+            return;
 
-            if ( ! (align() & FL_ALIGN_INSIDE) )
-            {
-                // FIXME: do better..
-                _sequence->damage( FL_DAMAGE_USER1 );
-            }
-            else
-                _sequence->damage( FL_DAMAGE_USER1, x(), y(), w(), h() );
+        if ( ! (align() & FL_ALIGN_INSIDE) )
+        {
+            // FIXME: do better..
+            _sequence->damage( FL_DAMAGE_USER1 );
         }
+        else
+            _sequence->damage( FL_DAMAGE_USER1, x(), y(), w(), h() );
+    }
 
     virtual void draw_box ( void );
     virtual void draw ( void );
@@ -344,22 +460,22 @@ public:
 
     bool
     operator< ( const Sequence_Widget & rhs ) const
-        {
-            return _r->start < rhs._r->start;
-        }
+    {
+        return _r->start < rhs._r->start;
+    }
 
     bool
     operator<=( const Sequence_Widget & rhs ) const
-        {
-            return _r->start <= rhs._r->start;
-        }
+    {
+        return _r->start <= rhs._r->start;
+    }
 
     virtual int handle ( int m );
 
     static bool
     sort_func ( const Sequence_Widget *lhs, const Sequence_Widget *rhs )
-        {
-            return *lhs < *rhs;
-        }
+    {
+        return *lhs < *rhs;
+    }
 
 };

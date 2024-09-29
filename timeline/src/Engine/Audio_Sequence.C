@@ -48,12 +48,12 @@ Audio_Sequence::play ( sample_t *buf, nframes_t frame, nframes_t nframes, int ch
 
     /* quick and dirty--let the regions figure out coverage for themselves */
     for ( list <Sequence_Widget *>::const_iterator i = _widgets.begin();
-          i != _widgets.end(); ++i )
+            i != _widgets.end(); ++i )
     {
         const Audio_Region *r = (Audio_Region*)(*i);
-        
+
         int nfr;
-        
+
         /* read mixes into buf */
         if ( ! ( nfr = r->read( buf, buf_is_empty, frame, nframes, channels ) ) )
             /* error ? */

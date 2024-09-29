@@ -49,8 +49,8 @@ OSC_Transmit_Thread::~OSC_Transmit_Thread ( )
         _thread.join();
     }
     unlock();
-}   
-        
+}
+
 
 void
 OSC_Transmit_Thread::start ( )
@@ -73,7 +73,7 @@ OSC_Transmit_Thread::process ( void )
 
     while ( !_shutdown )
     {
-	
+
         if ( trylock() )
         {
             timeline->process_osc();
@@ -90,7 +90,7 @@ void *
 OSC_Transmit_Thread::process ( void *v )
 {
     OSC_Transmit_Thread *t = (OSC_Transmit_Thread*)v;
-    
+
     t->process();
 
     return NULL;

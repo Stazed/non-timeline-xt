@@ -41,11 +41,17 @@ protected:
     Sequence_Region ( const Sequence_Region &rhs );
     virtual ~Sequence_Region ( );
 
-    virtual Fl_Align align ( void ) const { return FL_ALIGN_INSIDE | FL_ALIGN_CENTER | FL_ALIGN_WRAP; }
+    virtual Fl_Align align ( void ) const
+    {
+        return FL_ALIGN_INSIDE | FL_ALIGN_CENTER | FL_ALIGN_WRAP;
+    }
     virtual int handle ( int m );
     virtual void draw_box( void );
     virtual void draw ( void );
-    virtual void draw_label ( void ) { Sequence_Widget::draw_label(); }
+    virtual void draw_label ( void )
+    {
+        Sequence_Widget::draw_label();
+    }
     virtual void draw_label ( const char *label, Fl_Align align, Fl_Color color=(Fl_Color)0, int xo=0, int yo=0 );
 
 public:

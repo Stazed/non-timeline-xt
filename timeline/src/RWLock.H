@@ -34,44 +34,44 @@ class RWLock
 public:
 
     RWLock ( )
-        {
+    {
 //            _lock = PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
-            pthread_rwlock_init( &_lock, NULL );
-        }
+        pthread_rwlock_init( &_lock, NULL );
+    }
 
     virtual ~RWLock ( )
-        {
-            pthread_rwlock_destroy( &_lock );
-        }
+    {
+        pthread_rwlock_destroy( &_lock );
+    }
 
     void
     rdlock ( void )
-        {
-            pthread_rwlock_rdlock( &_lock );
-        }
+    {
+        pthread_rwlock_rdlock( &_lock );
+    }
 
     void
     wrlock ( void )
-        {
-            pthread_rwlock_wrlock( &_lock );
-        }
+    {
+        pthread_rwlock_wrlock( &_lock );
+    }
 
     void
     unlock ( void )
-        {
-            pthread_rwlock_unlock( &_lock );
-        }
+    {
+        pthread_rwlock_unlock( &_lock );
+    }
 
     int
     tryrdlock ( void )
-        {
-            return pthread_rwlock_tryrdlock( &_lock );
-        }
+    {
+        return pthread_rwlock_tryrdlock( &_lock );
+    }
 
     int
     trywrlock ( void )
-        {
-            return pthread_rwlock_trywrlock( &_lock );
-        }
+    {
+        return pthread_rwlock_trywrlock( &_lock );
+    }
 
 };

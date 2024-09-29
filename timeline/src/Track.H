@@ -71,7 +71,10 @@ public:
     Track ( const char *L, int channels=1 );
     virtual ~Track ( );
 
-    static bool soloing ( void ) { return _soloing; }
+    static bool soloing ( void )
+    {
+        return _soloing;
+    }
 
     static const char *capture_format;
 
@@ -83,19 +86,25 @@ public:
         Audio_Region *region;
 
         Capture ( )
-            {
-                region = 0;
-                audio_file = 0;
-            }
+        {
+            region = 0;
+            audio_file = 0;
+        }
     };
 
-    virtual Fl_Color color ( void ) const { return child(0)->color(); }
-    virtual void color ( Fl_Color c ) { child(0)->color( c ); }
+    virtual Fl_Color color ( void ) const
+    {
+        return child(0)->color();
+    }
+    virtual void color ( Fl_Color c )
+    {
+        child(0)->color( c );
+    }
 
     bool operator< ( const Track &rhs ) const
-        {
-            return _row < rhs._row;
-        }
+    {
+        return _row < rhs._row;
+    }
 
 private:
 
@@ -177,58 +186,82 @@ public:
     void remove ( Control_Sequence *t );
 
     void select ( int X, int Y, int W, int H, bool include_control, bool merge_control );
-    
+
     void nudge_selected(bool left);
     void pan_selected(bool left);
     void nudge_selected_controls(bool up);
 
-    int size ( void ) const { return _size; }
+    int size ( void ) const
+    {
+        return _size;
+    }
 
-    int ncontrols ( void ) { return ((Fl_Group*)control)->children(); }
+    int ncontrols ( void )
+    {
+        return ((Fl_Group*)control)->children();
+    }
 
     void adjust_size ( void );
     void size ( int v );
 
     int height ( void ) const
-        {
-            static int table[] = { 25, 54, 80, 150, 300 };
+    {
+        static int table[] = { 25, 54, 80, 150, 300 };
 
-            return table[ _size ];
-        }
+        return table[ _size ];
+    }
 
     void show_all_takes ( bool b )
-        {
-            show_all_takes_button->value( b );
-            adjust_size();
-        }
+    {
+        show_all_takes_button->value( b );
+        adjust_size();
+    }
 
     bool show_all_takes ( void ) const
-        {
-            return show_all_takes_button->value();
-        }
+    {
+        return show_all_takes_button->value();
+    }
 
     void overlay_controls ( bool b )
-        {
-            overlay_controls_button->value( b );
-            adjust_size();
-        }
+    {
+        overlay_controls_button->value( b );
+        adjust_size();
+    }
     bool overlay_controls ( void ) const
-        {
-            return overlay_controls_button->value();
-        }
+    {
+        return overlay_controls_button->value();
+    }
 
     void name ( const char *name );
     const char * name ( void ) const;
 
-    bool mute ( void ) const { return mute_button->value(); }
-    void mute ( bool b ) { mute_button->value( b ); }
-    bool solo ( void ) const { return solo_button->value(); }
+    bool mute ( void ) const
+    {
+        return mute_button->value();
+    }
+    void mute ( bool b )
+    {
+        mute_button->value( b );
+    }
+    bool solo ( void ) const
+    {
+        return solo_button->value();
+    }
     void solo ( bool b );
 
-    bool armed ( void ) const { return record_button->value(); }
-    void armed ( bool b ) { record_button->value( b ); }
+    bool armed ( void ) const
+    {
+        return record_button->value();
+    }
+    void armed ( bool b )
+    {
+        record_button->value( b );
+    }
 
-    bool selected ( void ) const { return _selected; }
+    bool selected ( void ) const
+    {
+        return _selected;
+    }
 
     int row ( void ) const;
     void row ( int );
@@ -237,10 +270,16 @@ public:
     void cb_button ( Fl_Widget *w );
 
 
-    static int width ( void ) { return 200; }
+    static int width ( void )
+    {
+        return 200;
+    }
 
     void sequence ( Audio_Sequence * t );
-    Audio_Sequence * sequence ( void ) const { return _sequence; }
+    Audio_Sequence * sequence ( void ) const
+    {
+        return _sequence;
+    }
 
 
     Fl_Menu_Button & menu ( void ) const;

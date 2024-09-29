@@ -49,8 +49,8 @@ OSC_Receive_Thread::~OSC_Receive_Thread ( )
         _thread.join();
     }
     unlock();
-}   
-        
+}
+
 
 void
 OSC_Receive_Thread::start ( )
@@ -73,7 +73,7 @@ OSC_Receive_Thread::process ( void )
 
     while ( !_shutdown )
     {
-	timeline->osc->wait(20);        
+        timeline->osc->wait(20);
     }
 
     DMESSAGE( "OSC Thread stopping." );
@@ -83,7 +83,7 @@ void *
 OSC_Receive_Thread::process ( void *v )
 {
     OSC_Receive_Thread *t = (OSC_Receive_Thread*)v;
-    
+
     t->process();
 
     return NULL;

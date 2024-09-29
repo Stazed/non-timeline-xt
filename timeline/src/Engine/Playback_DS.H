@@ -29,7 +29,10 @@ class Playback_DS : public Disk_Stream
     void read_block ( sample_t *buf, nframes_t nframes );
     void disk_thread ( void );
 
-    void flush ( void ) { base_flush( true ); }
+    void flush ( void )
+    {
+        base_flush( true );
+    }
 
     volatile nframes_t _undelay; /* number of frames this diskstream
                                   * should be undelayed by */
@@ -38,13 +41,16 @@ public:
 
     Playback_DS ( Track *th, float frame_rate, nframes_t nframes, int channels ) :
         Disk_Stream( th, frame_rate, nframes, channels )
-        {
-            _undelay = 0;
+    {
+        _undelay = 0;
 
-            run();
-        }
+        run();
+    }
 
-    virtual ~Playback_DS ( ) { shutdown(); }
+    virtual ~Playback_DS ( )
+    {
+        shutdown();
+    }
 
     bool seek_pending ( void );
     void seek ( nframes_t frame );

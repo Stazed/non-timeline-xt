@@ -53,21 +53,21 @@ public:
         nframes_t length;
 
         Fade ( )
-            {
-                type   = Linear;
-                length = 0;
-            }
+        {
+            type   = Linear;
+            length = 0;
+        }
 
         bool
         operator< ( const Fade &rhs ) const
-            {
-                return length < rhs.length;
-            }
+        {
+            return length < rhs.length;
+        }
 
         double increment ( void ) const
-            {
-                return 1.0f / length;
-            }
+        {
+            return 1.0f / length;
+        }
 
         /** Return gain for frame /index/ of /nframes/ on a gain curve
          * of type /type/.*/
@@ -75,29 +75,29 @@ public:
          * type mid fade is bad. */
         inline float
         gain ( const float fi ) const
+        {
+            switch ( type )
             {
-                switch ( type )
-                {
-                    case Linear:
-                        return fi;
-                    case Sigmoid:
-                        return (1.0f - cosf( fi * M_PI )) * 0.5f;
-                    case Logarithmic:
-                        return powf( 0.1f, (1.0f - fi) * 3.0f );
-                    case Parabolic:
-                        return 1.0f - (1.0f - fi) * (1.0f - fi);
-                    default:
-                        return 1.0f;
-                }
+            case Linear:
+                return fi;
+            case Sigmoid:
+                return (1.0f - cosf( fi * M_PI )) * 0.5f;
+            case Logarithmic:
+                return powf( 0.1f, (1.0f - fi) * 3.0f );
+            case Parabolic:
+                return 1.0f - (1.0f - fi) * (1.0f - fi);
+            default:
+                return 1.0f;
             }
+        }
 
         void apply ( sample_t *buf, fade_dir_e dir, nframes_t start, nframes_t nframes ) const;
         void apply_interleaved ( sample_t *buf, fade_dir_e dir, nframes_t start, nframes_t nframes, int channels ) const;
-   
- };
 
-/*     struct Fade_In : public Fade; */
-/*     struct Fade_Out : public Fade; */
+    };
+
+    /*     struct Fade_In : public Fade; */
+    /*     struct Fade_Out : public Fade; */
 
 private:
 
@@ -125,13 +125,13 @@ protected:
     virtual void get ( Log_Entry &e ) const;
     virtual void set ( Log_Entry &e );
 
-_Pragma("GCC diagnostic push")
-_Pragma("GCC diagnostic ignored \"-Wunused-parameter\"")
+    _Pragma("GCC diagnostic push")
+    _Pragma("GCC diagnostic ignored \"-Wunused-parameter\"")
     virtual void draw_label ( const char *label, Fl_Align align, Fl_Color color=(Fl_Color)0, int xo=0, int yo=0 )
-        {
-            Sequence_Widget::draw_label( label, align );
-        }
-_Pragma("GCC diagnostic pop")
+    {
+        Sequence_Widget::draw_label( label, align );
+    }
+    _Pragma("GCC diagnostic pop")
     virtual void draw_label ( void );
 
     int handle ( int m );
@@ -147,17 +147,26 @@ public:
 
     static Fl_Boxtype _box;
     static Fl_Color _selection_color;
-    Fl_Color selection_color ( void ) const { return _selection_color; }
-    void selection_color ( Fl_Color v ) { _selection_color = v; }
+    Fl_Color selection_color ( void ) const
+    {
+        return _selection_color;
+    }
+    void selection_color ( Fl_Color v )
+    {
+        _selection_color = v;
+    }
 
     void init ( void );
 
     Audio_Region ( )
-        {
-            init();
-        }
+    {
+        init();
+    }
 
-    bool current ( void ) const { return this == belowmouse(); }
+    bool current ( void ) const
+    {
+        return this == belowmouse();
+    }
 
     const char * source_name ( void ) const;
 
@@ -166,8 +175,14 @@ public:
     Audio_Region ( Audio_File *c, Sequence *t, nframes_t o );
     ~Audio_Region ( );
 
-    Fl_Boxtype box ( void ) const { return Audio_Region::_box; }
-    Fl_Align align ( void ) const { return  (Fl_Align)(FL_ALIGN_LEFT | FL_ALIGN_BOTTOM | FL_ALIGN_INSIDE | FL_ALIGN_CLIP ); }
+    Fl_Boxtype box ( void ) const
+    {
+        return Audio_Region::_box;
+    }
+    Fl_Align align ( void ) const
+    {
+        return  (Fl_Align)(FL_ALIGN_LEFT | FL_ALIGN_BOTTOM | FL_ALIGN_INSIDE | FL_ALIGN_CLIP );
+    }
 
     void normalize ( void );
     void set_volume( void );

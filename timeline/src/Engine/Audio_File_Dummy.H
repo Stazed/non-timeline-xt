@@ -28,23 +28,38 @@
 class Audio_File_Dummy : public Audio_File
 {
     Audio_File_Dummy ( )
-        {
-        }
+    {
+    }
 
 public:
 
     static Audio_File_Dummy *from_file ( const char *filename );
 
-    bool dummy ( void ) const { return true; }
+    bool dummy ( void ) const
+    {
+        return true;
+    }
 
     ~Audio_File_Dummy ( )
-        {
-        }
+    {
+    }
 
-    bool open ( void ) { return true; }
+    bool open ( void )
+    {
+        return true;
+    }
     void close ( void ) { }
     void seek ( nframes_t ) { }
-    nframes_t read ( sample_t *, int, nframes_t /* len */ ) { return 0; }
-    nframes_t read ( sample_t *, int,  nframes_t /* start */, nframes_t /* end */ ) { return 0; }
-    nframes_t write ( sample_t *, nframes_t nframes ) { return nframes; }
+    nframes_t read ( sample_t *, int, nframes_t /* len */ )
+    {
+        return 0;
+    }
+    nframes_t read ( sample_t *, int,  nframes_t /* start */, nframes_t /* end */ )
+    {
+        return 0;
+    }
+    nframes_t write ( sample_t *, nframes_t nframes )
+    {
+        return nframes;
+    }
 };

@@ -79,8 +79,8 @@ Tempo_Point::set ( Log_Entry &e )
         if ( ! strcmp( s, ":tempo" ) )
             _tempo = atof( v );
 
-/*         /\* FIXME: we need to add this to the time track on creation!!! *\/ */
-/*         timeline->tempo_track->add( this ); */
+        /*         /\* FIXME: we need to add this to the time track on creation!!! *\/ */
+        /*         timeline->tempo_track->add( this ); */
 
     }
 
@@ -125,49 +125,49 @@ class Tempo_Point_Editor : public Fl_Menu_Window
 public:
 
     Tempo_Point_Editor ( float *tempo ) : Fl_Menu_Window(  75, 58, "Edit Tempo" )
-        {
-            _sucess = false;
-            _tempo = tempo;
+    {
+        _sucess = false;
+        _tempo = tempo;
 
-            set_modal();
+        set_modal();
 
-            Fl_Float_Input *fi = _fi = new Fl_Float_Input( 12, 0 + 24, 50, 24, "Tempo:" );
-            fi->align( FL_ALIGN_TOP );
-            fi->when( FL_WHEN_NOT_CHANGED | FL_WHEN_ENTER_KEY );
-            fi->callback( &Tempo_Point_Editor::enter_cb, (void*)this );
+        Fl_Float_Input *fi = _fi = new Fl_Float_Input( 12, 0 + 24, 50, 24, "Tempo:" );
+        fi->align( FL_ALIGN_TOP );
+        fi->when( FL_WHEN_NOT_CHANGED | FL_WHEN_ENTER_KEY );
+        fi->callback( &Tempo_Point_Editor::enter_cb, (void*)this );
 
-            char pat[10];
-            snprintf( pat, sizeof( pat ), "%.1f", *tempo );
+        char pat[10];
+        snprintf( pat, sizeof( pat ), "%.1f", *tempo );
 
-            fi->value( pat );
+        fi->value( pat );
 
-            end();
+        end();
 
-            show();
+        show();
 
-            while ( shown() )
-                Fl::wait();
-        }
+        while ( shown() )
+            Fl::wait();
+    }
 
     static void
     enter_cb ( Fl_Widget *, void *v )
-        {
-            ((Tempo_Point_Editor*)v)->enter_cb();
-        }
+    {
+        ((Tempo_Point_Editor*)v)->enter_cb();
+    }
 
     void
     enter_cb ( void )
-        {
-            sscanf( _fi->value(), "%f", _tempo );
-            _sucess = true;
-            hide();
-        }
+    {
+        sscanf( _fi->value(), "%f", _tempo );
+        _sucess = true;
+        hide();
+    }
 
     bool
     sucess ( void )
-        {
-            return _sucess;
-        }
+    {
+        return _sucess;
+    }
 };
 
 

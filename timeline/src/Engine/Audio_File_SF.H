@@ -38,10 +38,10 @@ class Audio_File_SF : public Audio_File
     volatile nframes_t _current_read;
 
     Audio_File_SF ( )
-        {
-            _in = 0;
-            _current_read = 0;
-        }
+    {
+        _in = 0;
+        _current_read = 0;
+    }
 
 public:
 
@@ -52,10 +52,10 @@ public:
 
 
     ~Audio_File_SF ( )
-        {
-            /* stupid C++ */
-            close();
-        }
+    {
+        /* stupid C++ */
+        close();
+    }
 
     bool open ( void );
     void close ( void );

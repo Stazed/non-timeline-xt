@@ -36,127 +36,130 @@ class Annotation_Sequence : public Sequence
 protected:
 
     virtual void get ( Log_Entry &e ) const
-        {
-            e.add( ":track", _track );
-        }
+    {
+        e.add( ":track", _track );
+    }
 
     void
     set ( Log_Entry &e )
+    {
+        for ( int i = 0; i < e.size(); ++i )
         {
-            for ( int i = 0; i < e.size(); ++i )
+            const char *s, *v;
+
+            e.get( i, &s, &v );
+
+            if ( ! strcmp( ":track", s ) )
             {
-                const char *s, *v;
+                unsigned int i;
+                sscanf( v, "%X", &i );
+                Track *t = (Track*)Loggable::find( i );
 
-                e.get( i, &s, &v );
+                assert( t );
 
-                if ( ! strcmp( ":track", s ) )
-                {
-                    unsigned int i;
-                    sscanf( v, "%X", &i );
-                    Track *t = (Track*)Loggable::find( i );
-
-                    assert( t );
-
-                    t->add( this );
-                }
+                t->add( this );
             }
         }
+    }
 
     Annotation_Sequence ( ) : Sequence ( 0 )
-        {
-            color( FL_DARK1 );
-        }
+    {
+        color( FL_DARK1 );
+    }
 
 public:
 
 
     LOG_CREATE_FUNC( Annotation_Sequence );
 
-    Fl_Cursor cursor ( void ) const { return FL_CURSOR_INSERT; }
+    Fl_Cursor cursor ( void ) const
+    {
+        return FL_CURSOR_INSERT;
+    }
 
     Annotation_Sequence ( Track *track ) : Sequence( track )
-        {
-            color( FL_DARK1 );
+    {
+        color( FL_DARK1 );
 
-            log_create();
-        }
+        log_create();
+    }
 
     virtual ~Annotation_Sequence ( )
-        {
-            Loggable::block_start();
+    {
+        Loggable::block_start();
 
-            clear();
+        clear();
 
-            log_destroy();
+        log_destroy();
 
-            track()->remove( this );
+        track()->remove( this );
 
-            Loggable::block_end();
-        }
+        Loggable::block_end();
+    }
 
     int handle ( int m )
-        {
+    {
 
-            if ( Sequence::handle( m ) )
+        if ( Sequence::handle( m ) )
+            return 1;
+
+        switch ( m )
+        {
+        case FL_PUSH:
+        {
+            if ( Fl::event_x() < drawable_x() )
+                return 0;
+
+            Logger log( this );
+
+            if ( Fl::event_button1() )
+            {
+                new Annotation_Point( this, x_to_offset( Fl::event_x() - drawable_x() ), "mark" );
+                redraw();
+            }
+            if ( Fl::event_button3() && Fl::event_shift() )
+            {
+                Annotation_Region *r = new Annotation_Region( this, x_to_offset( Fl::event_x() - drawable_x() ), "mark" );
+
+                Sequence_Widget::pushed( r );
+
+                r->handle( m );
+
+                redraw();
+
                 return 1;
 
-            switch ( m )
-            {
-                case FL_PUSH:
-                {
-                    if ( Fl::event_x() < drawable_x() )
-                        return 0;
-
-                    Logger log( this );
-
-                    if ( Fl::event_button1() )
-                    {
-                        new Annotation_Point( this, x_to_offset( Fl::event_x() - drawable_x() ), "mark" );
-                        redraw();
-                    }
-                    if ( Fl::event_button3() && Fl::event_shift() )
-                    {
-                        Annotation_Region *r = new Annotation_Region( this, x_to_offset( Fl::event_x() - drawable_x() ), "mark" );
-
-                        Sequence_Widget::pushed( r );
-
-                        r->handle( m );
-
-                        redraw();
-
-                        return 1;
-
-                    }
-                    else if ( Fl::event_button3() && ! ( Fl::event_state() & ( FL_ALT | FL_SHIFT | FL_CTRL ) ) )
-                    {
-_Pragma("GCC diagnostic push")
-_Pragma("GCC diagnostic ignored \"-Wmissing-field-initializers\"")
-                        Fl_Menu_Item menu[] =
-                            {
-                                { "Remove" },
-                                { 0 }
-                            };
-_Pragma("GCC diagnostic pop")
-
-                        const Fl_Menu_Item *r = menu->popup( Fl::event_x(), Fl::event_y(), "Annotation Sequence" );
-
-                        if ( r )
-                        {
-                            if ( r == &menu[ 0 ] )
-                            {
-                                Fl::delete_widget( this );
-                            }
-
-                        }
-
-                        return 1;
-                    }
-                    break;
-                }
-                default:
-                    break;
             }
+            else if ( Fl::event_button3() && ! ( Fl::event_state() & ( FL_ALT | FL_SHIFT | FL_CTRL ) ) )
+            {
+                _Pragma("GCC diagnostic push")
+                _Pragma("GCC diagnostic ignored \"-Wmissing-field-initializers\"")
+                Fl_Menu_Item menu[] =
+                {
+                    { "Remove" },
+                    { 0 }
+                };
+                _Pragma("GCC diagnostic pop")
 
-            return 0;
+                const Fl_Menu_Item *r = menu->popup( Fl::event_x(), Fl::event_y(), "Annotation Sequence" );
+
+                if ( r )
+                {
+                    if ( r == &menu[ 0 ] )
+                    {
+                        Fl::delete_widget( this );
+                    }
+
+                }
+
+                return 1;
+            }
+            break;
         }
+        default:
+            break;
+        }
+
+        return 0;
+    }
 };

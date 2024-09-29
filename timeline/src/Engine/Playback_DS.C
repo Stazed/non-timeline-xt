@@ -92,18 +92,18 @@ Playback_DS::read_block ( sample_t *buf, nframes_t nframes )
     {
         if ( _terminate )
             return;
-        
+
         usleep( 1000 * 10 );
     }
-    
+
     if ( sequence() )
     {
         if ( ! sequence()->play( buf, _frame + _undelay, nframes, channels() ) )
             WARNING( "Programming error?" );
-        
+
         _frame += nframes;
     }
-    
+
     timeline->sequence_lock.unlock();
 }
 
@@ -124,7 +124,7 @@ Playback_DS::disk_thread ( void )
     while ( ! _terminate )
     {
 
-    seek:
+seek:
 
         blocks_written = 0;
         read_block( buf, nframes * _disk_io_blocks );
@@ -133,26 +133,26 @@ Playback_DS::disk_thread ( void )
                 wait_for_block() )
         {
 //        lock(); // for seeking
-            
+
             if ( _pending_seek )
             {
                 /* FIXME: non-RT-safe IO */
                 DMESSAGE( "performing seek to frame %lu", (unsigned long)_seek_frame );
-                
+
                 _frame = _seek_frame;
                 _pending_seek = false;
 
                 flush();
-                
+
                 goto seek;
             }
 
             /* might have received terminate signal while waiting for block */
             if ( _terminate )
                 goto done;
-        
+
 //        unlock(); // for seeking
-        
+
             /* deinterleave the buffer and stuff it into the per-channel ringbuffers */
 
             const size_t block_size = nframes * sizeof( sample_t );
@@ -162,7 +162,7 @@ Playback_DS::disk_thread ( void )
                 buffer_deinterleave_one_channel( cbuf,
                                                  buf + ( blocks_written * nframes * channels() ),
                                                  i,
-                                                 channels(), 
+                                                 channels(),
                                                  nframes );
 
                 while ( jack_ringbuffer_write_space( _rb[ i ] ) < block_size )
@@ -207,11 +207,11 @@ Playback_DS::process ( nframes_t nframes )
             /* only ever read nframes at a time */
             while ( jack_ringbuffer_read_space( _rb[i] ) < block_size )
                 usleep( 10 * 1000 );
-            
+
             jack_ringbuffer_read( _rb[ i ], ((char*)buf), block_size );
         }
         else
-       {
+        {
             /* only ever read nframes at a time */
             if ( jack_ringbuffer_read_space( _rb[i] ) < block_size )
             {

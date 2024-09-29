@@ -73,7 +73,10 @@ protected:
 
     volatile int _xruns;
 
-    int channels ( void ) const { return _rb.size(); }
+    int channels ( void ) const
+    {
+        return _rb.size();
+    }
 
     Audio_Sequence * sequence ( void ) const;
     Track * track ( void ) const;
@@ -84,17 +87,20 @@ protected:
 
 protected:
 
-    void block_processed ( void ) { sem_post( &_blocks ); }
+    void block_processed ( void )
+    {
+        sem_post( &_blocks );
+    }
     bool wait_for_block ( void )
-        {
-            if ( _terminate )
-                return false;
+    {
+        if ( _terminate )
+            return false;
 
-            while ( ! sem_wait( &_blocks ) && errno == EINTR )
-            {}
+        while ( ! sem_wait( &_blocks ) && errno == EINTR )
+        {}
 
-            return ! _terminate;
-        }
+        return ! _terminate;
+    }
 
     virtual void disk_thread ( void ) = 0;
 
@@ -112,7 +118,10 @@ public:
     static float seconds_to_buffer;
     static size_t disk_io_kbytes;
 
-    int xruns ( void ) { return _xruns; }
+    int xruns ( void )
+    {
+        return _xruns;
+    }
 
     Disk_Stream ( Track *th, float frame_rate, nframes_t nframes, int channels );
 
@@ -120,8 +129,8 @@ public:
 
     void resize_buffers ( nframes_t nframes );
 
-/*     void seek ( nframes_t frame ); */
-/*     bool seek_pending ( void ); */
+    /*     void seek ( nframes_t frame ); */
+    /*     bool seek_pending ( void ); */
 
     virtual nframes_t process ( nframes_t nframes ) = 0;
 

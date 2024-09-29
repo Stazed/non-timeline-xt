@@ -29,7 +29,8 @@ Time_Sequence::Time_Sequence ( int X, int Y, int W, int H ) : Sequence ( X, Y, W
 {
     box( FL_FLAT_BOX );
 
-    { Fl_Box *o = new Fl_Box( X, Y, Track::width(), H );
+    {
+        Fl_Box *o = new Fl_Box( X, Y, Track::width(), H );
         o->align( FL_ALIGN_RIGHT | FL_ALIGN_INSIDE );
         o->labelsize( 12 );
         o->labeltype( FL_NORMAL_LABEL );
@@ -66,27 +67,27 @@ Time_Sequence::handle ( int m )
 
     switch ( m )
     {
-        case FL_PUSH:
-            if ( Fl::event_button1() )
+    case FL_PUSH:
+        if ( Fl::event_button1() )
+        {
+            static time_sig t = time_sig( 4, 4 );
+
+            if ( Time_Point::edit( &t ) )
             {
-                static time_sig t = time_sig( 4, 4 );
+                timeline->sequence_lock.wrlock();
 
-                if ( Time_Point::edit( &t ) )
-                {
-                    timeline->sequence_lock.wrlock();
+                new Time_Point( timeline->x_to_offset( X ), t.beats_per_bar, t.beat_type );
 
-                    new Time_Point( timeline->x_to_offset( X ), t.beats_per_bar, t.beat_type );
+                timeline->sequence_lock.unlock();
 
-                    timeline->sequence_lock.unlock();
-
-                    timeline->redraw();
-                }
-                return 0;
+                timeline->redraw();
             }
-            break;
-
-        default:
             return 0;
+        }
+        break;
+
+    default:
+        return 0;
     }
 
     return 0;

@@ -76,7 +76,7 @@ void
 Sequence_Region::trim_left ( nframes_t where )
 {
     nframes_t f = where;
- 
+
     /* snap to beat/bar lines if not bypassed */
     if ( timeline->nearest_line( &f ) && !Timeline::snap_toggle_bypass )
         where = f;
@@ -114,14 +114,14 @@ Sequence_Region::trim ( enum trim_e t, int X )
 
     switch ( t )
     {
-        case LEFT:
-            trim_left( where );
-            break;
-        case RIGHT:
-            trim_right( where );
-            break;
-        default:
-            break;
+    case LEFT:
+        trim_left( where );
+        break;
+    case RIGHT:
+        trim_right( where );
+        break;
+    default:
+        break;
     }
 }
 
@@ -148,96 +148,96 @@ Sequence_Region::handle ( int m )
     int Y = Fl::event_y();
 
     if ( !active_r() )
-	/* don't mess with anything while recording... */
-	return 0;
-	
+        /* don't mess with anything while recording... */
+        return 0;
+
     Logger _log( this );
 
     switch ( m )
     {
-        case FL_PUSH:
+    case FL_PUSH:
+    {
+        /* trimming */
+        if ( Fl::event_shift() && ! Fl::event_ctrl() )
         {
-            /* trimming */
-            if ( Fl::event_shift() && ! Fl::event_ctrl() )
+            switch ( Fl::event_button() )
             {
-                switch ( Fl::event_button() )
-                {
-                    case 1:
-                        trim( trimming = LEFT, X );
-                        begin_drag( Drag( X, Y ) );
-                        _log.hold();
-                        break;
-                    case 3:
-                        trim( trimming = RIGHT, X );
-                        begin_drag( Drag( X, Y) );
-                        _log.hold();
-                        break;
-                    default:
-                        return 0;
-                        break;
-                }
-
-                fl_cursor( FL_CURSOR_WE );
-                return 1;
-            }
-            else if ( test_press( FL_BUTTON2 ) )
-            {
-                if ( Sequence_Widget::current() == this )
-                {
-                    if ( selected() )
-                        deselect();
-                    else
-                        select();
-                }
-
-                redraw();
-                return 1;
+            case 1:
+                trim( trimming = LEFT, X );
+                begin_drag( Drag( X, Y ) );
+                _log.hold();
+                break;
+            case 3:
+                trim( trimming = RIGHT, X );
+                begin_drag( Drag( X, Y) );
+                _log.hold();
+                break;
+            default:
+                return 0;
+                break;
             }
 
-/*             else if ( test_press( FL_CTRL + FL_BUTTON1 ) ) */
-/*             { */
-/*                 /\* duplication *\/ */
-/*                 fl_cursor( FL_CURSOR_MOVE ); */
-/*                 return 1; */
-/*             } */
-
-            else
-                return Sequence_Widget::handle( m );
-        }
-        case FL_RELEASE:
-        {
-            Sequence_Widget::handle( m );
-
-            if ( trimming != NO )
-                trimming = NO;
-
+            fl_cursor( FL_CURSOR_WE );
             return 1;
         }
-        case FL_DRAG:
+        else if ( test_press( FL_BUTTON2 ) )
         {
-            if ( ! _drag )
+            if ( Sequence_Widget::current() == this )
             {
-                begin_drag( Drag( X, Y, x_to_offset( X ) ) );
-                _log.hold();
-            }
-
-            /* trimming */
-            if ( Fl::event_shift() )
-            {
-                if ( trimming )
-                {
-                    trim( trimming, X );
-                    return 1;
-                }
+                if ( selected() )
+                    deselect();
                 else
-                    return 0;
+                    select();
             }
 
-            return Sequence_Widget::handle( m );
+            redraw();
+            return 1;
         }
-        default:
+
+        /*             else if ( test_press( FL_CTRL + FL_BUTTON1 ) ) */
+        /*             { */
+        /*                 /\* duplication *\/ */
+        /*                 fl_cursor( FL_CURSOR_MOVE ); */
+        /*                 return 1; */
+        /*             } */
+
+        else
             return Sequence_Widget::handle( m );
-            break;
+    }
+    case FL_RELEASE:
+    {
+        Sequence_Widget::handle( m );
+
+        if ( trimming != NO )
+            trimming = NO;
+
+        return 1;
+    }
+    case FL_DRAG:
+    {
+        if ( ! _drag )
+        {
+            begin_drag( Drag( X, Y, x_to_offset( X ) ) );
+            _log.hold();
+        }
+
+        /* trimming */
+        if ( Fl::event_shift() )
+        {
+            if ( trimming )
+            {
+                trim( trimming, X );
+                return 1;
+            }
+            else
+                return 0;
+        }
+
+        return Sequence_Widget::handle( m );
+    }
+    default:
+        return Sequence_Widget::handle( m );
+        break;
     }
 
     return 0;

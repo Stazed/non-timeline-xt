@@ -37,7 +37,10 @@ protected:
 
 public:
 
-    Fl_Cursor cursor ( void ) const { return FL_CURSOR_DEFAULT; }
+    Fl_Cursor cursor ( void ) const
+    {
+        return FL_CURSOR_DEFAULT;
+    }
 
     Tempo_Sequence ( int X, int Y, int W, int H );
 

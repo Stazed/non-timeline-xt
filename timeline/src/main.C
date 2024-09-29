@@ -164,7 +164,7 @@ bool install_signal_handlers()
         WARNING("sigaction() failed: ");
         return false;
     }
-    
+
     return true;
 }
 
@@ -192,7 +192,7 @@ main ( int argc, char **argv )
     {
         WARNING( "Xdbe not supported, FLTK will fake double buffering." );
     }
-    
+
 
     Thread::init();
 
@@ -226,13 +226,13 @@ main ( int argc, char **argv )
 
     const char *osc_port = NULL;
 
-    static struct option long_options[] = 
-        {
-            { "help", no_argument, 0, '?' },
-            { "instance", required_argument, 0, 'i' },
-            { "osc-port", required_argument, 0, 'p' },
-            { 0, 0, 0, 0 }
-        };
+    static struct option long_options[] =
+    {
+        { "help", no_argument, 0, '?' },
+        { "instance", required_argument, 0, 'i' },
+        { "osc-port", required_argument, 0, 'p' },
+        { 0, 0, 0, 0 }
+    };
 
     int option_index = 0;
     int c = 0;
@@ -241,21 +241,21 @@ main ( int argc, char **argv )
     {
         switch ( c )
         {
-            
-            case 'p':
-                DMESSAGE( "Using OSC port %s", optarg );
-                osc_port = optarg;
-                break;
-            case 'i':
-                DMESSAGE( "Using instance name %s", optarg );
-                free( instance_name );
-                instance_name = strdup( optarg );
-                instance_override = true;
-                break;
-            case '?':
-                printf( "\nUsage: %s [--instance instance_name] [--osc-port portnum] [path_to_project]\n\n", argv[0] );
-                exit(0);
-                break;
+
+        case 'p':
+            DMESSAGE( "Using OSC port %s", optarg );
+            osc_port = optarg;
+            break;
+        case 'i':
+            DMESSAGE( "Using instance name %s", optarg );
+            free( instance_name );
+            instance_name = strdup( optarg );
+            instance_override = true;
+            break;
+        case '?':
+            printf( "\nUsage: %s [--instance instance_name] [--osc-port portnum] [path_to_project]\n\n", argv[0] );
+            exit(0);
+            break;
         }
     }
 
@@ -275,7 +275,7 @@ main ( int argc, char **argv )
     {
         jack_client_close ( test_client );
     }
- 
+
     /* we don't really need a pointer for this */
     // will be created on project new/open
     engine = NULL;
@@ -304,7 +304,7 @@ main ( int argc, char **argv )
         {
             if ( instance_override )
                 WARNING( "--instance option is not available when running under session management, ignoring." );
-            
+
             if ( optind < argc )
                 WARNING( "Loading files from the command-line is incompatible with session management, ignoring." );
 
@@ -337,7 +337,7 @@ main ( int argc, char **argv )
     }
 
     /* cleanup for valgrind's sake */
-    
+
     delete timeline;
     timeline = NULL;
 
@@ -352,6 +352,6 @@ main ( int argc, char **argv )
 
     nsm_free( nsm );
     nsm = NULL;
-    
+
     MESSAGE( "Your fun is over" );
 }

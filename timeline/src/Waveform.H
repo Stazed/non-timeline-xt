@@ -26,7 +26,8 @@
 
 #include "Engine/Peak.H"
 
-class Waveform {
+class Waveform
+{
 
 public:
 

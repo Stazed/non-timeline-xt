@@ -31,8 +31,8 @@
 #include <FL/Fl.H>
 
 #ifdef FLTK_SUPPORT
-    #include <cairo.h>
-    #include <cairo-xlib.h>
+#include <cairo.h>
+#include <cairo-xlib.h>
 #endif
 
 #include "Audio_Sequence.H"
@@ -104,7 +104,7 @@ Audio_Sequence::init ( void )
 
         Fl_Group::add( o );
     }
-    
+
     resizable(0);
 }
 
@@ -186,8 +186,8 @@ Audio_Sequence::set ( Log_Entry &e )
 
             assert( t );
 
-	    /* FIXME: this causes the sequences to be set twice in the replay logic, first when the sequence is created, then when track sequence is assigned. */
-             t->sequence( this );
+            /* FIXME: this causes the sequences to be set twice in the replay logic, first when the sequence is created, then when track sequence is assigned. */
+            t->sequence( this );
         }
         else if ( ! strcmp( ":name", s ) )
             name( v );
@@ -229,15 +229,15 @@ Audio_Sequence::draw ( void )
         {
             if ( *o <= **r )
             {
-/*                 if ( o->x() == (*r)->x() && o->w() == (*r)->w() ) */
-/*                     printf( "complete superposition\n" ); */
+                /*                 if ( o->x() == (*r)->x() && o->w() == (*r)->w() ) */
+                /*                     printf( "complete superposition\n" ); */
 
-              //  if ( o->contains( *r ) )
-                    /* completely inside */
-              //      continue;
+                //  if ( o->contains( *r ) )
+                /* completely inside */
+                //      continue;
 
                 ++xfades;
-                
+
                 Rectangle b;
                 if ( o->contains( *r ) )
                 {
@@ -286,8 +286,8 @@ Audio_Sequence::draw ( void )
                 {
 #ifdef FLTK_SUPPORT
                     cairo_surface_t* Xsurface = cairo_xlib_surface_create
-                            (fl_display, fl_window, fl_visual->visual,
-                             Fl_Window::current()->w(), Fl_Window::current()->h());
+                                                (fl_display, fl_window, fl_visual->visual,
+                                                 Fl_Window::current()->w(), Fl_Window::current()->h());
 
                     cairo_t *cc = cairo_create (Xsurface);
                     cairo_set_source_rgba( cc, 1, 1, 0, 0.35 );
@@ -296,16 +296,16 @@ Audio_Sequence::draw ( void )
                     cairo_fill( cc );
 
                     cairo_set_operator( cc, CAIRO_OPERATOR_OVER );
-                    
+
                     cairo_surface_destroy(Xsurface);
                     cairo_destroy(cc);
 #else
                     cairo_t *cc = Fl::cairo_cc();
-                
-                    cairo_set_operator( cc, CAIRO_OPERATOR_HSL_COLOR ); 
+
+                    cairo_set_operator( cc, CAIRO_OPERATOR_HSL_COLOR );
                     cairo_set_source_rgba( cc, 1, 1, 0, 0.80 );
                     cairo_rectangle( cc, b.x, b.y, b.w, b.h );
-                
+
                     cairo_fill( cc );
 
                     cairo_set_operator( cc, CAIRO_OPERATOR_OVER );
@@ -323,10 +323,10 @@ int
 Audio_Sequence::handle_paste ( const char *text )
 {
     int X = Fl::event_x();
-    
+
     if ( ! strcmp( text, "Audio_Region" ) )
         return 1;
-    
+
     char *file;
 
     if ( ! sscanf( text, "file://%m[^\r\n]\n", &file ) )
@@ -354,7 +354,7 @@ Audio_Sequence::handle_paste ( const char *text )
 
     for ( ; ; i++ )
     {
-        if ( i ) 
+        if ( i )
         {
             free( s );
             asprintf( &s, "sources/%s-%i", filebase, i );
@@ -365,14 +365,14 @@ Audio_Sequence::handle_paste ( const char *text )
         DMESSAGE( "Symlink %s -> %s", file, s );
         if ( symlink( file, s ) == 0 )
             break;
-                
+
         if ( errno != EEXIST )
         {
             WARNING( "Failed to create symlink: %s", strerror( errno ) );
             break;
         }
     }
-            
+
     Audio_File *c = Audio_File::from_file( basename( s ) );
 
     free( s );
@@ -399,11 +399,11 @@ Audio_Sequence::handle_paste ( const char *text )
 
     Audio_Region *r =
         new Audio_Region( c, this, timeline->xoffset + timeline->x_to_ts( X - drawable_x() ) );
-            
+
     r->log_create();
 
     redraw();
-            
+
     return 1;
 
 }
@@ -414,19 +414,19 @@ Audio_Sequence::handle ( int m )
 {
     switch ( m )
     {
-        case FL_PASTE:
-        {
-            DMESSAGE("Got sequence paste");
-                
-            if ( ! Fl::event_inside( this ) )
-            {
-                DMESSAGE("ignoring");
-                return 0;
-            }
+    case FL_PASTE:
+    {
+        DMESSAGE("Got sequence paste");
 
-            return handle_paste(Fl::event_text());
+        if ( ! Fl::event_inside( this ) )
+        {
+            DMESSAGE("ignoring");
+            return 0;
         }
-        default:
-            return Sequence::handle( m );
+
+        return handle_paste(Fl::event_text());
+    }
+    default:
+        return Sequence::handle( m );
     }
 }

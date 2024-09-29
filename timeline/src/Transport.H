@@ -71,8 +71,14 @@ public:
     void automatically_create_takes ( bool b );
     bool automatically_create_takes ( void ) const;
 
-    void stop_disables_record ( bool b ) { _stop_disables_record = b; }
-    bool stop_disables_record ( void ) const { return _stop_disables_record; }
+    void stop_disables_record ( bool b )
+    {
+        _stop_disables_record = b;
+    }
+    bool stop_disables_record ( void ) const
+    {
+        return _stop_disables_record;
+    }
 
     void toggle_record ( void );
     int handle ( int m );

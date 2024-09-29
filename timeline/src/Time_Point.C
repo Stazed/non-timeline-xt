@@ -89,8 +89,8 @@ Time_Point::set ( Log_Entry &e )
         else if ( ! strcmp( s, ":beat_type" ) )
             _time.beat_type = atoi( v );
 
-/*         /\* FIXME: we need to add this to the time track on creation!!! *\/ */
-/*         timeline->time_track->add( this ); */
+        /*         /\* FIXME: we need to add this to the time track on creation!!! *\/ */
+        /*         timeline->time_track->add( this ); */
 
     }
 
@@ -140,65 +140,65 @@ public:
 
     Time_Point_Editor ( time_sig *sig )
         : Fl_Menu_Window( 150, 110, "Edit Time" )
+    {
+        _sucess = false;
+        _sig = sig;
+
+        set_modal();
+
         {
-            _sucess = false;
-            _sig = sig;
-
-            set_modal();
-
-            {
-                Fl_Int_Input *o = _beats = new Fl_Int_Input( 50, 0 + 24, 50, 24, "Beats Per Bar:" );
-                o->align( FL_ALIGN_TOP );
-                o->when( FL_WHEN_NOT_CHANGED | FL_WHEN_ENTER_KEY );
-                o->callback( &Time_Point_Editor::enter_cb, (void*)this );
-            }
-
-            {
-                Fl_Int_Input *o = _beat_type = new Fl_Int_Input( 50, 0 + 75, 50, 24, "Beat Type:" );
-                o->align( FL_ALIGN_TOP );
-                o->when( FL_WHEN_NOT_CHANGED | FL_WHEN_ENTER_KEY );
-                o->callback( &Time_Point_Editor::enter_cb, (void*)this );
-            }
-
-            char pat[10];
-            snprintf( pat, sizeof( pat ), "%d", _sig->beats_per_bar );
-
-            _beats->value( pat );
-
-            snprintf( pat, sizeof( pat ), "%d", _sig->beat_type );
-
-            _beat_type->value( pat );
-
-            end();
-
-            show();
-
-            while ( shown() )
-                Fl::wait();
+            Fl_Int_Input *o = _beats = new Fl_Int_Input( 50, 0 + 24, 50, 24, "Beats Per Bar:" );
+            o->align( FL_ALIGN_TOP );
+            o->when( FL_WHEN_NOT_CHANGED | FL_WHEN_ENTER_KEY );
+            o->callback( &Time_Point_Editor::enter_cb, (void*)this );
         }
+
+        {
+            Fl_Int_Input *o = _beat_type = new Fl_Int_Input( 50, 0 + 75, 50, 24, "Beat Type:" );
+            o->align( FL_ALIGN_TOP );
+            o->when( FL_WHEN_NOT_CHANGED | FL_WHEN_ENTER_KEY );
+            o->callback( &Time_Point_Editor::enter_cb, (void*)this );
+        }
+
+        char pat[10];
+        snprintf( pat, sizeof( pat ), "%d", _sig->beats_per_bar );
+
+        _beats->value( pat );
+
+        snprintf( pat, sizeof( pat ), "%d", _sig->beat_type );
+
+        _beat_type->value( pat );
+
+        end();
+
+        show();
+
+        while ( shown() )
+            Fl::wait();
+    }
 
     static void
     enter_cb ( Fl_Widget *, void *v )
-        {
-            ((Time_Point_Editor*)v)->enter_cb();
-        }
+    {
+        ((Time_Point_Editor*)v)->enter_cb();
+    }
 
     void
     enter_cb ( void )
-        {
-            _sig->beats_per_bar = atoi( _beats->value() );
-            _sig->beat_type = atoi( _beat_type->value() );
+    {
+        _sig->beats_per_bar = atoi( _beats->value() );
+        _sig->beat_type = atoi( _beat_type->value() );
 
-            _sucess = true;
+        _sucess = true;
 
-            hide();
-        }
+        hide();
+    }
 
     bool
     sucess ( void )
-        {
-            return _sucess;
-        }
+    {
+        return _sucess;
+    }
 };
 
 bool

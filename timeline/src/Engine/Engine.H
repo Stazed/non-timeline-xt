@@ -36,7 +36,7 @@ class Engine : public JACK::Client
     Thread _thread;                                            /* only used for thread checking */
 
     int _buffers_dropped;                                       /* buffers dropped because of locking */
-/*     int _buffers_dropped;                                       /\* buffers dropped because of locking *\/ */
+    /*     int _buffers_dropped;                                       /\* buffers dropped because of locking *\/ */
 
     void shutdown ( void );
     int process ( nframes_t nframes );
@@ -62,15 +62,21 @@ public:
     Engine ( );
     virtual ~Engine ( );
 
-    int dropped ( void ) const { return _buffers_dropped; }
+    int dropped ( void ) const
+    {
+        return _buffers_dropped;
+    }
 
-    nframes_t system_latency ( void ) const { return nframes(); }
+    nframes_t system_latency ( void ) const
+    {
+        return nframes();
+    }
     nframes_t playback_latency ( void ) const;
 
     float frames_to_milliseconds ( nframes_t frames )
-        {
-            return ( frames * 1000 ) / (float)sample_rate();
-        }
+    {
+        return ( frames * 1000 ) / (float)sample_rate();
+    }
 };
 
 extern Engine * engine;

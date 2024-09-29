@@ -40,8 +40,8 @@ protected:
     virtual void set ( Log_Entry &e );
 
     Annotation_Region ( )
-        {
-        }
+    {
+    }
 
     Annotation_Region ( const Annotation_Region &rhs );
 

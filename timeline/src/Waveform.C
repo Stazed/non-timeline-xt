@@ -75,11 +75,11 @@ Waveform::draw ( int X, int Y, int W, int H,
     if ( ! W )
         return;
 #ifdef FLTK_SUPPORT
-   // fg_color =  fg_color;
+    // fg_color =  fg_color;
 #else
     fg_color = fl_color_add_alpha( Fl::get_color( fg_color ), 200 );
 #endif
-    
+
     if ( Waveform::fill )
     {
         if ( Waveform::vary_color )
@@ -90,12 +90,12 @@ Waveform::draw ( int X, int Y, int W, int H,
                 const Peak p = pbuf[ j ];
 
                 const float diff = fabs( p.max - p.min );
- 
+
                 if ( diff > 2.0f )
                     fl_color( FL_RED );
                 else
                     fl_color( fl_color_average( fg_color, bg_color, diff * 0.5f ) );
-                
+
                 const int ty = mid - ( halfheight * p.min );
                 const int by = mid - ( halfheight * p.max );
                 fl_line( x, ty, x, by );
@@ -104,9 +104,9 @@ Waveform::draw ( int X, int Y, int W, int H,
         else
         {
             fl_color( fg_color );
-   
+
             fl_begin_complex_polygon();
-            
+
             j = start;
 
             for ( int x = X; x <= X + W; x++, j += skip  )
@@ -116,7 +116,7 @@ Waveform::draw ( int X, int Y, int W, int H,
 
             for ( int x = X + W; x >= X; x--, j -= skip )
                 fl_vertex( x, ty - ( halfheight * pbuf[ j ].max ) );
-            
+
             fl_end_complex_polygon();
         }
     }

@@ -158,7 +158,7 @@ Audio_Region::Audio_Region ( const Audio_Region & rhs ) : Sequence_Region( rhs )
 
     _box_color = rhs._box_color;
     _color = rhs._color;
-    
+
     _adjusting_gain = 0.0f;
 
     log_create();
@@ -245,7 +245,7 @@ Audio_Region::menu_cb ( const Fl_Menu_ *m )
         box_color( fl_show_colormap( box_color() ) );
     else if ( ! strcmp( picked, "/Split at mouse" ) )
     {
-	split( timeline->x_to_offset( Fl::event_x() ) );
+        split( timeline->x_to_offset( Fl::event_x() ) );
     }
     else if ( ! strcmp( picked, "/Crop to range" ) )
     {
@@ -264,8 +264,8 @@ Audio_Region::menu_cb ( const Fl_Menu_ *m )
             return;
 
         redraw();
-	trim_left( edit_start );
-	trim_right( edit_end );
+        trim_left( edit_start );
+        trim_right( edit_end );
     }
     else if ( ! strcmp( picked, "/Fade in to mouse" ) )
     {
@@ -347,7 +347,7 @@ Audio_Region::menu_cb ( const Fl_Menu_ *m )
     else if ( ! strcmp( picked, "/Fade out to playhead" ) )
     {
         nframes_t offset = _r->start + _r->length - transport->frame;
-        
+
         if ( offset > 0 )
             _fade_out.length = offset;
     }
@@ -371,50 +371,50 @@ Audio_Region::menu ( void )
     Fade::fade_type_e it = _fade_in.type;
     Fade::fade_type_e ot = _fade_out.type;
 
-_Pragma("GCC diagnostic push")
-_Pragma("GCC diagnostic ignored \"-Wmissing-field-initializers\"")
+    _Pragma("GCC diagnostic push")
+    _Pragma("GCC diagnostic ignored \"-Wmissing-field-initializers\"")
     Fl_Menu_Item items[] =
-        {
-            { "Fade",             0, 0, 0,  FL_SUBMENU    },
-            { "In",               0, 0, 0,  FL_SUBMENU    },
-            { "Linear",           0, 0, 0,  FL_MENU_RADIO | ( it == Fade::Linear      ? FL_MENU_VALUE : 0 ) },
-            { "Sigmoid",          0, 0, 0,  FL_MENU_RADIO | ( it == Fade::Sigmoid     ? FL_MENU_VALUE : 0 ) },
-            { "Logarithmic",      0, 0, 0,  FL_MENU_RADIO | ( it == Fade::Logarithmic ? FL_MENU_VALUE : 0 ) },
-            { "Parabolic",        0, 0, 0,  FL_MENU_RADIO | ( it == Fade::Parabolic   ? FL_MENU_VALUE : 0 ) },
-            { "Disabled",        0, 0, 0,  FL_MENU_RADIO | ( it == Fade::Disabled   ? FL_MENU_VALUE : 0 ) },
+    {
+        { "Fade",             0, 0, 0,  FL_SUBMENU    },
+        { "In",               0, 0, 0,  FL_SUBMENU    },
+        { "Linear",           0, 0, 0,  FL_MENU_RADIO | ( it == Fade::Linear      ? FL_MENU_VALUE : 0 ) },
+        { "Sigmoid",          0, 0, 0,  FL_MENU_RADIO | ( it == Fade::Sigmoid     ? FL_MENU_VALUE : 0 ) },
+        { "Logarithmic",      0, 0, 0,  FL_MENU_RADIO | ( it == Fade::Logarithmic ? FL_MENU_VALUE : 0 ) },
+        { "Parabolic",        0, 0, 0,  FL_MENU_RADIO | ( it == Fade::Parabolic   ? FL_MENU_VALUE : 0 ) },
+        { "Disabled",        0, 0, 0,  FL_MENU_RADIO | ( it == Fade::Disabled   ? FL_MENU_VALUE : 0 ) },
 
-            { 0                   },
-            { "Out",              0, 0, 0,  FL_SUBMENU    },
-            { "Linear",           0, 0, 0,  FL_MENU_RADIO | ( ot == Fade::Linear      ? FL_MENU_VALUE : 0 ) },
-            { "Sigmoid",          0, 0, 0,  FL_MENU_RADIO | ( ot == Fade::Sigmoid     ? FL_MENU_VALUE : 0 ) },
-            { "Logarithmic",      0, 0, 0,  FL_MENU_RADIO | ( ot == Fade::Logarithmic ? FL_MENU_VALUE : 0 ) },
-            { "Parabolic",        0, 0, 0,  FL_MENU_RADIO | ( ot == Fade::Parabolic   ? FL_MENU_VALUE : 0 ) },
-            { "Disabled",        0, 0, 0,  FL_MENU_RADIO | ( ot == Fade::Disabled   ? FL_MENU_VALUE : 0 ) },
+        { 0                   },
+        { "Out",              0, 0, 0,  FL_SUBMENU    },
+        { "Linear",           0, 0, 0,  FL_MENU_RADIO | ( ot == Fade::Linear      ? FL_MENU_VALUE : 0 ) },
+        { "Sigmoid",          0, 0, 0,  FL_MENU_RADIO | ( ot == Fade::Sigmoid     ? FL_MENU_VALUE : 0 ) },
+        { "Logarithmic",      0, 0, 0,  FL_MENU_RADIO | ( ot == Fade::Logarithmic ? FL_MENU_VALUE : 0 ) },
+        { "Parabolic",        0, 0, 0,  FL_MENU_RADIO | ( ot == Fade::Parabolic   ? FL_MENU_VALUE : 0 ) },
+        { "Disabled",        0, 0, 0,  FL_MENU_RADIO | ( ot == Fade::Disabled   ? FL_MENU_VALUE : 0 ) },
 
-            { 0                   },
-            { 0 },
-            { "Color",        0, 0, 0,  inherit_track_color ? FL_MENU_INACTIVE : 0 },
-	    { "Crop to range", 'c', 0, 0, FL_MENU_DIVIDER },
-	    { "Split at mouse", 's', 0, 0 },
-            { "Gain with mouse vertical drag", 'g', 0, 0 },
-            { "Fade in to mouse", FL_F + 3, 0, 0 },
-            { "Fade out to mouse", FL_F + 4, 0, 0 },
-            { "Loop point to mouse", 'l', 0, 0 },
-            { "Clear loop point", 0, 0, 0, 0 == _loop ? FL_MENU_INACTIVE : 0 },
-            { "Normalize", 'n', 0, 0 },
-            { "Denormalize", FL_SHIFT + 'n', 0, 0, 1.0 == _scale ? FL_MENU_INACTIVE : 0 },
-            { "Set volume", 'v', 0, 0 },
-            { "Range from", FL_CTRL + 'r', 0, 0, FL_MENU_DIVIDER },
-            { "Trim left to playhead", '{', 0, 0 },
-            { "Trim right to playhead", '}', 0, 0 },
-            { "Split at playhead", FL_SHIFT + 's', 0, 0 },
-            { "Loop point at playhead", FL_SHIFT + 'l', 0, 0 },
-            { "Fade in to playhead", FL_F + 3 + FL_SHIFT, 0, 0 },
-            { "Fade out to playhead", FL_F + 4 + FL_SHIFT, 0, 0 },
-            { "Remove", 0, 0, 0 },
-            { 0 },
-        };
-_Pragma("GCC diagnostic pop")
+        { 0                   },
+        { 0 },
+        { "Color",        0, 0, 0,  inherit_track_color ? FL_MENU_INACTIVE : 0 },
+        { "Crop to range", 'c', 0, 0, FL_MENU_DIVIDER },
+        { "Split at mouse", 's', 0, 0 },
+        { "Gain with mouse vertical drag", 'g', 0, 0 },
+        { "Fade in to mouse", FL_F + 3, 0, 0 },
+        { "Fade out to mouse", FL_F + 4, 0, 0 },
+        { "Loop point to mouse", 'l', 0, 0 },
+        { "Clear loop point", 0, 0, 0, 0 == _loop ? FL_MENU_INACTIVE : 0 },
+        { "Normalize", 'n', 0, 0 },
+        { "Denormalize", FL_SHIFT + 'n', 0, 0, 1.0 == _scale ? FL_MENU_INACTIVE : 0 },
+        { "Set volume", 'v', 0, 0 },
+        { "Range from", FL_CTRL + 'r', 0, 0, FL_MENU_DIVIDER },
+        { "Trim left to playhead", '{', 0, 0 },
+        { "Trim right to playhead", '}', 0, 0 },
+        { "Split at playhead", FL_SHIFT + 's', 0, 0 },
+        { "Loop point at playhead", FL_SHIFT + 'l', 0, 0 },
+        { "Fade in to playhead", FL_F + 3 + FL_SHIFT, 0, 0 },
+        { "Fade out to playhead", FL_F + 4 + FL_SHIFT, 0, 0 },
+        { "Remove", 0, 0, 0 },
+        { 0 },
+    };
+    _Pragma("GCC diagnostic pop")
 
     menu_set_callback( items, &Audio_Region::menu_cb, (void*)this );
 
@@ -435,20 +435,20 @@ Audio_Region::draw_fade ( const Fade &fade, Fade::fade_dir_e dir, bool line, int
     const int width = timeline->ts_to_x( fade.length );
 
     if ( Fade::Disabled == fade.type )
-	return;
-    
+        return;
+
     if ( width < 4 )
         /* too small to draw */
         return;
- 
+
     int fx;
-                                                
+
     if ( dir == Fade::In )
     {
         fx = curve_x();
-     
+
         if ( fx + width < X ||
-	     fx > X + W )
+                fx > X + W )
             /* clipped */
             return;
     }
@@ -456,8 +456,8 @@ Audio_Region::draw_fade ( const Fade &fade, Fade::fade_dir_e dir, bool line, int
     {
         fx = curve_x() + abs_w();
 
-        if ( fx - width > X + W || 
-             fx < X )
+        if ( fx - width > X + W ||
+                fx < X )
             /* clipped */
             return;
     }
@@ -473,13 +473,13 @@ Audio_Region::draw_fade ( const Fade &fade, Fade::fade_dir_e dir, bool line, int
     {
         const double ti = 1.0 / (double)width;
         double ts = 0.0;
-        
+
         const int xi = dir == Fade::In ? 1 : -1;
 
         for ( int i = 0; i < width; i++, ts += ti, fx += xi )
             fl_vertex( fx, dy + height - ( height * fade.gain( ts )));
     }
-    
+
     fl_vertex( fx, dy );
 
     if ( line )
@@ -564,9 +564,9 @@ Audio_Region::draw ( void )
         /* no coverage */
         return;
 
-    
+
     if ( start() > timeline->xoffset + timeline->x_to_ts( sequence()->drawable_w() ) ||
-         start() + length() < timeline->xoffset )
+            start() + length() < timeline->xoffset )
         /* not in viewport */
         return;
 
@@ -577,8 +577,8 @@ Audio_Region::draw ( void )
 
 //    Fl_Color c = selected() ? fl_invert_color( _color ) : _color;
 
-    if ( sequence()->damage() & FL_DAMAGE_USER1 && 
-         recording() )
+    if ( sequence()->damage() & FL_DAMAGE_USER1 &&
+            recording() )
     {
         /* TODO: limit drawing. */
     }
@@ -588,14 +588,14 @@ Audio_Region::draw ( void )
 
     /* this is the timestamp at where we'll actually be drawing. */
     nframes_t x_frame = timeline->x_to_ts(
-        timeline->ts_to_x( timeline->xoffset ) + ( X - _sequence->drawable_x() ) );
+                            timeline->ts_to_x( timeline->xoffset ) + ( X - _sequence->drawable_x() ) );
 
     nframes_t offset = 0;
 
     if ( x_frame > start() )
         offset = x_frame - start();
 
-    nframes_t fo = 0;                                           
+    nframes_t fo = 0;
     nframes_t ostart = 0, oend = 0;
     const int total_peaks_needed = W;
     nframes_t total_frames_needed = timeline->x_to_ts( total_peaks_needed );
@@ -616,7 +616,7 @@ Audio_Region::draw ( void )
 
     int channels = 0;
     int peaks = 0;
-    Peak *pbuf = NULL;  
+    Peak *pbuf = NULL;
 
 
     Fl_Color fg_color = FL_FOREGROUND_COLOR;
@@ -627,14 +627,15 @@ Audio_Region::draw ( void )
         fg_color = fl_inactive(fg_color);
         bg_color = fl_inactive(bg_color);
     }
-    
-    do {
+
+    do
+    {
 
         nframes_t loop_frames_needed = _loop ? _loop : total_frames_needed;
         int loop_peaks_needed = timeline->ts_to_x( loop_frames_needed );
 
         nframes_t start = _r->offset;
-        
+
         if ( ! fo )                                             /* first loop... */
         {
             if ( _loop )
@@ -671,11 +672,11 @@ Audio_Region::draw ( void )
                                     &peaks, &pbuf, &channels ) )
             {
                 Waveform::scale( pbuf, peaks * channels, _scale );
-                    
+
                 ostart = start;
                 oend = end;
             }
-                        
+
             if ( _clip->peaks()->needs_more_peaks() && ! transport->rolling )
             {
                 /* maybe create a thread to make the peaks */
@@ -687,7 +688,7 @@ Audio_Region::draw ( void )
         {
 //            DMESSAGE( "using cached peaks" );
         }
-        
+
         if ( peaks && pbuf )
         {
             int ch = (h() - Fl::box_dh( box() ))  / channels;
@@ -715,39 +716,39 @@ Audio_Region::draw ( void )
         }
 
         fo += loop_frames_needed;
- 
+
     }
     while ( _loop && fo < total_frames_needed );
 
     if ( _loop )
     {
-	/* draw loop point indicator */
-	const int lx = sequence()->drawable_x() + timeline->ts_to_x( ( this->start() + _loop ) - timeline->xoffset );
+        /* draw loop point indicator */
+        const int lx = sequence()->drawable_x() + timeline->ts_to_x( ( this->start() + _loop ) - timeline->xoffset );
 
-	const int pw = 8;
+        const int pw = 8;
 #ifdef FLTK_SUPPORT
         fl_color( fl_color_average( FL_CYAN, FL_WHITE, 0.80f ) );
 #else
-	fl_color( fl_color_add_alpha( fl_color_average( FL_CYAN, FL_WHITE, 0.80f ), 127 ) );
+        fl_color( fl_color_add_alpha( fl_color_average( FL_CYAN, FL_WHITE, 0.80f ), 127 ) );
 #endif
-		
-	fl_begin_polygon();
-		
-	fl_vertex( lx + Fl::box_dx(box()), 
-		   y() + Fl::box_dy(box()) );
-		
-	fl_vertex( pw + lx + Fl::box_dx(box()), 
-		   y() + Fl::box_dy(box()) );
-		
-	fl_vertex( lx + Fl::box_dx(box()), 
-		   pw + y() + Fl::box_dy(box()) );
-		
-	fl_end_polygon();
+
+        fl_begin_polygon();
+
+        fl_vertex( lx + Fl::box_dx(box()),
+                   y() + Fl::box_dy(box()) );
+
+        fl_vertex( pw + lx + Fl::box_dx(box()),
+                   y() + Fl::box_dy(box()) );
+
+        fl_vertex( lx + Fl::box_dx(box()),
+                   pw + y() + Fl::box_dy(box()) );
+
+        fl_end_polygon();
 
 
-	fl_line( lx, y() + Fl::box_dy(box()), lx, y() + h() - Fl::box_dy(box()) * 2 );
+        fl_line( lx, y() + Fl::box_dy(box()), lx, y() + h() - Fl::box_dy(box()) * 2 );
     }
-    
+
 
     if ( _adjusting_gain > 0.0f )
     {
@@ -765,44 +766,44 @@ Audio_Region::draw ( void )
 #else
         fl_color( fl_color_add_alpha( FL_GREEN, 200 ) );
 #endif
-        
+
         float j = 5;
 
         for ( int i = y() + h(); i > y(); i -= j, j *= 1.2 )
         {
             fl_line( X, i, X + W, i );
         }
-        
+
         fl_line_style( FL_SOLID, 0 );
     }
 
 
     /* draw dog ear */
     {
-	const int pw = 8;
-	
-	/* fl_color( fl_color_add_alpha( FL_WHITE, 127 ) ); */
-	/* fl_color( FL_BACKGROUND_COLOR ); */
+        const int pw = 8;
+
+        /* fl_color( fl_color_add_alpha( FL_WHITE, 127 ) ); */
+        /* fl_color( FL_BACKGROUND_COLOR ); */
 #ifdef FLTK_SUPPORT
         fl_color( FL_WHITE );
 #else
-	fl_color( fl_color_add_alpha( FL_WHITE, 127 ) );
+        fl_color( fl_color_add_alpha( FL_WHITE, 127 ) );
 #endif
 
-	fl_begin_polygon();
+        fl_begin_polygon();
 
-	fl_vertex( line_x() + Fl::box_dx(box()), 
-		   y() + Fl::box_dy(box()) );
+        fl_vertex( line_x() + Fl::box_dx(box()),
+                   y() + Fl::box_dy(box()) );
 
-	fl_vertex( pw + line_x() + Fl::box_dx(box()), 
-		   y() + Fl::box_dy(box()) );
+        fl_vertex( pw + line_x() + Fl::box_dx(box()),
+                   y() + Fl::box_dy(box()) );
 
-	fl_vertex( line_x() + Fl::box_dx(box()), 
-		   pw + y() + Fl::box_dy(box()) );
+        fl_vertex( line_x() + Fl::box_dx(box()),
+                   pw + y() + Fl::box_dy(box()) );
 
-	fl_end_polygon();
+        fl_end_polygon();
     }
-	    
+
     if ( selected() )
         draw_selection_frame( line_x() + Fl::box_dx(box()),
                               y() + Fl::box_dy(box()),
@@ -810,16 +811,16 @@ Audio_Region::draw ( void )
                               h() - Fl::box_dh(box()),
                               selection_color() );
 
-/*     if ( current() ) */
-/*     { */
-/*         /\* draw length bubble *\/ */
+    /*     if ( current() ) */
+    /*     { */
+    /*         /\* draw length bubble *\/ */
 
-/*         char pat[40]; */
+    /*         char pat[40]; */
 
-/*         snprintf( pat, sizeof( pat ), "%dm:%.1fs", (int)(length() / timeline->sample_rate()) / 60, (double)length() / timeline->sample_rate() ); */
+    /*         snprintf( pat, sizeof( pat ), "%dm:%.1fs", (int)(length() / timeline->sample_rate()) / 60, (double)length() / timeline->sample_rate() ); */
 
-/*         draw_label( pat, (Fl_Align)(FL_ALIGN_INSIDE | FL_ALIGN_CENTER), FL_GREEN ); */
-/*     } */
+    /*         draw_label( pat, (Fl_Align)(FL_ALIGN_INSIDE | FL_ALIGN_CENTER), FL_GREEN ); */
+    /*     } */
 
     fl_pop_clip();
 
@@ -845,7 +846,7 @@ Audio_Region::split ( nframes_t where )
     /* Don't allow split if 'where' is outside of focused region. This can
        happen if user uses keyboard shortcuts to move transport as they
        are trying to split a region into multiple parts. The focused region
-       would be the original region. On a second split, if the user is 
+       would be the original region. On a second split, if the user is
        trying to split the secondary region and focus is still on original,
        the split would lengthen the original and fail to split the wanted
        secondary. This causes overlaps and is confusing. We cannot determine
@@ -855,9 +856,9 @@ Audio_Region::split ( nframes_t where )
        splitting would duplicate the focused region */
     if(where >= (_r->start + _r->length) || where <= _r->start)
         return;
-    
+
     block_start();
-    
+
     nframes_t old_fade_in = _fade_in.length;
 
     _fade_in.length = 256;
@@ -878,7 +879,7 @@ Audio_Region::split ( nframes_t where )
     timeline->sequence_lock.unlock();
 
     log_end();
-    
+
     block_end();
 
     log_start();
@@ -893,150 +894,150 @@ Audio_Region::handle ( int m )
     static nframes_t os;
 
     if ( !active_r() )
-	/* don't mess with anything while recording... */
-	return 0;
-    
+        /* don't mess with anything while recording... */
+        return 0;
+
     int X = Fl::event_x();
     int Y = Fl::event_y();
-    
+
     Logger _log( this );
 
     if ( ! Fl::pushed() )
         // selecting an item from the context menu can leave this value set.
         Sequence_Widget::pushed( NULL );
-    
+
     switch ( m )
     {
-        case FL_FOCUS:
-        case FL_UNFOCUS:
-            return 1;
-        case FL_KEYUP:
-            if ( _adjusting_gain > 0 )
-            {
-                _adjusting_gain = 0;
-                redraw();
-                return 1;
-            }
-            break;
-        case FL_KEYBOARD:
-            if ( Fl::event_key() == 'g' )  
-            {
-                if ( _adjusting_gain <= 0 )
-                {
-                    _adjusting_gain = _scale;
-                    redraw();
-                }
-                return 1;
-            }
-            return menu().test_shortcut() != 0;
-        case FL_ENTER:
-            return Sequence_Region::handle( m );
-        case FL_LEAVE:
-            if ( _adjusting_gain > 0 )
-            {
-                _adjusting_gain = 0;
-                redraw();
-            }
-            return Sequence_Region::handle( m );
-        case FL_PUSH:
+    case FL_FOCUS:
+    case FL_UNFOCUS:
+        return 1;
+    case FL_KEYUP:
+        if ( _adjusting_gain > 0 )
         {
-            if ( _adjusting_gain > 0.0f )
+            _adjusting_gain = 0;
+            redraw();
+            return 1;
+        }
+        break;
+    case FL_KEYBOARD:
+        if ( Fl::event_key() == 'g' )
+        {
+            if ( _adjusting_gain <= 0 )
             {
                 _adjusting_gain = _scale;
-                return 1;
+                redraw();
             }
-
-            /* splitting  */
-            if ( test_press( FL_BUTTON2 | FL_SHIFT ) )
-            {
-                /* split */
-                if ( ! copied )
-                {
-                    split( timeline->x_to_offset( X ) );
-                }
-
-                return 0;
-            }
-            else
-            {
-                ox = x() - X;
-                /* for panning */
-                os = _r->offset;
-
-                if ( test_press( FL_BUTTON2 | FL_CTRL ) )
-                {
-                    normalize();
-                    return 1;
-                }
-                else if ( test_press( FL_BUTTON3 ) )
-                {
-                    /* context menu */
-                    menu_popup( &menu() );
-
-                    return 1;
-                }
-                else
-                    return Sequence_Region::handle( m );
-            }
-
-            break;
-        }
-        case FL_RELEASE:
-        {
-            Sequence_Region::handle( m );
-
-            copied = false;
-
             return 1;
         }
-        case FL_DRAG:
+        return menu().test_shortcut() != 0;
+    case FL_ENTER:
+        return Sequence_Region::handle( m );
+    case FL_LEAVE:
+        if ( _adjusting_gain > 0 )
+        {
+            _adjusting_gain = 0;
+            redraw();
+        }
+        return Sequence_Region::handle( m );
+    case FL_PUSH:
+    {
+        if ( _adjusting_gain > 0.0f )
+        {
+            _adjusting_gain = _scale;
+            return 1;
+        }
 
-            if ( Fl::event_is_click() )
-                return 1;
-
-            if ( ! _drag )
+        /* splitting  */
+        if ( test_press( FL_BUTTON2 | FL_SHIFT ) )
+        {
+            /* split */
+            if ( ! copied )
             {
-                begin_drag( Drag( X, Y, x_to_offset( X ) ) );
-                _log.hold();
+                split( timeline->x_to_offset( X ) );
             }
 
-            if ( _adjusting_gain )
+            return 0;
+        }
+        else
+        {
+            ox = x() - X;
+            /* for panning */
+            os = _r->offset;
+
+            if ( test_press( FL_BUTTON2 | FL_CTRL ) )
             {
-                int d = _drag->y - Y;
-                
-                _scale = _adjusting_gain + ( 0.01f * d );
-
-                if ( _scale < 0.01f )
-                    _scale = 0.01f;
-
-                redraw();
+                normalize();
                 return 1;
             }
-
-            if ( test_press( FL_BUTTON1 | FL_SHIFT | FL_CTRL ) )
+            else if ( test_press( FL_BUTTON3 ) )
             {
-                /* panning */
-                int d = (ox + X) - x();
+                /* context menu */
+                menu_popup( &menu() );
 
-                if ( d < 0 )
-                    _r->offset = os + timeline->x_to_ts( 0 - d );
+                return 1;
+            }
+            else
+                return Sequence_Region::handle( m );
+        }
+
+        break;
+    }
+    case FL_RELEASE:
+    {
+        Sequence_Region::handle( m );
+
+        copied = false;
+
+        return 1;
+    }
+    case FL_DRAG:
+
+        if ( Fl::event_is_click() )
+            return 1;
+
+        if ( ! _drag )
+        {
+            begin_drag( Drag( X, Y, x_to_offset( X ) ) );
+            _log.hold();
+        }
+
+        if ( _adjusting_gain )
+        {
+            int d = _drag->y - Y;
+
+            _scale = _adjusting_gain + ( 0.01f * d );
+
+            if ( _scale < 0.01f )
+                _scale = 0.01f;
+
+            redraw();
+            return 1;
+        }
+
+        if ( test_press( FL_BUTTON1 | FL_SHIFT | FL_CTRL ) )
+        {
+            /* panning */
+            int d = (ox + X) - x();
+
+            if ( d < 0 )
+                _r->offset = os + timeline->x_to_ts( 0 - d );
+            else
+            {
+                if ( os < timeline->x_to_ts( d ) )
+                    _r->offset = 0;
                 else
-                {
-                    if ( os < timeline->x_to_ts( d ) )
-                        _r->offset = 0;
-                    else
-                        _r->offset = os - timeline->x_to_ts( d );
-                }
-
-                redraw();
-                return 1;
+                    _r->offset = os - timeline->x_to_ts( d );
             }
 
-            return Sequence_Region::handle( m );
+            redraw();
+            return 1;
+        }
 
-        default:
-            return Sequence_Region::handle( m );
-            break;
+        return Sequence_Region::handle( m );
+
+    default:
+        return Sequence_Region::handle( m );
+        break;
     }
 
     return 0;
@@ -1067,7 +1068,7 @@ Audio_Region::normalize ( void )
 
 
     if ( _clip->read_peaks( npeaks, offset(), offset() + npeaks, &peaks, &pbuf, &channels ) &&
-         peaks )
+            peaks )
     {
         _scale = 1000.0f;
 
@@ -1078,7 +1079,7 @@ Audio_Region::normalize ( void )
                 _scale = f;
         }
     }
-    
+
     /* FIXME: wrong place for this? */
     sequence()->handle_widget_change( start(), length() );
     redraw();

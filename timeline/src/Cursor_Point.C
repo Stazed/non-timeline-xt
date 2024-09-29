@@ -33,7 +33,7 @@ Cursor_Point::Cursor_Point ( )
     _type = NULL;
 }
 
-Cursor_Point::Cursor_Point ( nframes_t when, const char *type, const char *label ) 
+Cursor_Point::Cursor_Point ( nframes_t when, const char *type, const char *label )
 {
 //    _make_label();
 
@@ -101,8 +101,8 @@ Cursor_Point::set ( Log_Entry &e )
             timeline->add_cursor( this );
         }
 
-/*         /\* FIXME: we need to add this to the time track on creation!!! *\/ */
-/*         timeline->time_track->add( this ); */
+        /*         /\* FIXME: we need to add this to the time track on creation!!! *\/ */
+        /*         timeline->time_track->add( this ); */
 
     }
 

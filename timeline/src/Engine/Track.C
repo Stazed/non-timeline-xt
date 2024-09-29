@@ -67,9 +67,9 @@ Track::update_port_names ( void )
         input[ i ].trackname( name() );
         input[ i ].rename();
     }
-/*     /\* tell any attached control sequences to do the same *\/ */
-/*     for ( int i = control->children(); i-- ) */
-/*         ((Control_Sequence*)control->child( i ))->update_port_names(); */
+    /*     /\* tell any attached control sequences to do the same *\/ */
+    /*     for ( int i = control->children(); i-- ) */
+    /*         ((Control_Sequence*)control->child( i ))->update_port_names(); */
 
 }
 
@@ -157,7 +157,7 @@ Track::configure_inputs ( int n )
             snprintf( s, sizeof(s), "in-%i", i + 1 );
 
             JACK::Port p( engine, name(), s, JACK::Port::Input, JACK::Port::Audio );
-            
+
             p.terminal( true );
 
             if ( !p.activate() )
@@ -330,12 +330,12 @@ Track::record ( Capture *c, nframes_t frame )
         /* not freewheeling, so assume we're overdubbing and need to
          * compensate for both capture and playback latency */
         _capture_offset = max;
-        
+
         /* since the track output might not be connected to
          * anything, just get the playback latency */
         /* When playback latency compensation is enabled, this will
          * have already been done. */
-        if ( ! Timeline::playback_latency_compensation ) 
+        if ( ! Timeline::playback_latency_compensation )
             _capture_offset += engine->playback_latency();
     }
 }
@@ -384,7 +384,7 @@ Track::compute_latency_compensation ( void )
     if ( Timeline::playback_latency_compensation && output.size() )
     {
         nframes_t tmin,tmax;
-        
+
         tmin = JACK_MAX_FRAMES >> 1;
         tmax = 0;
 
@@ -392,7 +392,7 @@ Track::compute_latency_compensation ( void )
         {
             nframes_t min,max;
             output[i].get_latency( JACK::Port::Output, &min, &max );
-            
+
             if ( max > tmax )
                 tmax = max;
             if ( min < tmin )
@@ -402,7 +402,7 @@ Track::compute_latency_compensation ( void )
         DMESSAGE( "Track %s, setting undelay to %lu", name(), (unsigned long)tmax);
         char s[256];
         snprintf( s, sizeof(s), "Latency Comp: -%lu", (unsigned long)tmax);
-        
+
         copy_tooltip(s);
 
         undelay( tmax );

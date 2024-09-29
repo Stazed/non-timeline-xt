@@ -41,7 +41,7 @@ class Record_DS : public Disk_Stream
     nframes_t _frames_written;
     volatile nframes_t _stop_frame;
     volatile nframes_t _first_frame;
-    
+
     volatile bool _recording;
 
     Audio_File_SF *_af;                             /* capture file */
@@ -49,28 +49,34 @@ class Record_DS : public Disk_Stream
     void write_block ( sample_t *buf, nframes_t nframes );
     void disk_thread ( void );
 
-    virtual void flush ( void ) { base_flush( false ); }
+    virtual void flush ( void )
+    {
+        base_flush( false );
+    }
 
 public:
 
     Record_DS ( Track *th, float frame_rate, nframes_t nframes, int channels ) :
         Disk_Stream( th, frame_rate, nframes, channels )
-        {
-            sem_destroy( &_blocks );
-            sem_init( &_blocks, 0, 0 );
+    {
+        sem_destroy( &_blocks );
+        sem_init( &_blocks, 0, 0 );
 
-            _capture = NULL;
-            _recording = false;
-            _stop_frame = JACK_MAX_FRAMES;
-            _frames_written = 0;
-            _first_frame = 0;
-            _af = NULL;
-        }
+        _capture = NULL;
+        _recording = false;
+        _stop_frame = JACK_MAX_FRAMES;
+        _frames_written = 0;
+        _first_frame = 0;
+        _af = NULL;
+    }
 
-    virtual ~Record_DS ( ) { shutdown(); }
+    virtual ~Record_DS ( )
+    {
+        shutdown();
+    }
 
-/*     bool seek_pending ( void ); */
-/*     void seek ( nframes_t frame ); */
+    /*     bool seek_pending ( void ); */
+    /*     void seek ( nframes_t frame ); */
     const Audio_Region * capture_region ( void ) const;
     Track::Capture * capture ( void );
 

@@ -39,10 +39,10 @@ protected:
     virtual void set ( Log_Entry &e );
 
     Cursor_Region ( )
-        {
-            _label = NULL;
-            _type = NULL;
-        }
+    {
+        _label = NULL;
+        _type = NULL;
+    }
 
     Cursor_Region ( const Cursor_Region &rhs );
 
@@ -63,16 +63,19 @@ public:
     int handle ( int m );
 
 
-    const char * type ( void ) const { return _type; }
+    const char * type ( void ) const
+    {
+        return _type;
+    }
     void type ( const char *v )
-        { 
-            if ( _type ) 
-                free( _type );
-            
-            _type = NULL;
-            
-            if ( v )
-                _type = strdup( v );
-        }
+    {
+        if ( _type )
+            free( _type );
+
+        _type = NULL;
+
+        if ( v )
+            _type = strdup( v );
+    }
 
 };

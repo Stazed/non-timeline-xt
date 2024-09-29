@@ -33,10 +33,10 @@ class Control_Point : public Sequence_Point
 protected:
 
     Control_Point ( )
-        {
-            _y = 0.0f;
-            _box_color = FL_WHITE;
-        }
+    {
+        _y = 0.0f;
+        _box_color = FL_WHITE;
+    }
 
     virtual void get ( Log_Entry &e ) const;
     virtual void set ( Log_Entry &e );
@@ -53,19 +53,37 @@ public:
     Control_Point ( Sequence *t, nframes_t when, float y );
 
     ~Control_Point ( )
-        {
-            log_destroy();
-        }
+    {
+        log_destroy();
+    }
 
-    float control ( void ) const { return _y; }
-    void control ( float v ) { _y = v; }
+    float control ( void ) const
+    {
+        return _y;
+    }
+    void control ( float v )
+    {
+        _y = v;
+    }
     /* only for playback thread */
-    nframes_t when ( void ) const { return _range.start; }
+    nframes_t when ( void ) const
+    {
+        return _range.start;
+    }
 
-    long abs_w ( void ) const { return 8; }
+    long abs_w ( void ) const
+    {
+        return 8;
+    }
 
-    int y ( void ) const { return parent()->y() + ((float)parent()->h() * _y); }
-    int h ( void ) const { return 8; }
+    int y ( void ) const
+    {
+        return parent()->y() + ((float)parent()->h() * _y);
+    }
+    int h ( void ) const
+    {
+        return 8;
+    }
 
     virtual void draw_box ( void );
     virtual int handle ( int m );

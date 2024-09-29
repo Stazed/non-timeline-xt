@@ -27,8 +27,9 @@
 Tempo_Sequence::Tempo_Sequence ( int X, int Y, int W, int H ) : Sequence ( X, Y, W, H )
 {
     box( FL_FLAT_BOX );
-    
-    { Fl_Box *o = new Fl_Box( X, Y, Track::width(), H );
+
+    {
+        Fl_Box *o = new Fl_Box( X, Y, Track::width(), H );
         o->align( FL_ALIGN_RIGHT | FL_ALIGN_INSIDE );
         o->labelsize( 12 );
         o->labeltype( FL_NORMAL_LABEL );
@@ -63,27 +64,27 @@ Tempo_Sequence::handle ( int m )
 
     switch ( m )
     {
-        case FL_PUSH:
-            if ( Fl::event_button1() )
+    case FL_PUSH:
+        if ( Fl::event_button1() )
+        {
+            static float t = 120.0f;
+
+            if ( Tempo_Point::edit( &t ) )
             {
-                static float t = 120.0f;
+                timeline->sequence_lock.wrlock();
 
-                if ( Tempo_Point::edit( &t ) )
-                {
-                    timeline->sequence_lock.wrlock();
+                new Tempo_Point( timeline->x_to_offset( X ), t );
 
-                    new Tempo_Point( timeline->x_to_offset( X ), t );
+                timeline->sequence_lock.unlock();
 
-                    timeline->sequence_lock.unlock();
-
-                    timeline->redraw();
-                }
-                return 0;
+                timeline->redraw();
             }
-            break;
-
-        default:
             return 0;
+        }
+        break;
+
+    default:
+        return 0;
     }
 
     return 0;

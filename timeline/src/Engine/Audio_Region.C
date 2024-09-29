@@ -76,9 +76,9 @@ Audio_Region::Fade::apply_interleaved ( sample_t *buf, Audio_Region::Fade::fade_
     if ( n > length - start )
         /* don't try to apply fade to more samples than specified by the fade length... */
         n = length - start;
-    
+
     /* ASSERT( nframes < length - start, "Attempt to apply fade to more samples than its length" ); */
-            
+
     if ( dir == Fade::Out )
     {
         fi = 1.0 - fi;
@@ -104,10 +104,10 @@ static
 void
 apply_fade ( sample_t *buf, const int channels, Audio_Region::Fade fade, const nframes_t bS, const nframes_t bE, const nframes_t edge, Audio_Region::Fade::fade_dir_e dir )
 {
-    const nframes_t bSS = dir == Audio_Region::Fade::Out ? bS + fade.length : bS;    
+    const nframes_t bSS = dir == Audio_Region::Fade::Out ? bS + fade.length : bS;
     const nframes_t fade_start = bSS > edge ? bSS - edge : 0;
     const nframes_t fade_offset =  bSS > edge ? 0 : edge - bSS;
-            
+
     fade.apply_interleaved( buf + ( channels * fade_offset ), dir, fade_start, (bE - bS) - fade_offset, channels );
 };
 
@@ -128,7 +128,7 @@ Audio_Region::read ( sample_t *buf, bool buf_is_empty, nframes_t pos, nframes_t 
     const nframes_t rE = r.start + r.length; /* one more than the last frame of the region! */
     const nframes_t bS = pos;
     const nframes_t bE = pos + nframes; /* one more than the last frame of the buffer! */
-    
+
     /* do nothing if region isn't inside buffer */
     if ( bS > rE || bE < rS )
         return 0;
@@ -151,7 +151,7 @@ Audio_Region::read ( sample_t *buf, bool buf_is_empty, nframes_t pos, nframes_t 
 
     const nframes_t sO = bS < rS ? 0 : bS - rS;  /* offset into source */
     const nframes_t bO = bS < rS ? rS - bS : 0; /* offset into buffer (when region start is after beginning of buffer) */
-    
+
     nframes_t cnt = nframes;                                                    /* number of frames to read  */
 
     /* if region ends within this buffer, don't read beyond end */
@@ -159,7 +159,7 @@ Audio_Region::read ( sample_t *buf, bool buf_is_empty, nframes_t pos, nframes_t 
         cnt = nframes - ( bE - rE );
 
     cnt -= bO;
-    
+
     const nframes_t len = cnt;
 
     /* FIXME: keep the declick defults someplace else */
@@ -191,45 +191,45 @@ Audio_Region::read ( sample_t *buf, bool buf_is_empty, nframes_t pos, nframes_t 
         if ( _loop < nframes )
         {
             /* very small loop or very large buffer... */
-            WARNING("Loop size (%lu) is smaller than buffer size (%lu). Behavior undefined.", _loop, nframes );            
+            WARNING("Loop size (%lu) is smaller than buffer size (%lu). Behavior undefined.", _loop, nframes );
         }
-        
+
         const nframes_t lO = sO % _loop, /* how far we are into the loop */
-	    nthloop = sO / _loop, /* which loop iteration */
-	    seam_L = rS + ( nthloop * _loop ), /* receding seam */
-	    seam_R = rS + ( ( nthloop + 1 ) * _loop ); /* upcoming seam */
+                             nthloop = sO / _loop, /* which loop iteration */
+                                       seam_L = rS + ( nthloop * _loop ), /* receding seam */
+                                                seam_R = rS + ( ( nthloop + 1 ) * _loop ); /* upcoming seam */
 
         /* read interleaved channels */
         if (
-	    /* this buffer contains a loop boundary, which lies on neither the first or the last frame, and therefore requires a splice of two reads from separate parts of the region. */            
-	    seam_R > bS && seam_R < bE
-	    &&
-	    /* but if the end seam of the loop is also the end seam of the region, we only need one read */
-	    seam_R != rE
-	    &&
-	    /* also, if the seam is within the buffer, but beyond the end of the region (as in last loop iteration), do the simpler read in the else clause */
-	    seam_R <= rE
-	    )
+            /* this buffer contains a loop boundary, which lies on neither the first or the last frame, and therefore requires a splice of two reads from separate parts of the region. */
+            seam_R > bS && seam_R < bE
+            &&
+            /* but if the end seam of the loop is also the end seam of the region, we only need one read */
+            seam_R != rE
+            &&
+            /* also, if the seam is within the buffer, but beyond the end of the region (as in last loop iteration), do the simpler read in the else clause */
+            seam_R <= rE
+        )
         {
-	    /* this buffer covers a loop boundary */
-	   
+            /* this buffer covers a loop boundary */
+
             /* read the first part */
             cnt = _clip->read(
-		cbuf + ( _clip->channels() * bO ), /* buf */
-		-1,				   /* chan */
-		r.offset + lO,			   /* start */
-		( seam_R - bS ) - bO		   /* len */
-		);
+                      cbuf + ( _clip->channels() * bO ), /* buf */
+                      -1,				   /* chan */
+                      r.offset + lO,			   /* start */
+                      ( seam_R - bS ) - bO		   /* len */
+                  );
 
-	    /* ASSERT( len > cnt, "Error in region looping calculations" ); */
-	    
+            /* ASSERT( len > cnt, "Error in region looping calculations" ); */
+
             /* read the second part */
             cnt += _clip->read(
-		cbuf + ( _clip->channels() * ( bO + cnt ) ), /* buf */
-		-1,					     /* chan */
-		r.offset + 0,				     /* start */
-		( len - cnt ) - bO			     /* len */
-		);
+                       cbuf + ( _clip->channels() * ( bO + cnt ) ), /* buf */
+                       -1,					     /* chan */
+                       r.offset + 0,				     /* start */
+                       ( len - cnt ) - bO			     /* len */
+                   );
 
             /* assert( cnt == len ); */
         }
@@ -245,11 +245,11 @@ Audio_Region::read ( sample_t *buf, bool buf_is_empty, nframes_t pos, nframes_t 
             {
                 if ( seam >= bS && seam <= bE + declick.length )
                     /* fade out previous loop segment */
-                    apply_fade( cbuf, _clip->channels(), declick, bS, bE, seam, Fade::Out );                
-               
+                    apply_fade( cbuf, _clip->channels(), declick, bS, bE, seam, Fade::Out );
+
                 if ( seam <= bE && seam + declick.length >= bS )
                     /* fade in next loop segment */
-                    apply_fade( cbuf, _clip->channels(), declick, bS, bE, seam, Fade::In );            
+                    apply_fade( cbuf, _clip->channels(), declick, bS, bE, seam, Fade::In );
             }
         }
     }
@@ -272,24 +272,24 @@ Audio_Region::read ( sample_t *buf, bool buf_is_empty, nframes_t pos, nframes_t 
     /* perform fade/declicking if necessary */
     {
         assert( cnt <= nframes );
-            
+
         Fade fade;
 
-	/* disabling fade also disables de-clicking for perfectly abutted edits. */
-	if ( fade.type != Fade::Disabled )
-	{	    
-	    fade = declick < _fade_in ? _fade_in : declick;
-	    
-	    /* do fade in if necessary */
-	    if ( sO < fade.length )
-		apply_fade( cbuf, _clip->channels(), fade, bS, bE, rS, Fade::In );                
-	    
-	    fade = declick < _fade_out ? _fade_out : declick;
-	    
-	    /* do fade out if necessary */
-	    if ( sO + cnt + fade.length > r.length )
-		apply_fade( cbuf, _clip->channels(), fade, bS, bE, rE, Fade::Out );
-	}
+        /* disabling fade also disables de-clicking for perfectly abutted edits. */
+        if ( fade.type != Fade::Disabled )
+        {
+            fade = declick < _fade_in ? _fade_in : declick;
+
+            /* do fade in if necessary */
+            if ( sO < fade.length )
+                apply_fade( cbuf, _clip->channels(), fade, bS, bE, rS, Fade::In );
+
+            fade = declick < _fade_out ? _fade_out : declick;
+
+            /* do fade out if necessary */
+            if ( sO + cnt + fade.length > r.length )
+                apply_fade( cbuf, _clip->channels(), fade, bS, bE, rE, Fade::Out );
+        }
     }
 
     if ( buf != cbuf )
@@ -301,7 +301,7 @@ Audio_Region::read ( sample_t *buf, bool buf_is_empty, nframes_t pos, nframes_t 
                 buffer_interleaved_copy( buf, cbuf, i, i, channels, _clip->channels(), nframes );
             else
                 buffer_interleaved_mix( buf, cbuf, i, i, channels, _clip->channels(), nframes );
-            
+
         }
     }
 
@@ -327,21 +327,22 @@ Audio_Region::prepare ( void )
 }
 
 
-class SequenceRedrawRequest {
+class SequenceRedrawRequest
+{
 public:
     nframes_t start;
     nframes_t length;
     Sequence *sequence;
 };
 
-static 
+static
 void
 sequence_redraw_request_handle ( void *v )
 {
     THREAD_ASSERT(UI);
 
     SequenceRedrawRequest *o = (SequenceRedrawRequest*)v;
-    
+
     o->sequence->damage( FL_DAMAGE_USER1, timeline->offset_to_x( o->start ), o->sequence->y(), timeline->ts_to_x( o->length ), o->sequence->h() );
 
     delete o;
@@ -398,7 +399,7 @@ Audio_Region::finalize ( nframes_t /* frame */)
 
     timeline->sequence_lock.wrlock();
 
- //   _range.length = frame - _range.start; // original timeline
+//   _range.length = frame - _range.start; // original timeline
     _range.length = _clip->length();
 
     timeline->sequence_lock.unlock();

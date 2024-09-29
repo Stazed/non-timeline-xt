@@ -47,7 +47,7 @@ Timeline::record ( void )
     /* FIXME: right place for this? */
 
     if ( transport->automatically_create_takes() &&
-         ! _created_new_takes )
+            ! _created_new_takes )
     {
         DMESSAGE( "Creating new takes." );
         add_take_for_armed_tracks();
@@ -69,7 +69,7 @@ Timeline::record ( void )
 
         const Sequence_Widget *p = punch_cursor_track->prev( frame );
         const Sequence_Widget *n = punch_cursor_track->next( frame );
-        
+
         if (p || n )
         {
             if ( p && frame >= p->start() && frame < p->start() + p->length() )
@@ -86,7 +86,7 @@ Timeline::record ( void )
                 frame = n->start();
                 _punch_out_frame = n->start() + n->length();
             }
-                
+
             DMESSAGE( "Punch enabled... Range %lu:%lu",
                       (unsigned long)frame,
                       (unsigned long)_punch_out_frame);
@@ -133,11 +133,11 @@ Timeline::punch_out ( nframes_t frame )
     for ( int i = tracks->children(); i-- ; )
     {
         Track *t = (Track*)tracks->child( i );
-        
+
         if ( t->armed() && t->record_ds )
             t->record_ds->shutdown();
     }
-    
+
     DMESSAGE( "All record threads stopped." );
 }
 
@@ -156,9 +156,9 @@ Timeline::stop ( void )
     /*     if ( w && w->start() + w->length() < frame ) */
     /*         frame = w->start() + w->length(); */
     /* } */
-    
+
     punch_out( frame );
-   
+
     Loggable::block_end();
 
     activate();

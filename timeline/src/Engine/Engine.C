@@ -91,7 +91,7 @@ Engine::playback_latency ( void ) const
     jack_latency_range_t range;
 
     jack_port_get_latency_range( jack_port_by_name( jack_client(), "system:playback_1" ),
-                                 JackPlaybackLatency, 
+                                 JackPlaybackLatency,
                                  &range );
 
     return range.min;
@@ -109,38 +109,38 @@ Engine::sync ( jack_transport_state_t state, jack_position_t *pos )
 
     switch ( state )
     {
-        case JackTransportStopped:           /* new position requested */
-            /* JACK docs lie. This is only called when the transport
-               is *really* stopped, not when starting a slow-sync
-               cycle */
-            transport->frame = pos->frame;
-            return 1;
-        case JackTransportStarting:          /* this means JACK is polling slow-sync clients */
+    case JackTransportStopped:           /* new position requested */
+        /* JACK docs lie. This is only called when the transport
+           is *really* stopped, not when starting a slow-sync
+           cycle */
+        transport->frame = pos->frame;
+        return 1;
+    case JackTransportStarting:          /* this means JACK is polling slow-sync clients */
+    {
+        if ( ! seeking )
         {
-            if ( ! seeking )
-            {
-                request_locate( pos->frame );
-                seeking = true;
-            }
-
-            bool r = true;
-
-            if ( timeline )
-                r = timeline->seek_pending();
-
-            if ( ! r )
-                seeking = false;
-
-            return ! seeking;
+            request_locate( pos->frame );
+            seeking = true;
         }
-        case JackTransportRolling:           /* JACK's timeout has expired */
-            /* FIXME: what's the right thing to do here? */
+
+        bool r = true;
+
+        if ( timeline )
+            r = timeline->seek_pending();
+
+        if ( ! r )
+            seeking = false;
+
+        return ! seeking;
+    }
+    case JackTransportRolling:           /* JACK's timeout has expired */
+        /* FIXME: what's the right thing to do here? */
 //            request_locate( pos->frame );
-            return 1;
+        return 1;
 //            return transport->frame == pos->frame;
-            break;
-        default:
-            printf( "unknown transport state.\n" );
+        break;
+    default:
+        printf( "unknown transport state.\n" );
     }
 
     return 0;
@@ -179,9 +179,9 @@ Engine::process ( nframes_t nframes )
     if ( !timeline)
         /* handle chicken/egg problem */
         return 0;
-    
+
     nframes_t n = 0;
-   
+
     n += timeline->process_input(nframes);
     n += timeline->process_output(nframes);
 
@@ -190,7 +190,7 @@ Engine::process ( nframes_t nframes )
         _buffers_dropped++;
         WARNING("xrun");
     }
-    
+
     /* if ( freewheeling() ) */
     /* { */
     /*     if ( timeline ) */
@@ -207,7 +207,7 @@ Engine::process ( nframes_t nframes )
     /*     if ( !timeline) */
     /*         /\* handle chicken/egg problem *\/ */
     /*         return 0; */
- 
+
     /*     if ( timeline->tryrdlock() ) */
     /*     { */
     /*         /\* the data structures we need to access here (tracks and */

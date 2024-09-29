@@ -65,7 +65,10 @@ class Fl_Tile;
 #include "RWLock.H"
 #include <FL/Fl_Overlay_Window.H>
 
-namespace OSC { class Endpoint; }
+namespace OSC
+{
+class Endpoint;
+}
 
 #include <lo/lo.h>
 
@@ -88,12 +91,12 @@ class Timeline : public Fl_Group
 
     static void draw_clip_rulers ( void * v, int X, int Y, int W, int H );
     static void draw_clip_tracks ( void * v, int X, int Y, int W, int H );
- 
+
     nframes_t _old_xposition;
     int _old_yposition;
 
     Rectangle _selection;
-    
+
     Fl_Group     *track_window;
     Fl_Pack      *tracks;
     Fl_Pack      *rulers;
@@ -125,7 +128,7 @@ class Timeline : public Fl_Group
     void update_track_order ( void );
     void apply_track_order ( void );
     void insert_track ( Track *track, int n );
-    
+
 
 public:
 
@@ -150,7 +153,8 @@ public:
 #undef Beats
 #undef None
 
-    enum snap_e {
+    enum snap_e
+    {
         Bars,
         Beats,
         None
@@ -183,15 +187,18 @@ public:
     nframes_t _sample_rate;
 
     Timeline ( int X, int Y, int W, int H, const char *L=0 );
-    
+
     virtual ~Timeline ( );
 
     void update_tempomap ( void );
 
     const char *session_manager_name ( void );
 
-    
-    nframes_t fpp ( void ) const { return 1 << _fpp; }
+
+    nframes_t fpp ( void ) const
+    {
+        return 1 << _fpp;
+    }
     void range ( nframes_t start, nframes_t length );
 
     nframes_t range_start ( void ) const;
@@ -204,10 +211,22 @@ public:
 
 //    nframes_t playhead ( void ) const { return transport->frame; }
     nframes_t length ( void ) const;
-    void sample_rate ( nframes_t r ) { _sample_rate = r; }
-    nframes_t sample_rate ( void ) const { return _sample_rate; }
-    int ts_to_x( nframes_t ts ) const { return ts >> _fpp; }
-    nframes_t x_to_ts ( int x ) const { return (nframes_t)x << _fpp; }
+    void sample_rate ( nframes_t r )
+    {
+        _sample_rate = r;
+    }
+    nframes_t sample_rate ( void ) const
+    {
+        return _sample_rate;
+    }
+    int ts_to_x( nframes_t ts ) const
+    {
+        return ts >> _fpp;
+    }
+    nframes_t x_to_ts ( int x ) const
+    {
+        return (nframes_t)x << _fpp;
+    }
     nframes_t x_to_offset ( int x ) const;
     int offset_to_x ( nframes_t frame ) const;
 
@@ -242,7 +261,7 @@ public:
 
     void select( const Rectangle &r );
     Track * track_under ( int Y );
-    
+
     void nudge_selected( bool left);
     void pan_selected(bool left);
     void nudge_controls( bool up);
@@ -293,7 +312,7 @@ public:
     void command_show_gui ( void );
 
     /* OSC */
-    
+
     void connect_osc ( void );
 
     void update_osc_connection_state ( void );
@@ -301,12 +320,12 @@ public:
     void say_hello ( void );
 
     static void check_osc ( void * v );
-    
+
     int init_osc ( const char *osc_port );
-    
+
     static int osc_reply ( const char *path, const char *types, lo_arg **argv, int argc, lo_message msg, void *user_data );
     static int osc_non_hello ( const char *path, const char *types, lo_arg **argv, int argc, lo_message msg, void *user_data );
-    
+
 
     void handle_hello ( lo_message msg );
 
@@ -319,11 +338,14 @@ public:
     void nudge_snapshot ( void );
 
 private:
-    
+
     void add_take_for_armed_tracks();
     void resize_rulers ( void );
 
-    static void snapshot ( void *v ) { ((Timeline*)v)->snapshot(); }
+    static void snapshot ( void *v )
+    {
+        ((Timeline*)v)->snapshot();
+    }
     void snapshot ( void );
 
     friend class Engine; // FIXME: only Engine::process() needs to be friended.x

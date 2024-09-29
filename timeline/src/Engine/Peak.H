@@ -23,7 +23,8 @@
 
 #pragma once
 
-struct Peak {
+struct Peak
+{
     float min;
     float max;
 

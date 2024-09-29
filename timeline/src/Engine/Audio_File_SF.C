@@ -78,11 +78,11 @@ Audio_File_SF::from_file ( const char *filename )
     if ( ! ( in = sf_open( fp, SFM_READ, &si ) ) )
         return NULL;
 
-/*     if ( si.samplerate != timeline->sample_rate() ) */
-/*     { */
-/*         printf( "error: samplerate mismatch!\n" ); */
-/*         goto invalid; */
-/*     } */
+    /*     if ( si.samplerate != timeline->sample_rate() ) */
+    /*     { */
+    /*         printf( "error: samplerate mismatch!\n" ); */
+    /*         goto invalid; */
+    /*     } */
 
     c = new Audio_File_SF;
 
@@ -118,7 +118,7 @@ Audio_File_SF::create ( const char *filename, nframes_t samplerate, int channels
 
     if ( ! fd )
     {
-	DMESSAGE( "Unsupported capture format: %s", format );
+        DMESSAGE( "Unsupported capture format: %s", format );
         return (Audio_File_SF *)1;
     }
 
@@ -143,7 +143,7 @@ Audio_File_SF::create ( const char *filename, nframes_t samplerate, int channels
         /* set high quality encoding for vorbis */
         double quality = ( fd->quality + 1 ) / (float)11;
 
-        sf_command( out, SFC_SET_VBR_ENCODING_QUALITY, &quality, sizeof( double ) );                    
+        sf_command( out, SFC_SET_VBR_ENCODING_QUALITY, &quality, sizeof( double ) );
     }
 
     Audio_File_SF *c = new Audio_File_SF;

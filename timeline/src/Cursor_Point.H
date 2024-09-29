@@ -51,18 +51,21 @@ public:
 
     ~Cursor_Point ( );
 
-    const char * type ( void ) const { return _type; }
+    const char * type ( void ) const
+    {
+        return _type;
+    }
     void type ( const char *v )
-        { 
-            if ( _type ) 
-                free( _type );
-            
-            _type = NULL;
-            
-            if ( v )
-                _type = strdup( v );
-        }
-                
+    {
+        if ( _type )
+            free( _type );
+
+        _type = NULL;
+
+        if ( v )
+            _type = strdup( v );
+    }
+
     int handle ( int m );
 
 };

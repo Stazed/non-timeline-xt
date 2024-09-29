@@ -45,10 +45,19 @@ public:
 
     Sequence_Widget *active_cursor ( void );
 
-    Fl_Color cursor_color ( void ) const { return _cursor_color; }
-    void cursor_color ( Fl_Color c ) { _cursor_color = c; }
-    
-    Fl_Cursor cursor ( void ) const { return FL_CURSOR_DEFAULT; }
+    Fl_Color cursor_color ( void ) const
+    {
+        return _cursor_color;
+    }
+    void cursor_color ( Fl_Color c )
+    {
+        _cursor_color = c;
+    }
+
+    Fl_Cursor cursor ( void ) const
+    {
+        return FL_CURSOR_DEFAULT;
+    }
 
     Cursor_Sequence ( int X, int Y, int W, int H );
 

@@ -54,17 +54,32 @@ public:
 
     static void set_name ( const char *name );
 
-    static const char *errstr ( int n ) { return _errstr[ ( 0 - n ) - 1 ]; }
+    static const char *errstr ( int n )
+    {
+        return _errstr[ ( 0 - n ) - 1 ];
+    }
 
-    static const char * path ( void ) { return Project::_path; }
-    static const char *name ( void ) { return Project::_name; }
+    static const char * path ( void )
+    {
+        return Project::_path;
+    }
+    static const char *name ( void )
+    {
+        return Project::_name;
+    }
     static void compact ( void );
     static bool close ( void );
     static bool save ( void );
     static bool validate ( const char *name );
     static int open ( const char *name );
-    static bool open ( void ) { return _is_open; }
+    static bool open ( void )
+    {
+        return _is_open;
+    }
     static bool create ( const char *name, const char *template_name );
     static void undo ( void );
-    static const char *created_on ( void ) { return _created_on; }
+    static const char *created_on ( void )
+    {
+        return _created_on;
+    }
 };

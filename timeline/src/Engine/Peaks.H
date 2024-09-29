@@ -49,14 +49,16 @@ class Peaks
     static void * make_peaks_mipmap ( void *v );
     static void * make_peaks ( void *v );
 
-    struct peakdata {
+    struct peakdata
+    {
 
         nframes_t chunksize;       /* should always be a power of 2 */
         Peak data[];
 
     };
 
-    struct peakbuffer {
+    struct peakbuffer
+    {
 
         size_t size;                       /* total allocation size */
         size_t len;                        /* number of peaks  */
@@ -65,12 +67,12 @@ class Peaks
         peakdata *buf;
 
         peakbuffer ( )
-            {
-                size = len = offset = 0;
-                buf = NULL;
-            }
+        {
+            size = len = offset = 0;
+            buf = NULL;
+        }
     };
-    
+
     Peakfile *_peakfile;
 
     class Streamer
@@ -143,8 +145,14 @@ public:
     Peaks ( Audio_File *c );
     ~Peaks ( );
 
-    Peak *peakbuf ( void ) const { return Peaks::_peakbuf.buf->data; }
-    void clip ( Audio_File *c ) { _clip = c; }
+    Peak *peakbuf ( void ) const
+    {
+        return Peaks::_peakbuf.buf->data;
+    }
+    void clip ( Audio_File *c )
+    {
+        _clip = c;
+    }
 
     int fill_buffer ( float fpp, nframes_t s, nframes_t e ) const;
 

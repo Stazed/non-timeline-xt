@@ -101,7 +101,7 @@ Control_Point::draw_box ( void )
     fl_pie( x() - ( W / 2 ), Y - ( H / 2 ), W, H, 0, 360 );
 
     if ( this == Sequence_Widget::belowmouse() ||
-         this == Sequence_Widget::pushed() )
+            this == Sequence_Widget::pushed() )
     {
         char val[10];
         snprintf( val, sizeof( val ), "%+.2f", 1.0 - _y * 2 );
@@ -117,7 +117,7 @@ Control_Point::draw_box ( void )
             a |= FL_ALIGN_BOTTOM;
         else
             a |= FL_ALIGN_TOP;
-            
+
         draw_label( val, a, FL_FOREGROUND_COLOR );
     }
 }
@@ -130,30 +130,30 @@ Control_Point::handle ( int m )
 
     switch ( m )
     {
-        case FL_RELEASE:
-            redraw();
-            break;
-        case FL_DRAG:
+    case FL_RELEASE:
+        redraw();
+        break;
+    case FL_DRAG:
+    {
+        if ( nselected() > 1 )
         {
-            if ( nselected() > 1 )
-            {
-                // If multiple items then only allow horizontal movement with FL_BUTTON1.
-                // If FL_BUTTON1 + FL_ALT, then selected control points will all align vertically
-                // while fixed on the horizontal axis, and can be dragged vertically.
-                if(!test_press( FL_BUTTON1 + FL_ALT ))
-                    break;  // horizontal only
-            }
-
-            int Y = Fl::event_y() - parent()->y();
-
-            if ( Y >= 0 && Y < parent()->h() )
-            {
-                _y = (float)Y / parent()->h();
-                redraw();
-            }
-
-            break;
+            // If multiple items then only allow horizontal movement with FL_BUTTON1.
+            // If FL_BUTTON1 + FL_ALT, then selected control points will all align vertically
+            // while fixed on the horizontal axis, and can be dragged vertically.
+            if(!test_press( FL_BUTTON1 + FL_ALT ))
+                break;  // horizontal only
         }
+
+        int Y = Fl::event_y() - parent()->y();
+
+        if ( Y >= 0 && Y < parent()->h() )
+        {
+            _y = (float)Y / parent()->h();
+            redraw();
+        }
+
+        break;
+    }
     }
 
     return r;
