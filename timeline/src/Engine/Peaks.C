@@ -21,7 +21,6 @@
 /* Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 /*******************************************************************************/
 
-
 /*
   peakfile reading/writing.
 */
@@ -59,14 +58,12 @@ using std::max;
 
 #include <stdint.h>
 
-
 struct peak_thread_data
 {
     void(*callback)(void*);
     void *userdata;
     Peaks *peaks;
 };
-
 
 
 
@@ -95,7 +92,6 @@ peakname ( const char *filename )
 
 
 
-
 struct peakfile_block_header
 {
     uint32_t chunksize;
@@ -119,7 +115,8 @@ class Peakfile
         {
         }
 
-        bool operator< ( const block_descriptor &rhs )
+        bool
+        operator< ( const block_descriptor &rhs )
         {
             return chunksize < rhs.chunksize;
         }
@@ -129,7 +126,8 @@ class Peakfile
 
 public:
 
-    int nblocks ( void ) const
+    int
+    nblocks ( void ) const
     {
         return blocks.size();
     }
@@ -148,7 +146,8 @@ public:
             close();
     }
 
-    void rescan ( void )
+    void
+    rescan ( void )
     {
         blocks.clear();
     }
@@ -205,7 +204,7 @@ public:
 
         /* search for the best-fit chunksize */
         for ( std::list <block_descriptor>::const_reverse_iterator i = blocks.rbegin();
-                i != blocks.rend(); ++i )
+            i != blocks.rend(); ++i )
             if ( chunksize >= i->chunksize )
             {
                 _chunksize = i->chunksize;
@@ -213,12 +212,13 @@ public:
                 break;
             }
 
-//           DMESSAGE( "using peakfile block for chunksize %lu", _chunksize );
+        //           DMESSAGE( "using peakfile block for chunksize %lu", _chunksize );
         _offset = ftello( _fp );
     }
 
     /** convert frame number of peak number */
-    nframes_t frame_to_peak ( nframes_t frame )
+    nframes_t
+    frame_to_peak ( nframes_t frame )
     {
         return ( frame / _chunksize ) * (nframes_t)_channels;
     }
@@ -249,7 +249,7 @@ public:
     open ( const char *name, int channels, nframes_t chunksize )
     {
         assert( ! _fp );
-//            _chunksize = 0;
+        //            _chunksize = 0;
         _channels = channels;
 
         char *pn = peakname( name );
@@ -419,7 +419,6 @@ Peaks::fill_buffer ( float fpp, nframes_t s, nframes_t e ) const
     return read_peaks( s, (e - s) / fpp, fpp );
 }
 
-
 bool
 Peaks::ready ( nframes_t s, nframes_t npeaks, nframes_t chunksize ) const
 {
@@ -553,12 +552,12 @@ Peaks::read_peaks ( nframes_t s, nframes_t npeaks, nframes_t chunksize ) const
 {
     THREAD_ASSERT( UI );                                        /* because _peakbuf cache is static */
 
-//    printf( "reading peaks %d @ %d\n", npeaks, chunksize );
+    //    printf( "reading peaks %d @ %d\n", npeaks, chunksize );
 
     if ( _peakbuf.size < (nframes_t)( npeaks * _clip->channels() ) )
     {
         _peakbuf.size = npeaks * _clip->channels();
-//        printf( "reallocating peak buffer %li\n", _peakbuf.size );
+        //        printf( "reallocating peak buffer %li\n", _peakbuf.size );
         _peakbuf.buf = (peakdata*)realloc( _peakbuf.buf, sizeof( peakdata ) + (_peakbuf.size * sizeof( Peak )) );
     }
 
@@ -798,15 +797,15 @@ Peaks::Builder::write_block_header ( nframes_t chunksize )
         fread( &bh, sizeof( bh ), 1, fp );
 
         fseeko( fp, last_block_pos - sizeof( peakfile_block_header ), SEEK_SET );
-//                fseeko( fp, 0 - sizeof( bh ), SEEK_CUR );
+        //                fseeko( fp, 0 - sizeof( bh ), SEEK_CUR );
 
-//        DMESSAGE( "old block header: chunksize=%lu, skip=%lu", (unsigned long) bh.chunksize, (unsigned long) bh.skip );
+        //        DMESSAGE( "old block header: chunksize=%lu, skip=%lu", (unsigned long) bh.chunksize, (unsigned long) bh.skip );
 
         bh.skip = pos - last_block_pos;
 
         ASSERT( bh.skip, "Attempt to create empty block. pos=%lu, last_block_pos=%lu", pos, last_block_pos );
 
-//        DMESSAGE( "new block header: chunksize=%lu, skip=%lu", (unsigned long) bh.chunksize, (unsigned long) bh.skip );
+        //        DMESSAGE( "new block header: chunksize=%lu, skip=%lu", (unsigned long) bh.chunksize, (unsigned long) bh.skip );
 
         fwrite( &bh, sizeof( bh ), 1, fp );
 
@@ -864,7 +863,7 @@ Peaks::Builder::make_peaks_mipmap ( void )
     last_block_pos = sizeof( peakfile_block_header );
 
     /* open for reading */
-//    rfp = fopen( peakname( filename ), "r" );
+    //    rfp = fopen( peakname( filename ), "r" );
 
     /* open the file again for appending */
     if ( ! ( fp = fopen( pn, "r+" ) ) )
@@ -912,7 +911,7 @@ Peaks::Builder::make_peaks_mipmap ( void )
 
         pf.open( rfp, _clip->channels(), cs >> Peaks::cache_step );
 
-//        pf.open( _clip->filename(), _clip->channels(), cs >> Peaks::cache_step );
+        //        pf.open( _clip->filename(), _clip->channels(), cs >> Peaks::cache_step );
 
         write_block_header( cs );
 

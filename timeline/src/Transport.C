@@ -28,7 +28,6 @@
 
 #include "Engine/Engine.H"
 
-
 Transport::Transport ( int X, int Y, int W, int H, const char *L )
     : Fl_Flowpack( X, Y, W, H, L )
 {
@@ -45,7 +44,7 @@ Transport::Transport ( int X, int Y, int W, int H, const char *L )
     beat_type = 4;
     beats_per_bar = 4;
     next_time = 0;
-    frame_time =0;
+    frame_time = 0;
     frame_rate = 48000;
     frame = 0;
 
@@ -251,8 +250,6 @@ Transport::automatically_create_takes ( bool b )
     _new_take_button->value( b );
 }
 
-
-
 int
 Transport::handle ( int m )
 {
@@ -302,11 +299,10 @@ Transport::locate ( nframes_t frame )
     timeline->_created_new_takes = false;
 }
 
-
 void
 Transport::start ( void )
 {
-//    MESSAGE( "Starting transport" );
+    //    MESSAGE( "Starting transport" );
     if ( _record_button->value() )
     {
         rolling = true;
@@ -325,7 +321,7 @@ Transport::start ( void )
 void
 Transport::stop ( void )
 {
-//    MESSAGE( "Stopping transport" );
+    //    MESSAGE( "Stopping transport" );
     if ( _record_button->value() )
     {
         if ( _stop_disables_record )

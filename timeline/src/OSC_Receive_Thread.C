@@ -51,7 +51,6 @@ OSC_Receive_Thread::~OSC_Receive_Thread ( )
     unlock();
 }
 
-
 void
 OSC_Receive_Thread::start ( )
 {
@@ -88,4 +87,3 @@ OSC_Receive_Thread::process ( void *v )
 
     return NULL;
 }
-

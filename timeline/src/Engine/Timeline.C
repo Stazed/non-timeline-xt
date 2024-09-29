@@ -47,7 +47,7 @@ Timeline::record ( void )
     /* FIXME: right place for this? */
 
     if ( transport->automatically_create_takes() &&
-            ! _created_new_takes )
+        ! _created_new_takes )
     {
         DMESSAGE( "Creating new takes." );
         add_take_for_armed_tracks();
@@ -61,7 +61,7 @@ Timeline::record ( void )
     nframes_t frame = transport->frame;
 
     nframes_t _punch_out_frame = 0;
-//    nframes_t _punch_in_frame = 0;
+    //    nframes_t _punch_in_frame = 0;
 
     if ( transport->punch_enabled() )
     {
@@ -88,13 +88,12 @@ Timeline::record ( void )
             }
 
             DMESSAGE( "Punch enabled... Range %lu:%lu",
-                      (unsigned long)frame,
-                      (unsigned long)_punch_out_frame);
+                (unsigned long)frame,
+                (unsigned long)_punch_out_frame);
         }
     }
 
-//    _punch_in_frame = frame;
-
+    //    _punch_in_frame = frame;
 
     for ( int i = tracks->children(); i-- ; )
     {
@@ -107,7 +106,6 @@ Timeline::record ( void )
     }
 
     transport->recording = true;
-
 
     return true;
 }
@@ -167,7 +165,6 @@ Timeline::stop ( void )
     transport->jack_transport_rolling = false;
 }
 
-
 /**********/
 /* Engine */
 /**********/
@@ -224,7 +221,7 @@ Timeline::process_output ( nframes_t nframes )
     if ( ! r )
         if ( track_lock.tryrdlock() )
             return 0;
-//        rdlock();
+    //        rdlock();
 
     for ( int i = tracks->children(); i-- ; )
     {
@@ -269,7 +266,7 @@ Timeline::resize_buffers ( nframes_t nframes )
 bool
 Timeline::seek_pending ( void )
 {
-//    THREAD_ASSERT( RT );
+    //    THREAD_ASSERT( RT );
 
     for ( int i = tracks->children(); i-- ; )
     {
@@ -282,7 +279,6 @@ Timeline::seek_pending ( void )
 
     return false;
 }
-
 
 /* FIXME: shouldn't these belong to the engine? */
 int

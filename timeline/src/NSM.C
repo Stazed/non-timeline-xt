@@ -37,8 +37,6 @@ extern Timeline *timeline;
 
 // extern NSM_Client *nsm;
 
-
-
 static int
 command_save ( char **out_msg, void * /* userdata */ )
 {
@@ -76,7 +74,7 @@ command_open ( const char *name, const char *display_name, const char *client_id
     else
     {
         if ( timeline->command_new( name, display_name ) )
-            r =ERR_OK;
+            r = ERR_OK;
         else
         {
             *out_msg = strdup( "Failed to load for unknown reason" );
@@ -86,7 +84,7 @@ command_open ( const char *name, const char *display_name, const char *client_id
 
     timeline->say_hello();
 
-//    timeline->connect_osc();
+    //    timeline->connect_osc();
 
     return r;
 }
@@ -101,7 +99,7 @@ static int
 command_broadcast ( const char *path, lo_message msg, void * /* userdata */ )
 {
     lo_message_get_argc( msg );
-//    lo_arg **argv = lo_message_get_argv( msg );
+    //    lo_arg **argv = lo_message_get_argv( msg );
 
     if ( !strcmp( path, "/non/hello" ) )
     {

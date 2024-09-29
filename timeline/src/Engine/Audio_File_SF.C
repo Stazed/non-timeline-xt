@@ -39,7 +39,6 @@
 #include "../../../nonlib/debug.h"
 #include <stdio.h>
 
-
 _Pragma("GCC diagnostic push")
 _Pragma("GCC diagnostic ignored \"-Wmissing-field-initializers\"")
 const Audio_File::format_desc Audio_File_SF::supported_formats[] =
@@ -61,7 +60,6 @@ const Audio_File::format_desc Audio_File_SF::supported_formats[] =
     {      0,            0          }
 };
 _Pragma("GCC diagnostic pop")
-
 
 Audio_File_SF *
 Audio_File_SF::from_file ( const char *filename )
@@ -86,7 +84,7 @@ Audio_File_SF::from_file ( const char *filename )
 
     c = new Audio_File_SF;
 
-//    c->_peak_writer  = NULL;
+    //    c->_peak_writer  = NULL;
     c->_current_read = 0;
     c->_filename     = strdup( filename );
     c->_path         = fp;
@@ -95,11 +93,11 @@ Audio_File_SF::from_file ( const char *filename )
     c->_channels     = si.channels;
 
     c->_in = in;
-//    sf_close( in );
+    //    sf_close( in );
 
     return c;
 
-//invalid:
+    //invalid:
 
     sf_close( in );
     return NULL;
@@ -112,7 +110,6 @@ Audio_File_SF::create ( const char *filename, nframes_t samplerate, int channels
     SNDFILE *out;
 
     memset( &si, 0, sizeof( si ) );
-
 
     const Audio_File::format_desc *fd = Audio_File::find_format( Audio_File_SF::supported_formats, format );
 
@@ -178,7 +175,7 @@ Audio_File_SF::open ( void )
     _samplerate   = si.samplerate;
     _channels     = si.channels;
 
-//    seek( 0 );
+    //    seek( 0 );
     return true;
 }
 
@@ -210,7 +207,7 @@ Audio_File_SF::read ( sample_t *buf, int channel, nframes_t len )
     if ( len > 256 * 100 )
         WARNING( "warning: attempt to read an insane number of frames (%lu) from soundfile\n", (unsigned long)len );
 
-//    printf( "len = %lu, channels = %d\n", len, _channels );
+    //    printf( "len = %lu, channels = %d\n", len, _channels );
 
     lock();
 
@@ -226,7 +223,7 @@ Audio_File_SF::read ( sample_t *buf, int channel, nframes_t len )
 
         /* extract the requested channel */
         for ( unsigned int i = channel; i < rlen * _channels; i += _channels )
-            *(buf++) = tmp[ i ];
+            * (buf++) = tmp[ i ];
 
         delete[] tmp;
     }
@@ -243,7 +240,7 @@ nframes_t
 Audio_File_SF::read ( sample_t *buf, int channel, nframes_t start, nframes_t len )
 {
     lock();
-//    open();
+    //    open();
 
     seek( start );
 
@@ -251,7 +248,7 @@ Audio_File_SF::read ( sample_t *buf, int channel, nframes_t start, nframes_t len
 
     unlock();
 
-//    close();
+    //    close();
 
     return cnt;
 }

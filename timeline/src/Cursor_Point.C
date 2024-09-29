@@ -21,21 +21,20 @@
 /* Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 /*******************************************************************************/
 
-
 #include "Cursor_Point.H"
 #include "Cursor_Sequence.H"
 #include "Timeline.H" // for timeline->time_track
 
 Cursor_Point::Cursor_Point ( )
 {
-//    timeline->->add( this );
+    //    timeline->->add( this );
     _label = NULL;
     _type = NULL;
 }
 
 Cursor_Point::Cursor_Point ( nframes_t when, const char *type, const char *label )
 {
-//    _make_label();
+    //    _make_label();
 
     _label = NULL;
     _type = NULL;
@@ -60,7 +59,7 @@ Cursor_Point::Cursor_Point ( const Cursor_Point &rhs ) : Sequence_Point( rhs )
 
 Cursor_Point::~Cursor_Point ( )
 {
-//    sequence()->remove( this );
+    //    sequence()->remove( this );
 
     log_destroy();
 
@@ -73,7 +72,7 @@ Cursor_Point::~Cursor_Point ( )
 void
 Cursor_Point::get ( Log_Entry &e ) const
 {
-//    Sequence_Point::get( e );
+    //    Sequence_Point::get( e );
 
     e.add( ":start", start() );
     e.add( ":label", label() );
@@ -108,11 +107,10 @@ Cursor_Point::set ( Log_Entry &e )
 
     sequence()->handle_widget_change( start(), length() );
 
-//    _make_label();
+    //    _make_label();
 }
 
 
-
 
 int
 Cursor_Point::handle ( int m )

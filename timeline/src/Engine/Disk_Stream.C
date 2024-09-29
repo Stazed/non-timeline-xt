@@ -79,7 +79,7 @@ Disk_Stream::~Disk_Stream ( )
 {
     /* it isn't safe to do all this with the RT thread running */
 
-//    timeline->wrlock();
+    //    timeline->wrlock();
 
     _track = NULL;
 
@@ -91,7 +91,7 @@ Disk_Stream::~Disk_Stream ( )
         _rb[i] = 0;
     }
 
-//    timeline->unlock();
+    //    timeline->unlock();
 }
 
 
@@ -100,7 +100,7 @@ Disk_Stream::~Disk_Stream ( )
 void
 Disk_Stream::base_flush ( bool is_output )
 {
-//    THREAD_ASSERT( RT );
+    //    THREAD_ASSERT( RT );
 
     /* flush buffers */
     for ( unsigned int i = _rb.size(); i--; )
@@ -218,7 +218,6 @@ Disk_Stream::resize_buffers ( nframes_t nframes )
             run();
     }
 }
-
 
 /* static wrapper */
 void *

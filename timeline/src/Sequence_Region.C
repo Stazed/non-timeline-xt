@@ -114,14 +114,14 @@ Sequence_Region::trim ( enum trim_e t, int X )
 
     switch ( t )
     {
-    case LEFT:
-        trim_left( where );
-        break;
-    case RIGHT:
-        trim_right( where );
-        break;
-    default:
-        break;
+        case LEFT:
+            trim_left( where );
+            break;
+        case RIGHT:
+            trim_right( where );
+            break;
+        default:
+            break;
     }
 }
 
@@ -135,7 +135,6 @@ Sequence_Region::split ( Sequence_Region * copy, nframes_t where )
     sequence()->add( copy );
     copy->redraw();
 }
-
 
 #include "../../FL/test_press.H"
 
@@ -155,89 +154,89 @@ Sequence_Region::handle ( int m )
 
     switch ( m )
     {
-    case FL_PUSH:
-    {
-        /* trimming */
-        if ( Fl::event_shift() && ! Fl::event_ctrl() )
+        case FL_PUSH:
         {
-            switch ( Fl::event_button() )
+            /* trimming */
+            if ( Fl::event_shift() && ! Fl::event_ctrl() )
             {
-            case 1:
-                trim( trimming = LEFT, X );
-                begin_drag( Drag( X, Y ) );
-                _log.hold();
-                break;
-            case 3:
-                trim( trimming = RIGHT, X );
-                begin_drag( Drag( X, Y) );
-                _log.hold();
-                break;
-            default:
-                return 0;
-                break;
-            }
+                switch ( Fl::event_button() )
+                {
+                    case 1:
+                        trim( trimming = LEFT, X );
+                        begin_drag( Drag( X, Y ) );
+                        _log.hold();
+                        break;
+                    case 3:
+                        trim( trimming = RIGHT, X );
+                        begin_drag( Drag( X, Y) );
+                        _log.hold();
+                        break;
+                    default:
+                        return 0;
+                        break;
+                }
 
-            fl_cursor( FL_CURSOR_WE );
-            return 1;
-        }
-        else if ( test_press( FL_BUTTON2 ) )
-        {
-            if ( Sequence_Widget::current() == this )
-            {
-                if ( selected() )
-                    deselect();
-                else
-                    select();
-            }
-
-            redraw();
-            return 1;
-        }
-
-        /*             else if ( test_press( FL_CTRL + FL_BUTTON1 ) ) */
-        /*             { */
-        /*                 /\* duplication *\/ */
-        /*                 fl_cursor( FL_CURSOR_MOVE ); */
-        /*                 return 1; */
-        /*             } */
-
-        else
-            return Sequence_Widget::handle( m );
-    }
-    case FL_RELEASE:
-    {
-        Sequence_Widget::handle( m );
-
-        if ( trimming != NO )
-            trimming = NO;
-
-        return 1;
-    }
-    case FL_DRAG:
-    {
-        if ( ! _drag )
-        {
-            begin_drag( Drag( X, Y, x_to_offset( X ) ) );
-            _log.hold();
-        }
-
-        /* trimming */
-        if ( Fl::event_shift() )
-        {
-            if ( trimming )
-            {
-                trim( trimming, X );
+                fl_cursor( FL_CURSOR_WE );
                 return 1;
             }
-            else
-                return 0;
-        }
+            else if ( test_press( FL_BUTTON2 ) )
+            {
+                if ( Sequence_Widget::current() == this )
+                {
+                    if ( selected() )
+                        deselect();
+                    else
+                        select();
+                }
 
-        return Sequence_Widget::handle( m );
-    }
-    default:
-        return Sequence_Widget::handle( m );
-        break;
+                redraw();
+                return 1;
+            }
+
+            /*             else if ( test_press( FL_CTRL + FL_BUTTON1 ) ) */
+            /*             { */
+            /*                 /\* duplication *\/ */
+            /*                 fl_cursor( FL_CURSOR_MOVE ); */
+            /*                 return 1; */
+            /*             } */
+
+            else
+                return Sequence_Widget::handle( m );
+        }
+        case FL_RELEASE:
+        {
+            Sequence_Widget::handle( m );
+
+            if ( trimming != NO )
+                trimming = NO;
+
+            return 1;
+        }
+        case FL_DRAG:
+        {
+            if ( ! _drag )
+            {
+                begin_drag( Drag( X, Y, x_to_offset( X ) ) );
+                _log.hold();
+            }
+
+            /* trimming */
+            if ( Fl::event_shift() )
+            {
+                if ( trimming )
+                {
+                    trim( trimming, X );
+                    return 1;
+                }
+                else
+                    return 0;
+            }
+
+            return Sequence_Widget::handle( m );
+        }
+        default:
+            return Sequence_Widget::handle( m );
+            break;
     }
 
     return 0;
@@ -268,4 +267,3 @@ Sequence_Region::draw_label ( const char *label, Fl_Align align, Fl_Color /* col
     fl_font( FL_HELVETICA_ITALIC, 10 );
     fl_draw( label, line_x() + Fl::box_dx( box() ), y() + Fl::box_dy( box() ), abs_w() - Fl::box_dw( box() ), h() - Fl::box_dh( box() ), align );
 }
-

@@ -120,7 +120,7 @@ Sequence_Point::draw_box ( void )
 void
 Sequence_Point::draw ( void )
 {
-//            Sequence_Widget::draw();
+    //            Sequence_Widget::draw();
 
     draw_label( _label, align() );
 }

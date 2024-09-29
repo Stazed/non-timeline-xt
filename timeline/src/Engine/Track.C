@@ -139,7 +139,7 @@ Track::configure_inputs ( int n )
 
     DMESSAGE( "Reconfiguring inputs for track %s", name() );
 
-//    engine->lock();
+    //    engine->lock();
 
     if ( record_ds )
     {
@@ -183,7 +183,7 @@ Track::configure_inputs ( int n )
     if ( input.size() )
         record_ds = new Record_DS( this, engine->sample_rate(), engine->nframes(), input.size() );
 
-//    engine->unlock();
+    //    engine->unlock();
 
     /* FIXME: bogus */
     return true;
@@ -222,16 +222,14 @@ Track::process_output ( nframes_t nframes )
     }
 
     /* FIXME: should we blank the control output here or leave it floating? */
-    for ( int i = 0; i < ((Fl_Pack*)control)->children(); i++ )
-        ((Control_Sequence*)((Fl_Pack*)control)->child( i ))->process( nframes );
+    for ( int i = 0; i < ((Fl_Pack * )control)->children(); i++ )
+        ((Control_Sequence * )((Fl_Pack * )control)->child( i ))->process( nframes );
 
     if ( playback_ds )
         return playback_ds->process( nframes );
     else
         return 0;
 }
-
-
 
 void
 Track::seek ( nframes_t frame )
@@ -247,7 +245,7 @@ Track::seek ( nframes_t frame )
 void
 Track::undelay ( nframes_t nframes )
 {
-//    THREAD_ASSERT( RT );
+    //    THREAD_ASSERT( RT );
 
     if ( playback_ds )
         playback_ds->undelay( nframes );
@@ -296,7 +294,7 @@ Track::record ( Capture *c, nframes_t frame )
     /* open it again for reading in the GUI thread */
     //   Audio_File *af = Audio_File::from_file( c->audio_file->name() );
     /* must acquire the FLTK lock because adding a widget might interfere with drawing */
-//    Fl::lock();
+    //    Fl::lock();
 
     /* must acquire a write lock because the Audio_Region constructor
      * will add the region to the specified sequence, which might affect playback */
@@ -307,11 +305,11 @@ Track::record ( Capture *c, nframes_t frame )
 
     timeline->sequence_lock.unlock();
 
-//    Fl::unlock();
+    //    Fl::unlock();
 
     c->region->prepare();
 
-    nframes_t min,max;
+    nframes_t min, max;
 
     input[0].get_latency( JACK::Port::Input, &min, &max );
 
@@ -322,7 +320,7 @@ Track::record ( Capture *c, nframes_t frame )
         _capture_offset = max;
 
         /* FIXME: hack to compensate for jack 1 period delay when looped back */
-//   _capture_offset += engine->playback_latency() / 2;
+        //   _capture_offset += engine->playback_latency() / 2;
         _capture_offset += engine->nframes();
     }
     else
@@ -383,14 +381,14 @@ Track::compute_latency_compensation ( void )
 {
     if ( Timeline::playback_latency_compensation && output.size() )
     {
-        nframes_t tmin,tmax;
+        nframes_t tmin, tmax;
 
         tmin = JACK_MAX_FRAMES >> 1;
         tmax = 0;
 
         for ( unsigned int i = 0; i < output.size(); i++ )
         {
-            nframes_t min,max;
+            nframes_t min, max;
             output[i].get_latency( JACK::Port::Output, &min, &max );
 
             if ( max > tmax )

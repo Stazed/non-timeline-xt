@@ -52,7 +52,6 @@ using namespace std;
 
 #include "../../nonlib/string_util.h"
 
-
 const char *
 Audio_Sequence::name ( void ) const
 {
@@ -139,7 +138,6 @@ Audio_Sequence::Audio_Sequence ( Track *track, const char *name ) : Sequence( tr
     log_create();
 }
 
-
 Audio_Sequence::~Audio_Sequence ( )
 {
     Loggable::block_start();
@@ -193,7 +191,6 @@ Audio_Sequence::set ( Log_Entry &e )
             name( v );
     }
 }
-
 
 void
 Audio_Sequence::handle_widget_change ( nframes_t start, nframes_t length )
@@ -286,8 +283,8 @@ Audio_Sequence::draw ( void )
                 {
 #ifdef FLTK_SUPPORT
                     cairo_surface_t* Xsurface = cairo_xlib_surface_create
-                                                (fl_display, fl_window, fl_visual->visual,
-                                                 Fl_Window::current()->w(), Fl_Window::current()->h());
+                        (fl_display, fl_window, fl_visual->visual,
+                        Fl_Window::current()->w(), Fl_Window::current()->h());
 
                     cairo_t *cc = cairo_create (Xsurface);
                     cairo_set_source_rgba( cc, 1, 1, 0, 0.35 );
@@ -414,19 +411,19 @@ Audio_Sequence::handle ( int m )
 {
     switch ( m )
     {
-    case FL_PASTE:
-    {
-        DMESSAGE("Got sequence paste");
-
-        if ( ! Fl::event_inside( this ) )
+        case FL_PASTE:
         {
-            DMESSAGE("ignoring");
-            return 0;
-        }
+            DMESSAGE("Got sequence paste");
 
-        return handle_paste(Fl::event_text());
-    }
-    default:
-        return Sequence::handle( m );
+            if ( ! Fl::event_inside( this ) )
+            {
+                DMESSAGE("ignoring");
+                return 0;
+            }
+
+            return handle_paste(Fl::event_text());
+        }
+        default:
+            return Sequence::handle( m );
     }
 }

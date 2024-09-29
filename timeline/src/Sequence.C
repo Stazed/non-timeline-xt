@@ -44,7 +44,6 @@ extern bool g_snapshot;
 
 queue <Sequence_Widget *> Sequence::_delete_queue;
 
-
 Sequence::Sequence ( Track *track, const char *name ) : Fl_Group( 0, 0, 0, 0 ), Loggable( true  )
 {
     init();
@@ -54,7 +53,7 @@ Sequence::Sequence ( Track *track, const char *name ) : Fl_Group( 0, 0, 0, 0 ), 
     if ( name )
         _name = strdup( name );
 
-//    log_create();
+    //    log_create();
 }
 
 Sequence::Sequence ( int X, int Y, int W, int H ) : Fl_Group( X, Y, W, H ), Loggable( false )
@@ -74,9 +73,8 @@ Sequence::init ( void )
     align( FL_ALIGN_LEFT );
 
     end();
-//    clear_visible_focus();
+    //    clear_visible_focus();
 }
-
 
 Sequence::~Sequence (  )
 {
@@ -112,8 +110,8 @@ Sequence::log_children ( void ) const
     if ( id() > 0 )
         log_create();
 
-    for ( std::list <Sequence_Widget*>::const_iterator i = _widgets.begin();
-            i != _widgets.end(); ++i )
+    for ( std::list <Sequence_Widget * >::const_iterator i = _widgets.begin();
+        i != _widgets.end(); ++i )
         (*i)->log_create();
 }
 
@@ -161,12 +159,12 @@ void
 Sequence::handle_widget_change ( nframes_t /* start */, nframes_t /* length */ )
 {
     /* this might be invoked from Capture or GUI thread */
-//    Fl::lock();
+    //    Fl::lock();
     sort();
     timeline->damage_sequence();
-//    Fl::unlock();
+    //    Fl::unlock();
 
-//    timeline->update_length( start + length );
+    //    timeline->update_length( start + length );
 }
 
 Sequence_Widget *
@@ -174,7 +172,7 @@ Sequence::widget_at ( nframes_t ts, int Y )
 {
     for ( list <Sequence_Widget *>::const_reverse_iterator r = _widgets.rbegin(); r != _widgets.rend(); ++r )
         if ( ts >= (*r)->start() && ts <= (*r)->start() + (*r)->length()
-                && Y >= (*r)->y() && Y <= (*r)->y() + (*r)->h() )
+            && Y >= (*r)->y() && Y <= (*r)->y() + (*r)->h() )
             return (*r);
 
     return NULL;
@@ -195,7 +193,7 @@ Sequence::event_widget ( void )
 void
 Sequence::add ( Sequence_Widget *r )
 {
-//    Logger _log( this );
+    //    Logger _log( this );
 
     if ( r->sequence() == this )
     {
@@ -247,7 +245,7 @@ Sequence::snap ( Sequence_Widget *r )
         const int rx1 = r->start();
         const int rx2 = r->start() + r->length();
 
-        for ( list <Sequence_Widget*>::const_iterator i = _widgets.begin(); i != _widgets.end(); ++i )
+        for ( list <Sequence_Widget * >::const_iterator i = _widgets.begin(); i != _widgets.end(); ++i )
         {
             const Sequence_Widget *w = (*i);
 
@@ -279,7 +277,6 @@ Sequence::snap ( Sequence_Widget *r )
     if ( timeline->nearest_line( &f ) )
         r->start( f );
 }
-
 
 void
 Sequence::draw_box ( void )
@@ -335,235 +332,233 @@ Sequence::handle ( int m )
 
     switch ( m )
     {
-    case FL_KEYBOARD:
-    case FL_SHORTCUT:
-        if ( Fl::test_shortcut( FL_CTRL + FL_Right ) )
-        {
-            const Sequence_Widget *w = next( transport->frame );
+        case FL_KEYBOARD:
+        case FL_SHORTCUT:
+            if ( Fl::test_shortcut( FL_CTRL + FL_Right ) )
+            {
+                const Sequence_Widget *w = next( transport->frame );
 
-            if ( w )
-                transport->locate( w->start() );
+                if ( w )
+                    transport->locate( w->start() );
+
+                return 1;
+            }
+            else if ( Fl::test_shortcut( FL_CTRL + FL_Left ) )
+            {
+                const Sequence_Widget *w = prev( transport->frame );
+
+                if ( w )
+                    transport->locate( w->start() );
+
+                return 1;
+            }
+            else if ( Fl::test_shortcut( FL_CTRL + ' ' ) )
+            {
+                Sequence_Widget *r = widget_at( transport->frame, y() );
+
+                if ( r )
+                {
+                    if ( r->selected() )
+                        r->deselect();
+                    else
+                        r->select();
+                }
+            }
+            else
+            {
+                switch ( Fl::event_key() )
+                {
+                    case FL_Left:
+                    case FL_Right:
+                    case FL_Up:
+                    case FL_Down:
+                        /* this is a hack to override FLTK's use of arrow keys for
+                         * focus navigation */
+                        return timeline->handle_scroll( m );
+                    default:
+                        break;
+                }
+            }
+
+            if ( Sequence_Widget::belowmouse() )
+                return Sequence_Widget::belowmouse()->dispatch( m );
+
+            break;
+        case FL_KEYUP:
+        {
+            if(Fl::event_key() == FL_Alt_L || Fl::event_key() == FL_Alt_R)    // nudge left/right, up/down
+            {
+                if(g_snapshot)
+                {
+                    g_snapshot = false;
+                    timeline->nudge_snapshot();
+                    return 1;
+                }
+            }
+
+            return 0;
+        }
+        case FL_NO_EVENT:
+            /* garbage from overlay window */
+            return 0;
+        case FL_FOCUS:
+            Fl_Group::handle( m );
+            redraw();
+            return 1;
+        case FL_UNFOCUS:
+            Fl_Group::handle( m );
+            redraw();
+            return 1;
+        case FL_LEAVE:
+            //            DMESSAGE( "leave" );
+            fl_cursor( FL_CURSOR_DEFAULT );
+            Fl_Group::handle( m );
+            return 1;
+        case FL_ENTER:
+            //            DMESSAGE( "enter" );
+            if ( Fl::event_x() >= drawable_x() )
+            {
+                if ( Sequence_Widget::pushed() )
+                {
+                    if ( Sequence_Widget::pushed()->sequence()->class_name() == class_name() )
+                    {
+                        /* accept objects dragged from other sequences of this type */
+                        if ( Sequence_Widget::pushed()->sequence() != this )
+                        {
+                            timeline->sequence_lock.wrlock();
+                            add( Sequence_Widget::pushed() );
+                            timeline->sequence_lock.unlock();
+
+                            damage( FL_DAMAGE_USER1 );
+
+                            fl_cursor( FL_CURSOR_MOVE );
+                        }
+                    }
+                    else
+                        fl_cursor( FL_CURSOR_DEFAULT );
+                }
+                else if ( ! event_widget() )
+                    fl_cursor( cursor() );
+
+                Fl_Group::handle( m );
+
+                return 1;
+            }
+            else
+            {
+                return Fl_Group::handle(m);
+            }
+        case FL_DND_DRAG:
+        case FL_DND_ENTER:
+        case FL_DND_LEAVE:
+        case FL_DND_RELEASE:
+            if ( Fl::event_x() >= drawable_x() )
+                return 1;
+            else
+                return 0;
+        case FL_MOVE:
+        {
+            if ( Fl::event_x() >= drawable_x() )
+            {
+                Sequence_Widget *r = event_widget();
+
+                if ( r != Sequence_Widget::belowmouse() )
+                {
+                    if ( Sequence_Widget::belowmouse() )
+                        Sequence_Widget::belowmouse()->handle( FL_LEAVE );
+
+                    Sequence_Widget::belowmouse( r );
+
+                    if ( r )
+                        r->handle( FL_ENTER );
+                }
+            }
 
             return 1;
         }
-        else if ( Fl::test_shortcut( FL_CTRL + FL_Left ) )
+        default:
         {
-            const Sequence_Widget *w = prev( transport->frame );
+            Sequence_Widget *r = Sequence_Widget::pushed() ? Sequence_Widget::pushed() : event_widget();
 
-            if ( w )
-                transport->locate( w->start() );
+            /*             if ( this == Fl::focus() ) */
+            /*                 DMESSAGE( "Sequence widget = %p", r ); */
 
-            return 1;
-        }
-        else if ( Fl::test_shortcut( FL_CTRL + ' ' ) )
-        {
-            Sequence_Widget *r = widget_at( transport->frame, y() );
+            if ( m == FL_RELEASE )
+            {
+                // in the case of track jumping, the sequence widget may not get the FL_RELEASE less we send it here:
+                if ( Sequence_Widget::pushed() )
+                    Sequence_Widget::pushed()->handle(FL_RELEASE);
+
+                Sequence_Widget::pushed( NULL );
+            }
 
             if ( r )
             {
-                if ( r->selected() )
-                    r->deselect();
-                else
-                    r->select();
-            }
-        }
-        else
-        {
-            switch ( Fl::event_key() )
-            {
-            case FL_Left:
-            case FL_Right:
-            case FL_Up:
-            case FL_Down:
-                /* this is a hack to override FLTK's use of arrow keys for
-                 * focus navigation */
-                return timeline->handle_scroll( m );
-            default:
-                break;
-            }
-        }
+                int retval = r->dispatch( m );
 
-        if ( Sequence_Widget::belowmouse() )
-            return Sequence_Widget::belowmouse()->dispatch( m );
+                /*                 DMESSAGE( "retval = %d", retval ); */
 
-        break;
-    case FL_KEYUP:
-    {
-        if(Fl::event_key() == FL_Alt_L || Fl::event_key() == FL_Alt_R)    // nudge left/right, up/down
-        {
-            if(g_snapshot)
-            {
-                g_snapshot = false;
-                timeline->nudge_snapshot();
-                return 1;
-            }
-        }
-
-        return 0;
-    }
-    case FL_NO_EVENT:
-        /* garbage from overlay window */
-        return 0;
-    case FL_FOCUS:
-        Fl_Group::handle( m );
-        redraw();
-        return 1;
-    case FL_UNFOCUS:
-        Fl_Group::handle( m );
-        redraw();
-        return 1;
-    case FL_LEAVE:
-//            DMESSAGE( "leave" );
-        fl_cursor( FL_CURSOR_DEFAULT );
-        Fl_Group::handle( m );
-        return 1;
-    case FL_ENTER:
-//            DMESSAGE( "enter" );
-        if ( Fl::event_x() >= drawable_x() )
-        {
-            if ( Sequence_Widget::pushed() )
-            {
-                if ( Sequence_Widget::pushed()->sequence()->class_name() == class_name() )
-                {
-                    /* accept objects dragged from other sequences of this type */
-                    if ( Sequence_Widget::pushed()->sequence() != this )
-                    {
-                        timeline->sequence_lock.wrlock();
-                        add( Sequence_Widget::pushed() );
-                        timeline->sequence_lock.unlock();
-
-                        damage( FL_DAMAGE_USER1 );
-
-                        fl_cursor( FL_CURSOR_MOVE );
-                    }
-                }
-                else
-                    fl_cursor( FL_CURSOR_DEFAULT );
-            }
-            else if ( ! event_widget() )
-                fl_cursor( cursor() );
-
-            Fl_Group::handle( m );
-
-            return 1;
-        }
-        else
-        {
-            return Fl_Group::handle(m);
-        }
-    case FL_DND_DRAG:
-    case FL_DND_ENTER:
-    case FL_DND_LEAVE:
-    case FL_DND_RELEASE:
-        if ( Fl::event_x() >= drawable_x() )
-            return 1;
-        else
-            return 0;
-    case FL_MOVE:
-    {
-        if ( Fl::event_x() >= drawable_x() )
-        {
-            Sequence_Widget *r = event_widget();
-
-            if ( r != Sequence_Widget::belowmouse() )
-            {
-                if ( Sequence_Widget::belowmouse() )
-                    Sequence_Widget::belowmouse()->handle( FL_LEAVE );
-
-                Sequence_Widget::belowmouse( r );
-
-                if ( r )
-                    r->handle( FL_ENTER );
-            }
-        }
-
-        return 1;
-    }
-    default:
-    {
-        Sequence_Widget *r = Sequence_Widget::pushed() ? Sequence_Widget::pushed() : event_widget();
-
-        /*             if ( this == Fl::focus() ) */
-        /*                 DMESSAGE( "Sequence widget = %p", r ); */
-
-        if ( m == FL_RELEASE )
-        {
-            // in the case of track jumping, the sequence widget may not get the FL_RELEASE less we send it here:
-            if ( Sequence_Widget::pushed() )
-                Sequence_Widget::pushed()->handle(FL_RELEASE);
-
-            Sequence_Widget::pushed( NULL );
-        }
-
-        if ( r )
-        {
-            int retval = r->dispatch( m );
-
-            /*                 DMESSAGE( "retval = %d", retval ); */
-
-            if ( m == FL_PUSH )
-                take_focus();
-
-            if ( retval )
-            {
                 if ( m == FL_PUSH )
+                    take_focus();
+
+                if ( retval )
                 {
-                    if ( Sequence_Widget::pushed() )
-                        Sequence_Widget::pushed()->handle( FL_UNFOCUS );
-
-                    Sequence_Widget::pushed( r );
-
-                    r->handle( FL_FOCUS );
-                }
-            }
-
-            if ( _delete_queue.size() )
-            {
-                Loggable::block_start();
-
-                while ( _delete_queue.size() )
-                {
-                    Sequence_Widget *t = _delete_queue.front();
-                    _delete_queue.pop();
-
-                    if ( Sequence_Widget::pushed() == t )
-                        Sequence_Widget::pushed( NULL );
-                    if ( Sequence_Widget::belowmouse() == t )
+                    if ( m == FL_PUSH )
                     {
-                        Sequence_Widget::belowmouse()->handle( FL_LEAVE );
-                        Sequence_Widget::belowmouse( NULL );
+                        if ( Sequence_Widget::pushed() )
+                            Sequence_Widget::pushed()->handle( FL_UNFOCUS );
+
+                        Sequence_Widget::pushed( r );
+
+                        r->handle( FL_FOCUS );
+                    }
+                }
+
+                if ( _delete_queue.size() )
+                {
+                    Loggable::block_start();
+
+                    while ( _delete_queue.size() )
+                    {
+                        Sequence_Widget *t = _delete_queue.front();
+                        _delete_queue.pop();
+
+                        if ( Sequence_Widget::pushed() == t )
+                            Sequence_Widget::pushed( NULL );
+                        if ( Sequence_Widget::belowmouse() == t )
+                        {
+                            Sequence_Widget::belowmouse()->handle( FL_LEAVE );
+                            Sequence_Widget::belowmouse( NULL );
+                        }
+
+                        timeline->sequence_lock.wrlock();
+                        delete t;
+                        timeline->sequence_lock.unlock();
                     }
 
-                    timeline->sequence_lock.wrlock();
-                    delete t;
-                    timeline->sequence_lock.unlock();
+                    Loggable::block_end();
                 }
 
-                Loggable::block_end();
+                if ( m == FL_PUSH )
+                    return 1;
+                else
+                    return retval;
             }
-
-            if ( m == FL_PUSH )
-                return 1;
             else
-                return retval;
-        }
-        else
-        {
-            if ( test_press( FL_BUTTON1 ) )
             {
-                /* traditional selection model */
-                Sequence_Widget::select_none();
-            }
+                if ( test_press( FL_BUTTON1 ) )
+                {
+                    /* traditional selection model */
+                    Sequence_Widget::select_none();
+                }
 
-            return Fl_Group::handle( m );
+                return Fl_Group::handle( m );
+            }
         }
-    }
     }
 
     return 0;
 }
-
-
 
 /**********/
 /* Public */
@@ -589,8 +584,8 @@ Sequence::length ( void ) const
 const Sequence_Widget *
 Sequence::next ( nframes_t from ) const
 {
-    for ( list <Sequence_Widget*>::const_iterator i = _widgets.begin(); i != _widgets.end(); ++i )
-//            if ( (*i)->start() >= from )
+    for ( list <Sequence_Widget * >::const_iterator i = _widgets.begin(); i != _widgets.end(); ++i )
+        //            if ( (*i)->start() >= from )
         if ( (*i)->start() > from )
             return *i;
 
@@ -604,7 +599,7 @@ Sequence::next ( nframes_t from ) const
 const Sequence_Widget *
 Sequence::prev ( nframes_t from ) const
 {
-    for ( list <Sequence_Widget*>::const_reverse_iterator i = _widgets.rbegin(); i != _widgets.rend(); ++i )
+    for ( list <Sequence_Widget * >::const_reverse_iterator i = _widgets.rbegin(); i != _widgets.rend(); ++i )
         if ( (*i)->start() < from )
             return *i;
 

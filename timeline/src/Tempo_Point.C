@@ -58,7 +58,7 @@ Tempo_Point::~Tempo_Point ( )
 void
 Tempo_Point::get ( Log_Entry &e ) const
 {
-//    Sequence_Point::get( e );
+    //    Sequence_Point::get( e );
 
     e.add( ":start", start() );
     e.add( ":tempo", _tempo );
@@ -105,10 +105,8 @@ Tempo_Point::handle ( int m )
     return Sequence_Point::handle( m );
 }
 
-
 #include <FL/Fl_Float_Input.H>
 #include <FL/Fl_Menu_Window.H>
-
 
 class Tempo_Point_Editor : public Fl_Menu_Window
 {
@@ -169,7 +167,6 @@ public:
         return _sucess;
     }
 };
-
 
 bool
 Tempo_Point::edit ( float *tempo )

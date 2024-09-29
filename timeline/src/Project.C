@@ -122,10 +122,10 @@ Project::write_info ( void )
         strcpy( s, _created_on );
 
     fprintf( fp, "created by\n\t%s %s\ncreated on\n\t%s\nversion\n\t%d\nsample rate\n\t%lu\n",
-             APP_NAME, VERSION,
-             s,
-             PROJECT_VERSION,
-             (unsigned long)timeline->sample_rate() );
+        APP_NAME, VERSION,
+        s,
+        PROJECT_VERSION,
+        (unsigned long)timeline->sample_rate() );
 
     fclose( fp );
 
@@ -194,7 +194,6 @@ Project::save ( void )
     return Loggable::save_unjournaled_state();
 }
 
-
 /** Close the project (reclaiming all memory) */
 bool
 Project::close ( void )
@@ -207,7 +206,7 @@ Project::close ( void )
 
     Loggable::close();
 
-//    write_info();
+    //    write_info();
 
     _is_open = false;
 
@@ -239,9 +238,9 @@ Project::validate ( const char *name )
     }
 
     if ( ! exists( "info" ) ||
-            ! exists( "history" ) ||
-            ! exists( "sources" ) )
-//         ! exists( "options" ) )
+        ! exists( "history" ) ||
+        ! exists( "sources" ) )
+        //         ! exists( "options" ) )
     {
         WARNING( "Not a Non-DAW project: \"%s\"", name );
         r = false;
@@ -270,7 +269,6 @@ Project::make_engine ( void )
     transport->stop();
 }
 
-
 /** Try to open project /name/. Returns 0 if sucsessful, an error code
  * otherwise */
 int
@@ -297,10 +295,10 @@ Project::open ( const char *name )
         return E_INVALID;
 
     if ( strncmp( created_by, "The Non-DAW", strlen( "The Non-DAW" ) ) &&
-            strncmp( created_by, "Non-DAW", strlen( "Non-DAW" ) ) &&
-            strncmp( created_by, "Non-Timeline", strlen( "Non-Timeline" ) ) &&
-            strncmp( created_by, APP_TITLE, strlen( APP_TITLE ) ) &&
-            strncmp( created_by, APP_NAME, strlen( APP_NAME ) ) )
+        strncmp( created_by, "Non-DAW", strlen( "Non-DAW" ) ) &&
+        strncmp( created_by, "Non-Timeline", strlen( "Non-Timeline" ) ) &&
+        strncmp( created_by, APP_TITLE, strlen( APP_TITLE ) ) &&
+        strncmp( created_by, APP_NAME, strlen( APP_NAME ) ) )
         return E_INVALID;
 
     if ( version > PROJECT_VERSION )
@@ -335,7 +333,6 @@ Project::open ( const char *name )
 
     if ( created_by )
         free( created_by );
-
 
     *_path = '\0';
 

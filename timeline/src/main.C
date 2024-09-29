@@ -23,7 +23,6 @@
 
 #include <FL/Fl.H>
 
-
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/stat.h>
@@ -131,17 +130,19 @@ check_nsm ( void * v )
 static volatile int got_sigterm = 0;
 bool b_exit_program = false;
 
-void sigterm_handler(int sig)
+void
+sigterm_handler(int sig)
 {
     // handle signal type
     if (sig == SIGINT || sig == SIGTERM || sig == SIGHUP)
     {
         got_sigterm = 1;
-//        Fl::awake();
+        //        Fl::awake();
     }
 }
 
-bool install_signal_handlers()
+bool
+install_signal_handlers()
 {
     struct sigaction action;
     memset(&action, 0, sizeof (action));
@@ -168,7 +169,8 @@ bool install_signal_handlers()
     return true;
 }
 
-void check_signals( void* )
+void
+check_signals( void* )
 {
     // process signals
     if (!timeline)
@@ -192,7 +194,6 @@ main ( int argc, char **argv )
     {
         WARNING( "Xdbe not supported, FLTK will fake double buffering." );
     }
-
 
     Thread::init();
 
@@ -223,7 +224,6 @@ main ( int argc, char **argv )
     instance_name = strdup( APP_NAME );
     bool instance_override = false;
 
-
     const char *osc_port = NULL;
 
     static struct option long_options[] =
@@ -242,20 +242,20 @@ main ( int argc, char **argv )
         switch ( c )
         {
 
-        case 'p':
-            DMESSAGE( "Using OSC port %s", optarg );
-            osc_port = optarg;
-            break;
-        case 'i':
-            DMESSAGE( "Using instance name %s", optarg );
-            free( instance_name );
-            instance_name = strdup( optarg );
-            instance_override = true;
-            break;
-        case '?':
-            printf( "\nUsage: %s [--instance instance_name] [--osc-port portnum] [path_to_project]\n\n", argv[0] );
-            exit(0);
-            break;
+            case 'p':
+                DMESSAGE( "Using OSC port %s", optarg );
+                osc_port = optarg;
+                break;
+            case 'i':
+                DMESSAGE( "Using instance name %s", optarg );
+                free( instance_name );
+                instance_name = strdup( optarg );
+                instance_override = true;
+                break;
+            case '?':
+                printf( "\nUsage: %s [--instance instance_name] [--osc-port portnum] [path_to_project]\n\n", argv[0] );
+                exit(0);
+                break;
         }
     }
 

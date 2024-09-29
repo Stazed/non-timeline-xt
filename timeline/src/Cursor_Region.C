@@ -29,13 +29,14 @@
 #include "Cursor_Sequence.H"
 #include "Timeline.H"
 
-Fl_Color Cursor_Region::box_color ( void ) const
+Fl_Color
+Cursor_Region::box_color ( void ) const
 {
     return ((Cursor_Sequence*)sequence())->cursor_color();
 }
 
-
-void Cursor_Region::box_color ( Fl_Color c )
+void
+Cursor_Region::box_color ( Fl_Color c )
 {
     ((Cursor_Sequence*)sequence())->cursor_color( c );
 }
@@ -45,7 +46,7 @@ void Cursor_Region::box_color ( Fl_Color c )
 void
 Cursor_Region::get ( Log_Entry &e ) const
 {
-//    Sequence_Region::get( e );
+    //    Sequence_Region::get( e );
     e.add( ":start", start() );
     e.add( ":length", length() );
     e.add( ":label", label() );
@@ -72,7 +73,7 @@ Cursor_Region::set ( Log_Entry &e )
         }
     }
 
-//            timeline->redraw();
+    //            timeline->redraw();
 }
 
 Cursor_Region::Cursor_Region ( nframes_t when, nframes_t length, const char *type, const char *label )
@@ -99,10 +100,9 @@ Cursor_Region::Cursor_Region ( const Cursor_Region &rhs ) : Sequence_Region( rhs
     log_create();
 }
 
-
 Cursor_Region::~Cursor_Region ( )
 {
-//    timeline->cursor_track->remove( this );
+    //    timeline->cursor_track->remove( this );
 
     log_destroy();
 

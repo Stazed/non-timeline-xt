@@ -41,7 +41,7 @@ using std::list;
 static inline float
 linear_interpolate ( float y1, float y2, float mu )
 {
-//    return y1 + mu * ( y2 - y1 );
+    //    return y1 + mu * ( y2 - y1 );
     return y1 * ( 1.0f - mu ) + y2 * mu;
 }
 
@@ -65,7 +65,7 @@ Control_Sequence::play ( sample_t *buf, nframes_t frame, nframes_t nframes )
     nframes_t n = nframes;
 
     for ( list <Sequence_Widget *>::const_iterator i = _widgets.begin();
-            i != _widgets.end(); ++i, p1 = p2 )
+        i != _widgets.end(); ++i, p1 = p2 )
     {
         p2 = (Control_Point*)(*i);
 
@@ -91,15 +91,15 @@ Control_Sequence::play ( sample_t *buf, nframes_t frame, nframes_t nframes )
             /* do incremental linear interpolation */
 
             const nframes_t len = p1 != p2 ?
-                                  p2->when() - p1->when() :
-                                  p1->when();
+                p2->when() - p1->when() :
+                p1->when();
 
             const float y1 = 1.0f - p1->control();
             const float y2 = 1.0f - p2->control();
 
             const nframes_t start = frame > p1->when() ?
-                                    frame - p1->when() :
-                                    frame;
+                frame - p1->when() :
+                frame;
 
             float incr;
 
@@ -111,9 +111,9 @@ Control_Sequence::play ( sample_t *buf, nframes_t frame, nframes_t nframes )
             float v = y1 + start * incr;
 
             for ( nframes_t i = start;
-                    i < start + len && n && n--;
-                    ++i, v += incr )
-                *(buf++) = v;
+                i < start + len && n && n--;
+                ++i, v += incr )
+                * (buf++) = v;
         }
     }
 

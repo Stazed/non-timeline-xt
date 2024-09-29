@@ -67,27 +67,27 @@ Time_Sequence::handle ( int m )
 
     switch ( m )
     {
-    case FL_PUSH:
-        if ( Fl::event_button1() )
-        {
-            static time_sig t = time_sig( 4, 4 );
-
-            if ( Time_Point::edit( &t ) )
+        case FL_PUSH:
+            if ( Fl::event_button1() )
             {
-                timeline->sequence_lock.wrlock();
+                static time_sig t = time_sig( 4, 4 );
 
-                new Time_Point( timeline->x_to_offset( X ), t.beats_per_bar, t.beat_type );
+                if ( Time_Point::edit( &t ) )
+                {
+                    timeline->sequence_lock.wrlock();
 
-                timeline->sequence_lock.unlock();
+                    new Time_Point( timeline->x_to_offset( X ), t.beats_per_bar, t.beat_type );
 
-                timeline->redraw();
+                    timeline->sequence_lock.unlock();
+
+                    timeline->redraw();
+                }
+                return 0;
             }
-            return 0;
-        }
-        break;
+            break;
 
-    default:
-        return 0;
+        default:
+            return 0;
     }
 
     return 0;

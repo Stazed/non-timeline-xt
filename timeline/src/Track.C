@@ -54,7 +54,6 @@
 extern char *instance_name;
 extern bool g_snapshot;
 
-
 static Fl_Color
 random_color ( void )
 {
@@ -63,12 +62,10 @@ random_color ( void )
 
 static Fl_Menu_Button _menu( 0, 0, 0, 0, "Track" );
 
-
 int Track::_soloing = 0;
 
 const char *Track::capture_format = "Wav 24";
 bool Track::colored_tracks = true;
-
 
 Track::Track ( const char *L, int channels ) :
     Fl_Group ( 0, 0, 0, 0, 0 )
@@ -85,7 +82,6 @@ Track::Track ( const char *L, int channels ) :
 
     log_create();
 }
-
 
 Track::Track ( ) : Fl_Group( 0, 0, 1, 1 )
 {
@@ -142,7 +138,7 @@ Track::init ( void )
 
     labeltype( FL_NO_LABEL );
 
-//    clear_visible_focus();
+    //    clear_visible_focus();
 
     Fl_Group::size( timeline->w(), height() );
 
@@ -170,7 +166,7 @@ Track::init ( void )
         menu_button->callback( cb_button, this );
 
         resizable( o );
-//        o->color( (Fl_Color)53 );
+        //        o->color( (Fl_Color)53 );
     }
 
     {
@@ -193,13 +189,13 @@ Track::init ( void )
                 Fl_Group *o = controls_heading = new Fl_Group( 0, 0, pack->w(), 10 );
                 o->box( FL_FLAT_BOX );
 #ifdef FLTK_SUPPORT
-                o->color( fl_rgb_color( 1,1,1 ) );
+                o->color( fl_rgb_color( 1, 1, 1 ) );
 #else
-                o->color( fl_color_add_alpha( fl_rgb_color( 1,1,1 ), 127 ) );
+                o->color( fl_color_add_alpha( fl_rgb_color( 1, 1, 1 ), 127 ) );
 #endif
 
                 {
-                    Fl_Box *o = new Fl_Box( 0,0, Track::width(), 10 );
+                    Fl_Box *o = new Fl_Box( 0, 0, Track::width(), 10 );
                     o->label( "Controls" );
                     o->align( FL_ALIGN_RIGHT | FL_ALIGN_INSIDE );
                     o->labelsize( 10 );
@@ -228,13 +224,13 @@ Track::init ( void )
                 Fl_Group *o = takes_heading = new Fl_Group( 0, 0, pack->w(), 10 );
                 o->box( FL_FLAT_BOX );
 #ifdef FLTK_SUPPORT
-                o->color( fl_rgb_color( 1,1,1 ) );
+                o->color( fl_rgb_color( 1, 1, 1 ) );
 #else
-                o->color( fl_color_add_alpha( fl_rgb_color( 1,1,1 ), 127 ) );
+                o->color( fl_color_add_alpha( fl_rgb_color( 1, 1, 1 ), 127 ) );
 #endif
 
                 {
-                    Fl_Box *o = new Fl_Box( 0,0, Track::width(), 10 );
+                    Fl_Box *o = new Fl_Box( 0, 0, Track::width(), 10 );
                     o->label( "Takes" );
                     o->align( FL_ALIGN_RIGHT | FL_ALIGN_INSIDE );
                     o->labelsize( 10 );
@@ -276,7 +272,7 @@ Track::set ( Log_Entry &e )
         }
         else if ( ! strcmp( s, ":selected" ) )
             _selected = atoi( v );
-//                else if ( ! strcmp( s, ":armed"
+        //                else if ( ! strcmp( s, ":armed"
         else if ( ! strcmp( s, ":name" ) )
             name( v );
         else if ( ! strcmp( s, ":inputs" ) )
@@ -312,7 +308,7 @@ Track::set ( Log_Entry &e )
                  * chicken/egg problem? */
                 if ( t )
                 {
-//                        assert( t );
+                    //                        assert( t );
 
                     sequence( t );
                 }
@@ -366,13 +362,13 @@ Track::log_children ( void ) const
     log_create();
 
     for ( int i = 0; i < control->children(); i++ )
-        ((Sequence*)control->child( i ))->log_children();
+        ((Sequence * )control->child( i ))->log_children();
 
     for ( int i = 0; i < annotation->children(); i++ )
-        ((Sequence*)annotation->child( i ))->log_children();
+        ((Sequence * )annotation->child( i ))->log_children();
 
     for ( int i = takes->children(); i--; )
-        ((Sequence*)takes->child( i ))->log_children();
+        ((Sequence * )takes->child( i ))->log_children();
 
     sequence()->log_children();
 }
@@ -387,7 +383,6 @@ Track::solo ( bool b )
 
     solo_button->value( b );
 }
-
 
 void
 Track::cb_button ( Fl_Widget *w, void *v )
@@ -433,7 +428,8 @@ Track::cb_button ( Fl_Widget *w )
     }
 }
 
-static int pack_visible( Fl_Pack *p )
+static int
+pack_visible( Fl_Pack *p )
 {
     int v = 0;
     for ( int i = p->children(); i--; )
@@ -483,7 +479,6 @@ Track::adjust_size ( void )
 
         control->pack( true );
     }
-
 
     int TY = 0;
 
@@ -592,7 +587,6 @@ Track::size ( int v )
     adjust_size();
 }
 
-
 void
 Track::add ( Audio_Sequence * t )
 {
@@ -623,7 +617,7 @@ Track::remove ( Audio_Sequence *t )
         pack->remove( t );
 
         if ( takes->children() )
-            sequence( (Audio_Sequence*)takes->child( 0 ) );
+            sequence( (Audio_Sequence * )takes->child( 0 ) );
         else
             /* FIXME: should this ever happen? */
             _sequence = NULL;
@@ -691,7 +685,6 @@ Track::sequence ( Audio_Sequence * t )
     adjust_size();
 }
 
-
 void
 Track::add ( Control_Sequence *t )
 {
@@ -701,7 +694,7 @@ Track::add ( Control_Sequence *t )
 
     t->color( random_color() );
 
-//    control->insert( *t, 0 );
+    //    control->insert( *t, 0 );
     control->add( t );
 
     adjust_size();
@@ -723,7 +716,7 @@ Track::add ( Annotation_Sequence *t )
     the selection.  */
 void
 Track::select ( int X, int Y, int W, int H,
-                bool include_control, bool merge_control )
+    bool include_control, bool merge_control )
 {
 
     Sequence *t = sequence();
@@ -741,7 +734,7 @@ Track::select ( int X, int Y, int W, int H,
             Control_Sequence *c = (Control_Sequence*)control->child( i );
 
             if ( merge_control ||
-                    ( c->y() >= Y && c->y() + c->h() <= Y + H  ) )
+                ( c->y() >= Y && c->y() + c->h() <= Y + H  ) )
                 c->select_range( X, W, Y, H );  // control sends Y & H also
         }
 }
@@ -1021,7 +1014,6 @@ Track::get_unique_control_name ( const char *name )
     return strdup( pat );
 }
 
-
 /** build the context menu */
 Fl_Menu_Button &
 Track::menu ( void ) const
@@ -1105,7 +1097,7 @@ Track::draw ( void )
     else
         Fl_Group::draw();
 
-    if ( ((Track_Header*)child(0))->input_connector_handle == receptive_to_drop )
+    if ( ((Track_Header * )child(0))->input_connector_handle == receptive_to_drop )
     {
         Fl_Widget *o = ((Track_Header*)child(0))->input_connector_handle;
 #ifdef FLTK_SUPPORT
@@ -1134,247 +1126,245 @@ Track::handle ( int m )
 
     switch ( m )
     {
-    case FL_DND_ENTER:
-    case FL_DND_LEAVE:
-    case FL_DND_DRAG:
-    case FL_DND_RELEASE:
-    case FL_PASTE:
-        if ( dragging != ((Track_Header*)child(0))->output_connector_handle &&
+        case FL_DND_ENTER:
+        case FL_DND_LEAVE:
+        case FL_DND_DRAG:
+        case FL_DND_RELEASE:
+        case FL_PASTE:
+            if ( dragging != ((Track_Header * )child(0))->output_connector_handle &&
                 Fl::event_x() > Track::width()  )
-            return sequence()->handle(m);
-    default:
-        break;
+                return sequence()->handle(m);
+        default:
+            break;
     }
 
     switch ( m )
     {
-    case FL_KEYBOARD:
-    {
-        Fl_Menu_Button * men = &menu();
-
-        if ( Fl::event_key() == FL_Menu )
+        case FL_KEYBOARD:
         {
-            menu_popup( men );
-            return 1;
-        }
-        else
-            return men->test_shortcut() || Fl_Group::handle( m );
-    }
-    case FL_MOUSEWHEEL:
-    {
-        Logger log( this );
+            Fl_Menu_Button * men = &menu();
 
-        if ( ! Fl::event_alt() )
-            return Fl_Group::handle( m );
-
-        int d = Fl::event_dy();
-
-        if ( d < 0 )
-            size( size() - 1 );
-        else
-            size( size() + 1 );
-
-        return 1;
-    }
-    case FL_PUSH:
-    {
-        if ( Fl::event_button1() && Fl::event_inside( ((Track_Header*)child(0))->color_box ) )
-        {
-            dragging = this;
-            fl_cursor( FL_CURSOR_MOVE );
-            return 1;
-        }
-        if ( Fl::event_button1() && Fl::event_inside( ((Track_Header*)child(0))->output_connector_handle ) )
-            return 1;
-
-        Logger log( this );
-
-        if ( Fl_Group::handle( m ) )
-            return 1;
-
-        if ( test_press( FL_BUTTON3 ) && Fl::event_x() < Track::width() )
-        {
-            menu_popup( &menu() );
-            return 1;
-        }
-
-        return 0;
-    }
-    /* we have to prevent Fl_Group::handle() from getting these, otherwise it will mess up Fl::belowmouse() */
-    case FL_ENTER:
-    case FL_LEAVE:
-    case FL_MOVE:
-
-        if ( dragging != ((Track_Header*)child(0))->output_connector_handle &&
-                Fl::event_x() >= Track::width() )
-        {
-            return Fl_Group::handle(m);
-        }
-        else
-        {
-            if ( Fl::event_inside( ((Track_Header*)child(0))->output_connector_handle ) ||
-                    Fl::event_inside( ((Track_Header*)child(0))->input_connector_handle ) ||
-                    Fl::event_inside( ((Track_Header*)child(0))->color_box ) )
-                fl_cursor( FL_CURSOR_HAND );
-        }
-        return 1;
-    case FL_DND_ENTER:
-        return 1;
-    case FL_DND_LEAVE:
-
-        /* if ( ! Fl::event_inside(this) )// && this == receptive_to_drop ) */
-        /* { */
-        receptive_to_drop = 0;
-        redraw();
-        Fl::selection_owner(0);
-        /* } */
-        return 1;
-    case FL_RELEASE:
-        if ( dragging == this )
-        {
-            dragging = NULL;
-            timeline->insert_track( this, timeline->event_inside() );
-            fl_cursor( FL_CURSOR_DEFAULT );
-            return 1;
-        }
-        else if ( dragging == ((Track_Header*)child(0))->output_connector_handle )
-        {
-            dragging = NULL;
-            fl_cursor( FL_CURSOR_DEFAULT );
-            return 1;
-        }
-
-        return Fl_Group::handle( m );
-        break;
-    case FL_DND_RELEASE:
-        dragging = NULL;
-        receptive_to_drop = 0;
-        redraw();
-        Fl::selection_owner(0);
-        return 1;
-    case FL_DND_DRAG:
-    {
-
-        if ( receptive_to_drop == ((Track_Header*)child(0))->input_connector_handle )
-            return 1;
-
-
-
-        if ( Fl::event_inside( ((Track_Header*)child(0))->input_connector_handle )
-                && receptive_to_drop != ((Track_Header*)child(0))->input_connector_handle )
-
-        {
-            receptive_to_drop = ((Track_Header*)child(0))->input_connector_handle;
-            redraw();
-            return 1;
-        }
-        else
-        {
-            receptive_to_drop = NULL;
-            redraw();
-            return 0;
-        }
-    }
-    case FL_PASTE:
-    {
-        receptive_to_drop = 0;
-        redraw();
-
-        if (! Fl::event_inside( ((Track_Header*)child(0))->input_connector_handle ) )
-            return 0;
-
-        /* NOW we get the text... */
-        const char *text = Fl::event_text();
-
-        DMESSAGE( "Got drop text \"%s\"",text);
-
-        if ( strncmp( text, "jack.port://", strlen( "jack.port://" ) ) )
-        {
-            return 0;
-        }
-
-        std::vector<std::string> port_names;
-
-        char *port_name;
-        int end;
-        while (  sscanf( text, "jack.port://%m[^\r\n]\r\n%n", &port_name, &end ) > 0 )
-        {
-            DMESSAGE( "Scanning %s", port_name );
-            port_names.push_back( port_name );
-            free(port_name );
-
-            text += end;
-        }
-
-        for ( unsigned int i = 0; i < input.size() && i < port_names.size(); i++)
-        {
-            const char *pn = port_names[i].c_str();
-
-            JACK::Port *ji = &input[i];
-
-            if ( ji->connected_to( pn ) )
+            if ( Fl::event_key() == FL_Menu )
             {
+                menu_popup( men );
+                return 1;
+            }
+            else
+                return men->test_shortcut() || Fl_Group::handle( m );
+        }
+        case FL_MOUSEWHEEL:
+        {
+            Logger log( this );
 
-                DMESSAGE( "Disconnecting from \"%s\"", pn );
-                ji->disconnect( pn );
+            if ( ! Fl::event_alt() )
+                return Fl_Group::handle( m );
+
+            int d = Fl::event_dy();
+
+            if ( d < 0 )
+                size( size() - 1 );
+            else
+                size( size() + 1 );
+
+            return 1;
+        }
+        case FL_PUSH:
+        {
+            if ( Fl::event_button1() && Fl::event_inside( ((Track_Header * )child(0))->color_box ) )
+            {
+                dragging = this;
+                fl_cursor( FL_CURSOR_MOVE );
+                return 1;
+            }
+            if ( Fl::event_button1() && Fl::event_inside( ((Track_Header * )child(0))->output_connector_handle ) )
+                return 1;
+
+            Logger log( this );
+
+            if ( Fl_Group::handle( m ) )
+                return 1;
+
+            if ( test_press( FL_BUTTON3 ) && Fl::event_x() < Track::width() )
+            {
+                menu_popup( &menu() );
+                return 1;
+            }
+
+            return 0;
+        }
+        /* we have to prevent Fl_Group::handle() from getting these, otherwise it will mess up Fl::belowmouse() */
+        case FL_ENTER:
+        case FL_LEAVE:
+        case FL_MOVE:
+
+            if ( dragging != ((Track_Header * )child(0))->output_connector_handle &&
+                Fl::event_x() >= Track::width() )
+            {
+                return Fl_Group::handle(m);
             }
             else
             {
-                DMESSAGE( "Connecting to %s", pn );
-                ji->connect( pn );
+                if ( Fl::event_inside( ((Track_Header * )child(0))->output_connector_handle ) ||
+                    Fl::event_inside( ((Track_Header * )child(0))->input_connector_handle ) ||
+                    Fl::event_inside( ((Track_Header * )child(0))->color_box ) )
+                    fl_cursor( FL_CURSOR_HAND );
+            }
+            return 1;
+        case FL_DND_ENTER:
+            return 1;
+        case FL_DND_LEAVE:
+
+            /* if ( ! Fl::event_inside(this) )// && this == receptive_to_drop ) */
+            /* { */
+            receptive_to_drop = 0;
+            redraw();
+            Fl::selection_owner(0);
+            /* } */
+            return 1;
+        case FL_RELEASE:
+            if ( dragging == this )
+            {
+                dragging = NULL;
+                timeline->insert_track( this, timeline->event_inside() );
+                fl_cursor( FL_CURSOR_DEFAULT );
+                return 1;
+            }
+            else if ( dragging == ((Track_Header * )child(0))->output_connector_handle )
+            {
+                dragging = NULL;
+                fl_cursor( FL_CURSOR_DEFAULT );
+                return 1;
+            }
+
+            return Fl_Group::handle( m );
+            break;
+        case FL_DND_RELEASE:
+            dragging = NULL;
+            receptive_to_drop = 0;
+            redraw();
+            Fl::selection_owner(0);
+            return 1;
+        case FL_DND_DRAG:
+        {
+
+            if ( receptive_to_drop == ((Track_Header * )child(0))->input_connector_handle )
+                return 1;
+
+            if ( Fl::event_inside( ((Track_Header * )child(0))->input_connector_handle )
+                && receptive_to_drop != ((Track_Header * )child(0))->input_connector_handle )
+
+            {
+                receptive_to_drop = ((Track_Header*)child(0))->input_connector_handle;
+                redraw();
+                return 1;
+            }
+            else
+            {
+                receptive_to_drop = NULL;
+                redraw();
+                return 0;
             }
         }
-
-        Fl::selection_owner(0);
-
-        return 1;
-    }
-    case FL_DRAG:
-    {
-        if ( Fl::event_is_click() )
-            return 1;
-
-        if ( this != Fl::selection_owner() &&
-                Fl::event_inside( ((Track_Header*)child(0))->output_connector_handle ) )
+        case FL_PASTE:
         {
-            char *s = (char*)malloc(256);
-            s[0] = 0;
+            receptive_to_drop = 0;
+            redraw();
 
-            for ( unsigned int i = 0; i < output.size(); ++i )
+            if (! Fl::event_inside( ((Track_Header * )child(0))->input_connector_handle ) )
+                return 0;
+
+            /* NOW we get the text... */
+            const char *text = Fl::event_text();
+
+            DMESSAGE( "Got drop text \"%s\"", text);
+
+            if ( strncmp( text, "jack.port://", strlen( "jack.port://" ) ) )
             {
-                char *s2;
-                asprintf(&s2, "jack.port://%s\r\n",
-                         output[i].jack_name() );
+                return 0;
+            }
 
-                char *tmp = (char*)realloc( s, strlen( s ) + strlen( s2 ) + 1 );
+            std::vector<std::string> port_names;
 
-                if(tmp == NULL)
+            char *port_name;
+            int end;
+            while (  sscanf( text, "jack.port://%m[^\r\n]\r\n%n", &port_name, &end ) > 0 )
+            {
+                DMESSAGE( "Scanning %s", port_name );
+                port_names.push_back( port_name );
+                free(port_name );
+
+                text += end;
+            }
+
+            for ( unsigned int i = 0; i < input.size() && i < port_names.size(); i++)
+            {
+                const char *pn = port_names[i].c_str();
+
+                JACK::Port *ji = &input[i];
+
+                if ( ji->connected_to( pn ) )
                 {
-                    free ( s );
+
+                    DMESSAGE( "Disconnecting from \"%s\"", pn );
+                    ji->disconnect( pn );
                 }
                 else
                 {
-                    s = tmp;
-                    strcat( s, s2 );
+                    DMESSAGE( "Connecting to %s", pn );
+                    ji->connect( pn );
                 }
-
-                free( s2 );
             }
 
-            Fl::copy(s, strlen(s) + 1, 0);
-            Fl::selection_owner(this);
+            Fl::selection_owner(0);
 
-            free( s );
-
-            dragging = ((Track_Header*)child(0))->output_connector_handle;
-
-            Fl::dnd();
+            return 1;
         }
+        case FL_DRAG:
+        {
+            if ( Fl::event_is_click() )
+                return 1;
 
-        return 1;
-    }
-    default:
-        return Fl_Group::handle( m );
+            if ( this != Fl::selection_owner() &&
+                Fl::event_inside( ((Track_Header * )child(0))->output_connector_handle ) )
+            {
+                char *s = (char*)malloc(256);
+                s[0] = 0;
+
+                for ( unsigned int i = 0; i < output.size(); ++i )
+                {
+                    char *s2;
+                    asprintf(&s2, "jack.port://%s\r\n",
+                        output[i].jack_name() );
+
+                    char *tmp = (char*)realloc( s, strlen( s ) + strlen( s2 ) + 1 );
+
+                    if(tmp == NULL)
+                    {
+                        free ( s );
+                    }
+                    else
+                    {
+                        s = tmp;
+                        strcat( s, s2 );
+                    }
+
+                    free( s2 );
+                }
+
+                Fl::copy(s, strlen(s) + 1, 0);
+                Fl::selection_owner(this);
+
+                free( s );
+
+                dragging = ((Track_Header*)child(0))->output_connector_handle;
+
+                Fl::dnd();
+            }
+
+            return 1;
+        }
+        default:
+            return Fl_Group::handle( m );
     }
 
     return 0;

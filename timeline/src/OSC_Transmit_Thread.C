@@ -51,7 +51,6 @@ OSC_Transmit_Thread::~OSC_Transmit_Thread ( )
     unlock();
 }
 
-
 void
 OSC_Transmit_Thread::start ( )
 {
@@ -95,4 +94,3 @@ OSC_Transmit_Thread::process ( void *v )
 
     return NULL;
 }
-

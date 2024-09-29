@@ -48,7 +48,6 @@ using std::list;
 #include <FL/Fl_Menu_Button.H>
 #include "../../FL/menu_popup.H"
 
-
 #define DAMAGE_SEQUENCE FL_DAMAGE_USER1
 #define DAMAGE_HEADER FL_DAMAGE_USER2
 
@@ -60,7 +59,6 @@ Control_Sequence::Control_Sequence (  ) : Sequence( 0 )
 {
     init();
 }
-
 
 Control_Sequence::Control_Sequence ( Track *track, const char *name ) : Sequence( 0 )
 {
@@ -77,7 +75,6 @@ Control_Sequence::Control_Sequence ( Track *track, const char *name ) : Sequence
 
     log_create();
 }
-
 
 Control_Sequence::~Control_Sequence ( )
 {
@@ -107,9 +104,9 @@ Control_Sequence::~Control_Sequence ( )
         delete t;
     }
 
-    for ( list<char*>::iterator i = _persistent_osc_connections.begin();
-            i != _persistent_osc_connections.end();
-            ++i )
+    for ( list<char * >::iterator i = _persistent_osc_connections.begin();
+        i != _persistent_osc_connections.end();
+        ++i )
     {
         free( *i );
     }
@@ -251,7 +248,7 @@ Control_Sequence::init ( void )
     _track = NULL;
     _output = NULL;
     __osc_output = NULL;
-    _mode = (Mode)-1;
+    _mode = (Mode) - 1;
 
     interpolation( Linear );
 }
@@ -387,7 +384,7 @@ Control_Sequence::draw_curve ( bool filled )
 
     std::copy( _widgets.begin(), _widgets.end(), std::back_inserter( wl ) );
 
-//= new list <const Sequence_Widget *>(_widgets);
+    //= new list <const Sequence_Widget *>(_widgets);
 
     wl.sort( Sequence_Widget::sort_func );
 
@@ -432,11 +429,11 @@ Control_Sequence::draw_box ( void )
 
     fl_clip_box( bx, by, bw, bh, X, Y, W, H );
 
-//    fl_rectf( X, Y, W, H, fl_color_average( FL_BLACK, FL_BACKGROUND_COLOR, 0.3 ) );
-//    fl_rectf( X,Y,W,H, fl_color_average( FL_BLACK, FL_WHITE, 0.90 ) );
+    //    fl_rectf( X, Y, W, H, fl_color_average( FL_BLACK, FL_BACKGROUND_COLOR, 0.3 ) );
+    //    fl_rectf( X,Y,W,H, fl_color_average( FL_BLACK, FL_WHITE, 0.90 ) );
 #ifndef FLTK_SUPPORT
     // FLTK draws the background before calling this since no transparency, so only for NTK
-    fl_rectf( X,Y,W,H, FL_DARK1 );
+    fl_rectf( X, Y, W, H, FL_DARK1 );
 #endif
 
     if ( draw_with_grid )
@@ -470,12 +467,12 @@ Control_Sequence::draw ( void )
     bool active = active_r();
 
     const Fl_Color color = active ? this->color() : fl_inactive( this->color() );
-//    const Fl_Color selection_color = active ? this->selection_color() : fl_inactive( this->selection_color() );
+    //    const Fl_Color selection_color = active ? this->selection_color() : fl_inactive( this->selection_color() );
 
 #ifdef FLTK_SUPPORT
     // Background only first for FLTK
     if ( box() != FL_NO_BOX )
-        fl_rectf( X,Y,W,H, FL_DARK1 );
+        fl_rectf( X, Y, W, H, FL_DARK1 );
 #else
     // NTK draws everything before since it can overlay transparent
     if ( box() != FL_NO_BOX )
@@ -517,7 +514,7 @@ Control_Sequence::draw ( void )
         for ( list <Sequence_Widget *>::const_iterator r = _widgets.begin();  r != _widgets.end(); ++r )
         {
             if ( (*r)->x() + (*r)->w() >= bx &&
-                    (*r)->x() <= bw + bw )
+                (*r)->x() <= bw + bw )
             {
                 (*r)->draw_box();   // control points eventually
             }
@@ -530,7 +527,7 @@ Control_Sequence::draw ( void )
             if ( (*r)->selected() )
             {
                 if ( (*r)->x() + (*r)->w() >= bx &&
-                        (*r)->x() <= bw + bw )
+                    (*r)->x() <= bw + bw )
                 {
                     (*r)->draw_box();   // control points eventually
                 }
@@ -545,7 +542,6 @@ Control_Sequence::draw ( void )
         Fl_Group::draw_children();
     }
 }
-
 
 void
 Control_Sequence::menu_cb ( Fl_Widget *w, void *v )
@@ -638,9 +634,9 @@ Control_Sequence::connect_osc ( void )
 
     if ( _persistent_osc_connections.size() )
     {
-        for ( std::list<char*>::iterator i = _persistent_osc_connections.begin();
-                i != _persistent_osc_connections.end();
-                ++i )
+        for ( std::list<char * >::iterator i = _persistent_osc_connections.begin();
+            i != _persistent_osc_connections.end();
+            ++i )
         {
             if ( ! timeline->osc->connect_signal( _osc_output(), *i ) )
             {
@@ -649,7 +645,7 @@ Control_Sequence::connect_osc ( void )
             else
             {
                 MESSAGE( "Connected output %s to %s", _osc_output()->path(), *i );
-//                tooltip( _osc_connected_path );
+                //                tooltip( _osc_connected_path );
             }
         }
     }
@@ -697,11 +693,11 @@ Control_Sequence::peer_callback( OSC::Signal *sig,  OSC::Signal::State state, vo
     if ( sig->direction() != OSC::Signal::Input )
         return;
 
-//    DMESSAGE( "Paramter limits: %f %f", sig->parameter_limits().min, sig->parameter_limits().max );
+    //    DMESSAGE( "Paramter limits: %f %f", sig->parameter_limits().min, sig->parameter_limits().max );
 
     /* only list CV signals for now */
     if ( ! ( sig->parameter_limits().min == 0.0 &&
-             sig->parameter_limits().max == 1.0 ) )
+        sig->parameter_limits().max == 1.0 ) )
         return;
 
     if ( ! v )
@@ -714,7 +710,7 @@ Control_Sequence::peer_callback( OSC::Signal *sig,  OSC::Signal::State state, vo
     else
     {
         /* building menu */
-//        const char *name = sig->peer_name();
+        //        const char *name = sig->peer_name();
 
         assert( sig->path() );
 
@@ -758,7 +754,7 @@ Control_Sequence::menu ( void )
 
     _menu.add( "Interpolation/None", 0, 0, 0, FL_MENU_RADIO | ( interpolation() == No_Type ? FL_MENU_VALUE : 0 ) );
     _menu.add( "Interpolation/Linear", 0, 0, 0, FL_MENU_RADIO | ( interpolation() == Linear ? FL_MENU_VALUE : 0 ) );
-    _menu.add( "Mode/Control Voltage (JACK)", 0, 0, 0,FL_MENU_RADIO | ( mode() == CV ? FL_MENU_VALUE : 0 ) );
+    _menu.add( "Mode/Control Voltage (JACK)", 0, 0, 0, FL_MENU_RADIO | ( mode() == CV ? FL_MENU_VALUE : 0 ) );
     _menu.add( "Mode/Control Signal (OSC)", 0, 0, 0, FL_MENU_RADIO | ( mode() == OSC ? FL_MENU_VALUE : 0 ) );
 
     _menu.add( "Rename", 0, 0, 0 );
@@ -775,34 +771,34 @@ Control_Sequence::handle ( int m )
 {
     switch ( m )
     {
-    case FL_ENTER:
-        break;
-    case FL_LEAVE:
-        _highlighted = 0;
-        damage( DAMAGE_SEQUENCE );
-        fl_cursor( FL_CURSOR_DEFAULT );
-        break;
-    case FL_MOVE:
-        if ( Fl::event_x() > drawable_x() )
-        {
-            if ( _highlighted != this )
+        case FL_ENTER:
+            break;
+        case FL_LEAVE:
+            _highlighted = 0;
+            damage( DAMAGE_SEQUENCE );
+            fl_cursor( FL_CURSOR_DEFAULT );
+            break;
+        case FL_MOVE:
+            if ( Fl::event_x() > drawable_x() )
             {
-                _highlighted = this;
-                damage( DAMAGE_SEQUENCE );
-                fl_cursor( FL_CURSOR_CROSS );
+                if ( _highlighted != this )
+                {
+                    _highlighted = this;
+                    damage( DAMAGE_SEQUENCE );
+                    fl_cursor( FL_CURSOR_CROSS );
+                }
             }
-        }
-        else
-        {
-            if ( _highlighted == this )
+            else
             {
-                _highlighted = 0;
-                damage( DAMAGE_SEQUENCE );
-                fl_cursor( FL_CURSOR_DEFAULT );
+                if ( _highlighted == this )
+                {
+                    _highlighted = 0;
+                    damage( DAMAGE_SEQUENCE );
+                    fl_cursor( FL_CURSOR_DEFAULT );
+                }
             }
-        }
-    default:
-        break;
+        default:
+            break;
     }
 
     Logger log(this);
@@ -814,32 +810,32 @@ Control_Sequence::handle ( int m )
 
     switch ( m )
     {
-    case FL_PUSH:
-    {
+        case FL_PUSH:
+        {
 
-        if ( Fl::event_x() >= drawable_x() &&
+            if ( Fl::event_x() >= drawable_x() &&
                 test_press( FL_BUTTON1 ) )
-        {
-            /* insert new control point */
-            timeline->sequence_lock.wrlock();
+            {
+                /* insert new control point */
+                timeline->sequence_lock.wrlock();
 
-            new Control_Point( this, timeline->xoffset + timeline->x_to_ts( Fl::event_x() - drawable_x() ), (float)(Fl::event_y() - y()) / h() );
+                new Control_Point( this, timeline->xoffset + timeline->x_to_ts( Fl::event_x() - drawable_x() ), (float)(Fl::event_y() - y()) / h() );
 
-            timeline->sequence_lock.unlock();
+                timeline->sequence_lock.unlock();
 
-            return 1;
+                return 1;
+            }
+            else if ( Fl::event_x() < drawable_x() &&
+                test_press( FL_BUTTON3 ) )
+            {
+                menu_popup( &menu() );
+
+                return 1;
+            }
+
+            return Fl_Group::handle( m );
         }
-        else if ( Fl::event_x() < drawable_x() &&
-                  test_press( FL_BUTTON3 ) )
-        {
-            menu_popup( &menu() );
-
-            return 1;
-        }
-
-        return Fl_Group::handle( m );
-    }
-    default:
-        return 0;
+        default:
+            return 0;
     }
 }

@@ -95,7 +95,7 @@ Record_DS::disk_thread ( void )
 
     _recording = true;
 
-//    const size_t block_size = nframes * sizeof( sample_t );
+    //    const size_t block_size = nframes * sizeof( sample_t );
 
     nframes_t frames_read = 0;
 
@@ -120,7 +120,7 @@ again:
     {
         /* write remainder of buffer */
         write_block( buf + ((pS - bS) * channels()),
-                     bE - pS );
+            bE - pS );
 
         punching_in = false;
         punched_in = true;
@@ -140,10 +140,10 @@ again:
             jack_ringbuffer_read( _rb[ i ], ((char*)cbuf), frames_to_read * sizeof( sample_t ) );
 
             buffer_interleave_one_channel( buf,
-                                           cbuf,
-                                           i,
-                                           channels(),
-                                           frames_to_read);
+                cbuf,
+                i,
+                channels(),
+                frames_to_read);
         }
 
         bS = _first_frame + frames_read;
@@ -160,9 +160,9 @@ again:
                threads running all the time so that there would always
                have some actual data to write here */
             sample_t  nbuf[bS - pS];
-            memset(nbuf,0,bS - pS);
+            memset(nbuf, 0, bS - pS);
             write_block(nbuf, pS - pS);
-            write_block(buf,frames_to_read);
+            write_block(buf, frames_to_read);
             punched_in = true;
             punching_in = false;
         }
@@ -174,7 +174,7 @@ again:
             if ( punching_out )
             {
                 write_block( buf,
-                             pE - bS );
+                    pE - bS );
 
                 break;
             }
@@ -184,7 +184,7 @@ again:
                 assert( bE >= pS );
 
                 write_block( buf + ((pS - bS) * channels()),
-                             bE - pS );
+                    bE - pS );
 
                 punching_in = false;
                 punched_in = true;
@@ -196,7 +196,7 @@ again:
         }
     }
 
-//    DMESSAGE( "capture thread terminating" );
+    //    DMESSAGE( "capture thread terminating" );
 
     /* flush what remains in the buffer out to disk */
 
@@ -223,8 +223,6 @@ again:
     /*     } */
     /* } */
 
-
-
     if ( _capture )
     {
         DMESSAGE( "finalzing capture" );
@@ -234,7 +232,7 @@ again:
 
         /* now finalize the recording */
 
-//        if ( c->audio_file )
+        //        if ( c->audio_file )
         track()->finalize( c, _stop_frame );
 
         delete c;
@@ -255,7 +253,7 @@ again:
 
             punching_in = bE > in;
 
-            DMESSAGE( "Next punch: %lu:%lu", (unsigned long)in,(unsigned long)out );
+            DMESSAGE( "Next punch: %lu:%lu", (unsigned long)in, (unsigned long)out );
 
             goto again;
         }
@@ -271,7 +269,6 @@ again:
 
     DMESSAGE( "capture thread gone" );
 }
-
 
 /** begin recording */
 void
@@ -308,7 +305,6 @@ Record_DS::stop ( nframes_t frame )
 
     DMESSAGE( "recording stop scheduled" );
 }
-
 
 #include "../Transport.H"
 extern Transport *transport;
@@ -374,7 +370,7 @@ Record_DS::process ( nframes_t nframes )
 
             jack_ringbuffer_write( _rb[ i ], ((char*)buf) + offset_size, block_size );
 
-//            DMESSAGE( "wrote %lu", (unsigned long) nframes );
+            //            DMESSAGE( "wrote %lu", (unsigned long) nframes );
 
         }
     }

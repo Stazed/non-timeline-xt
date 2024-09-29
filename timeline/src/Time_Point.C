@@ -65,7 +65,7 @@ Time_Point::~Time_Point ( )
 void
 Time_Point::get ( Log_Entry &e ) const
 {
-//    Sequence_Point::get( e );
+    //    Sequence_Point::get( e );
 
     e.add( ":start", start() );
     e.add( ":beats_per_bar", _time.beats_per_bar );

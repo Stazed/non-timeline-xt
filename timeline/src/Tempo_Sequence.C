@@ -64,27 +64,27 @@ Tempo_Sequence::handle ( int m )
 
     switch ( m )
     {
-    case FL_PUSH:
-        if ( Fl::event_button1() )
-        {
-            static float t = 120.0f;
-
-            if ( Tempo_Point::edit( &t ) )
+        case FL_PUSH:
+            if ( Fl::event_button1() )
             {
-                timeline->sequence_lock.wrlock();
+                static float t = 120.0f;
 
-                new Tempo_Point( timeline->x_to_offset( X ), t );
+                if ( Tempo_Point::edit( &t ) )
+                {
+                    timeline->sequence_lock.wrlock();
 
-                timeline->sequence_lock.unlock();
+                    new Tempo_Point( timeline->x_to_offset( X ), t );
 
-                timeline->redraw();
+                    timeline->sequence_lock.unlock();
+
+                    timeline->redraw();
+                }
+                return 0;
             }
-            return 0;
-        }
-        break;
+            break;
 
-    default:
-        return 0;
+        default:
+            return 0;
     }
 
     return 0;

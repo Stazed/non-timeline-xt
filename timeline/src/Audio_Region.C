@@ -146,7 +146,7 @@ Audio_Region::init ( void )
 /* copy constructor */
 Audio_Region::Audio_Region ( const Audio_Region & rhs ) : Sequence_Region( rhs )
 {
-//    *((Sequence_Region*)this) = (Sequence_Region &)rhs;
+    //    *((Sequence_Region*)this) = (Sequence_Region &)rhs;
 
     _clip      = rhs._clip->duplicate();
     _scale     = rhs._scale;
@@ -448,7 +448,7 @@ Audio_Region::draw_fade ( const Fade &fade, Fade::fade_dir_e dir, bool line, int
         fx = curve_x();
 
         if ( fx + width < X ||
-                fx > X + W )
+            fx > X + W )
             /* clipped */
             return;
     }
@@ -457,7 +457,7 @@ Audio_Region::draw_fade ( const Fade &fade, Fade::fade_dir_e dir, bool line, int
         fx = curve_x() + abs_w();
 
         if ( fx - width > X + W ||
-                fx < X )
+            fx < X )
             /* clipped */
             return;
     }
@@ -497,7 +497,7 @@ Audio_Region::actual_box_color ( void ) const
 void
 Audio_Region::draw_box( void )
 {
-//    fl_push_clip( x(), y(), w(), h() );
+    //    fl_push_clip( x(), y(), w(), h() );
 
     Fl_Color selection_color = _selection_color;
 
@@ -529,7 +529,7 @@ Audio_Region::draw_box( void )
 
     fl_draw_box( b, x(), y(), w(), h(), c );
 
-//    fl_pop_clip();
+    //    fl_pop_clip();
 }
 
 void
@@ -564,9 +564,8 @@ Audio_Region::draw ( void )
         /* no coverage */
         return;
 
-
     if ( start() > timeline->xoffset + timeline->x_to_ts( sequence()->drawable_w() ) ||
-            start() + length() < timeline->xoffset )
+        start() + length() < timeline->xoffset )
         /* not in viewport */
         return;
 
@@ -575,10 +574,10 @@ Audio_Region::draw ( void )
     /* overdraw a little to avoid artifacts when scrolling */
     W += 2;
 
-//    Fl_Color c = selected() ? fl_invert_color( _color ) : _color;
+    //    Fl_Color c = selected() ? fl_invert_color( _color ) : _color;
 
     if ( sequence()->damage() & FL_DAMAGE_USER1 &&
-            recording() )
+        recording() )
     {
         /* TODO: limit drawing. */
     }
@@ -588,7 +587,7 @@ Audio_Region::draw ( void )
 
     /* this is the timestamp at where we'll actually be drawing. */
     nframes_t x_frame = timeline->x_to_ts(
-                            timeline->ts_to_x( timeline->xoffset ) + ( X - _sequence->drawable_x() ) );
+        timeline->ts_to_x( timeline->xoffset ) + ( X - _sequence->drawable_x() ) );
 
     nframes_t offset = 0;
 
@@ -605,9 +604,9 @@ Audio_Region::draw ( void )
         /*                                Audio_Region::inherit_track_color ? sequence()->track()->color() :  _box_color, */
         /*                                0.75f ); */
 #ifdef FLTK_SUPPORT
-        fl_color( fl_rgb_color( 20,20,20 ) );
+        fl_color( fl_rgb_color( 20, 20, 20 ) );
 #else
-        fl_color( fl_color_add_alpha( fl_rgb_color( 20,20,20 ), 127 ) );
+        fl_color( fl_color_add_alpha( fl_rgb_color( 20, 20, 20 ), 127 ) );
 #endif
 
         draw_fade( _fade_in, Fade::In, false, X, W );
@@ -617,7 +616,6 @@ Audio_Region::draw ( void )
     int channels = 0;
     int peaks = 0;
     Peak *pbuf = NULL;
-
 
     Fl_Color fg_color = FL_FOREGROUND_COLOR;
     Fl_Color bg_color = FL_BACKGROUND_COLOR;
@@ -640,7 +638,7 @@ Audio_Region::draw ( void )
         {
             if ( _loop )
             {
-//                start += offset;
+                //                start += offset;
                 start += offset % _loop;
                 loop_frames_needed -= offset % loop_frames_needed;
                 loop_peaks_needed = timeline->ts_to_x( loop_frames_needed );
@@ -667,9 +665,9 @@ Audio_Region::draw ( void )
             _clip->peaks()->peakfile_ready();
 
             if ( _clip->read_peaks( timeline->fpp(),
-                                    start,
-                                    end,
-                                    &peaks, &pbuf, &channels ) )
+                start,
+                end,
+                &peaks, &pbuf, &channels ) )
             {
                 Waveform::scale( pbuf, peaks * channels, _scale );
 
@@ -686,7 +684,7 @@ Audio_Region::draw ( void )
         }
         else
         {
-//            DMESSAGE( "using cached peaks" );
+            //            DMESSAGE( "using cached peaks" );
         }
 
         if ( peaks && pbuf )
@@ -697,22 +695,21 @@ Audio_Region::draw ( void )
             for ( int i = 0; i < channels; ++i )
             {
                 Waveform::draw( X + xo,
-                                (y() + Fl::box_dy( box() )) + (i * ch),
-                                loop_peaks_needed,
-                                ch,
-                                pbuf + i, peaks, channels,
-                                fg_color, bg_color );
+                    (y() + Fl::box_dy( box() )) + (i * ch),
+                    loop_peaks_needed,
+                    ch,
+                    pbuf + i, peaks, channels,
+                    fg_color, bg_color );
             }
         }
         else
         {
-//            WARNING( "Pbuf == %p, peaks = %lu", pbuf, (unsigned long)peaks );
+            //            WARNING( "Pbuf == %p, peaks = %lu", pbuf, (unsigned long)peaks );
         }
-
 
         if ( peaks < loop_peaks_needed )
         {
-//            DMESSAGE( "Peak read came up %lu peaks short", (unsigned long)loop_peaks_needed - peaks );
+            //            DMESSAGE( "Peak read came up %lu peaks short", (unsigned long)loop_peaks_needed - peaks );
         }
 
         fo += loop_frames_needed;
@@ -735,20 +732,18 @@ Audio_Region::draw ( void )
         fl_begin_polygon();
 
         fl_vertex( lx + Fl::box_dx(box()),
-                   y() + Fl::box_dy(box()) );
+            y() + Fl::box_dy(box()) );
 
         fl_vertex( pw + lx + Fl::box_dx(box()),
-                   y() + Fl::box_dy(box()) );
+            y() + Fl::box_dy(box()) );
 
         fl_vertex( lx + Fl::box_dx(box()),
-                   pw + y() + Fl::box_dy(box()) );
+            pw + y() + Fl::box_dy(box()) );
 
         fl_end_polygon();
 
-
         fl_line( lx, y() + Fl::box_dy(box()), lx, y() + h() - Fl::box_dy(box()) * 2 );
     }
-
 
     if ( _adjusting_gain > 0.0f )
     {
@@ -777,7 +772,6 @@ Audio_Region::draw ( void )
         fl_line_style( FL_SOLID, 0 );
     }
 
-
     /* draw dog ear */
     {
         const int pw = 8;
@@ -793,23 +787,23 @@ Audio_Region::draw ( void )
         fl_begin_polygon();
 
         fl_vertex( line_x() + Fl::box_dx(box()),
-                   y() + Fl::box_dy(box()) );
+            y() + Fl::box_dy(box()) );
 
         fl_vertex( pw + line_x() + Fl::box_dx(box()),
-                   y() + Fl::box_dy(box()) );
+            y() + Fl::box_dy(box()) );
 
         fl_vertex( line_x() + Fl::box_dx(box()),
-                   pw + y() + Fl::box_dy(box()) );
+            pw + y() + Fl::box_dy(box()) );
 
         fl_end_polygon();
     }
 
     if ( selected() )
         draw_selection_frame( line_x() + Fl::box_dx(box()),
-                              y() + Fl::box_dy(box()),
-                              abs_w() - Fl::box_dw(box()),
-                              h() - Fl::box_dh(box()),
-                              selection_color() );
+            y() + Fl::box_dy(box()),
+            abs_w() - Fl::box_dw(box()),
+            h() - Fl::box_dh(box()),
+            selection_color() );
 
     /*     if ( current() ) */
     /*     { */
@@ -908,136 +902,136 @@ Audio_Region::handle ( int m )
 
     switch ( m )
     {
-    case FL_FOCUS:
-    case FL_UNFOCUS:
-        return 1;
-    case FL_KEYUP:
-        if ( _adjusting_gain > 0 )
-        {
-            _adjusting_gain = 0;
-            redraw();
+        case FL_FOCUS:
+        case FL_UNFOCUS:
             return 1;
-        }
-        break;
-    case FL_KEYBOARD:
-        if ( Fl::event_key() == 'g' )
-        {
-            if ( _adjusting_gain <= 0 )
+        case FL_KEYUP:
+            if ( _adjusting_gain > 0 )
             {
-                _adjusting_gain = _scale;
+                _adjusting_gain = 0;
+                redraw();
+                return 1;
+            }
+            break;
+        case FL_KEYBOARD:
+            if ( Fl::event_key() == 'g' )
+            {
+                if ( _adjusting_gain <= 0 )
+                {
+                    _adjusting_gain = _scale;
+                    redraw();
+                }
+                return 1;
+            }
+            return menu().test_shortcut() != 0;
+        case FL_ENTER:
+            return Sequence_Region::handle( m );
+        case FL_LEAVE:
+            if ( _adjusting_gain > 0 )
+            {
+                _adjusting_gain = 0;
                 redraw();
             }
-            return 1;
-        }
-        return menu().test_shortcut() != 0;
-    case FL_ENTER:
-        return Sequence_Region::handle( m );
-    case FL_LEAVE:
-        if ( _adjusting_gain > 0 )
+            return Sequence_Region::handle( m );
+        case FL_PUSH:
         {
-            _adjusting_gain = 0;
-            redraw();
-        }
-        return Sequence_Region::handle( m );
-    case FL_PUSH:
-    {
-        if ( _adjusting_gain > 0.0f )
-        {
-            _adjusting_gain = _scale;
-            return 1;
-        }
-
-        /* splitting  */
-        if ( test_press( FL_BUTTON2 | FL_SHIFT ) )
-        {
-            /* split */
-            if ( ! copied )
+            if ( _adjusting_gain > 0.0f )
             {
-                split( timeline->x_to_offset( X ) );
-            }
-
-            return 0;
-        }
-        else
-        {
-            ox = x() - X;
-            /* for panning */
-            os = _r->offset;
-
-            if ( test_press( FL_BUTTON2 | FL_CTRL ) )
-            {
-                normalize();
+                _adjusting_gain = _scale;
                 return 1;
             }
-            else if ( test_press( FL_BUTTON3 ) )
-            {
-                /* context menu */
-                menu_popup( &menu() );
 
-                return 1;
+            /* splitting  */
+            if ( test_press( FL_BUTTON2 | FL_SHIFT ) )
+            {
+                /* split */
+                if ( ! copied )
+                {
+                    split( timeline->x_to_offset( X ) );
+                }
+
+                return 0;
             }
             else
-                return Sequence_Region::handle( m );
-        }
-
-        break;
-    }
-    case FL_RELEASE:
-    {
-        Sequence_Region::handle( m );
-
-        copied = false;
-
-        return 1;
-    }
-    case FL_DRAG:
-
-        if ( Fl::event_is_click() )
-            return 1;
-
-        if ( ! _drag )
-        {
-            begin_drag( Drag( X, Y, x_to_offset( X ) ) );
-            _log.hold();
-        }
-
-        if ( _adjusting_gain )
-        {
-            int d = _drag->y - Y;
-
-            _scale = _adjusting_gain + ( 0.01f * d );
-
-            if ( _scale < 0.01f )
-                _scale = 0.01f;
-
-            redraw();
-            return 1;
-        }
-
-        if ( test_press( FL_BUTTON1 | FL_SHIFT | FL_CTRL ) )
-        {
-            /* panning */
-            int d = (ox + X) - x();
-
-            if ( d < 0 )
-                _r->offset = os + timeline->x_to_ts( 0 - d );
-            else
             {
-                if ( os < timeline->x_to_ts( d ) )
-                    _r->offset = 0;
+                ox = x() - X;
+                /* for panning */
+                os = _r->offset;
+
+                if ( test_press( FL_BUTTON2 | FL_CTRL ) )
+                {
+                    normalize();
+                    return 1;
+                }
+                else if ( test_press( FL_BUTTON3 ) )
+                {
+                    /* context menu */
+                    menu_popup( &menu() );
+
+                    return 1;
+                }
                 else
-                    _r->offset = os - timeline->x_to_ts( d );
+                    return Sequence_Region::handle( m );
             }
 
-            redraw();
+            break;
+        }
+        case FL_RELEASE:
+        {
+            Sequence_Region::handle( m );
+
+            copied = false;
+
             return 1;
         }
+        case FL_DRAG:
 
-        return Sequence_Region::handle( m );
+            if ( Fl::event_is_click() )
+                return 1;
 
-    default:
-        return Sequence_Region::handle( m );
-        break;
+            if ( ! _drag )
+            {
+                begin_drag( Drag( X, Y, x_to_offset( X ) ) );
+                _log.hold();
+            }
+
+            if ( _adjusting_gain )
+            {
+                int d = _drag->y - Y;
+
+                _scale = _adjusting_gain + ( 0.01f * d );
+
+                if ( _scale < 0.01f )
+                    _scale = 0.01f;
+
+                redraw();
+                return 1;
+            }
+
+            if ( test_press( FL_BUTTON1 | FL_SHIFT | FL_CTRL ) )
+            {
+                /* panning */
+                int d = (ox + X) - x();
+
+                if ( d < 0 )
+                    _r->offset = os + timeline->x_to_ts( 0 - d );
+                else
+                {
+                    if ( os < timeline->x_to_ts( d ) )
+                        _r->offset = 0;
+                    else
+                        _r->offset = os - timeline->x_to_ts( d );
+                }
+
+                redraw();
+                return 1;
+            }
+
+            return Sequence_Region::handle( m );
+
+        default:
+            return Sequence_Region::handle( m );
+            break;
     }
 
     return 0;
@@ -1066,9 +1060,8 @@ Audio_Region::normalize ( void )
 
     const nframes_t npeaks = _loop ? _loop : length();
 
-
     if ( _clip->read_peaks( npeaks, offset(), offset() + npeaks, &peaks, &pbuf, &channels ) &&
-            peaks )
+        peaks )
     {
         _scale = 1000.0f;
 

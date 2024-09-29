@@ -41,7 +41,7 @@
 void
 Audio_Region::Fade::apply ( sample_t *buf, Audio_Region::Fade::fade_dir_e dir, nframes_t start, nframes_t nframes ) const
 {
-//    printf( "apply fade %s: start=%ld end=%lu\n", dir == Fade::Out ? "out" : "in", start, end );
+    //    printf( "apply fade %s: start=%ld end=%lu\n", dir == Fade::Out ? "out" : "in", start, end );
     if ( ! nframes )
         return;
 
@@ -54,17 +54,17 @@ Audio_Region::Fade::apply ( sample_t *buf, Audio_Region::Fade::fade_dir_e dir, n
     {
         fi = 1.0f - fi;
         for ( ; n--; fi -= inc  )
-            *(buf++) *= gain( fi );
+            * (buf++) *= gain( fi );
     }
     else
         for ( ; n--; fi += inc )
-            *(buf++) *= gain( fi );
+            * (buf++) *= gain( fi );
 }
 
 void
 Audio_Region::Fade::apply_interleaved ( sample_t *buf, Audio_Region::Fade::fade_dir_e dir, nframes_t start, nframes_t nframes, int channels ) const
 {
-//    printf( "apply fade %s: start=%ld end=%lu\n", dir == Fade::Out ? "out" : "in", start, end );
+    //    printf( "apply fade %s: start=%ld end=%lu\n", dir == Fade::Out ? "out" : "in", start, end );
     if ( ! nframes )
         return;
 
@@ -195,9 +195,9 @@ Audio_Region::read ( sample_t *buf, bool buf_is_empty, nframes_t pos, nframes_t 
         }
 
         const nframes_t lO = sO % _loop, /* how far we are into the loop */
-                             nthloop = sO / _loop, /* which loop iteration */
-                                       seam_L = rS + ( nthloop * _loop ), /* receding seam */
-                                                seam_R = rS + ( ( nthloop + 1 ) * _loop ); /* upcoming seam */
+            nthloop = sO / _loop, /* which loop iteration */
+            seam_L = rS + ( nthloop * _loop ), /* receding seam */
+            seam_R = rS + ( ( nthloop + 1 ) * _loop ); /* upcoming seam */
 
         /* read interleaved channels */
         if (
@@ -215,21 +215,21 @@ Audio_Region::read ( sample_t *buf, bool buf_is_empty, nframes_t pos, nframes_t 
 
             /* read the first part */
             cnt = _clip->read(
-                      cbuf + ( _clip->channels() * bO ), /* buf */
-                      -1,				   /* chan */
-                      r.offset + lO,			   /* start */
-                      ( seam_R - bS ) - bO		   /* len */
-                  );
+                cbuf + ( _clip->channels() * bO ), /* buf */
+                -1,				   /* chan */
+                r.offset + lO,			   /* start */
+                ( seam_R - bS ) - bO		   /* len */
+                );
 
             /* ASSERT( len > cnt, "Error in region looping calculations" ); */
 
             /* read the second part */
             cnt += _clip->read(
-                       cbuf + ( _clip->channels() * ( bO + cnt ) ), /* buf */
-                       -1,					     /* chan */
-                       r.offset + 0,				     /* start */
-                       ( len - cnt ) - bO			     /* len */
-                   );
+                cbuf + ( _clip->channels() * ( bO + cnt ) ), /* buf */
+                -1,					     /* chan */
+                r.offset + 0,				     /* start */
+                ( len - cnt ) - bO			     /* len */
+                );
 
             /* assert( cnt == len ); */
         }
@@ -255,7 +255,7 @@ Audio_Region::read ( sample_t *buf, bool buf_is_empty, nframes_t pos, nframes_t 
     }
     else
     {
-//    DMESSAGE("Clip read, rL=%lu, b0=%lu, sO=%lu, r.offset=%lu, len=%lu",r.length,bO,sO,r.offset,len);
+        //    DMESSAGE("Clip read, rL=%lu, b0=%lu, sO=%lu, r.offset=%lu, len=%lu",r.length,bO,sO,r.offset,len);
         cnt = _clip->read( cbuf + ( _clip->channels() * bO ), -1, sO + r.offset, len );
     }
 
@@ -323,9 +323,8 @@ Audio_Region::prepare ( void )
 
     DMESSAGE( "Preparing capture region" );
 
-//    log_start();
+    //    log_start();
 }
-
 
 class SequenceRedrawRequest
 {
@@ -399,7 +398,7 @@ Audio_Region::finalize ( nframes_t /* frame */)
 
     timeline->sequence_lock.wrlock();
 
-//   _range.length = frame - _range.start; // original timeline
+    //   _range.length = frame - _range.start; // original timeline
     _range.length = _clip->length();
 
     timeline->sequence_lock.unlock();
@@ -408,7 +407,7 @@ Audio_Region::finalize ( nframes_t /* frame */)
     _clip->open();
 
     log_create();
-//    log_end();
+    //    log_end();
 
     return true;
 }

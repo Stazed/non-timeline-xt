@@ -74,7 +74,8 @@ is_absolute ( const char *name )
 }
 
 /** return pointer to /name/ corrected for relative path. */
-char *Audio_File::path ( const char *name )
+char *
+Audio_File::path ( const char *name )
 {
     char *path = 0;
 
@@ -92,14 +93,15 @@ Audio_File::filename ( void ) const
     return _path;
 }
 
-static bool is_poor_seeker ( const char * filename )
+static bool
+is_poor_seeker ( const char * filename )
 {
     if ( ( strlen(filename) > 4 &&
-            ! strcasecmp( &filename[strlen(filename)-4], ".ogg" ) )
-            ||
-            ( strlen(filename) > 5 &&
-              ! strcasecmp( &filename[strlen(filename)-5], ".flac" ) )
-       )
+        ! strcasecmp( &filename[strlen(filename) - 4], ".ogg" ) )
+        ||
+        ( strlen(filename) > 5 &&
+        ! strcasecmp( &filename[strlen(filename) - 5], ".flac" ) )
+    )
     {
         return true;
     }
@@ -135,7 +137,7 @@ Audio_File::from_file ( const char * filename )
     if ( ( a = Audio_File_SF::from_file( filename ) ) )
         goto done;
 
-// TODO: other formats
+    // TODO: other formats
 
     DWARNING( "creating dummy source for \"%s\"", filename );
 
@@ -176,7 +178,6 @@ Audio_File::release ( void )
     if ( --_refs == 0 )
         delete this;
 }
-
 
 bool
 Audio_File::read_peaks( float fpp, nframes_t start, nframes_t end, int *peaks, Peak **pbuf, int *channels )

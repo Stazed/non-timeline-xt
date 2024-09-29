@@ -21,7 +21,6 @@
 /* Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 /*******************************************************************************/
 
-
 /* Handles streaming regions from disk to track outputs. */
 
 /* FIXME: we shouldn't depend on these */
@@ -83,7 +82,7 @@ Playback_DS::read_block ( sample_t *buf, nframes_t nframes )
 
     memset( buf, 0, nframes * sizeof( sample_t ) * channels() );
 
-//    printf( "IO: attempting to read block @ %lu\n", _frame );
+    //    printf( "IO: attempting to read block @ %lu\n", _frame );
 
     if ( !timeline )
         return;
@@ -130,9 +129,9 @@ seek:
         read_block( buf, nframes * _disk_io_blocks );
 
         while ( blocks_written < _disk_io_blocks &&
-                wait_for_block() )
+            wait_for_block() )
         {
-//        lock(); // for seeking
+            //        lock(); // for seeking
 
             if ( _pending_seek )
             {
@@ -151,7 +150,7 @@ seek:
             if ( _terminate )
                 goto done;
 
-//        unlock(); // for seeking
+            //        unlock(); // for seeking
 
             /* deinterleave the buffer and stuff it into the per-channel ringbuffers */
 
@@ -160,10 +159,10 @@ seek:
             for ( int i = 0; i < channels(); i++ )
             {
                 buffer_deinterleave_one_channel( cbuf,
-                                                 buf + ( blocks_written * nframes * channels() ),
-                                                 i,
-                                                 channels(),
-                                                 nframes );
+                    buf + ( blocks_written * nframes * channels() ),
+                    i,
+                    channels(),
+                    nframes );
 
                 while ( jack_ringbuffer_write_space( _rb[ i ] ) < block_size )
                     usleep( 100 * 1000 );
@@ -182,7 +181,7 @@ done:
     free(buf);
     free(cbuf);
 
-//    flush();
+    //    flush();
 
     _terminate = false;
 }
@@ -196,7 +195,7 @@ Playback_DS::process ( nframes_t nframes )
 
     const size_t block_size = nframes * sizeof( sample_t );
 
-//    printf( "process: %lu %lu %lu\n", _frame, _frame + nframes, nframes );
+    //    printf( "process: %lu %lu %lu\n", _frame, _frame + nframes, nframes );
 
     for ( int i = channels(); i--;  )
     {
@@ -227,7 +226,7 @@ Playback_DS::process ( nframes_t nframes )
 
         /* TODO: figure out a way to stop IO while muted without losing sync */
         if ( track()->mute() || ( Track::soloing() && ! track()->solo() ) )
-            buffer_fill_with_silence( (sample_t*)buf, nframes );
+            buffer_fill_with_silence( (sample_t * )buf, nframes );
     }
 
     block_processed();

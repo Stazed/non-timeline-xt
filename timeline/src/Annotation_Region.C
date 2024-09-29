@@ -52,7 +52,7 @@ Annotation_Region::set ( Log_Entry &e )
             label( v );
     }
 
-//            timeline->redraw();
+    //            timeline->redraw();
 }
 
 Annotation_Region::Annotation_Region ( Sequence *sequence, nframes_t when, const char *label )
@@ -75,7 +75,6 @@ Annotation_Region::Annotation_Region ( const Annotation_Region &rhs ) : Sequence
 {
     log_create();
 }
-
 
 Annotation_Region::~Annotation_Region ( )
 {

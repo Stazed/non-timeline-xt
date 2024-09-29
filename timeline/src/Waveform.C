@@ -59,8 +59,8 @@ Waveform::scale ( Peak *pbuf, int npeaks, float gain )
 /** draw a portion of /clip/'s waveform. coordinates are the portion to draw  */
 void
 Waveform::draw ( int X, int Y, int W, int H,
-                 const Peak *pbuf, int peaks, int skip,
-                 Fl_Color fg_color, Fl_Color bg_color )
+    const Peak *pbuf, int peaks, int skip,
+    Fl_Color fg_color, Fl_Color bg_color )
 {
     int j;
 

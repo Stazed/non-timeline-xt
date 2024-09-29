@@ -31,7 +31,6 @@
 
 using namespace std;
 
-
 list <Sequence_Widget *> Sequence_Widget::_selection;
 Sequence_Widget * Sequence_Widget::_current = NULL;
 Sequence_Widget * Sequence_Widget::_pushed = NULL;
@@ -39,7 +38,6 @@ Sequence_Widget * Sequence_Widget::_belowmouse = NULL;
 Fl_Color Sequence_Widget::_selection_color = FL_MAGENTA;
 
 const double C_NUDGE_RATIO = 0.0213333333333;
-
 
 Sequence_Widget::Sequence_Widget ( )
 {
@@ -68,7 +66,6 @@ Sequence_Widget::Sequence_Widget ( const Sequence_Widget &rhs ) : Loggable( rhs 
         _label = strdup( rhs._label );
     else
         _label = 0;
-
 
     _range = rhs._range;
     _dragging_range = rhs._dragging_range;
@@ -127,8 +124,8 @@ void
 Sequence_Widget::get ( Log_Entry &e ) const
 {
     e.add( ":start", _r->start );
-//    e.add( ":offset", _r->offset );
-//    e.add( ":length", _r->length );
+    //    e.add( ":offset", _r->offset );
+    //    e.add( ":length", _r->length );
     e.add( ":sequence", _sequence );
     e.add( ":selected", selected() );
 }
@@ -144,10 +141,10 @@ Sequence_Widget::set ( Log_Entry &e )
 
         if ( ! strcmp( s, ":start" ) )
             _r->start = atoll( v );
-//        else if ( ! strcmp( s, ":offset" ) )
-//            _r->offset = atoll( v );
-//        else if ( ! strcmp( s, ":length" ) )
-//            _r->length = atoll( v );
+        //        else if ( ! strcmp( s, ":offset" ) )
+        //            _r->offset = atoll( v );
+        //        else if ( ! strcmp( s, ":length" ) )
+        //            _r->length = atoll( v );
         else if ( ! strcmp( s, ":selected" ) )
         {
             if ( atoi( v ) )
@@ -165,8 +162,8 @@ Sequence_Widget::set ( Log_Entry &e )
 
             t->add( this );
         }
-//                else
-//                    e.erase( i );
+        //                else
+        //                    e.erase( i );
     }
 
     if ( _sequence )
@@ -488,7 +485,6 @@ Sequence_Widget::draw_box ( void )
     fl_draw_box( box(), x(), y(), w(), h(), selected() ? FL_MAGENTA : _box_color );
 }
 
-
 #include "../../FL/test_press.H"
 
 /* base hanlde just does basic dragging */
@@ -506,141 +502,139 @@ Sequence_Widget::handle ( int m )
 
     switch ( m )
     {
-    case FL_ENTER:
-        fl_cursor( FL_CURSOR_HAND );
-        return 1;
-    case FL_LEAVE:
-//            DMESSAGE( "leave" );
-        fl_cursor( sequence()->cursor() );
-        return 1;
-    case FL_PUSH:
-    {
-        /* deletion */
-        if ( test_press( FL_BUTTON3 + FL_CTRL ) )
-        {
-            remove();
-
+        case FL_ENTER:
+            fl_cursor( FL_CURSOR_HAND );
             return 1;
-        }
-        else if ( test_press( FL_BUTTON1 ) || test_press( FL_BUTTON1 + FL_CTRL ) || test_press( FL_BUTTON1 + FL_ALT ) )
-        {
-            /* traditional selection model */
-            if ( Fl::event_ctrl() )
-                select();
-
-            fl_cursor( FL_CURSOR_MOVE );
-
-            /* movement drag */
+        case FL_LEAVE:
+            //            DMESSAGE( "leave" );
+            fl_cursor( sequence()->cursor() );
             return 1;
-        }
-
-        return 0;
-    }
-    case FL_RELEASE:
-
-        if ( _drag )
+        case FL_PUSH:
         {
-            end_drag();
-            _log.release();
-        }
-
-        fl_cursor( FL_CURSOR_HAND );
-
-        return 1;
-    case FL_DRAG:
-    {
-        Fl::event_key( 0 );
-
-        if ( ! _drag )
-        {
-            begin_drag ( Drag( X, Y, x_to_offset( X ), start() ) );
-            _log.hold();
-        }
-
-        if ( test_press( FL_BUTTON1 + FL_CTRL ) && ! _drag->state )
-        {
-            /* duplication */
-            timeline->sequence_lock.wrlock();
-            DMESSAGE("SW original = %p", this);
-            this->clone();  // This will add
-            timeline->sequence_lock.unlock();
-
-            _drag->state = 1;
-            return 1;
-        }
-        else if ( test_press( FL_BUTTON1 ) || test_press( FL_BUTTON1 + FL_CTRL ) )
-        {
-            redraw();
-
-            const nframes_t of = timeline->x_to_offset( X );
-
-            int64_t s = (int64_t)of - _drag->offset;
-
-            if ( s < 0 )
-                s = 0;
-
-            start(s);
-
-            if ( Sequence_Widget::_current == this )
-                sequence()->snap( this );
-
-            if ( X >= sequence()->x() + sequence()->w() ||
-                    X <= sequence()->drawable_x() )
+            /* deletion */
+            if ( test_press( FL_BUTTON3 + FL_CTRL ) )
             {
-                /* this drag needs to scroll */
+                remove();
 
-                int64_t pos = s - ( _drag->mouse_offset - _drag->offset );
+                return 1;
+            }
+            else if ( test_press( FL_BUTTON1 ) || test_press( FL_BUTTON1 + FL_CTRL ) || test_press( FL_BUTTON1 + FL_ALT ) )
+            {
+                /* traditional selection model */
+                if ( Fl::event_ctrl() )
+                    select();
 
+                fl_cursor( FL_CURSOR_MOVE );
 
-                if ( X > sequence()->x() + sequence()->w() )
-                    pos -= timeline->x_to_ts( sequence()->drawable_w() );
-
-                if ( s == 0 )
-                    pos = 0;
-
-                if ( pos < 0 )
-                    pos = 0;
-
-                timeline->xposition(timeline->ts_to_x(pos));
-
-                /* timeline->redraw();  */
-                sequence()->damage( FL_DAMAGE_USER1 );
+                /* movement drag */
+                return 1;
             }
 
-            if ( ! selected() || _selection.size() == 1 )
-            {
-                /* track jumping */
-                if ( Y > _sequence->y() + _sequence->h() || Y < _sequence->y() )
-                {
-                    Track *t = timeline->track_under( Y );
-
-                    fl_cursor( FL_CURSOR_HAND );
-
-                    if ( t )
-                        t->handle( FL_ENTER );
-
-                    return 0;
-                }
-            }
-
-            return 1;
-        }
-        else if(test_press( FL_BUTTON1 + FL_ALT ))
-        {
-            // Control point fixed horizontal axis & aligned vertical with vertical dragging
-            return 1;
-        }
-        else
-        {
-            DMESSAGE( "unknown" );
             return 0;
         }
-    }
-    default:
-        return 0;
+        case FL_RELEASE:
+
+            if ( _drag )
+            {
+                end_drag();
+                _log.release();
+            }
+
+            fl_cursor( FL_CURSOR_HAND );
+
+            return 1;
+        case FL_DRAG:
+        {
+            Fl::event_key( 0 );
+
+            if ( ! _drag )
+            {
+                begin_drag ( Drag( X, Y, x_to_offset( X ), start() ) );
+                _log.hold();
+            }
+
+            if ( test_press( FL_BUTTON1 + FL_CTRL ) && ! _drag->state )
+            {
+                /* duplication */
+                timeline->sequence_lock.wrlock();
+                DMESSAGE("SW original = %p", this);
+                this->clone();  // This will add
+                timeline->sequence_lock.unlock();
+
+                _drag->state = 1;
+                return 1;
+            }
+            else if ( test_press( FL_BUTTON1 ) || test_press( FL_BUTTON1 + FL_CTRL ) )
+            {
+                redraw();
+
+                const nframes_t of = timeline->x_to_offset( X );
+
+                int64_t s = (int64_t)of - _drag->offset;
+
+                if ( s < 0 )
+                    s = 0;
+
+                start(s);
+
+                if ( Sequence_Widget::_current == this )
+                    sequence()->snap( this );
+
+                if ( X >= sequence()->x() + sequence()->w() ||
+                    X <= sequence()->drawable_x() )
+                {
+                    /* this drag needs to scroll */
+
+                    int64_t pos = s - ( _drag->mouse_offset - _drag->offset );
+
+                    if ( X > sequence()->x() + sequence()->w() )
+                        pos -= timeline->x_to_ts( sequence()->drawable_w() );
+
+                    if ( s == 0 )
+                        pos = 0;
+
+                    if ( pos < 0 )
+                        pos = 0;
+
+                    timeline->xposition(timeline->ts_to_x(pos));
+
+                    /* timeline->redraw();  */
+                    sequence()->damage( FL_DAMAGE_USER1 );
+                }
+
+                if ( ! selected() || _selection.size() == 1 )
+                {
+                    /* track jumping */
+                    if ( Y > _sequence->y() + _sequence->h() || Y < _sequence->y() )
+                    {
+                        Track *t = timeline->track_under( Y );
+
+                        fl_cursor( FL_CURSOR_HAND );
+
+                        if ( t )
+                            t->handle( FL_ENTER );
+
+                        return 0;
+                    }
+                }
+
+                return 1;
+            }
+            else if(test_press( FL_BUTTON1 + FL_ALT ))
+            {
+                // Control point fixed horizontal axis & aligned vertical with vertical dragging
+                return 1;
+            }
+            else
+            {
+                DMESSAGE( "unknown" );
+                return 0;
+            }
+        }
+        default:
+            return 0;
     }
 }
-
 
 /**********/
 /* Public */
