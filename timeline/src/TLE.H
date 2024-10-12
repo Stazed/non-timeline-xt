@@ -52,6 +52,8 @@ public:
   void save_options();
   void save();
   void quit();
+  void save_window_sizes();
+  void load_window_sizes();
   bool open( const char *name );
   void save_timeline_settings();
 private:

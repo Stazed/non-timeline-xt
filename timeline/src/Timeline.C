@@ -2304,6 +2304,8 @@ Timeline::command_load ( const char *name, const char *display_name )
 
     apply_track_order();
 
+    tle->load_window_sizes( );
+
     return true;
 }
 
@@ -2311,6 +2313,7 @@ bool
 Timeline::command_save ( )
 {
     tle->save_options();
+    tle->save_window_sizes( );
 
     return true;
 }

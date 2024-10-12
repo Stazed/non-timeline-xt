@@ -269,7 +269,7 @@ Project::make_engine ( void )
     transport->stop();
 }
 
-/** Try to open project /name/. Returns 0 if sucsessful, an error code
+/** Try to open project /name/. Returns 0 if successful, an error code
  * otherwise */
 int
 Project::open ( const char *name )

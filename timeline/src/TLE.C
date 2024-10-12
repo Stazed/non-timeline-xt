@@ -594,6 +594,40 @@ void TLE::quit() {
   }
 }
 
+void TLE::save_window_sizes() {
+  FILE *fp = fopen ( "window", "w" );
+  
+      if ( !fp )
+      {
+          printf ( "Error opening window file for writing\n" );
+          return;
+      }
+  
+      fprintf ( fp, "%d:%d:%d:%d\n", main_window->x(), main_window->y(), main_window->w(), main_window->h());
+  
+      fclose ( fp );
+}
+
+void TLE::load_window_sizes() {
+  FILE *fp = fopen ( "window", "r" );
+  
+      if ( !fp )
+      {
+          printf ( "Error opening window file for reading\n" );
+          return;
+      }
+  
+      int X = 0, Y = 0, W = 520, H = 710; 
+  
+      while ( 4 == fscanf ( fp, "%d:%d:%d:%d\n]\n", &X, &Y, &W, &H ) )
+      {
+      }
+  
+      main_window->resize ( X, Y, W, H );
+  
+      fclose ( fp );
+}
+
 bool TLE::open( const char *name ) {
   return timeline->command_load( name, NULL );
 }
