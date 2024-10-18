@@ -48,6 +48,7 @@ public:
 
 class TLE {
   Fl_Color system_colors[3]; 
+  int _x_main, _y_main, _w_main, _h_main; 
 public:
   void save_options();
   void save();

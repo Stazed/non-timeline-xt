@@ -135,6 +135,8 @@ class TLE {open
 } {
   decl {Fl_Color system_colors[3];} {private local
   }
+  decl {int _x_main, _y_main, _w_main, _h_main;} {private local
+  }
   Function {save_options()} {open
   } {
     code {const char options_filename[] = "options";
@@ -164,7 +166,13 @@ else
   }
   Function {save_window_sizes()} {return_type void
   } {
-    code {FILE *fp = fopen ( "window", "w" );
+    code {if( ( _x_main == main_window->x() ) && ( _y_main ==  main_window->y() ) &&
+         ( _w_main ==  main_window->w() ) && (_h_main == main_window->h() ) )
+    {
+        return; // nothing changed
+    }
+
+    FILE *fp = fopen ( "window", "w" );
 
     if ( !fp )
     {
@@ -186,13 +194,11 @@ else
         return;
     }
 
-    int X = 0, Y = 0, W = 520, H = 710; 
-
-    while ( 4 == fscanf ( fp, "%d:%d:%d:%d\\n]\\n", &X, &Y, &W, &H ) )
+    while ( 4 == fscanf ( fp, "%d:%d:%d:%d\\n]\\n", &_x_main, &_y_main, &_w_main, &_h_main ) )
     {
     }
 
-    main_window->resize ( X, Y, W, H );
+    main_window->resize ( _x_main, _y_main, _w_main, _h_main );
 
     fclose ( fp );} {}
   }
@@ -242,6 +248,10 @@ Fl::lock();
   Function {TLE()} {open
   } {
     code {make_window();
+_x_main = 0;
+_y_main = 0;
+_w_main = 947;
+_h_main = 600;
 	
 Fl::visible_focus( 0 );
 
@@ -320,7 +330,7 @@ Loggable::progress_callback( &TLE::progress_cb, this );} {}
         timeline->command_quit();
     }
 }} open selected
-      xywh {596 289 1025 770} type Double resizable
+      xywh {864 86 1025 770} type Double resizable
       code0 {o->xclass( APP_NAME );}
       class TLE_Window size_range {947 300 0 0} visible
     } {

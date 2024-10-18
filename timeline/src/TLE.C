@@ -595,7 +595,13 @@ void TLE::quit() {
 }
 
 void TLE::save_window_sizes() {
-  FILE *fp = fopen ( "window", "w" );
+  if( ( _x_main == main_window->x() ) && ( _y_main ==  main_window->y() ) &&
+           ( _w_main ==  main_window->w() ) && (_h_main == main_window->h() ) )
+      {
+          return; // nothing changed
+      }
+  
+      FILE *fp = fopen ( "window", "w" );
   
       if ( !fp )
       {
@@ -617,13 +623,11 @@ void TLE::load_window_sizes() {
           return;
       }
   
-      int X = 0, Y = 0, W = 520, H = 710; 
-  
-      while ( 4 == fscanf ( fp, "%d:%d:%d:%d\n]\n", &X, &Y, &W, &H ) )
+      while ( 4 == fscanf ( fp, "%d:%d:%d:%d\n]\n", &_x_main, &_y_main, &_w_main, &_h_main ) )
       {
       }
   
-      main_window->resize ( X, Y, W, H );
+      main_window->resize ( _x_main, _y_main, _w_main, _h_main );
   
       fclose ( fp );
 }
@@ -674,6 +678,10 @@ void TLE::run() {
 
 TLE::TLE() {
   make_window();
+  _x_main = 0;
+  _y_main = 0;
+  _w_main = 947;
+  _h_main = 600;
   	
   Fl::visible_focus( 0 );
   
