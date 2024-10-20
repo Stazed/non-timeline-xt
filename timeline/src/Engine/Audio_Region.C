@@ -165,17 +165,8 @@ Audio_Region::read ( sample_t *buf, bool buf_is_empty, nframes_t pos, nframes_t 
     /* FIXME: keep the declick defults someplace else */
     Fade declick;
 
-    if(_fade_in.type == Fade::Disabled)
-    {
-        // defaults, no declick
-        declick.length = 0;
-        declick.type   = Fade::Linear;
-    }
-    else
-    {
-        declick.length = (float)timeline->sample_rate() * 0.01f;
-        declick.type   = Fade::Sigmoid;
-    }
+    declick.length = (float)timeline->sample_rate() * 0.01f;
+    declick.type   = Fade::Sigmoid;
 
     /* FIXME: what was this for? */
     if ( bO >= nframes )
@@ -252,13 +243,19 @@ Audio_Region::read ( sample_t *buf, bool buf_is_empty, nframes_t pos, nframes_t 
 
             if ( seam != rS && seam != rE ) /* not either end of the region */
             {
-                if ( seam >= bS && seam <= bE + declick.length )
-                    /* fade out previous loop segment */
-                    apply_fade( cbuf, _clip->channels(), declick, bS, bE, seam, Fade::Out );
+                if ( _fade_out.type != Fade::Disabled )
+                {
+                    if ( seam >= bS && seam <= bE + declick.length )
+                        /* fade out previous loop segment */
+                        apply_fade( cbuf, _clip->channels(), declick, bS, bE, seam, Fade::Out );
+                }
 
-                if ( seam <= bE && seam + declick.length >= bS )
-                    /* fade in next loop segment */
-                    apply_fade( cbuf, _clip->channels(), declick, bS, bE, seam, Fade::In );
+                if ( _fade_in.type != Fade::Disabled )
+                {
+                    if ( seam <= bE && seam + declick.length >= bS )
+                        /* fade in next loop segment */
+                        apply_fade( cbuf, _clip->channels(), declick, bS, bE, seam, Fade::In );
+                }
             }
         }
     }
@@ -285,14 +282,17 @@ Audio_Region::read ( sample_t *buf, bool buf_is_empty, nframes_t pos, nframes_t 
         Fade fade;
 
         /* disabling fade also disables de-clicking for perfectly abutted edits. */
-        if ( fade.type != Fade::Disabled )
+        if ( _fade_in.type != Fade::Disabled )
         {
             fade = declick < _fade_in ? _fade_in : declick;
 
             /* do fade in if necessary */
             if ( sO < fade.length )
                 apply_fade( cbuf, _clip->channels(), fade, bS, bE, rS, Fade::In );
-
+        }
+        
+        if ( _fade_out.type != Fade::Disabled )
+        {
             fade = declick < _fade_out ? _fade_out : declick;
 
             /* do fade out if necessary */
