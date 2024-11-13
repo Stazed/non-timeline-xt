@@ -52,11 +52,8 @@ public:
         fade_type_e type;
         nframes_t length;
 
-        Fade ( )
-        {
-            type   = Linear;
-            length = 0;
-        }
+        Fade ( ) : type(Linear), length(0)
+        { }
 
         bool
         operator< ( const Fade &rhs ) const
@@ -122,21 +119,21 @@ private:
 
 protected:
 
-    virtual void get ( Log_Entry &e ) const;
-    virtual void set ( Log_Entry &e );
+    virtual void get ( Log_Entry &e ) const override;
+    virtual void set ( Log_Entry &e ) override;
 
     _Pragma("GCC diagnostic push")
     _Pragma("GCC diagnostic ignored \"-Wunused-parameter\"")
-    virtual void draw_label ( const char *label, Fl_Align align, Fl_Color color=(Fl_Color)0, int xo=0, int yo=0 )
+    virtual void draw_label ( const char *label, Fl_Align align, Fl_Color color=(Fl_Color)0, int xo=0, int yo=0 ) override
     {
         Sequence_Widget::draw_label( label, align );
     }
     _Pragma("GCC diagnostic pop")
-    virtual void draw_label ( void );
+    virtual void draw_label ( void ) override;
 
-    int handle ( int m );
-    void draw_box ( void );
-    void draw ( void );
+    int handle ( int m ) override;
+    void draw_box ( void ) override;
+    void draw ( void ) override;
     void resize ( void );
 
 public:
@@ -147,11 +144,11 @@ public:
 
     static Fl_Boxtype _box;
     static Fl_Color _selection_color;
-    Fl_Color selection_color ( void ) const
+    Fl_Color selection_color ( void ) const override
     {
         return _selection_color;
     }
-    void selection_color ( Fl_Color v )
+    void selection_color ( Fl_Color v ) override
     {
         _selection_color = v;
     }
@@ -171,15 +168,15 @@ public:
     const char * source_name ( void ) const;
 
     Audio_Region ( const Audio_Region & rhs );
-    Audio_Region ( Audio_File *c );
+    explicit Audio_Region ( Audio_File *c );
     Audio_Region ( Audio_File *c, Sequence *t, nframes_t o );
     ~Audio_Region ( );
 
-    Fl_Boxtype box ( void ) const
+    Fl_Boxtype box ( void ) const override
     {
         return Audio_Region::_box;
     }
-    Fl_Align align ( void ) const
+    Fl_Align align ( void ) const override
     {
         return  (Fl_Align)(FL_ALIGN_LEFT | FL_ALIGN_BOTTOM | FL_ALIGN_INSIDE | FL_ALIGN_CLIP );
     }
@@ -189,7 +186,7 @@ public:
     void split ( nframes_t where );
     bool recording ( void ) const;
 
-    virtual Fl_Color actual_box_color ( void )  const;
+    virtual Fl_Color actual_box_color ( void )  const override;
     /* Engine */
     nframes_t read ( sample_t *buf, bool buf_is_empty, nframes_t pos, nframes_t nframes, int out_channels ) const;
     nframes_t write ( nframes_t nframes );

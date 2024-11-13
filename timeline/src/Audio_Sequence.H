@@ -26,6 +26,7 @@
 
 #include "Sequence.H"
 #include "Audio_Region.H"
+#include "Track_Header.H"
 
 #include <FL/Fl_Input.H>
 class Audio_Sequence_Header;
@@ -35,18 +36,18 @@ class Audio_Sequence : public Sequence
 
 protected:
 
-    void get ( Log_Entry &e ) const;
+    void get ( Log_Entry &e ) const override;
 
-    void set ( Log_Entry &e );
+    void set ( Log_Entry &e ) override;
 
     Audio_Sequence ( ) : Sequence( 0 )
     {
         init();
     }
 
-    void handle_widget_change ( nframes_t start, nframes_t length );
+    void handle_widget_change ( nframes_t start, nframes_t length ) override;
 
-    void draw ( void );
+    void draw ( void ) override;
 
     static void cb_button ( Fl_Widget *w, void *v );
     void cb_button ( Fl_Widget *w );
@@ -57,24 +58,24 @@ public:
 
     int handle_paste ( const char *text );
 
-    int handle ( int m );
+    int handle ( int m ) override;
 
     LOG_CREATE_FUNC( Audio_Sequence );
 
     Audio_Sequence_Header * header ( void )
     {
-        return (Audio_Sequence_Header*)child(0);
+        return static_cast<Audio_Sequence_Header*>( child(0) );
     }
 
     Audio_Sequence ( Track *track, const char *name = 0 );
     ~Audio_Sequence ( );
 
-    Fl_Cursor cursor ( void ) const
+    Fl_Cursor cursor ( void ) const override
     {
         return FL_CURSOR_DEFAULT;
     }
 
-    virtual Sequence * clone_empty ( void )
+    virtual Sequence * clone_empty ( void ) override
     {
         Audio_Sequence *t = new Audio_Sequence( track() );
 
