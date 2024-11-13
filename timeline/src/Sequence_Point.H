@@ -32,11 +32,11 @@ class Sequence_Point : public Sequence_Widget
 
 protected:
 
-    void get ( Log_Entry &e ) const;
-    void set ( Log_Entry &e );
+    void get ( Log_Entry &e ) const override;
+    void set ( Log_Entry &e ) override;
 
-    virtual void draw_box ( void );
-    virtual void draw ( void );
+    virtual void draw_box ( void ) override;
+    virtual void draw ( void ) override;
 
     Sequence_Point ( const Sequence_Point &rhs );
     Sequence_Point ( );
@@ -44,11 +44,11 @@ protected:
 
 public:
 
-    Fl_Align align ( void ) const
+    Fl_Align align ( void ) const override
     {
         return FL_ALIGN_RIGHT;
     }
-    virtual long abs_w ( void ) const
+    virtual long abs_w ( void ) const override
     {
         return 8;
     }
@@ -56,12 +56,12 @@ public:
 //    virtual int abs_x ( void ) const { return Sequence_Widget::abs_x() - ( abs_w() >> 1 ); }
 //    virtual int x ( void ) const { return Sequence_Widget::line_x() - ( abs_w() >> 1 ); }
 
-    virtual int x ( void ) const
+    virtual int x ( void ) const override
     {
         return line_x();
     }
 
-    nframes_t length ( void ) const
+    nframes_t length ( void ) const override
     {
         return timeline->x_to_ts( abs_w() );
     }

@@ -68,7 +68,7 @@ protected:
 
 public:
 
-    virtual void log_children ( void ) const;
+    virtual void log_children ( void ) const override;
 
     /* child classes should implement this if they need to take
      special action when a widget is changed/moved/resized. /start/
