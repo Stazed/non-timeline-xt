@@ -88,7 +88,7 @@ OSC_Transmit_Thread::process ( void )
 void *
 OSC_Transmit_Thread::process ( void *v )
 {
-    OSC_Transmit_Thread *t = (OSC_Transmit_Thread*)v;
+    OSC_Transmit_Thread *t = static_cast<OSC_Transmit_Thread*>( v );
 
     t->process();
 

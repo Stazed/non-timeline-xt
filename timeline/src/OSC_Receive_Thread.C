@@ -81,7 +81,7 @@ OSC_Receive_Thread::process ( void )
 void *
 OSC_Receive_Thread::process ( void *v )
 {
-    OSC_Receive_Thread *t = (OSC_Receive_Thread*)v;
+    OSC_Receive_Thread *t = static_cast<OSC_Receive_Thread*>( v );
 
     t->process();
 

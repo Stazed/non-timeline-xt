@@ -35,7 +35,7 @@
 class Region_Volume_Editor : public Fl_Menu_Window
 {
 public:
-    Region_Volume_Editor(float &scale);
+    explicit Region_Volume_Editor(float &scale);
 
     /* not permitted */
     Region_Volume_Editor(const Region_Volume_Editor& orig);
