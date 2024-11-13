@@ -111,7 +111,7 @@ struct position_info
 };
 
 #define SEQUENCE_WIDGET_CLONE_FUNC(class)               \
-    virtual Sequence_Widget *clone ( void ) const       \
+    virtual Sequence_Widget *clone ( void ) const override \
     {                                                   \
         return new class ( *this );                     \
     }
@@ -151,8 +151,8 @@ protected:
 
     Drag *_drag;
 
-    virtual void get ( Log_Entry &e ) const;
-    virtual void set ( Log_Entry &e );
+    virtual void get ( Log_Entry &e ) const override;
+    virtual void set ( Log_Entry &e ) override;
 
     Sequence_Widget ( const Sequence_Widget &rhs );
     Sequence_Widget ( );
@@ -399,7 +399,7 @@ public:
         if ( s )
             _label = strdup( s );
 
-        redraw();
+        Sequence_Widget::redraw();
     }
 
     /** convert a screen x coord into an start into the region */

@@ -39,21 +39,17 @@ Fl_Color Sequence_Widget::_selection_color = FL_MAGENTA;
 
 const double C_NUDGE_RATIO = 0.0213333333333;
 
-Sequence_Widget::Sequence_Widget ( )
+Sequence_Widget::Sequence_Widget ( ) :
+    _nudge_dirty(false),
+    _label(0),
+    _can_resize_label(true),
+    _sequence(NULL),
+    _r(&_range),
+    _color(FL_FOREGROUND_COLOR),
+    _box_color(FL_BACKGROUND_COLOR),
+    _drag(NULL)
 {
-    _nudge_dirty = false;
-    _label = 0;
-    _can_resize_label = true;
-    _sequence = NULL;
-
-    _r = &_range;
-
     _r->start = _r->offset = _r->length = 0;
-
-    _drag = NULL;
-
-    _box_color = FL_BACKGROUND_COLOR;
-    _color     = FL_FOREGROUND_COLOR;
 }
 
 /* careful with this, it doesn't journal */
@@ -103,7 +99,7 @@ Sequence_Widget::operator= ( const Sequence_Widget &rhs )
 
 Sequence_Widget::~Sequence_Widget ( )
 {
-    redraw();
+    Sequence_Widget::redraw();
 
     if ( this == _pushed )
         _pushed = NULL;
@@ -111,7 +107,7 @@ Sequence_Widget::~Sequence_Widget ( )
     if ( this == _belowmouse )
         _belowmouse = NULL;
 
-    label( NULL );
+    Sequence_Widget::label( NULL );
 
     _sequence->remove( this );
 
@@ -154,9 +150,9 @@ Sequence_Widget::set ( Log_Entry &e )
         }
         else if ( ! strcmp( s, ":sequence" ) )
         {
-            unsigned int i;
-            sscanf( v, "%X", &i );
-            Sequence *t = (Sequence*)Loggable::find( i );
+            unsigned int ii;
+            sscanf( v, "%X", &ii );
+            Sequence *t = static_cast<Sequence*>( Loggable::find( ii ) );
 
             ASSERT( t, "No such object ID (%s)", v );
 
