@@ -26,6 +26,7 @@
 
 #include "Sequence.H"
 #include "Control_Point.H"
+#include "Track_Header.H"
 
 #include "../../nonlib/JACK/Port.H"
 
@@ -99,13 +100,13 @@ protected:
 
     Control_Sequence ( );
 
-    virtual void get ( Log_Entry &e ) const;
-    virtual void get_unjournaled ( Log_Entry &e ) const;
-    void set ( Log_Entry &e );
+    virtual void get ( Log_Entry &e ) const override;
+    virtual void get_unjournaled ( Log_Entry &e ) const override;
+    void set ( Log_Entry &e ) override;
 
-    void draw_box ( void );
-    void draw ( void );
-    int handle ( int m );
+    void draw_box ( void ) override;
+    void draw ( void ) override;
+    int handle ( int m ) override;
 
     void update_osc_path ( void );
     void update_port_name ( void );
@@ -117,7 +118,7 @@ public:
 
     Control_Sequence_Header * header ( void )
     {
-        return (Control_Sequence_Header*)child(0);
+        return static_cast<Control_Sequence_Header*>( child(0) );
     }
 
     virtual void name ( const char *s );
@@ -135,7 +136,7 @@ public:
     Control_Sequence ( Track *, const char *name = 0 );
     ~Control_Sequence ( );
 
-    Fl_Cursor cursor ( void ) const
+    Fl_Cursor cursor ( void ) const override
     {
         return FL_CURSOR_CROSS;
     }
@@ -162,6 +163,6 @@ public:
         _output = p;
     }
     nframes_t play ( sample_t *buf, nframes_t frame, nframes_t nframes );
-    nframes_t process ( nframes_t nframes );
+    nframes_t process ( nframes_t nframes ) override;
 
 };

@@ -38,8 +38,8 @@ protected:
         _box_color = FL_WHITE;
     }
 
-    virtual void get ( Log_Entry &e ) const;
-    virtual void set ( Log_Entry &e );
+    virtual void get ( Log_Entry &e ) const override;
+    virtual void set ( Log_Entry &e ) override;
 
     Control_Point ( const Control_Point &rhs );
 
@@ -71,21 +71,21 @@ public:
         return _range.start;
     }
 
-    long abs_w ( void ) const
+    long abs_w ( void ) const override
     {
         return 8;
     }
 
-    int y ( void ) const
+    int y ( void ) const override
     {
         return parent()->y() + ((float)parent()->h() * _y);
     }
-    int h ( void ) const
+    int h ( void ) const override
     {
         return 8;
     }
 
-    virtual void draw_box ( void );
-    virtual int handle ( int m );
+    virtual void draw_box ( void ) override;
+    virtual int handle ( int m ) override;
 
 };

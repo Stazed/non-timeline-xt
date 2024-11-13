@@ -298,9 +298,9 @@ Control_Sequence::set ( Log_Entry &e )
 
         if ( ! strcmp( ":track", s ) )
         {
-            unsigned int i;
-            sscanf( v, "%X", &i );
-            Track *t = (Track*)Loggable::find( i );
+            unsigned int ii;
+            sscanf( v, "%X", &ii );
+            Track *t = static_cast<Track*>( Loggable::find( ii ) );
 
             assert( t );
 
