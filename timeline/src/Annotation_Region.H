@@ -36,8 +36,8 @@ class Annotation_Region : public Sequence_Region
 
 protected:
 
-    virtual void get ( Log_Entry &e ) const;
-    virtual void set ( Log_Entry &e );
+    virtual void get ( Log_Entry &e ) const override;
+    virtual void set ( Log_Entry &e ) override;
 
     Annotation_Region ( )
     {
@@ -54,8 +54,8 @@ public:
     Annotation_Region ( Sequence *track, nframes_t when, const char *name );
     virtual ~Annotation_Region ( );
 
-    void draw_box ( void );
-    void draw ( void );
-    int handle ( int m );
+    void draw_box ( void ) override;
+    void draw ( void ) override;
+    int handle ( int m ) override;
 
 };

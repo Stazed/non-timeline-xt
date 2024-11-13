@@ -116,10 +116,10 @@ public:
 
 
     Clock ( int X, int Y, int W, int H, const char *L=0 )
-        : Fl_Widget( X, Y, W, H, L )
+        : Fl_Widget( X, Y, W, H, L ),
+        _when(0),
+        _v(0)
     {
-        _when = 0;
-        _v = 0;
         box( FL_BORDER_BOX );
         type( HMS );
 

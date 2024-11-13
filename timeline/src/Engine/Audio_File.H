@@ -71,13 +71,15 @@ protected:
 
 public:
 
-    Audio_File ( ) : _peaks( this )
-    {
-        _path =_filename = NULL;
-        _samplerate = 0;
-        _length = _channels = 0;
-        _refs = 1;
-    }
+    Audio_File ( ) :
+        _refs(1),
+        _filename(NULL),
+        _path(NULL),
+        _length(0),
+        _samplerate(0),
+        _channels(0),
+        _peaks( this )
+    { }
 
     virtual ~Audio_File ( );
 
