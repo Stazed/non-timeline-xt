@@ -35,8 +35,8 @@ class Cursor_Region : public Sequence_Region
 
 protected:
 
-    virtual void get ( Log_Entry &e ) const;
-    virtual void set ( Log_Entry &e );
+    virtual void get ( Log_Entry &e ) const override;
+    virtual void set ( Log_Entry &e ) override;
 
     Cursor_Region ( )
     {
@@ -48,8 +48,8 @@ protected:
 
 public:
 
-    virtual Fl_Color box_color ( void ) const;
-    virtual void box_color ( Fl_Color c );
+    virtual Fl_Color box_color ( void ) const override;
+    virtual void box_color ( Fl_Color c ) override;
 
     /* for loggable */
     LOG_CREATE_FUNC( Cursor_Region );
@@ -58,9 +58,9 @@ public:
     Cursor_Region ( nframes_t when, nframes_t length, const char *type, const char *label );
     virtual ~Cursor_Region ( );
 
-    void draw_box ( void );
-    void draw ( void );
-    int handle ( int m );
+    void draw_box ( void ) override;
+    void draw ( void ) override;
+    int handle ( int m ) override;
 
 
     const char * type ( void ) const

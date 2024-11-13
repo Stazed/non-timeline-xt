@@ -35,8 +35,8 @@ class Cursor_Sequence : public Sequence
 protected:
 
     /* not used */
-    void get ( Log_Entry & ) const { }
-    void set ( Log_Entry & ) { }
+    void get ( Log_Entry & ) const override { }
+    void set ( Log_Entry & ) override { }
 
 public:
 
@@ -54,13 +54,13 @@ public:
         _cursor_color = c;
     }
 
-    Fl_Cursor cursor ( void ) const
+    Fl_Cursor cursor ( void ) const override
     {
         return FL_CURSOR_DEFAULT;
     }
 
     Cursor_Sequence ( int X, int Y, int W, int H );
 
-    void handle_widget_change ( nframes_t start, nframes_t length );
-    int handle ( int m );
+    void handle_widget_change ( nframes_t start, nframes_t length ) override;
+    int handle ( int m ) override;
 };

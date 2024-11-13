@@ -26,10 +26,10 @@
 #include "Timeline.H"
 #include "Track.H"
 
-Cursor_Sequence::Cursor_Sequence( int X, int Y, int W, int H ) : Sequence ( X, Y, W, H )
+Cursor_Sequence::Cursor_Sequence( int X, int Y, int W, int H ) :
+    Sequence ( X, Y, W, H ),
+    _cursor_color(FL_CYAN)
 {
-    _cursor_color = FL_CYAN;
-
     labeltype(FL_NO_LABEL);
 
     box( FL_FLAT_BOX );
