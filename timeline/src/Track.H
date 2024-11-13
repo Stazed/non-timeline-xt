@@ -135,9 +135,9 @@ private:
 
 protected:
 
-    void get ( Log_Entry &e ) const;
-    void get_unjournaled ( Log_Entry &e ) const;
-    void set ( Log_Entry &e );
+    void get ( Log_Entry &e ) const override;
+    void get_unjournaled ( Log_Entry &e ) const override;
+    void set ( Log_Entry &e ) override;
 
     Fl_Scalepack       *controls;
     Fl_Sometimes_Pack  *control;
@@ -148,7 +148,7 @@ protected:
 
 public:
 
-    virtual void log_children ( void ) const;
+    virtual void log_children ( void ) const override;
 
     void log_nudges ( void );
 

@@ -75,7 +75,7 @@ Track::Track ( const char *L, int channels ) :
     if ( L )
         name( L );
 
-    color( random_color() );
+    Track::color( random_color() );
 
     configure_inputs( channels );
     configure_outputs( channels );
