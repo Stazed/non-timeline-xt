@@ -34,25 +34,26 @@ class Sequence_Region : public Sequence_Widget
 
 protected:
 
-    virtual void get ( Log_Entry &e ) const;
-    virtual void set ( Log_Entry &e );
+    virtual void get ( Log_Entry &e ) const override;
+    virtual void set ( Log_Entry &e ) override;
 
     Sequence_Region ( );
     Sequence_Region ( const Sequence_Region &rhs );
     virtual ~Sequence_Region ( );
 
-    virtual Fl_Align align ( void ) const
+    virtual Fl_Align align ( void ) const override
     {
         return FL_ALIGN_INSIDE | FL_ALIGN_CENTER | FL_ALIGN_WRAP;
     }
-    virtual int handle ( int m );
-    virtual void draw_box( void );
-    virtual void draw ( void );
-    virtual void draw_label ( void )
+    virtual int handle ( int m ) override;
+    virtual void draw_box( void ) override;
+    virtual void draw ( void ) override;
+    virtual void draw_label ( void ) override
     {
         Sequence_Widget::draw_label();
     }
-    virtual void draw_label ( const char *label, Fl_Align align, Fl_Color color=(Fl_Color)0, int xo=0, int yo=0 );
+    virtual void draw_label ( const char *label, Fl_Align align,
+            Fl_Color color=(Fl_Color)0, int xo=0, int yo=0 ) override;
 
 public:
 

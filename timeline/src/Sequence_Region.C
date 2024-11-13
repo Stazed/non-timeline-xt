@@ -207,8 +207,7 @@ Sequence_Region::handle ( int m )
         {
             Sequence_Widget::handle( m );
 
-            if ( trimming != NO )
-                trimming = NO;
+            trimming = NO;
 
             return 1;
         }
