@@ -66,11 +66,8 @@ class Peaks
 
         peakdata *buf;
 
-        peakbuffer ( )
-        {
-            size = len = offset = 0;
-            buf = NULL;
-        }
+        peakbuffer ( ) : size(0), len(0), offset(0), buf(NULL)
+        { }
     };
 
     Peakfile *_peakfile;
@@ -109,7 +106,7 @@ class Peaks
         bool make_peaks_mipmap ( void );
         bool make_peaks ( void );
 
-        Builder ( const Peaks *peaks );
+        explicit Builder ( const Peaks *peaks );
     };
 
     /* FIXME: Is this ever accessed by multiple threads? */
@@ -142,7 +139,7 @@ public:
     static const int cache_levels;
     static const int cache_step;
 
-    Peaks ( Audio_File *c );
+    explicit Peaks ( Audio_File *c );
     ~Peaks ( );
 
     Peak *peakbuf ( void ) const

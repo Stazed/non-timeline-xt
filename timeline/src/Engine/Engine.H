@@ -38,14 +38,14 @@ class Engine : public JACK::Client
     int _buffers_dropped;                                       /* buffers dropped because of locking */
     /*     int _buffers_dropped;                                       /\* buffers dropped because of locking *\/ */
 
-    void shutdown ( void );
-    int process ( nframes_t nframes );
-    int sync ( jack_transport_state_t state, jack_position_t *pos );
-    int xrun ( void );
-    void timebase ( jack_transport_state_t state, jack_nframes_t nframes, jack_position_t *pos, int new_pos );
-    void freewheel ( bool yes );
-    int buffer_size ( nframes_t nframes );
-    void thread_init ( void );
+    void shutdown ( void ) override;
+    int process ( nframes_t nframes ) override;
+    int sync ( jack_transport_state_t state, jack_position_t *pos ) override;
+    int xrun ( void ) override;
+    void timebase ( jack_transport_state_t state, jack_nframes_t nframes, jack_position_t *pos, int new_pos ) override;
+    void freewheel ( bool yes ) override;
+    int buffer_size ( nframes_t nframes ) override;
+    void thread_init ( void ) override;
 
     Engine ( const Engine &rhs );
     Engine & operator = ( const Engine &rhs );
