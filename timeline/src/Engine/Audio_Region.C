@@ -349,7 +349,7 @@ sequence_redraw_request_handle ( void *v )
 {
     THREAD_ASSERT(UI);
 
-    SequenceRedrawRequest *o = (SequenceRedrawRequest*)v;
+    SequenceRedrawRequest *o = static_cast<SequenceRedrawRequest*>( v );
 
     o->sequence->damage( FL_DAMAGE_USER1, timeline->offset_to_x( o->start ), o->sequence->y(), timeline->ts_to_x( o->length ), o->sequence->h() );
 
@@ -363,19 +363,16 @@ Audio_Region::write ( nframes_t nframes )
 {
     THREAD_ASSERT( Capture );
 
-    if ( 0 == ( timeline->ts_to_x( _range.length ) % 20 ) )
+    int W = 20;
+
+    if ( 0 == ( timeline->ts_to_x( _range.length ) % W ) )
     {
-        int W = 20;
+        SequenceRedrawRequest *o = new SequenceRedrawRequest();
+        o->sequence = sequence();
+        o->start = _range.start + ( _range.length - timeline->x_to_ts( W ) );
+        o->length = timeline->x_to_ts( W );
 
-        if ( W )
-        {
-            SequenceRedrawRequest *o = new SequenceRedrawRequest();
-            o->sequence = sequence();
-            o->start = _range.start + ( _range.length - timeline->x_to_ts( 20 ) );
-            o->length = timeline->x_to_ts( 20 );
-
-            Fl::awake(sequence_redraw_request_handle, o);
-        }
+        Fl::awake(sequence_redraw_request_handle, o);
     }
 
     timeline->sequence_lock.wrlock();
