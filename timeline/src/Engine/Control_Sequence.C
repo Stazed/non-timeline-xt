@@ -60,7 +60,7 @@ Control_Sequence::play ( sample_t *buf, nframes_t frame, nframes_t nframes )
 {
     //  THREAD_ASSERT( RT );
 
-    Control_Point *p2, *p1 = (Control_Point*)_widgets.front();
+    Control_Point *p2, *p1 = static_cast<Control_Point*>( _widgets.front() );
 
     nframes_t n = nframes;
 
@@ -110,9 +110,9 @@ Control_Sequence::play ( sample_t *buf, nframes_t frame, nframes_t nframes )
 
             float v = y1 + start * incr;
 
-            for ( nframes_t i = start;
-                i < start + len && n && n--;
-                ++i, v += incr )
+            for ( nframes_t ii = start;
+                ii < start + len && n && n--;
+                ++ii, v += incr )
                 * (buf++) = v;
         }
     }

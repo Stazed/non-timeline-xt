@@ -133,7 +133,7 @@ public:
 
     LOG_CREATE_FUNC( Control_Sequence );
 
-    Control_Sequence ( Track *, const char *name = 0 );
+    explicit Control_Sequence ( Track *, const char *name = 0 );
     ~Control_Sequence ( );
 
     Fl_Cursor cursor ( void ) const override
