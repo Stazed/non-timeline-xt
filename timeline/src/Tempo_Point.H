@@ -47,8 +47,8 @@ protected:
 
 //    const char *class_name ( void ) { return "Tempo_Point"; }
 
-    virtual void get ( Log_Entry &e ) const;
-    void set ( Log_Entry &e );
+    virtual void get ( Log_Entry &e ) const override;
+    void set ( Log_Entry &e ) override;
 
     Tempo_Point ( );
 
@@ -68,11 +68,11 @@ public:
 
     virtual ~Tempo_Point ( );
 
-    Tempo_Point ( const Tempo_Point &rhs ) : Sequence_Point( rhs )
+    Tempo_Point ( const Tempo_Point &rhs ) :
+        Sequence_Point( rhs ),
+        _tempo(rhs._tempo),
+        _bbt(rhs._bbt)
     {
-        _tempo = rhs._tempo;
-        _bbt = rhs._bbt;
-
         log_create();
     }
 
@@ -91,5 +91,5 @@ public:
         }
     }
 
-    int handle ( int m );
+    int handle ( int m ) override;
 };

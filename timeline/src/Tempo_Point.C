@@ -122,11 +122,11 @@ class Tempo_Point_Editor : public Fl_Menu_Window
 
 public:
 
-    Tempo_Point_Editor ( float *tempo ) : Fl_Menu_Window(  75, 58, "Edit Tempo" )
+    explicit Tempo_Point_Editor ( float *tempo ) :
+        Fl_Menu_Window(  75, 58, "Edit Tempo" ),
+        _tempo(tempo),
+        _sucess(false)
     {
-        _sucess = false;
-        _tempo = tempo;
-
         set_modal();
 
         Fl_Float_Input *fi = _fi = new Fl_Float_Input( 12, 0 + 24, 50, 24, "Tempo:" );
