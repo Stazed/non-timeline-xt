@@ -132,13 +132,12 @@ public:
         return blocks.size();
     }
 
-    Peakfile ( )
-    {
-        _fp = NULL;
-        _offset = 0;
-        _chunksize = 0;
-        _channels = 0;
-    }
+    Peakfile ( ) :
+        _fp(NULL),
+        _channels(0),
+        _chunksize(0),
+        _offset(0)
+    { }
 
     ~Peakfile ( )
     {
@@ -558,7 +557,7 @@ Peaks::read_peaks ( nframes_t s, nframes_t npeaks, nframes_t chunksize ) const
     {
         _peakbuf.size = npeaks * _clip->channels();
         //        printf( "reallocating peak buffer %li\n", _peakbuf.size );
-        _peakbuf.buf = (peakdata*)realloc( _peakbuf.buf, sizeof( peakdata ) + (_peakbuf.size * sizeof( Peak )) );
+        _peakbuf.buf = static_cast<peakdata*>( realloc( _peakbuf.buf, sizeof( peakdata ) + (_peakbuf.size * sizeof( Peak )) ) );
     }
 
     _peakbuf.offset = s;
@@ -594,7 +593,7 @@ Peaks::current ( void ) const
 void *
 Peaks::make_peaks ( void *v )
 {
-    peak_thread_data *pd = (peak_thread_data*)v;
+    peak_thread_data *pd = static_cast<peak_thread_data*>( v );
 
     if ( pd->peaks->make_peaks() )
     {
@@ -620,8 +619,8 @@ Peaks::make_peaks ( void ) const
 {
     Peaks::Builder pb( this );
 
-    /* make the first block */
-    int b = pb.make_peaks();
+    /* make the first block - return not used here */
+    bool b = pb.make_peaks();
 
     _first_block_pending = false;
 
@@ -992,10 +991,10 @@ Peaks::Builder::make_peaks ( void )
     return true;
 }
 
-Peaks::Builder::Builder ( const Peaks *peaks ) : _peaks( peaks )
-{
-    fp = NULL;
-    last_block_pos = 0;
-}
+Peaks::Builder::Builder ( const Peaks *peaks ) :
+    fp( NULL ),
+    last_block_pos( 0 ),
+    _peaks( peaks )
+{ }
 
 

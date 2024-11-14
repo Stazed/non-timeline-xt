@@ -160,7 +160,7 @@ Disk_Stream::track ( void ) const
 Audio_Sequence *
 Disk_Stream::sequence ( void ) const
 {
-    return (Audio_Sequence*)_track->sequence();
+    return static_cast<Audio_Sequence*>( _track->sequence() );
 }
 
 /** start Disk_Stream thread */
