@@ -35,7 +35,7 @@ public:
 
     static Audio_File_Dummy *from_file ( const char *filename );
 
-    bool dummy ( void ) const
+    bool dummy ( void ) const override
     {
         return true;
     }
@@ -44,21 +44,21 @@ public:
     {
     }
 
-    bool open ( void )
+    bool open ( void ) override
     {
         return true;
     }
-    void close ( void ) { }
-    void seek ( nframes_t ) { }
-    nframes_t read ( sample_t *, int, nframes_t /* len */ )
+    void close ( void ) override { }
+    void seek ( nframes_t ) override { }
+    nframes_t read ( sample_t *, int, nframes_t /* len */ ) override
     {
         return 0;
     }
-    nframes_t read ( sample_t *, int,  nframes_t /* start */, nframes_t /* end */ )
+    nframes_t read ( sample_t *, int,  nframes_t /* start */, nframes_t /* end */ ) override
     {
         return 0;
     }
-    nframes_t write ( sample_t *, nframes_t nframes )
+    nframes_t write ( sample_t *, nframes_t nframes ) override
     {
         return nframes;
     }

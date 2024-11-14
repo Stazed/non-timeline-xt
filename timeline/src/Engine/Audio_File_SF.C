@@ -116,7 +116,7 @@ Audio_File_SF::create ( const char *filename, nframes_t samplerate, int channels
     if ( ! fd )
     {
         DMESSAGE( "Unsupported capture format: %s", format );
-        return (Audio_File_SF *)1;
+        return NULL;
     }
 
     si.samplerate =  samplerate;

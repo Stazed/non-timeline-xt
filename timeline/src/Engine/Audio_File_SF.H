@@ -37,11 +37,7 @@ class Audio_File_SF : public Audio_File
      * enough to do this for us */
     volatile nframes_t _current_read;
 
-    Audio_File_SF ( )
-    {
-        _in = 0;
-        _current_read = 0;
-    }
+    Audio_File_SF ( ) : _in(0), _current_read(0) { }
 
 public:
 
@@ -57,11 +53,11 @@ public:
         close();
     }
 
-    bool open ( void );
-    void close ( void );
-    void seek ( nframes_t offset );
-    nframes_t read ( sample_t *buf, int channel, nframes_t len );
-    nframes_t read ( sample_t *buf, int channel,  nframes_t start, nframes_t len );
-    nframes_t write ( sample_t *buf, nframes_t nframes );
+    bool open ( void ) override;
+    void close ( void ) override;
+    void seek ( nframes_t offset ) override;
+    nframes_t read ( sample_t *buf, int channel, nframes_t len ) override;
+    nframes_t read ( sample_t *buf, int channel,  nframes_t start, nframes_t len ) override;
+    nframes_t write ( sample_t *buf, nframes_t nframes ) override;
 
 };

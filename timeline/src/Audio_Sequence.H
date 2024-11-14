@@ -67,7 +67,7 @@ public:
         return static_cast<Audio_Sequence_Header*>( child(0) );
     }
 
-    Audio_Sequence ( Track *track, const char *name = 0 );
+    explicit Audio_Sequence ( Track *track, const char *name = 0 );
     ~Audio_Sequence ( );
 
     Fl_Cursor cursor ( void ) const override
