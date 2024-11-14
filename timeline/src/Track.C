@@ -296,12 +296,12 @@ Track::set ( Log_Entry &e )
             armed( atoi( v ) );
         else if ( ! strcmp( s, ":sequence" ) )
         {
-            unsigned int i;
-            sscanf( v, "%X", &i );
+            unsigned int ii;
+            sscanf( v, "%X", &ii );
 
-            if ( i )
+            if ( ii )
             {
-                Audio_Sequence *t = (Audio_Sequence*)Loggable::find( i );
+                Audio_Sequence *t = static_cast<Audio_Sequence*>( Loggable::find( ii ) );
 
                 /* FIXME: our track might not have been
                  * defined yet... what should we do about this
@@ -456,7 +456,7 @@ Track::adjust_size ( void )
     {
         for ( int i = 0; i < control->children(); i++ )
         {
-            Control_Sequence *o = (Control_Sequence*)control->child(i);
+            Control_Sequence *o = static_cast<Control_Sequence*>( control->child(i) );
 
             if ( i != 0 )
                 o->box( FL_NO_BOX );
@@ -470,7 +470,7 @@ Track::adjust_size ( void )
     {
         for ( int i = 0; i < control->children(); i++ )
         {
-            Control_Sequence *o = (Control_Sequence*)control->child(i);
+            Control_Sequence *o = static_cast<Control_Sequence*>( control->child(i) );
 
             o->box( FL_FLAT_BOX );
 
@@ -617,7 +617,7 @@ Track::remove ( Audio_Sequence *t )
         pack->remove( t );
 
         if ( takes->children() )
-            sequence( (Audio_Sequence * )takes->child( 0 ) );
+            sequence( static_cast<Audio_Sequence *>( takes->child( 0 ) ) );
         else
             /* FIXME: should this ever happen? */
             _sequence = NULL;
@@ -731,7 +731,7 @@ Track::select ( int X, int Y, int W, int H,
     if ( include_control )
         for ( int i = control->children(); i--; )
         {
-            Control_Sequence *c = (Control_Sequence*)control->child( i );
+            Control_Sequence *c = static_cast<Control_Sequence*>( control->child( i ) );
 
             if ( merge_control ||
                 ( c->y() >= Y && c->y() + c->h() <= Y + H  ) )
@@ -744,7 +744,7 @@ Track::log_nudges ( void )
 {
     for ( int i = control->children(); i--; )
     {
-        Control_Sequence *c = (Control_Sequence*)control->child( i );
+        Control_Sequence *c = static_cast<Control_Sequence*>( control->child( i ) );
         c->log_control_nudges();
     }
 
@@ -766,7 +766,7 @@ Track::nudge_selected(bool left)
 
     for ( int i = control->children(); i--; )
     {
-        Control_Sequence *c = (Control_Sequence*)control->child( i );
+        Control_Sequence *c = static_cast<Control_Sequence*>( control->child( i ) );
         c->nudge_control_selected_X(left);
     }
 }
@@ -786,7 +786,7 @@ Track::nudge_selected_controls(bool up)
 {
     for ( int i = control->children(); i--; )
     {
-        Control_Sequence *c = (Control_Sequence*)control->child( i );
+        Control_Sequence *c = static_cast<Control_Sequence*>( control->child( i ) );
         c->nudge_control_selected_Y(up);
     }
 }
@@ -940,7 +940,7 @@ Track::menu_cb ( const Fl_Menu_ *m )
 
         Loggable::block_start();
 
-        sequence( (Audio_Sequence*)sequence()->clone_empty() );
+        sequence( static_cast<Audio_Sequence*>( sequence()->clone_empty() ) );
         timeline->track_lock.unlock();
 
         Loggable::block_end();
@@ -955,7 +955,7 @@ Track::menu_cb ( const Fl_Menu_ *m )
 
             Audio_Sequence *s = sequence();
 
-            sequence( (Audio_Sequence*)takes->child( 0 ) );
+            sequence( static_cast<Audio_Sequence*>( takes->child( 0 ) ) );
 
             delete s;
 
@@ -977,7 +977,7 @@ Track::menu_cb ( const Fl_Menu_ *m )
     }
     else if ( !strncmp( picked, "Takes/", sizeof( "Takes/" ) - 1 ) )
     {
-        Audio_Sequence* s = (Audio_Sequence*)m->mvalue()->user_data();
+        Audio_Sequence* s = static_cast<Audio_Sequence*>( m->mvalue()->user_data() );
 
         timeline->track_lock.wrlock();
         sequence( s );
@@ -991,7 +991,7 @@ Track::control_by_name ( const char *name )
 {
     for ( int i = control->children(); i-- ; )
     {
-        Control_Sequence *t = (Control_Sequence*)control->child( i );
+        Control_Sequence *t = static_cast<Control_Sequence*>( control->child( i ) );
 
         if ( t->name() && name && ! strcmp( name, t->name() ) )
             return t;
@@ -1034,12 +1034,12 @@ Track::menu ( void ) const
 
         for ( int i = 0; i < takes->children(); ++i )
         {
-            Sequence *s = (Sequence *)takes->child( i );
+            Sequence *seq = static_cast<Sequence *>( takes->child( i ) );
 
             char n[256];
-            snprintf( n, sizeof(n), "Takes/%s", s->name() );
+            snprintf( n, sizeof(n), "Takes/%s", seq->name() );
 
-            _menu.add( n, 0, 0, s);
+            _menu.add( n, 0, 0, seq);
         }
     }
 
@@ -1375,7 +1375,7 @@ Track::connect_osc ( void )
 {
     for ( int j = control->children(); j--; )
     {
-        Control_Sequence *c = (Control_Sequence*)control->child( j );
+        Control_Sequence *c = static_cast<Control_Sequence*>( control->child( j ) );
         c->connect_osc();
     }
 }
@@ -1385,7 +1385,7 @@ Track::update_osc_connection_state ( void )
 {
     for ( int j = control->children(); j--; )
     {
-        Control_Sequence *c = (Control_Sequence*)control->child( j );
+        Control_Sequence *c = static_cast<Control_Sequence*>( control->child( j ) );
         c->update_osc_connection_state();
     }
 }
@@ -1395,7 +1395,7 @@ Track::process_osc ( void )
 {
     for ( int j = control->children(); j--; )
     {
-        Control_Sequence *c = (Control_Sequence*)control->child( j );
+        Control_Sequence *c = static_cast<Control_Sequence*>( control->child( j ) );
         c->process_osc();
     }
 }

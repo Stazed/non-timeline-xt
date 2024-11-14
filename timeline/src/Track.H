@@ -68,7 +68,7 @@ class Track : public Fl_Group, public Loggable
 
 public:
 
-    Track ( const char *L, int channels=1 );
+    explicit Track ( const char *L, int channels=1 );
     virtual ~Track ( );
 
     static bool soloing ( void )
@@ -206,7 +206,7 @@ public:
 
     int height ( void ) const
     {
-        static int table[] = { 25, 54, 80, 150, 300 };
+        const int table[] = { 25, 54, 80, 150, 300 };
 
         return table[ _size ];
     }
