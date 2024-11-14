@@ -35,13 +35,13 @@ class Annotation_Sequence : public Sequence
 
 protected:
 
-    virtual void get ( Log_Entry &e ) const
+    virtual void get ( Log_Entry &e ) const override
     {
         e.add( ":track", _track );
     }
 
     void
-    set ( Log_Entry &e )
+    set ( Log_Entry &e ) override
     {
         for ( int i = 0; i < e.size(); ++i )
         {
@@ -51,9 +51,9 @@ protected:
 
             if ( ! strcmp( ":track", s ) )
             {
-                unsigned int i;
-                sscanf( v, "%X", &i );
-                Track *t = (Track*)Loggable::find( i );
+                unsigned int ii;
+                sscanf( v, "%X", &ii );
+                Track *t = static_cast<Track*>( Loggable::find( ii ) );
 
                 assert( t );
 
@@ -72,12 +72,12 @@ public:
 
     LOG_CREATE_FUNC( Annotation_Sequence );
 
-    Fl_Cursor cursor ( void ) const
+    Fl_Cursor cursor ( void ) const override
     {
         return FL_CURSOR_INSERT;
     }
 
-    Annotation_Sequence ( Track *track ) : Sequence( track )
+    explicit Annotation_Sequence ( Track *track ) : Sequence( track )
     {
         color( FL_DARK1 );
 
@@ -97,7 +97,7 @@ public:
         Loggable::block_end();
     }
 
-    int handle ( int m )
+    int handle ( int m ) override
     {
 
         if ( Sequence::handle( m ) )

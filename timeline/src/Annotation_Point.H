@@ -35,7 +35,7 @@ protected:
 
 //    const char *class_label ( void ) { return "Annotation_Point"; }
 
-    virtual void  get ( Log_Entry &e ) const
+    virtual void  get ( Log_Entry &e ) const override
     {
         Sequence_Point::get( e );
 
@@ -43,7 +43,7 @@ protected:
     }
 
     void
-    set ( Log_Entry &e )
+    set ( Log_Entry &e ) override
     {
         Sequence_Point::set( e );
 
@@ -95,7 +95,7 @@ public:
 
 
     int
-    handle ( int m )
+    handle ( int m ) override
     {
         Logger _log( this );
 
