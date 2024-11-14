@@ -60,8 +60,8 @@ protected:
 
 //    const char *class_name ( void ) { return "Time_Point"; }
 
-    virtual void get ( Log_Entry &e ) const;
-    void set ( Log_Entry &e );
+    virtual void get ( Log_Entry &e ) const override;
+    void set ( Log_Entry &e ) override;
 
     Time_Point ( );
 
@@ -90,6 +90,6 @@ public:
         return _time;
     }
 
-    int handle ( int m );
+    int handle ( int m ) override;
 
 };

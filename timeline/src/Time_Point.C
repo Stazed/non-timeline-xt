@@ -45,12 +45,11 @@ Time_Point::Time_Point ( nframes_t when, int bpb, int note ) : _time( bpb, note 
     log_create();
 }
 
-Time_Point::Time_Point ( const Time_Point &rhs ) : Sequence_Point( rhs )
+Time_Point::Time_Point ( const Time_Point &rhs ) :
+    Sequence_Point( rhs ),
+    _time(rhs._time)
 {
-    _time = rhs._time;
-
     log_create();
-
 }
 
 Time_Point::~Time_Point ( )
@@ -138,12 +137,11 @@ class Time_Point_Editor : public Fl_Menu_Window
 
 public:
 
-    Time_Point_Editor ( time_sig *sig )
-        : Fl_Menu_Window( 150, 110, "Edit Time" )
+    explicit Time_Point_Editor ( time_sig *sig )
+        : Fl_Menu_Window( 150, 110, "Edit Time" ),
+        _sig(sig),
+        _sucess(false)
     {
-        _sucess = false;
-        _sig = sig;
-
         set_modal();
 
         {
