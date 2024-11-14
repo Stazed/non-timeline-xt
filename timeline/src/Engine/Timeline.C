@@ -97,7 +97,7 @@ Timeline::record ( void )
 
     for ( int i = tracks->children(); i-- ; )
     {
-        Track *t = (Track*)tracks->child( i );
+        Track *t = static_cast<Track*>( tracks->child( i ) );
 
         if ( t->armed() && t->record_ds )
         {
@@ -117,7 +117,7 @@ Timeline::punch_out ( nframes_t frame )
 
     for ( int i = tracks->children(); i-- ; )
     {
-        Track *t = (Track*)tracks->child( i );
+        Track *t = static_cast<Track*>( tracks->child( i ) );
 
         if ( t->armed() && t->record_ds )
             t->record_ds->stop( frame );
@@ -130,7 +130,7 @@ Timeline::punch_out ( nframes_t frame )
 
     for ( int i = tracks->children(); i-- ; )
     {
-        Track *t = (Track*)tracks->child( i );
+        Track *t = static_cast<Track*>( tracks->child( i ) );
 
         if ( t->armed() && t->record_ds )
             t->record_ds->shutdown();
@@ -192,7 +192,7 @@ Timeline::process_input ( nframes_t nframes )
 
     for ( int i = tracks->children(); i-- ; )
     {
-        Track *t = (Track*)tracks->child( i );
+        Track *t = static_cast<Track*>( tracks->child( i ) );
 
         t->process_input( nframes );
     }
@@ -225,7 +225,7 @@ Timeline::process_output ( nframes_t nframes )
 
     for ( int i = tracks->children(); i-- ; )
     {
-        Track *t = (Track*)tracks->child( i );
+        Track *t = static_cast<Track*>( tracks->child( i ) );
 
         t->process_output( nframes );
     }
@@ -244,7 +244,7 @@ Timeline::seek ( nframes_t frame )
 
     for ( int i = tracks->children(); i-- ; )
     {
-        Track *t = (Track*)tracks->child( i );
+        Track *t = static_cast<Track*>( tracks->child( i ) );
 
         t->seek( frame );
     }
@@ -256,7 +256,7 @@ Timeline::resize_buffers ( nframes_t nframes )
 {
     for ( int i = tracks->children(); i-- ; )
     {
-        Track *t = (Track*)tracks->child( i );
+        Track *t = static_cast<Track*>( tracks->child( i ) );
 
         t->resize_buffers( nframes );
     }
@@ -270,7 +270,7 @@ Timeline::seek_pending ( void )
 
     for ( int i = tracks->children(); i-- ; )
     {
-        Track *t = (Track*)tracks->child( i );
+        Track *t = static_cast<Track*>( tracks->child( i ) );
 
         if ( t->playback_ds )
             if ( t->playback_ds->seek_pending() )
@@ -290,7 +290,7 @@ Timeline::total_input_buffer_percent ( void )
 
     for ( int i = tracks->children(); i-- ; )
     {
-        Track *t = (Track*)tracks->child( i );
+        Track *t = static_cast<Track*>( tracks->child( i ) );
 
         if ( t->record_ds )
         {
@@ -315,7 +315,7 @@ Timeline::total_output_buffer_percent ( void )
 
     for ( int i = tracks->children(); i-- ; )
     {
-        Track *t = (Track*)tracks->child( i );
+        Track *t = static_cast<Track*>( tracks->child( i ) );
 
         if ( t->playback_ds )
         {
@@ -337,7 +337,7 @@ Timeline::total_playback_xruns ( void )
 
     for ( int i = tracks->children(); i-- ; )
     {
-        Track *t = (Track*)tracks->child( i );
+        Track *t = static_cast<Track*>( tracks->child( i ) );
 
         if ( t->playback_ds )
             r += t->playback_ds->xruns();
@@ -353,7 +353,7 @@ Timeline::total_capture_xruns ( void )
 
     for ( int i = tracks->children(); i-- ; )
     {
-        Track *t = (Track*)tracks->child( i );
+        Track *t = static_cast<Track*>( tracks->child( i ) );
 
         if ( t->record_ds )
             r += t->record_ds->xruns();

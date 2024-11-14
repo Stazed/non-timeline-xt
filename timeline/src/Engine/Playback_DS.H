@@ -27,9 +27,9 @@ class Playback_DS : public Disk_Stream
 {
 
     void read_block ( sample_t *buf, nframes_t nframes );
-    void disk_thread ( void );
+    void disk_thread ( void ) override;
 
-    void flush ( void )
+    void flush ( void ) override
     {
         base_flush( true );
     }
@@ -40,10 +40,9 @@ class Playback_DS : public Disk_Stream
 public:
 
     Playback_DS ( Track *th, float frame_rate, nframes_t nframes, int channels ) :
-        Disk_Stream( th, frame_rate, nframes, channels )
+        Disk_Stream( th, frame_rate, nframes, channels ),
+        _undelay(0)
     {
-        _undelay = 0;
-
         run();
     }
 
@@ -54,7 +53,7 @@ public:
 
     bool seek_pending ( void );
     void seek ( nframes_t frame );
-    nframes_t process ( nframes_t nframes );
+    nframes_t process ( nframes_t nframes ) override;
 
     void undelay ( nframes_t v );
 

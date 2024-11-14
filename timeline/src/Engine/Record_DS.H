@@ -47,9 +47,9 @@ class Record_DS : public Disk_Stream
     Audio_File_SF *_af;                             /* capture file */
 
     void write_block ( sample_t *buf, nframes_t nframes );
-    void disk_thread ( void );
+    void disk_thread ( void ) override;
 
-    virtual void flush ( void )
+    virtual void flush ( void ) override
     {
         base_flush( false );
     }
@@ -82,6 +82,6 @@ public:
 
     void start ( nframes_t frame, nframes_t start_frame, nframes_t stop_frame = 0 );
     void stop ( nframes_t frame );
-    nframes_t process ( nframes_t nframes );
+    nframes_t process ( nframes_t nframes ) override;
 
 };
