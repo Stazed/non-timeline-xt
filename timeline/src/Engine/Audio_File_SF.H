@@ -50,7 +50,7 @@ public:
     ~Audio_File_SF ( )
     {
         /* stupid C++ */
-        close();
+        Audio_File_SF::close();
     }
 
     bool open ( void ) override;
