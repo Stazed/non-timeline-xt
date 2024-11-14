@@ -36,12 +36,12 @@ class Time_Sequence : public Sequence
 protected:
 
     /* not used */
-    void get ( Log_Entry & ) const { }
-    void set ( Log_Entry & ) { }
+    void get ( Log_Entry & ) const override { }
+    void set ( Log_Entry & ) override { }
 
 public:
 
-    Fl_Cursor cursor ( void ) const
+    Fl_Cursor cursor ( void ) const override
     {
         return FL_CURSOR_DEFAULT;
     }
@@ -67,6 +67,6 @@ public:
         add( new Time_Point( when, bpb, note ) );
     }
 
-    void handle_widget_change ( nframes_t start, nframes_t length );
-    int handle ( int m );
+    void handle_widget_change ( nframes_t start, nframes_t length ) override;
+    int handle ( int m ) override;
 };

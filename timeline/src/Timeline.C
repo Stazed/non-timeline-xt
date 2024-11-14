@@ -170,7 +170,7 @@ protected:
 
         for ( int i = 0; i < timeline->tracks->children(); i++ )
         {
-            Track *t = (Track*)timeline->tracks->child( i );
+            Track *t = static_cast<Track*>( timeline->tracks->child( i ) );
 
             Sequence *s = t->sequence();
 
@@ -286,7 +286,7 @@ Timeline::nudge_snapshot ( void )
 {
     for ( int i = tracks->children(); i-- ; )
     {
-        Track *t = (Track*)tracks->child( i );
+        Track *t = static_cast<Track*>( tracks->child( i ) );
         t->log_nudges();
     }
 }
@@ -399,7 +399,7 @@ Timeline::add_take_for_armed_tracks ( void )
 
     for ( int i = tracks->children(); i-- ; )
     {
-        Track *t = (Track*)tracks->child( i );
+        Track *t = static_cast<Track*>( tracks->child( i ) );
 
         if ( t->armed() && t->sequence()->_widgets.size() )
             t->sequence( new Audio_Sequence( t ) );
@@ -918,7 +918,7 @@ abs_diff ( nframes_t n1, nframes_t n2 )
 static void
 nearest_line_snap_cb ( nframes_t frame, const BBT &bbt, void *arg )
 {
-    nearest_line_arg *n = (nearest_line_arg *)arg;
+    nearest_line_arg *n = static_cast<nearest_line_arg *>( arg );
 
     if ( n->bar && bbt.beat )
         return;
@@ -934,7 +934,7 @@ nearest_line_snap_cb ( nframes_t frame, const BBT &bbt, void *arg )
 static void
 nearest_line_cb ( nframes_t frame, const BBT &bbt, void *arg )
 {
-    nearest_line_arg *n = (nearest_line_arg *)arg;
+    nearest_line_arg *n = static_cast<nearest_line_arg *>( arg );
 
     if ( n->bar && bbt.beat )
         return;
@@ -946,7 +946,7 @@ nearest_line_cb ( nframes_t frame, const BBT &bbt, void *arg )
 static void
 prev_next_line_cb ( nframes_t frame, const BBT &bbt, void *arg )
 {
-    nearest_line_arg *n = (nearest_line_arg *)arg;
+    nearest_line_arg *n = static_cast<nearest_line_arg *>( arg );
 
     if ( n->bar && bbt.beat )
         return;
@@ -1066,7 +1066,7 @@ Timeline::offset_to_x ( nframes_t frame ) const
 void
 Timeline::draw_measure_cb ( nframes_t frame, const BBT &bbt, void *v )
 {
-    Timeline *o = (Timeline*)v;
+    Timeline *o = static_cast<Timeline*>( v );
 
     if ( o->panzoomer->zoom() >= 15 )
         return;
@@ -1271,7 +1271,7 @@ Timeline::draw_measure_lines ( int X, int Y, int W, int H )
 void
 Timeline::draw_clip_rulers ( void * v, int X, int Y, int W, int H )
 {
-    Timeline *tl = (Timeline *)v;
+    Timeline *tl = static_cast<Timeline *>( v );
 
     fl_push_clip( X, Y, W, H );
 
@@ -1285,7 +1285,7 @@ Timeline::draw_clip_rulers ( void * v, int X, int Y, int W, int H )
 void
 Timeline::draw_clip_tracks ( void * v, int X, int Y, int W, int H )
 {
-    Timeline *tl = (Timeline *)v;
+    Timeline *tl = static_cast<Timeline *>( v );
 
     fl_push_clip( X, Y, W, H );
 
@@ -1717,7 +1717,7 @@ Timeline::update_cb ( void *arg )
 {
     Fl::repeat_timeout( UPDATE_FREQ, update_cb, arg );
 
-    Timeline *tl = (Timeline *)arg;
+    Timeline *tl = static_cast<Timeline *>( arg );
 
     tl->redraw_playhead();
 }
@@ -1752,7 +1752,7 @@ Timeline::select ( const Rectangle &r )
 
     for ( int i = tracks->children(); i-- ; )
     {
-        Track *t = (Track*)tracks->child( i );
+        Track *t = static_cast<Track*>( tracks->child( i ) );
 
         if ( ! ( t->y() > Y + r.h || t->y() + t->h() < Y ) )
             t->select( r.x, r.y, r.w, r.h, true, true );
@@ -1778,7 +1778,7 @@ Timeline::nudge_selected( bool left)
 {
     for ( int i = tracks->children(); i-- ; )
     {
-        Track *t = (Track*)tracks->child( i );
+        Track *t = static_cast<Track*>( tracks->child( i ) );
         t->nudge_selected(left);
     }
 }
@@ -1788,7 +1788,7 @@ Timeline::pan_selected(bool left)
 {
     for ( int i = tracks->children(); i-- ; )
     {
-        Track *t = (Track*)tracks->child( i );
+        Track *t = static_cast<Track*>( tracks->child( i ) );
         t->pan_selected(left);
     }
 }
@@ -1798,7 +1798,7 @@ Timeline::nudge_controls( bool up)
 {
     for ( int i = tracks->children(); i-- ; )
     {
-        Track *t = (Track*)tracks->child( i );
+        Track *t = static_cast<Track*>( tracks->child( i ) );
         t->nudge_selected_controls(up);
     }
 }
@@ -1816,7 +1816,7 @@ Timeline::track_under ( int Y )
 {
     for ( int i = tracks->children(); i-- ; )
     {
-        Track *t = (Track*)tracks->child( i );
+        Track *t = static_cast<Track*>( tracks->child( i ) );
 
         if ( ! ( t->y() > Y  || t->y() + t->h() < Y ) )
             return t;
@@ -1846,7 +1846,7 @@ Timeline::event_inside ( void )
 {
     for ( int i = tracks->children(); i--; )
         if ( Fl::event_inside( tracks->child(i) ) )
-            return (Track * )tracks->child(i);
+            return static_cast<Track*>( tracks->child( i ) );
 
     return NULL;
 }
@@ -1957,7 +1957,7 @@ Timeline::handle ( int m )
 
                             Track *t = Timeline::event_inside();
 
-                            Fl_Menu_Item *mi = (Fl_Menu_Item*)menu->find_item("Import source at mouse");
+                            Fl_Menu_Item *mi = const_cast<Fl_Menu_Item*>( menu->find_item("Import source at mouse") );
 
                             if ( t )
                                 mi->activate();
@@ -2033,7 +2033,7 @@ Timeline::track_by_name ( const char *name )
 {
     for ( int i = tracks->children(); i-- ; )
     {
-        Track *t = (Track*)tracks->child( i );
+        Track *t = static_cast<Track*>( tracks->child( i ) );
 
         if ( name && t->name() && ! strcmp( name, t->name() ) )
             return t;
@@ -2184,7 +2184,7 @@ Timeline::apply_track_order ( void )
     std::list<Track*> tl;
 
     for ( int i = 0; i < tracks->children(); i++ )
-        tl.push_back( (Track * )tracks->child( i ) );
+        tl.push_back( static_cast<Track *>( tracks->child( i ) ) );
 
     tl.sort(compare_tracks);
 
@@ -2432,7 +2432,7 @@ Timeline::connect_osc ( void )
     /* reconnect OSC signals */
     for ( int i = tracks->children(); i-- ; )
     {
-        Track *t = (Track*)tracks->child( i );
+        Track *t = static_cast<Track*>( tracks->child( i ) );
 
         t->connect_osc();
     }
@@ -2443,7 +2443,7 @@ Timeline::update_osc_connection_state ( void )
     /* reconnect OSC signals */
     for ( int i = tracks->children(); i-- ; )
     {
-        Track *t = (Track*)tracks->child( i );
+        Track *t = static_cast<Track*>( tracks->child( i ) );
 
         t->update_osc_connection_state();
     }
@@ -2459,7 +2459,7 @@ Timeline::process_osc ( void )
 
     for ( int i = tracks->children(); i-- ; )
     {
-        Track *t = (Track*)tracks->child( i );
+        Track *t = static_cast<Track*>( tracks->child( i ) );
 
         t->process_osc();
     }
