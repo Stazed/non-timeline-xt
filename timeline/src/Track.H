@@ -287,8 +287,8 @@ public:
     static void menu_cb ( Fl_Widget *w, void *v );
     void menu_cb ( const Fl_Menu_ *m );
 
-    void draw ( void );
-    int handle ( int m );
+    void draw ( void ) override;
+    int handle ( int m ) override;
 
     void process_osc ( void );
     void connect_osc ( void );

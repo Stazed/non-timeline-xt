@@ -134,8 +134,8 @@ public:
 
     Peakfile ( ) :
         _fp(NULL),
-        _channels(0),
         _chunksize(0),
+        _channels(0),
         _offset(0)
     { }
 
