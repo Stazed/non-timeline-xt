@@ -161,7 +161,7 @@ again:
                have some actual data to write here */
             sample_t  nbuf[bS - pS];
             memset(nbuf, 0, bS - pS);
-            write_block(nbuf, pS - pS);
+            write_block(nbuf, 0);     // (pS - pS) writing null
             write_block(buf, frames_to_read);
             punched_in = true;
             punching_in = false;
