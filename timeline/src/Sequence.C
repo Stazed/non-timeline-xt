@@ -402,9 +402,6 @@ Sequence::handle ( int m )
             /* garbage from overlay window */
             return 0;
         case FL_FOCUS:
-            Fl_Group::handle( m );
-            redraw();
-            return 1;
         case FL_UNFOCUS:
             Fl_Group::handle( m );
             redraw();
