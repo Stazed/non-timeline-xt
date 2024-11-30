@@ -66,7 +66,7 @@ Control_Sequence::Control_Sequence ( Track *track, const char *name ) : Sequence
 
     _track = track;
 
-    this->name( name );
+    Control_Sequence::name( name );
 
     mode( OSC );
 
@@ -248,7 +248,7 @@ Control_Sequence::init ( void )
     _track = NULL;
     _output = NULL;
     __osc_output = NULL;
-    _mode = (Mode) - 1;
+    _mode = MIDI;   // MIDI is never actually used, will be changed in mode() to OSC or CV
 
     interpolation( Linear );
 }
@@ -718,9 +718,11 @@ Control_Sequence::peer_callback( OSC::Signal *sig,  OSC::Signal::State state, vo
 
         unescape_url( path );
 
-        asprintf( &s, "%s%s", peer_prefix, path );
-
-        peer_menu->add( s, 0, NULL, (void*)( sig ), 0 );
+        if( path != NULL)
+        {
+            asprintf( &s, "%s%s", peer_prefix, path );
+            peer_menu->add( s, 0, NULL, (void*)( sig ), 0 );
+        }
 
         /*     FL_MENU_TOGGLE | */
         /* ( ((Control_Sequence*)v)->_osc_output()->is_connected_to( sig ) ? FL_MENU_VALUE : 0 ) ); */
