@@ -286,10 +286,10 @@ Track::record ( Capture *c, nframes_t frame )
 
     c->audio_file = Audio_File_SF::create( pat, engine->sample_rate(), input.size(), Track::capture_format );
 
-    free( pat );
-
     if ( ! c->audio_file )
         FATAL( "Could not create file for new capture! (%s)", pat );
+
+    free( pat );
 
     /* open it again for reading in the GUI thread */
     //   Audio_File *af = Audio_File::from_file( c->audio_file->name() );
