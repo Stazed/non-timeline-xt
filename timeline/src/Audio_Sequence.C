@@ -340,10 +340,15 @@ Audio_Sequence::handle_paste ( const char *text )
     Fl::check();
 
     char *t = strdup( file );
+    if(!t)
+        return 0;
 
     char *filebase = strdup( basename( t ) );
 
     free( t );
+
+    if(!filebase)
+        return 0;
 
     char *s = 0;
 
