@@ -141,7 +141,7 @@ public:
 
         end();
 
-        show();
+        Tempo_Point_Editor::show();
 
         while ( shown() )
             Fl::wait();

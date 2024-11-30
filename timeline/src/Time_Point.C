@@ -169,7 +169,7 @@ public:
 
         end();
 
-        show();
+        Time_Point_Editor::show();
 
         while ( shown() )
             Fl::wait();
