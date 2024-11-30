@@ -99,8 +99,8 @@ Audio_File_SF::from_file ( const char *filename )
 
     //invalid:
 
-    sf_close( in );
-    return NULL;
+    // sf_close( in );
+    // return NULL;
 }
 
 Audio_File_SF *
