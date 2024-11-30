@@ -373,8 +373,18 @@ Project::create ( const char *name, const char *template_name )
     if ( chdir( name ) )
         FATAL( "WTF? Cannot change to new project directory" );
 
-    mkdir( "sources", 0777 );
-    creat( "history", 0666 );
+    if ( mkdir( "sources", 0777 ) )
+    {
+        WARNING( "Cannot create sources directory" );
+        return false;
+    }
+
+    int ret = creat( "history", 0666 );
+    if ( ret < 0 )
+    {
+        WARNING ( "Cannot create history directory: %s", strerror( errno ));
+        return false;
+    }
 
     if ( ! engine )
         make_engine();
