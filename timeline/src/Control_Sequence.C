@@ -723,6 +723,8 @@ Control_Sequence::peer_callback( OSC::Signal *sig,  OSC::Signal::State state, vo
             asprintf( &s, "%s%s", peer_prefix, path );
             peer_menu->add( s, 0, NULL, (void*)( sig ), 0 );
         }
+        else
+            return;
 
         /*     FL_MENU_TOGGLE | */
         /* ( ((Control_Sequence*)v)->_osc_output()->is_connected_to( sig ) ? FL_MENU_VALUE : 0 ) ); */
