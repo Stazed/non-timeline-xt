@@ -47,7 +47,7 @@ Region_Volume_Editor::Region_Volume_Editor(float &scale) :
 
     end();
 
-    show();
+    Region_Volume_Editor::show();
 
     while ( shown() )
         Fl::wait();
