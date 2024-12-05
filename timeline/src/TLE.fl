@@ -872,9 +872,8 @@ else
           callback {if ( engine && ! engine->zombified() )
 {
     engine->clear_xruns();
-    o->value(0);
 }}
-          xywh {745 0 80 25} down_box DOWN_BOX selection_color 80 labelfont 1 labelsize 11 labelcolor 32
+          xywh {745 0 80 25} down_box DOWN_BOX selection_color 80 labelfont 1 labelsize 11 labelcolor 32 when 6
           code0 {\#include "../../FL/Fl_Blink_Button.H"}
           class Fl_Blink_Button
         }

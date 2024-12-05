@@ -557,11 +557,10 @@ void TLE::cb_snap_toggle_bypass(Fl_Button* o, void* v) {
   ((TLE*)(o->parent()->parent()->parent()->user_data()))->cb_snap_toggle_bypass_i(o,v);
 }
 
-void TLE::cb_xrun_blinker_i(Fl_Blink_Button* o, void*) {
+void TLE::cb_xrun_blinker_i(Fl_Blink_Button*, void*) {
   if ( engine && ! engine->zombified() )
 {
     engine->clear_xruns();
-    o->value(0);
 };
 }
 void TLE::cb_xrun_blinker(Fl_Blink_Button* o, void* v) {
@@ -943,7 +942,7 @@ _Pragma("GCC diagnostic pop")
         xrun_blinker->labelcolor(FL_GRAY0);
         xrun_blinker->callback((Fl_Callback*)cb_xrun_blinker);
         xrun_blinker->align(Fl_Align(FL_ALIGN_CENTER));
-        xrun_blinker->when(FL_WHEN_RELEASE);
+        xrun_blinker->when(FL_WHEN_RELEASE_ALWAYS);
       } // Fl_Blink_Button* xrun_blinker
       { stats_box = new Fl_Button(825, 0, 158, 25, "<stats>");
         stats_box->labelsize(13);
