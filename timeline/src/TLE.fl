@@ -867,13 +867,20 @@ else
             class Fl_Blink_Button
           }
         }
-        Fl_Button stats_box {
-          label {<stats>}
+        Fl_Button xrun_blinker {
+          label {<xruns>}
           callback {if ( engine && ! engine->zombified() )
 {
     engine->clear_xruns();
+    o->value(0);
 }}
-          xywh {745 0 235 25} labelsize 13 align 88
+          xywh {745 0 80 25} down_box DOWN_BOX selection_color 80 labelfont 1 labelsize 11 labelcolor 32
+          code0 {\#include "../../FL/Fl_Blink_Button.H"}
+          class Fl_Blink_Button
+        }
+        Fl_Button stats_box {
+          label {<stats>}
+          xywh {825 0 158 25} labelsize 13 align 88 deactivate
         }
         Fl_Button sm_blinker {
           label SM
@@ -996,19 +1003,30 @@ if ( timeline->total_playback_xruns() )
 	playback_buffer_progress->selection_color( FL_RED );
 
 static char stats[100];
+static char xruns[50];
+static int d_xruns = 0;
 
 if ( engine && ! engine->zombified() )
 {
-snprintf( stats, sizeof( stats ), "latency: %.1fms, xruns: %d",
-	engine->frames_to_milliseconds( engine->system_latency() ),
-	engine->xruns() );
-}
+    snprintf( stats, sizeof( stats ), "latency: %.1fms",
+        engine->frames_to_milliseconds( engine->system_latency() ) );
+
+    d_xruns = engine->xruns();
+    snprintf( xruns, sizeof( xruns ), "xruns: %d",
+        d_xruns );}
 else
 {
         snprintf( stats, sizeof( stats ), "%s", "DISCONNECTED" );
+        snprintf( xruns, sizeof( xruns ), "%s", "0" );
 }
 
 stats_box->label( stats );
+xrun_blinker->label(xruns);
+
+if(d_xruns)
+    xrun_blinker->value(1);
+else
+    xrun_blinker->value(0);
 
 static bool zombie = false;
 

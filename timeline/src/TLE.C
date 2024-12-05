@@ -557,14 +557,15 @@ void TLE::cb_snap_toggle_bypass(Fl_Button* o, void* v) {
   ((TLE*)(o->parent()->parent()->parent()->user_data()))->cb_snap_toggle_bypass_i(o,v);
 }
 
-void TLE::cb_stats_box_i(Fl_Button*, void*) {
+void TLE::cb_xrun_blinker_i(Fl_Blink_Button* o, void*) {
   if ( engine && ! engine->zombified() )
 {
     engine->clear_xruns();
+    o->value(0);
 };
 }
-void TLE::cb_stats_box(Fl_Button* o, void* v) {
-  ((TLE*)(o->parent()->parent()->user_data()))->cb_stats_box_i(o,v);
+void TLE::cb_xrun_blinker(Fl_Blink_Button* o, void* v) {
+  ((TLE*)(o->parent()->parent()->user_data()))->cb_xrun_blinker_i(o,v);
 }
 
 void TLE::save_options() {
@@ -931,10 +932,23 @@ _Pragma("GCC diagnostic pop")
         } // Fl_Blink_Button* seek_blinker
         o->end();
       } // Fl_Group* o
-      { stats_box = new Fl_Button(745, 0, 235, 25, "<stats>");
+      { xrun_blinker = new Fl_Blink_Button(745, 0, 80, 25, "<xruns>");
+        xrun_blinker->box(FL_UP_BOX);
+        xrun_blinker->down_box(FL_DOWN_BOX);
+        xrun_blinker->color(FL_BACKGROUND_COLOR);
+        xrun_blinker->selection_color((Fl_Color)80);
+        xrun_blinker->labeltype(FL_NORMAL_LABEL);
+        xrun_blinker->labelfont(1);
+        xrun_blinker->labelsize(11);
+        xrun_blinker->labelcolor(FL_GRAY0);
+        xrun_blinker->callback((Fl_Callback*)cb_xrun_blinker);
+        xrun_blinker->align(Fl_Align(FL_ALIGN_CENTER));
+        xrun_blinker->when(FL_WHEN_RELEASE);
+      } // Fl_Blink_Button* xrun_blinker
+      { stats_box = new Fl_Button(825, 0, 158, 25, "<stats>");
         stats_box->labelsize(13);
-        stats_box->callback((Fl_Callback*)cb_stats_box);
         stats_box->align(Fl_Align(72|FL_ALIGN_INSIDE));
+        stats_box->deactivate();
       } // Fl_Button* stats_box
       { sm_blinker = new Fl_Button(985, 6, 35, 15, "SM");
         sm_blinker->box(FL_ROUNDED_BOX);
@@ -1075,19 +1089,30 @@ void TLE::update_status() {
   	playback_buffer_progress->selection_color( FL_RED );
   
   static char stats[100];
+  static char xruns[50];
+  static int d_xruns = 0;
   
   if ( engine && ! engine->zombified() )
   {
-  snprintf( stats, sizeof( stats ), "latency: %.1fms, xruns: %d",
-  	engine->frames_to_milliseconds( engine->system_latency() ),
-  	engine->xruns() );
-  }
+      snprintf( stats, sizeof( stats ), "latency: %.1fms",
+          engine->frames_to_milliseconds( engine->system_latency() ) );
+  
+      d_xruns = engine->xruns();
+      snprintf( xruns, sizeof( xruns ), "xruns: %d",
+          d_xruns );}
   else
   {
           snprintf( stats, sizeof( stats ), "%s", "DISCONNECTED" );
+          snprintf( xruns, sizeof( xruns ), "%s", "0" );
   }
   
   stats_box->label( stats );
+  xrun_blinker->label(xruns);
+  
+  if(d_xruns)
+      xrun_blinker->value(1);
+  else
+      xrun_blinker->value(0);
   
   static bool zombie = false;
   
