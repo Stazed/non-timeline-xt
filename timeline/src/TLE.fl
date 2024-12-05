@@ -880,7 +880,7 @@ else
         }
         Fl_Button stats_box {
           label {<stats>}
-          xywh {825 0 158 25} labelsize 13 align 88 deactivate
+          xywh {825 0 158 25} labelsize 13 align 80 deactivate
         }
         Fl_Button sm_blinker {
           label SM

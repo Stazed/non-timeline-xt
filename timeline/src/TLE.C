@@ -947,7 +947,7 @@ _Pragma("GCC diagnostic pop")
       } // Fl_Blink_Button* xrun_blinker
       { stats_box = new Fl_Button(825, 0, 158, 25, "<stats>");
         stats_box->labelsize(13);
-        stats_box->align(Fl_Align(72|FL_ALIGN_INSIDE));
+        stats_box->align(Fl_Align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE));
         stats_box->deactivate();
       } // Fl_Button* stats_box
       { sm_blinker = new Fl_Button(985, 6, 35, 15, "SM");
