@@ -1,9 +1,9 @@
 #CMake file for non-timeline-xt
 
-cmake_minimum_required(VERSION 3.5.1)
+cmake_minimum_required(VERSION 3.5.1...3.31.1)
 project (non-timeline-xt)
 
-set (PACKAGE_VERSION "2.0.4")
+set (PACKAGE_VERSION "2.0.5")
 
 set (CMAKE_SKIP_RULE_DEPENDENCY OFF)
 
