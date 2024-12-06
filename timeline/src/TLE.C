@@ -932,7 +932,7 @@ _Pragma("GCC diagnostic pop")
         o->end();
       } // Fl_Group* o
       { xrun_blinker = new Fl_Blink_Button(741, 4, 80, 15, "<XRUNS>");
-        xrun_blinker->tooltip("Left button to clear xruns.");
+        xrun_blinker->tooltip("Press button to clear xruns.");
         xrun_blinker->box(FL_UP_BOX);
         xrun_blinker->down_box(FL_DOWN_BOX);
         xrun_blinker->color(FL_BACKGROUND_COLOR);
