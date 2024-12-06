@@ -750,7 +750,7 @@ ab.run();}
             code1 {o->labeltype( FL_NO_LABEL );}
             class Transport
           }
-          Fl_Pack clocks_pack {
+          Fl_Pack clocks_pack {open
             private xywh {295 30 290 41} type HORIZONTAL
             code0 {o->spacing( 2 );}
           } {
@@ -868,18 +868,18 @@ else
           }
         }
         Fl_Button xrun_blinker {
-          label {<xruns>}
+          label {<XRUNS>}
           callback {if ( engine && ! engine->zombified() )
 {
     engine->clear_xruns();
 }}
-          xywh {745 0 80 25} down_box DOWN_BOX selection_color 80 labelfont 1 labelsize 11 labelcolor 32 when 6
+          tooltip {Left button to clear xruns.} xywh {741 4 80 15} down_box DOWN_BOX selection_color 80 labelsize 10 align 80 when 6
           code0 {\#include "../../FL/Fl_Blink_Button.H"}
           class Fl_Blink_Button
         }
         Fl_Button stats_box {
           label {<stats>}
-          xywh {825 0 158 25} labelsize 13 align 80 deactivate
+          xywh {824 0 156 25} labelsize 13 align 80 deactivate
         }
         Fl_Button sm_blinker {
           label SM
@@ -1007,16 +1007,16 @@ static int d_xruns = 0;
 
 if ( engine && ! engine->zombified() )
 {
-    snprintf( stats, sizeof( stats ), "latency: %.1fms",
+    snprintf( stats, sizeof( stats ), "Latency: %.1fms",
         engine->frames_to_milliseconds( engine->system_latency() ) );
 
     d_xruns = engine->xruns();
-    snprintf( xruns, sizeof( xruns ), "xruns: %d",
+    snprintf( xruns, sizeof( xruns ), "XRUNS: %d",
         d_xruns );}
 else
 {
         snprintf( stats, sizeof( stats ), "%s", "DISCONNECTED" );
-        snprintf( xruns, sizeof( xruns ), "%s", "0" );
+        snprintf( xruns, sizeof( xruns ), "%s", "XRUNS: 0" );
 }
 
 stats_box->label( stats );

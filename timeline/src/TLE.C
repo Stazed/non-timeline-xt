@@ -931,20 +931,21 @@ _Pragma("GCC diagnostic pop")
         } // Fl_Blink_Button* seek_blinker
         o->end();
       } // Fl_Group* o
-      { xrun_blinker = new Fl_Blink_Button(745, 0, 80, 25, "<xruns>");
+      { xrun_blinker = new Fl_Blink_Button(741, 4, 80, 15, "<XRUNS>");
+        xrun_blinker->tooltip("Left button to clear xruns.");
         xrun_blinker->box(FL_UP_BOX);
         xrun_blinker->down_box(FL_DOWN_BOX);
         xrun_blinker->color(FL_BACKGROUND_COLOR);
         xrun_blinker->selection_color((Fl_Color)80);
         xrun_blinker->labeltype(FL_NORMAL_LABEL);
-        xrun_blinker->labelfont(1);
-        xrun_blinker->labelsize(11);
-        xrun_blinker->labelcolor(FL_GRAY0);
+        xrun_blinker->labelfont(0);
+        xrun_blinker->labelsize(10);
+        xrun_blinker->labelcolor(FL_FOREGROUND_COLOR);
         xrun_blinker->callback((Fl_Callback*)cb_xrun_blinker);
-        xrun_blinker->align(Fl_Align(FL_ALIGN_CENTER));
+        xrun_blinker->align(Fl_Align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE));
         xrun_blinker->when(FL_WHEN_RELEASE_ALWAYS);
       } // Fl_Blink_Button* xrun_blinker
-      { stats_box = new Fl_Button(825, 0, 158, 25, "<stats>");
+      { stats_box = new Fl_Button(824, 0, 156, 25, "<stats>");
         stats_box->labelsize(13);
         stats_box->align(Fl_Align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE));
         stats_box->deactivate();
@@ -1093,16 +1094,16 @@ void TLE::update_status() {
   
   if ( engine && ! engine->zombified() )
   {
-      snprintf( stats, sizeof( stats ), "latency: %.1fms",
+      snprintf( stats, sizeof( stats ), "Latency: %.1fms",
           engine->frames_to_milliseconds( engine->system_latency() ) );
   
       d_xruns = engine->xruns();
-      snprintf( xruns, sizeof( xruns ), "xruns: %d",
+      snprintf( xruns, sizeof( xruns ), "XRUNS: %d",
           d_xruns );}
   else
   {
           snprintf( stats, sizeof( stats ), "%s", "DISCONNECTED" );
-          snprintf( xruns, sizeof( xruns ), "%s", "0" );
+          snprintf( xruns, sizeof( xruns ), "%s", "XRUNS: 0" );
   }
   
   stats_box->label( stats );
