@@ -65,8 +65,5 @@ if [ "$2" = --dry-run ]
         mv tmp/*.* . || echo "NO SYMLINKS FOUND"
 
         # Remove the tmp directory.
-
         rmdir tmp
 fi
-
-
