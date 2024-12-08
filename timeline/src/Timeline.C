@@ -472,11 +472,16 @@ Timeline::menu_cb ( Fl_Menu_ *m )
     }
     else if ( ! strcmp( picked, "Playhead to mouse" ) )
     {
-        int X = Fl::event_x() - Track::width();
+        int track_X = Fl::event_x() - Track::width();
+        int menu_X = menu_event_x - Track::width();
 
-        if ( X > 0 )
+        if ( track_X > 0 )
         {
-            transport->locate( xoffset + x_to_ts( X ) );
+            transport->locate( xoffset + x_to_ts( track_X ) );
+        }
+        else
+        {
+            transport->locate( xoffset + x_to_ts( menu_X ) );
         }
     }
     else if ( ! strcmp( picked, "Edit start to mouse" ) )
