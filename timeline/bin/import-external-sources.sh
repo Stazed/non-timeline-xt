@@ -59,12 +59,13 @@ if [ "$2" = --dry-run ]
         find -type l -exec cp -t  tmp/ {} +
 
         # Remove the symlinks from sources directory.
-        find -type l | xargs rm || echo "Nothing to do..."
+        find -type l -print0 | xargs -0 rm || echo "Nothing to do..."
 
         # Move the temporary directory items to sources.
         mv tmp/*.* . || echo "NO SYMLINKS FOUND"
 
         # Remove the tmp directory.
+
         rmdir tmp
 fi
 
