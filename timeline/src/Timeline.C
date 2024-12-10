@@ -411,6 +411,7 @@ Timeline::add_take_for_armed_tracks ( void )
 /* coordinates of mouse at time context menu is brought up. */
 static int menu_event_x = 0;
 static int menu_event_y = 0;
+static bool b_timeline_menu = false;
 void
 Timeline::menu_cb ( Fl_Menu_ *m )
 {
@@ -475,42 +476,69 @@ Timeline::menu_cb ( Fl_Menu_ *m )
         int track_X = Fl::event_x() - Track::width();
         int menu_X = menu_event_x - Track::width();
 
-        if ( track_X > 0 )
+        if ( b_timeline_menu )
         {
-            transport->locate( xoffset + x_to_ts( track_X ) );
+            b_timeline_menu = false;
+            if ( menu_X > 0 )
+                transport->locate( xoffset + x_to_ts( menu_X ) );
         }
         else
         {
-            transport->locate( xoffset + x_to_ts( menu_X ) );
+            if ( track_X > 0 )
+            {
+                transport->locate( xoffset + x_to_ts( track_X ) );
+            }
         }
     }
     else if ( ! strcmp( picked, "Edit start to mouse" ) )
     {
-        int X = Fl::event_x() - Track::width();
+        int track_X = Fl::event_x() - Track::width();
+        int menu_X = menu_event_x - Track::width();
 
-        if ( X > 0 )
+        if ( b_timeline_menu )
         {
-            range_start( xoffset + x_to_ts( X ) );
+            b_timeline_menu = false;
+            if ( menu_X > 0 )
+            {
+                range_start( xoffset + x_to_ts( menu_X ) );
+                fix_range();
+                redraw();
+            }
         }
-
-        fix_range();
-
-        /* FIXME: only needs to damage the location of the old cursor! */
-        redraw();
+        else
+        {
+            if ( track_X > 0 )
+            {
+                range_start( xoffset + x_to_ts( track_X ) );
+                fix_range();
+                redraw();
+            }
+        }
     }
     else if ( ! strcmp( picked, "Edit end to mouse" ) )
     {
-        int X = Fl::event_x() - Track::width();
+        int track_X = Fl::event_x() - Track::width();
+        int menu_X = menu_event_x - Track::width();
 
-        if ( X > 0 )
+        if ( b_timeline_menu )
         {
-            range_end( xoffset + x_to_ts( X ) );
+            b_timeline_menu = false;
+            if ( menu_X > 0 )
+            {
+                range_end( xoffset + x_to_ts( menu_X ) );
+                fix_range();
+                redraw();
+            }
         }
-
-        fix_range();
-
-        /* FIXME: only needs to damage the location of the old cursor! */
-        redraw();
+        else
+        {
+            if ( track_X > 0 )
+            {
+                range_end( xoffset + x_to_ts( track_X ) );
+                fix_range();
+                redraw();
+            }
+        }
     }
     else if ( ! strcmp( picked, "Nudge selected left" ) )
     {
@@ -1970,6 +1998,7 @@ Timeline::handle ( int m )
                                 mi->deactivate();
                         }
 
+                        b_timeline_menu = true;
                         menu_popup( menu );
 
                         return 1;
