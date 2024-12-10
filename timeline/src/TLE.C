@@ -931,7 +931,7 @@ _Pragma("GCC diagnostic pop")
         } // Fl_Blink_Button* seek_blinker
         o->end();
       } // Fl_Group* o
-      { xrun_blinker = new Fl_Blink_Button(741, 4, 80, 15, "<XRUNS>");
+      { xrun_blinker = new Fl_Blink_Button(777, 4, 80, 15, "<XRUNS>");
         xrun_blinker->tooltip("Press button to clear xruns.");
         xrun_blinker->box(FL_UP_BOX);
         xrun_blinker->down_box(FL_DOWN_BOX);
@@ -945,7 +945,7 @@ _Pragma("GCC diagnostic pop")
         xrun_blinker->align(Fl_Align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE));
         xrun_blinker->when(FL_WHEN_RELEASE_ALWAYS);
       } // Fl_Blink_Button* xrun_blinker
-      { stats_box = new Fl_Button(824, 0, 156, 25, "<stats>");
+      { stats_box = new Fl_Button(860, 0, 120, 25, "<stats>");
         stats_box->labelsize(13);
         stats_box->align(Fl_Align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE));
         stats_box->deactivate();

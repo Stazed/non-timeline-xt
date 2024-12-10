@@ -873,13 +873,13 @@ else
 {
     engine->clear_xruns();
 }}
-          tooltip {Press button to clear xruns.} xywh {741 4 80 15} down_box DOWN_BOX selection_color 80 labelsize 10 align 80 when 6
+          tooltip {Press button to clear xruns.} xywh {777 4 80 15} down_box DOWN_BOX selection_color 80 labelsize 10 align 80 when 6
           code0 {\#include "../../FL/Fl_Blink_Button.H"}
           class Fl_Blink_Button
         }
         Fl_Button stats_box {
           label {<stats>}
-          xywh {824 0 156 25} labelsize 13 align 80 deactivate
+          xywh {860 0 120 25} labelsize 13 align 80 deactivate
         }
         Fl_Button sm_blinker {
           label SM
