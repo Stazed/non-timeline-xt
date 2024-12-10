@@ -214,6 +214,10 @@ Audio_Region::menu_cb ( Fl_Widget *w, void *v )
     ((Audio_Region*)v)->menu_cb( (Fl_Menu_*) w );
 }
 
+/* coordinates of mouse at time context menu is brought up. */
+static int region_menu_event_x = 0;
+static int region_menu_event_y = 0;
+static bool b_menu_popup = false;
 void
 Audio_Region::menu_cb ( const Fl_Menu_ *m )
 {
@@ -245,7 +249,16 @@ Audio_Region::menu_cb ( const Fl_Menu_ *m )
         box_color( fl_show_colormap( box_color() ) );
     else if ( ! strcmp( picked, "/Split at mouse" ) )
     {
-        split( timeline->x_to_offset( Fl::event_x() ) );
+        nframes_t region_X = timeline->x_to_offset( Fl::event_x() );
+        nframes_t menu_X = timeline->x_to_offset(region_menu_event_x);
+
+        if (b_menu_popup)
+        {
+            b_menu_popup = false;
+            split( menu_X );
+        }
+        else
+            split( region_X );
     }
     else if ( ! strcmp( picked, "/Crop to range" ) )
     {
@@ -269,19 +282,39 @@ Audio_Region::menu_cb ( const Fl_Menu_ *m )
     }
     else if ( ! strcmp( picked, "/Fade in to mouse" ) )
     {
-        nframes_t offset = x_to_offset( Fl::event_x() );
+        nframes_t offset_region_X = x_to_offset( Fl::event_x() );
+        nframes_t offset_menu_X = x_to_offset(region_menu_event_x);
 
-        if ( offset < length() )
-            _fade_in.length = offset;
+        if (b_menu_popup)
+        {
+            b_menu_popup = false;
+            if ( offset_menu_X < length() )
+                _fade_in.length = offset_menu_X;
+        }
+        else
+        {
+            if ( offset_region_X < length() )
+                _fade_in.length = offset_region_X;
+        }
 
         DMESSAGE( "set fade in duration" );
     }
     else if ( ! strcmp( picked, "/Fade out to mouse" ) )
     {
-        long offset = length() - x_to_offset( Fl::event_x() );
+        long offset_region_X = length() - x_to_offset( Fl::event_x() );
+        long offset_menu_X = length() - x_to_offset(region_menu_event_x);
 
-        if ( offset > 0 )
-            _fade_out.length = offset;
+        if (b_menu_popup)
+        {
+            b_menu_popup = false;
+            if ( offset_menu_X > 0 )
+            _fade_out.length = offset_menu_X;
+        }
+        else
+        {
+            if ( offset_region_X > 0 )
+            _fade_out.length = offset_region_X;
+        }
     }
     else if ( ! strcmp( picked, "/Gain with mouse vertical drag" ) )
     {
@@ -291,16 +324,33 @@ Audio_Region::menu_cb ( const Fl_Menu_ *m )
     }
     else if ( ! strcmp( picked, "/Loop point to mouse" ) )
     {
-        nframes_t offset = x_to_offset( Fl::event_x() );
+        nframes_t offset_region_X = x_to_offset( Fl::event_x() );
+        nframes_t offset_menu_X = x_to_offset(region_menu_event_x);
 
-        if ( offset > 0 )
+        if (b_menu_popup)
         {
-            nframes_t f = offset + _r->start;
+            b_menu_popup = false;
+            if ( offset_menu_X > 0 )
+            {
+                nframes_t f = offset_menu_X + _r->start;
 
-            if ( timeline->nearest_line( &f, false ) )
-                _loop = f - _r->start;
-            else
-                _loop = offset;
+                if ( timeline->nearest_line( &f, false ) )
+                    _loop = f - _r->start;
+                else
+                    _loop = offset_menu_X;
+            } 
+        }
+        else
+        {
+            if ( offset_region_X > 0 )
+            {
+                nframes_t f = offset_region_X + _r->start;
+
+                if ( timeline->nearest_line( &f, false ) )
+                    _loop = f - _r->start;
+                else
+                    _loop = offset_region_X;
+            }
         }
     }
     else if ( ! strcmp( picked, "/Clear loop point" ) )
@@ -966,6 +1016,10 @@ Audio_Region::handle ( int m )
                 else if ( test_press( FL_BUTTON3 ) )
                 {
                     /* context menu */
+                    region_menu_event_x = X;
+                    region_menu_event_y = Y;
+                    b_menu_popup = true;
+
                     menu_popup( &menu() );
 
                     return 1;
