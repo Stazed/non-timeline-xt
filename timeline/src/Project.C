@@ -382,7 +382,7 @@ Project::create ( const char *name, const char *template_name )
     int ret = creat( "history", 0666 );
     if ( ret < 0 )
     {
-        WARNING ( "Cannot create history directory: %s", strerror( errno ));
+        WARNING ( "Cannot create history file: %s", strerror( errno ));
         return false;
     }
 
