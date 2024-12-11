@@ -1328,6 +1328,12 @@ Track::handle ( int m )
                 Fl::event_inside( ((Track_Header * )child(0))->output_connector_handle ) )
             {
                 char *s = (char*)malloc(256);
+
+                if ( s == NULL )
+                {
+                    WARNING("Failure to malloc");
+                    return 0;
+                }
                 s[0] = 0;
 
                 for ( unsigned int i = 0; i < output.size(); ++i )
