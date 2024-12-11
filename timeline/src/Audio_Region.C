@@ -254,7 +254,7 @@ Audio_Region::menu_cb ( const Fl_Menu_ *m )
 
         if (b_menu_popup)
         {
-            b_menu_popup = false;
+            /* No need to reset bool here as it is done on callback exit */
             split( menu_X );
         }
         else
@@ -265,20 +265,22 @@ Audio_Region::menu_cb ( const Fl_Menu_ *m )
         nframes_t edit_start = timeline->range_start();
         nframes_t edit_end = timeline->range_end();
 
-        /* If no edit cursor then ignore */
-        if( !edit_end )
-            return;
-
+        bool b_ignore = false;
+        /* If no edit cursor, ignore */
         /* If edit cursor does not overlap the region in any way, ignore */
-        if(edit_start >= _r->start + _r->length)
-            return;
+        /* If edit end is before the start, ignore */
+        if( !edit_end || (edit_start >= _r->start + _r->length) ||
+                (edit_end <= _r->start) )
+        {
+            b_ignore = true;
+        }
 
-        if(edit_end <= _r->start)
-            return;
-
-        redraw();
-        trim_left( edit_start );
-        trim_right( edit_end );
+        if ( !b_ignore)
+        {
+            redraw();
+            trim_left( edit_start );
+            trim_right( edit_end );
+        }
     }
     else if ( ! strcmp( picked, "/Fade in to mouse" ) )
     {
@@ -287,7 +289,7 @@ Audio_Region::menu_cb ( const Fl_Menu_ *m )
 
         if (b_menu_popup)
         {
-            b_menu_popup = false;
+            /* No need to reset bool here as it is done on callback exit */
             if ( offset_menu_X < length() )
                 _fade_in.length = offset_menu_X;
         }
@@ -306,7 +308,7 @@ Audio_Region::menu_cb ( const Fl_Menu_ *m )
 
         if (b_menu_popup)
         {
-            b_menu_popup = false;
+            /* No need to reset bool here as it is done on callback exit */
             if ( offset_menu_X > 0 )
             _fade_out.length = offset_menu_X;
         }
@@ -329,7 +331,7 @@ Audio_Region::menu_cb ( const Fl_Menu_ *m )
 
         if (b_menu_popup)
         {
-            b_menu_popup = false;
+            /* No need to reset bool here as it is done on callback exit */
             if ( offset_menu_X > 0 )
             {
                 nframes_t f = offset_menu_X + _r->start;
@@ -404,7 +406,10 @@ Audio_Region::menu_cb ( const Fl_Menu_ *m )
     else if ( ! strcmp( picked, "/Remove" ) )
         remove();
     else
-        FATAL( "Unknown menu choice \"%s\"", picked );
+        WARNING( "Unknown menu choice \"%s\"", picked );
+
+    /* Always re-set or it will carry over to next call */
+    b_menu_popup = false;
 
     redraw();
 }

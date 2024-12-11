@@ -416,7 +416,10 @@ void
 Timeline::menu_cb ( Fl_Menu_ *m )
 {
     if ( ! active_r() )
+    {
+        b_timeline_menu = false;
         return;
+    }
 
     const char *picked = m->mvalue()->label();
 
@@ -478,7 +481,7 @@ Timeline::menu_cb ( Fl_Menu_ *m )
 
         if ( b_timeline_menu )
         {
-            b_timeline_menu = false;
+            /* No need to reset bool here as it is done on callback exit */
             if ( menu_X > 0 )
                 transport->locate( xoffset + x_to_ts( menu_X ) );
         }
@@ -497,7 +500,7 @@ Timeline::menu_cb ( Fl_Menu_ *m )
 
         if ( b_timeline_menu )
         {
-            b_timeline_menu = false;
+            /* No need to reset bool here as it is done on callback exit */
             if ( menu_X > 0 )
             {
                 range_start( xoffset + x_to_ts( menu_X ) );
@@ -522,7 +525,7 @@ Timeline::menu_cb ( Fl_Menu_ *m )
 
         if ( b_timeline_menu )
         {
-            b_timeline_menu = false;
+            /* No need to reset bool here as it is done on callback exit */
             if ( menu_X > 0 )
             {
                 range_end( xoffset + x_to_ts( menu_X ) );
@@ -697,7 +700,10 @@ Timeline::menu_cb ( Fl_Menu_ *m )
         }
     }
     else
-        WARNING( "programming error: Unknown menu item" );
+        WARNING( "Unknown menu choice \"%s\"", picked );
+
+    /* Always re-set or it will carry over to next call */
+    b_timeline_menu = false;
 }
 
 int
