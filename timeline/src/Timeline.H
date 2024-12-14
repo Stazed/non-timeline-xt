@@ -307,6 +307,7 @@ public:
     bool command_new ( const char *name, const char *display_name );
     bool command_save ( void );
     void command_quit ( void );
+    void update_window_title( );
 
     void command_hide_gui ( void );
     void command_show_gui ( void );

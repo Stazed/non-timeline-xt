@@ -2312,6 +2312,13 @@ Timeline::command_quit ( void )
 }
 
 void
+Timeline::update_window_title( )
+{
+    std::string title = std::string ( APP_NAME ) + " - " + Project::name ( );
+    tle->main_window-> copy_label (  title.c_str ( ) );
+}
+
+void
 Timeline::command_undo ( void )
 {
     /* FIXME: sequence lock too? */
@@ -2342,6 +2349,8 @@ Timeline::command_load ( const char *name, const char *display_name )
     if ( display_name )
         Project::set_name ( display_name );
 
+    update_window_title();
+
     apply_track_order();
 
     tle->load_window_sizes( );
@@ -2364,6 +2373,9 @@ Timeline::command_new ( const char *name, const char *display_name )
     bool b = Project::create( name, NULL );
 
     Project::set_name ( display_name );
+
+    /* Because of set_name() above to display_name */
+    update_window_title( );
 
     /* FIXME: there's other stuff that needs to be done here! */
     /* tle->update_menu(); */

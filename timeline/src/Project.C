@@ -344,14 +344,6 @@ Project::open ( const char *name )
 
     tle->load_timeline_settings();
 
-    std::string window_label = APP_NAME;
-    window_label += " - ";
-
-    if ( *_name != '\0')
-        window_label += _name;
-
-    tle->main_window->label(window_label.c_str());
-
     timeline->zoom_fit();
 
     MESSAGE( "Loaded project \"%s\"", _path );
@@ -406,6 +398,7 @@ Project::create ( const char *name, const char *template_name )
         /* add the bare essentials */
         timeline->beats_per_minute( 0, 120 );
         timeline->time( 0, 4, 4 );
+        timeline->update_window_title();
 
         MESSAGE( "Created project \"%s\" from template \"%s\"", name, template_name );
         return true;
