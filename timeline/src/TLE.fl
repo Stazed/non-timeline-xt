@@ -432,8 +432,6 @@ follow_transport->value(Timeline::follow_playhead);}
 
 load_timeline_settings();
 
-update_menu();
-
 main_window->redraw();}
               xywh {5 5 40 25}
             }

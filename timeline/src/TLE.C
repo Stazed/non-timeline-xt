@@ -167,8 +167,6 @@ void TLE::cb_New_i(Fl_Menu_*, void*) {
 
 load_timeline_settings();
 
-update_menu();
-
 main_window->redraw();
 }
 void TLE::cb_New(Fl_Menu_* o, void* v) {
