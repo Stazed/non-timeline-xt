@@ -747,7 +747,7 @@ TLE::TLE() {
 }
 
 TLE_Window* TLE::make_window() {
-  { TLE_Window* o = main_window = new TLE_Window(1025, 770, "Non Timeline XT");
+  { TLE_Window* o = main_window = new TLE_Window(1025, 770, "Non-Timeline-XT");
     main_window->box(FL_FLAT_BOX);
     main_window->color(FL_BACKGROUND_COLOR);
     main_window->selection_color(FL_BACKGROUND_COLOR);
