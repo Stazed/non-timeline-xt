@@ -255,6 +255,18 @@ _h_main = 600;
 	
 Fl::visible_focus( 0 );
 
+// The FL_ASYM_BOX type is NTK only
+\#ifndef FLTK_SUPPORT
+    solo_blinker->box( FL_ASYM_BOX );
+    solo_blinker->down_box( FL_ASYM_BOX );
+    rec_blinker->box( FL_ASYM_BOX );
+    rec_blinker->down_box( FL_ASYM_BOX );
+    selected_blinker->box( FL_ASYM_BOX );
+    selected_blinker->down_box( FL_ASYM_BOX );
+    seek_blinker->box( FL_ASYM_BOX );
+    seek_blinker->down_box( FL_ASYM_BOX );
+\#endif
+
 // constrain window to size of screen.
 {
         int sx, sy, sw, sh;
