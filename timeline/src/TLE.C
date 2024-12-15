@@ -1144,6 +1144,12 @@ void TLE::update_status() {
   
   sm_blinker->value( timeline->session_manager_name() != NULL );
   sm_blinker->tooltip( timeline->session_manager_name() );
+  #ifdef FLTK_SUPPORT
+    // cosmetics - the deactivated color is very dark for FLTK - button does not do anything on callback.
+    if (sm_blinker->value())
+      sm_blinker->activate();
+  #endif
+  
   selected_blinker->value( timeline->nselected() );
   seek_blinker->value( timeline->seek_pending() );
   
