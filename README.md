@@ -43,10 +43,15 @@ Getting submodules (nonlib and FL):
 Getting NTK:
 ------------
 
-Your distribution will likely have NTK available. If not then you can get NTK at:
+Your distribution may have NTK available. If not then you can get NTK at:
 
 ```bash
     git clone https://github.com/linuxaudio/ntk
+```
+
+There is an "unofficial" updated fork of NTK at:
+```bash
+    git clone https://Stazed@github.com/Stazed/ntk.git
 ```
 
 Build Non-Timeline-XT:
@@ -69,6 +74,9 @@ To uninstall:
 ```
 
 To build with NTK:
+
+If building with a local install, you may need to set some environment variables. See the README of the "unofficial" [NTK](https://Stazed@github.com/Stazed/ntk.git) for how to set them.
+
 ```bash
     mkdir build
     cd build
