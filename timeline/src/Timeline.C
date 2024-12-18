@@ -1115,11 +1115,15 @@ Timeline::draw_measure_cb ( nframes_t frame, const BBT &bbt, void *v )
     Fl_Color c;
     Fl_Color ct = fl_contrast( mc, FL_BACKGROUND_COLOR );
 
+#ifdef FLTK_SUPPORT
     bool light_theme = false;
+#endif
 
     if ( FL_BLACK == ct )
     {
+#ifdef FLTK_SUPPORT
         light_theme = true;
+#endif
         /* in a light color scheme mode */
         mc = fl_rgb_color(30, 30, 30);
         bc = FL_DARK3;
