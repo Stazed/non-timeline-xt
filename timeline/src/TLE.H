@@ -38,7 +38,7 @@ public:
 #ifdef FLTK_SUPPORT
    #include "../../FL/Fl_Theme_Chooser.H"
 #else
-    #include "FL/Fl_Theme_Chooser.H"
+    #include <FL/Fl_Theme_Chooser.H>
  #endif
 #include <FL/Fl_Pack.H>
 #include <FL/Fl_Box.H>
