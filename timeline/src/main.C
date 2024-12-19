@@ -58,6 +58,10 @@
 #include "../../FL/themes.H"
 #endif
 
+#ifdef NTK_EXTENDED
+#include <FL/themes.H>
+#endif
+
 extern void set_nsm_callbacks ( nsm_client_t *nsm );
 
 Engine *engine;
@@ -329,6 +333,10 @@ main ( int argc, char **argv )
 
 #ifdef FLTK_SUPPORT
     fl_register_themes(USER_CONFIG_DIR);
+#endif
+
+#ifdef NTK_EXTENDED
+    ntk_register_themes(USER_CONFIG_DIR);
 #endif
 
     while ( !b_exit_program && !timeline->exit_program )
