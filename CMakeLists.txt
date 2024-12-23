@@ -24,7 +24,7 @@ option (EnableSSE "Enable SSE (default=automatic check)" ON)
 option (EnableSSE2 "Enable SSE2 (default=automatic check)" ON)
 option (NativeOptimizations "Enable native CPU optimizations" ON)
 option (EnableNTK "Use NTK toolkit for build" OFF)
-option (EnableFLTK1-4 "Use FLTK 1-4 build with cairo support enabled" OFF)
+option (EnableFLTK1-4 "Use FLTK 1-4 build - EXPERIMENTAL!!!" OFF)
 option (EnableFLTKStatic "Build using FLTK static libraries" OFF)
 
 
