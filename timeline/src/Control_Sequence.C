@@ -431,7 +431,7 @@ Control_Sequence::draw_box ( void )
 
     //    fl_rectf( X, Y, W, H, fl_color_average( FL_BLACK, FL_BACKGROUND_COLOR, 0.3 ) );
     //    fl_rectf( X,Y,W,H, fl_color_average( FL_BLACK, FL_WHITE, 0.90 ) );
-#ifndef FLTK_SUPPORT
+#if !defined(FLTK_SUPPORT) && !defined(FLTK14_SUPPORT)
     // FLTK draws the background before calling this since no transparency, so only for NTK
     fl_rectf( X, Y, W, H, FL_DARK1 );
 #endif
@@ -469,7 +469,7 @@ Control_Sequence::draw ( void )
     const Fl_Color color = active ? this->color() : fl_inactive( this->color() );
     //    const Fl_Color selection_color = active ? this->selection_color() : fl_inactive( this->selection_color() );
 
-#ifdef FLTK_SUPPORT
+#if defined(FLTK_SUPPORT) || defined (FLTK14_SUPPORT)
     // Background only first for FLTK
     if ( box() != FL_NO_BOX )
         fl_rectf( X, Y, W, H, FL_DARK1 );
@@ -482,7 +482,7 @@ Control_Sequence::draw ( void )
     {
         if ( draw_with_polygon )
         {
-#ifdef FLTK_SUPPORT
+#if defined(FLTK_SUPPORT) || defined (FLTK14_SUPPORT)
             fl_color( color  );
 #else
             fl_color( fl_color_add_alpha( color, 60 ) );
@@ -503,7 +503,7 @@ Control_Sequence::draw ( void )
         fl_line_style( FL_SOLID, 0 );
     }
 
-#ifdef FLTK_SUPPORT
+#if defined(FLTK_SUPPORT) || defined (FLTK14_SUPPORT)
     // Grid lines after polygon and before control points
     if ( box() != FL_NO_BOX )
         draw_box();

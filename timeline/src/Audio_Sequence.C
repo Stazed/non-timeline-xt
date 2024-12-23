@@ -296,7 +296,7 @@ Audio_Sequence::draw ( void )
 
                     cairo_surface_destroy(Xsurface);
                     cairo_destroy(cc);
-#else
+#else   // NTK and FLTK14_SUPPORT
                     cairo_t *cc = Fl::cairo_cc();
 
                     cairo_set_operator( cc, CAIRO_OPERATOR_HSL_COLOR );

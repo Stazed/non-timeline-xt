@@ -188,7 +188,7 @@ Track::init ( void )
             {
                 Fl_Group *o = controls_heading = new Fl_Group( 0, 0, pack->w(), 10 );
                 o->box( FL_FLAT_BOX );
-#ifdef FLTK_SUPPORT
+#if defined(FLTK_SUPPORT) || defined (FLTK14_SUPPORT)
                 o->color( fl_rgb_color( 1, 1, 1 ) );
 #else
                 o->color( fl_color_add_alpha( fl_rgb_color( 1, 1, 1 ), 127 ) );
@@ -223,7 +223,7 @@ Track::init ( void )
             {
                 Fl_Group *o = takes_heading = new Fl_Group( 0, 0, pack->w(), 10 );
                 o->box( FL_FLAT_BOX );
-#ifdef FLTK_SUPPORT
+#if defined(FLTK_SUPPORT) || defined (FLTK14_SUPPORT)
                 o->color( fl_rgb_color( 1, 1, 1 ) );
 #else
                 o->color( fl_color_add_alpha( fl_rgb_color( 1, 1, 1 ), 127 ) );
@@ -1100,7 +1100,7 @@ Track::draw ( void )
     if ( ((Track_Header * )child(0))->input_connector_handle == receptive_to_drop )
     {
         Fl_Widget *o = ((Track_Header*)child(0))->input_connector_handle;
-#ifdef FLTK_SUPPORT
+#if defined(FLTK_SUPPORT) || defined (FLTK14_SUPPORT)
         fl_draw_box( FL_OVAL_BOX, o->x(), o->y(), o->w(), o->h(),  FL_GREEN );
 #else
         fl_draw_box( FL_OVAL_BOX, o->x(), o->y(), o->w(), o->h(), fl_color_add_alpha( FL_GREEN, 127 ) );

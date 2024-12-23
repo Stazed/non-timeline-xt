@@ -32,13 +32,13 @@
 #include <FL/Fl_Widget.H>
 #include <FL/fl_draw.H>
 #include <FL/Fl_Menu_Button.H>
-#ifdef FLTK_SUPPORT
+#if defined(FLTK_SUPPORT) || defined (FLTK14_SUPPORT)
 #include "../../FL/Fl_Panzoomer.H"
 #else
 #include <FL/Fl_Panzoomer.H>
 #endif
 
-#ifdef FLTK_SUPPORT
+#if defined(FLTK_SUPPORT) || defined (FLTK14_SUPPORT)
 #include <cairo.h>
 #include <cairo-xlib.h>
 #endif
@@ -74,7 +74,7 @@
 #include "../../nonlib/nsm.h"
 extern nsm_client_t *nsm;
 
-#ifdef FLTK_SUPPORT
+#if defined(FLTK_SUPPORT) || defined (FLTK14_SUPPORT)
 typedef unsigned char fl_damage_t;
 #endif
 
@@ -1115,13 +1115,13 @@ Timeline::draw_measure_cb ( nframes_t frame, const BBT &bbt, void *v )
     Fl_Color c;
     Fl_Color ct = fl_contrast( mc, FL_BACKGROUND_COLOR );
 
-#ifdef FLTK_SUPPORT
+#if defined(FLTK_SUPPORT) || defined (FLTK14_SUPPORT)
     bool light_theme = false;
 #endif
 
     if ( FL_BLACK == ct )
     {
-#ifdef FLTK_SUPPORT
+#if defined(FLTK_SUPPORT) || defined (FLTK14_SUPPORT)
         light_theme = true;
 #endif
         /* in a light color scheme mode */
@@ -1138,7 +1138,7 @@ Timeline::draw_measure_cb ( nframes_t frame, const BBT &bbt, void *v )
     }
     else
         c = mc;
-#ifdef FLTK_SUPPORT
+#if defined(FLTK_SUPPORT) || defined (FLTK14_SUPPORT)
     // soften the grid lines some
     if(light_theme)
         fl_color( fl_color_average(c, FL_WHITE, .50f) );
@@ -1454,6 +1454,25 @@ Timeline::draw_cursors ( Cursor_Sequence *o ) const
 
                 cairo_surface_destroy(Xsurface);
                 cairo_destroy(cc);
+
+#elif defined FLTK14_SUPPORT
+
+                unsigned rgb = Fl::get_color( (*i)->box_color() );
+
+                unsigned r =  (rgb >> 24) & 0xFF;
+                unsigned g =  (rgb >> 16) & 0xFF;
+                unsigned b =  (rgb >> 8) & 0xFF;
+
+                cairo_t *cc = Fl::cairo_make_current(tle->main_window);
+
+                cairo_set_operator( cc, CAIRO_OPERATOR_HSL_COLOR );
+                cairo_set_source_rgba( cc, (double)r, (double)g, (double)b, 0.60 );
+                cairo_rectangle( cc, (*i)->line_x(), tracks->y(), (*i)->abs_w(), tracks->h() );
+
+                cairo_fill( cc );
+
+                cairo_set_operator( cc, CAIRO_OPERATOR_OVER );
+
 #else   // NTK
                 fl_color( fl_color_add_alpha( (*i)->box_color(), 25 ) );
                 fl_rectf( (*i)->line_x(), tracks->y(), (*i)->abs_w(), tracks->h() );
@@ -1461,7 +1480,7 @@ Timeline::draw_cursors ( Cursor_Sequence *o ) const
             }
             else    // draw lines instead of overlay 2 pixels wide
             {
-#ifdef FLTK_SUPPORT
+#if defined(FLTK_SUPPORT) || defined (FLTK14_SUPPORT)
                 fl_color( (*i)->box_color() );
 #else
                 fl_color( fl_color_add_alpha( (*i)->box_color(), 127  ));

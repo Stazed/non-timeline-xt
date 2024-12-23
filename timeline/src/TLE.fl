@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0309
+version 1.0401
 header_name {.H}
 code_name {.C}
 comment {//
@@ -256,7 +256,7 @@ _h_main = 600;
 Fl::visible_focus( 0 );
 
 // The FL_ASYM_BOX type is NTK only
-\#ifndef FLTK_SUPPORT
+\#if !defined(FLTK_SUPPORT) && !defined(FLTK14_SUPPORT)
     solo_blinker->box( FL_ASYM_BOX );
     solo_blinker->down_box( FL_ASYM_BOX );
     rec_blinker->box( FL_ASYM_BOX );
@@ -346,7 +346,7 @@ Loggable::progress_callback( &TLE::progress_cb, this );} {}
       code0 {o->xclass( APP_NAME );}
       class TLE_Window size_range {947 300 0 0} visible
     } {
-      Fl_Group {} {open
+      Fl_Group {} {
         xywh {0 -53 1025 126} box FLAT_BOX
       } {
         Fl_Menu_Bar menubar {
@@ -583,11 +583,11 @@ Project::compact();}
               label {&Theme}
               callback {fl_theme_chooser();}
               xywh {15 15 40 24}
-              code0 {\#ifdef FLTK_SUPPORT
+              code0 {\#if defined(FLTK_SUPPORT) || defined (FLTK14_SUPPORT)
    \#include "../../FL/Fl_Theme_Chooser.H"
 \#else
     \#include <FL/Fl_Theme_Chooser.H>
- \#endif}
+\#endif}
             }
           }
           Submenu {} {
