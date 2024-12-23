@@ -1467,7 +1467,18 @@ Timeline::draw_cursors ( Cursor_Sequence *o ) const
 
                 cairo_set_operator( cc, CAIRO_OPERATOR_HSL_COLOR );
                 cairo_set_source_rgba( cc, (double)r, (double)g, (double)b, 0.60 );
-                cairo_rectangle( cc, (*i)->line_x(), tracks->y(), (*i)->abs_w(), tracks->h() );
+
+                // 200 is the width of the track header, so don't draw over the header
+                int line_x = (*i)->line_x() < 200 ?  200 : (*i)->line_x();
+                int abs_w = (*i)->abs_w() - ( line_x - (*i)->line_x()  );
+
+                // Don't allow width to go into negative or it draws over the header
+                abs_w = abs_w < 0 ? 0 : abs_w;
+
+                // This is to keep the overlap from scrolling above the audio track into the cursor tracks
+                int ty = tracks->y() < 165 ? 165 : tracks->y();
+
+                cairo_rectangle( cc, line_x, ty, abs_w, tracks->h() );
 
                 cairo_fill( cc );
 

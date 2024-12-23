@@ -52,6 +52,11 @@ using namespace std;
 
 #include "../../nonlib/string_util.h"
 
+#ifdef FLTK14_SUPPORT
+#include "TLE.H"
+extern TLE *tle;
+#endif
+
 const char *
 Audio_Sequence::name ( void ) const
 {
@@ -245,7 +250,7 @@ Audio_Sequence::draw ( void )
                     b.y = (*r)->y();
                     b.w = (*r)->w();
                     b.h = (*r)->h();
-#ifdef FLTK_SUPPORT
+#if defined(FLTK_SUPPORT) || defined (FLTK14_SUPPORT)
                     // Keep overlap from scrolling before track beginning into the track header region
                     // magic number 200 = track header width
                     if (b.x < 200)
@@ -266,7 +271,7 @@ Audio_Sequence::draw ( void )
                     b.w = (o->x() + o->w()) - (*r)->x();
                     b.h = o->h();
 
-#ifdef FLTK_SUPPORT
+#if defined(FLTK_SUPPORT) || defined (FLTK14_SUPPORT)
                     // Keep overlap from scrolling before track beginning into the track header region
                     if (b.x < 200)
                     {
@@ -296,7 +301,17 @@ Audio_Sequence::draw ( void )
 
                     cairo_surface_destroy(Xsurface);
                     cairo_destroy(cc);
-#else   // NTK and FLTK14_SUPPORT
+#elif defined(FLTK14_SUPPORT)
+                    cairo_t *cc = Fl::cairo_make_current(tle->main_window);
+
+                    cairo_set_operator( cc, CAIRO_OPERATOR_HSL_COLOR );
+                    cairo_set_source_rgba( cc, 1, 1, 0, 0.80 );
+                    cairo_rectangle( cc, b.x, b.y, b.w, b.h );
+
+                    cairo_fill( cc );
+
+                    cairo_set_operator( cc, CAIRO_OPERATOR_OVER );
+#else   // NTK
                     cairo_t *cc = Fl::cairo_cc();
 
                     cairo_set_operator( cc, CAIRO_OPERATOR_HSL_COLOR );
