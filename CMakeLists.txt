@@ -24,6 +24,7 @@ option (EnableSSE "Enable SSE (default=automatic check)" ON)
 option (EnableSSE2 "Enable SSE2 (default=automatic check)" ON)
 option (NativeOptimizations "Enable native CPU optimizations" ON)
 option (EnableNTK "Use NTK toolkit for build" OFF)
+option (EnableFLTK1-4 "Use FLTK 1-4 build with cairo support enabled" OFF)
 option (EnableFLTKStatic "Build using FLTK static libraries" OFF)
 
 
@@ -98,7 +99,13 @@ else(EnableNTK)
         mark_as_advanced(FORCE FLTK_IMAGES_LIBRARY)
         mark_as_advanced(FORCE FLTK_INCLUDE_DIR)
         mark_as_advanced(FORCE FLTK_MATH_LIBRARY)
-        add_definitions(-D'FLTK_SUPPORT=1')
+
+        if(EnableFLTK1-4)
+            add_definitions(-D'FLTK14_SUPPORT=1')
+        else(EnableFLTK1-4)
+            add_definitions(-D'FLTK_SUPPORT=1') # FLTK 1-3
+        endif(EnableFLTK1-4)
+
     endif(FLTK_FOUND)
 endif(EnableNTK)
 
@@ -261,6 +268,7 @@ package_status(EnableSSE           "Use sse. . . . . . . . . . . . . . . . . . .
 package_status(EnableSSE2          "Use sse2 . . . . . . . . . . . . . . . . . . . . . . . .:"  )
 package_status(EnableNTK           "Enable NTK build . . . . . . . . . . . . . . . . . . . .:"  )
 package_status(EnableFLTKStatic    "Enable FLTK Static build . . . . . . . . . . . . . . . .:"  )
+package_status(EnableFLTK1-4       "Enable FLTK-1-4 build. . . . . . . . . . . . . . . . . .:"  )
 package_status(NativeOptimizations "Native optimizations . . . . . . . . . . . . . . . . . .:"  )
 package_status(BuildForDebug       "Build for debug. . . . . . . . . . . . . . . . . . . . .:"  )
 
