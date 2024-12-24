@@ -78,6 +78,7 @@ else(EnableNTK)
         ../FL/Clean_Theme.cxx
         ../FL/Crystal_Theme.cxx
         ../FL/Gleam_Theme.cxx
+        ../FL/Vector_Theme.cxx
         ../FL/themes.cxx
     )
 endif(EnableNTK)
