@@ -28,6 +28,7 @@
  * and MIDI_Track */
 
 #include <sys/time.h>
+#include <unistd.h> // usleep
 #include "Track.H"
 
 #include "Transport.H"
@@ -94,6 +95,11 @@ Track::~Track ( )
 {
     Loggable::block_start();
 
+    /* _is_deleted and usleep is to ensure that any osc messages enqueued will
+     * be cleared before the control is deleted and crash  */
+    _is_deleted = true;
+    usleep(1500);
+
     /* must destroy sequences first to preserve proper log order */
     takes->clear();
     control->clear();
@@ -128,6 +134,7 @@ Track::init ( void )
 {
     _capture_offset = 0;
     _row = 0;
+    _is_deleted = false;
     _sequence = NULL;
     _name = NULL;
     _selected = false;
@@ -253,8 +260,6 @@ Track::init ( void )
     }
     end();
 }
-
-
 
 void
 Track::set ( Log_Entry &e )
@@ -1379,6 +1384,8 @@ Track::handle ( int m )
 void
 Track::connect_osc ( void )
 {
+    if ( _is_deleted ) return;
+
     for ( int j = control->children(); j--; )
     {
         Control_Sequence *c = static_cast<Control_Sequence*>( control->child( j ) );
@@ -1389,6 +1396,8 @@ Track::connect_osc ( void )
 void
 Track::update_osc_connection_state ( void )
 {
+    if ( _is_deleted ) return;
+
     for ( int j = control->children(); j--; )
     {
         Control_Sequence *c = static_cast<Control_Sequence*>( control->child( j ) );
@@ -1399,6 +1408,8 @@ Track::update_osc_connection_state ( void )
 void
 Track::process_osc ( void )
 {
+    if ( _is_deleted ) return;
+
     for ( int j = control->children(); j--; )
     {
         Control_Sequence *c = static_cast<Control_Sequence*>( control->child( j ) );

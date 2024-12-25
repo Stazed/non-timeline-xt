@@ -118,6 +118,8 @@ private:
 
     int _row;
 
+    bool _is_deleted;
+
     nframes_t _capture_offset;
 
     enum { AUDIO } _type;
