@@ -51,7 +51,7 @@ Your distribution may have NTK available. If not then you can get NTK at:
 
 There is an "unofficial" updated fork of NTK at:
 ```bash
-    git clone https://Stazed@github.com/Stazed/ntk.git
+    git clone https://Stazed@github.com/Stazed/ntk-unofficial.git
 ```
 
 Build Non-Timeline-XT:
