@@ -24,6 +24,7 @@ option (EnableSSE "Enable SSE (default=automatic check)" ON)
 option (EnableSSE2 "Enable SSE2 (default=automatic check)" ON)
 option (NativeOptimizations "Enable native CPU optimizations" ON)
 option (EnableNTK "Use NTK toolkit for build" OFF)
+option (EnableNTKStatic "Use NTK static libraries for build" OFF)
 option (EnableFLTK1-4 "Use FLTK 1-4 build - EXPERIMENTAL!!!" OFF)
 option (EnableFLTKStatic "Build using FLTK static libraries" OFF)
 
@@ -68,47 +69,106 @@ pkg_check_modules(JACK REQUIRED jack>=0.115.6)
 pkg_check_modules(LIBLO liblo>=0.26 REQUIRED)
 pkg_check_modules(SNDFILE REQUIRED sndfile)
 
-if(EnableNTK)
+if(EnableNTKStatic)
+    find_library(NTK_STATIC
+        NAMES
+        libntk.a
+        libntk.a.1
+        libntk.a.1.3.1001
+        PATHS
+        /usr/local/lib
+        /usr/local/lib64
+        REQUIRED)
+    find_library(NTK_STATIC_IMAGES
+        NAMES
+        libntk_images.a
+        libntk_images.a.1
+        libntk_images.a.1.3.1001
+        PATHS
+        /usr/local/lib
+        /usr/local/lib64
+        REQUIRED)
     pkg_check_modules(NTK ntk REQUIRED)
-    pkg_check_modules(NTK_IMAGES ntk_images REQUIRED)
-    add_definitions(-D'BUILD_TYPE="Built with NTK Library"')
-else(EnableNTK)
-    SET(FLTK_SKIP_OPENGL TRUE)
-    if(EnableFLTKStatic)
-        find_library(FLTK_STATIC libfltk.a REQUIRED)
-        find_library(FLTK_STATIC_IMAGES libfltk_images.a REQUIRED)
-        pkg_check_modules(XFIXES REQUIRED xfixes)
-        pkg_check_modules(XINERAMA REQUIRED xinerama)
-        pkg_check_modules(FONTCONFIG REQUIRED fontconfig>=0.22)
-        pkg_check_modules(XFT REQUIRED xft)
-        pkg_check_modules(XRENDER REQUIRED xrender)
-        add_definitions(-D'BUILD_TYPE="Built with FLTK static library"')
-    else(EnableFLTKStatic)
-        add_definitions(-D'BUILD_TYPE="Built with FLTK Library"')
-    endif(EnableFLTKStatic)
+    find_package(JPEG REQUIRED)
+    pkg_check_modules(XFIXES REQUIRED xfixes)
+    pkg_check_modules(XINERAMA REQUIRED xinerama)
+    pkg_check_modules(FONTCONFIG REQUIRED fontconfig>=0.22)
+    pkg_check_modules(XFT REQUIRED xft)
+    pkg_check_modules(XRENDER REQUIRED xrender)
+    pkg_check_modules(XCURSOR REQUIRED xcursor)
+    add_definitions(-D'BUILD_TYPE="Built with NTK static Library"')
+else(EnableNTKStatic)
 
-    find_package(FLTK REQUIRED)
-    pkg_check_modules (LIBCAIRO REQUIRED cairo)
-    if(FLTK_FOUND)
-        mark_as_advanced(FORCE FLTK_BASE_LIBRARY)
-        mark_as_advanced(FORCE FLTK_CONFIG_SCRIPT)
-        mark_as_advanced(FORCE FLTK_DIR)
-        mark_as_advanced(FORCE FLTK_FLUID_EXECUTABLE)
-        mark_as_advanced(FORCE FLTK_FORMS_LIBRARY)
-        mark_as_advanced(FORCE FLTK_GL_LIBRARY)
-        mark_as_advanced(FORCE FLTK_IMAGES_LIBRARY)
-        mark_as_advanced(FORCE FLTK_INCLUDE_DIR)
-        mark_as_advanced(FORCE FLTK_MATH_LIBRARY)
+    if(EnableNTK)
+        pkg_check_modules(NTK ntk REQUIRED)
+        pkg_check_modules(NTK_IMAGES ntk_images REQUIRED)
+        add_definitions(-D'BUILD_TYPE="Built with NTK Library"')
+        if(EnableNTKStatic)
+            find_library(NTK_STATIC
+                NAMES
+                libntk.a
+                libntk.a.1
+                libntk.a.1.3.1001
+                PATHS
+                /usr/local/lib
+                /usr/local/lib64
+                REQUIRED)
+            find_library(NTK_STATIC_IMAGES
+                NAMES
+                libntk_images.a
+                libntk_images.a.1
+                libntk_images.a.1.3.1001
+                PATHS
+                /usr/local/lib
+                /usr/local/lib64
+                REQUIRED)
+            pkg_check_modules(NTK ntk REQUIRED)
+            find_package(JPEG REQUIRED)
+            pkg_check_modules(XFIXES REQUIRED xfixes)
+            pkg_check_modules(XINERAMA REQUIRED xinerama)
+            pkg_check_modules(FONTCONFIG REQUIRED fontconfig>=0.22)
+            pkg_check_modules(XFT REQUIRED xft)
+            pkg_check_modules(XRENDER REQUIRED xrender)
+            pkg_check_modules(XCURSOR REQUIRED xcursor)
+            add_definitions(-D'BUILD_TYPE="Built with NTK static Library"')
+        endif(EnableNTKStatic)
+    else(EnableNTK)
+        SET(FLTK_SKIP_OPENGL TRUE)
+        if(EnableFLTKStatic)
+            find_library(FLTK_STATIC libfltk.a REQUIRED)
+            find_library(FLTK_STATIC_IMAGES libfltk_images.a REQUIRED)
+            pkg_check_modules(XFIXES REQUIRED xfixes)
+            pkg_check_modules(XINERAMA REQUIRED xinerama)
+            pkg_check_modules(FONTCONFIG REQUIRED fontconfig>=0.22)
+            pkg_check_modules(XFT REQUIRED xft)
+            pkg_check_modules(XRENDER REQUIRED xrender)
+            add_definitions(-D'BUILD_TYPE="Built with FLTK static library"')
+        else(EnableFLTKStatic)
+            add_definitions(-D'BUILD_TYPE="Built with FLTK Library"')
+        endif(EnableFLTKStatic)
 
-        if(EnableFLTK1-4)
-            add_definitions(-D'FLTK14_SUPPORT=1')
-        else(EnableFLTK1-4)
-            add_definitions(-D'FLTK_SUPPORT=1') # FLTK 1-3
-        endif(EnableFLTK1-4)
+        find_package(FLTK REQUIRED)
+        pkg_check_modules (LIBCAIRO REQUIRED cairo)
+        if(FLTK_FOUND)
+            mark_as_advanced(FORCE FLTK_BASE_LIBRARY)
+            mark_as_advanced(FORCE FLTK_CONFIG_SCRIPT)
+            mark_as_advanced(FORCE FLTK_DIR)
+            mark_as_advanced(FORCE FLTK_FLUID_EXECUTABLE)
+            mark_as_advanced(FORCE FLTK_FORMS_LIBRARY)
+            mark_as_advanced(FORCE FLTK_GL_LIBRARY)
+            mark_as_advanced(FORCE FLTK_IMAGES_LIBRARY)
+            mark_as_advanced(FORCE FLTK_INCLUDE_DIR)
+            mark_as_advanced(FORCE FLTK_MATH_LIBRARY)
 
-    endif(FLTK_FOUND)
-endif(EnableNTK)
+            if(EnableFLTK1-4)
+                add_definitions(-D'FLTK14_SUPPORT=1')
+            else(EnableFLTK1-4)
+                add_definitions(-D'FLTK_SUPPORT=1') # FLTK 1-3
+            endif(EnableFLTK1-4)
 
+        endif(FLTK_FOUND)
+    endif(EnableNTK)
+endif(EnableNTKStatic)
 
 include(CheckSymbolExists)
 
@@ -267,6 +327,7 @@ package_status(EnableOptimizations "Use optimizations. . . . . . . . . . . . . .
 package_status(EnableSSE           "Use sse. . . . . . . . . . . . . . . . . . . . . . . . .:"  )
 package_status(EnableSSE2          "Use sse2 . . . . . . . . . . . . . . . . . . . . . . . .:"  )
 package_status(EnableNTK           "Enable NTK build . . . . . . . . . . . . . . . . . . . .:"  )
+package_status(EnableNTKStatic     "Enable NTK Static build. . . . . . . . . . . . . . . . .:"  )
 package_status(EnableFLTKStatic    "Enable FLTK Static build . . . . . . . . . . . . . . . .:"  )
 package_status(EnableFLTK1-4       "Enable FLTK-1-4 build. . . . . . . . . . . . . . . . . .:"  )
 package_status(NativeOptimizations "Native optimizations . . . . . . . . . . . . . . . . . .:"  )
