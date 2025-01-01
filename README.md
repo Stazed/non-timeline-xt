@@ -43,13 +43,8 @@ Getting submodules (nonlib and FL):
 Getting NTK:
 ------------
 
-Your distribution may have NTK available. If not then you can get NTK at:
+Your distribution may have NTK available. If not, you can get an "unofficial" updated NTK at:
 
-```bash
-    git clone https://github.com/linuxaudio/ntk
-```
-
-There is an "unofficial" updated fork of NTK at:
 ```bash
     git clone https://Stazed@github.com/Stazed/ntk-unofficial.git
 ```
