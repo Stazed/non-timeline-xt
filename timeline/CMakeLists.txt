@@ -112,6 +112,7 @@ if(EnableNTKStatic)
 
     target_include_directories (
         non-timeline-xt PRIVATE
+        ${NTK_INCLUDE_DIRS}
         ${FONTCONFIG_INCLUDE_DIRS}
         ${JACK_INCLUDE_DIRS}
         ${SNDFILE_INCLUDE_DIRS}
@@ -145,12 +146,11 @@ else(EnableNTKStatic)
     else(EnableNTK) #FLTK
         if(EnableFLTKStatic)
             set(ExternLibraries
-                ${FLTK_LIBRARIES}
-                ${FLTK_IMAGES_LIBRARY}
                 ${LIBCAIRO_LIBRARIES}
                 ${JACK_LINK_LIBRARIES}
                 ${CMAKE_THREAD_LIBS_INIT}
                 ${SNDFILE_LIBRARIES}
+                ${X11_LIBRARIES}
                 ${LIBLO_LIBRARIES}
                 ${FONTCONFIG_LIBRARIES}
                 ${XFT_LIBRARIES}
