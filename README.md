@@ -75,8 +75,6 @@ To uninstall:
 
 To build with NTK:
 
-If building with a local install, you may need to set some environment variables. See the README of the "unofficial" [NTK](https://Stazed@github.com/Stazed/ntk.git) for how to set them.
-
 ```bash
     mkdir build
     cd build
