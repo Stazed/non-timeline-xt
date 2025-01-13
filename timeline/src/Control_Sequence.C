@@ -492,7 +492,28 @@ Control_Sequence::draw ( void )
             fl_end_complex_polygon();
 
         }
+        
+#if !defined(FLTK_SUPPORT) && !defined (FLTK14_SUPPORT)
+        // The polygon line for NTK before grid
+        fl_color( fl_color_average( FL_WHITE, color, 0.5 ) );
+        fl_line_style( FL_SOLID, 2 );
 
+        fl_begin_line();
+        draw_curve( false );
+        fl_end_line();
+
+        fl_line_style( FL_SOLID, 0 );
+#endif
+    }
+
+#if defined(FLTK_SUPPORT) || defined (FLTK14_SUPPORT)
+    // Grid lines after polygon and before control points
+    if ( box() != FL_NO_BOX )
+        draw_box();
+
+    // The polygon line after grid for FLTK since no transparency
+    if ( interpolation() != No_Type )
+    {
         fl_color( fl_color_average( FL_WHITE, color, 0.5 ) );
         fl_line_style( FL_SOLID, 2 );
 
@@ -502,11 +523,6 @@ Control_Sequence::draw ( void )
 
         fl_line_style( FL_SOLID, 0 );
     }
-
-#if defined(FLTK_SUPPORT) || defined (FLTK14_SUPPORT)
-    // Grid lines after polygon and before control points
-    if ( box() != FL_NO_BOX )
-        draw_box();
 #endif
 
     if ( interpolation() == No_Type || _highlighted == this || Fl::focus() == this )
