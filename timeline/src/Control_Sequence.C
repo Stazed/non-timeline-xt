@@ -429,10 +429,8 @@ Control_Sequence::draw_box ( void )
 
     fl_clip_box( bx, by, bw, bh, X, Y, W, H );
 
-    //    fl_rectf( X, Y, W, H, fl_color_average( FL_BLACK, FL_BACKGROUND_COLOR, 0.3 ) );
-    //    fl_rectf( X,Y,W,H, fl_color_average( FL_BLACK, FL_WHITE, 0.90 ) );
 #if !defined(FLTK_SUPPORT) && !defined(FLTK14_SUPPORT)
-    // FLTK draws the background before calling this since no transparency, so only for NTK
+    // NTK only. FLTK calls this from draw() to show before the grid since no transparency
     fl_rectf( X, Y, W, H, FL_DARK1 );
 #endif
 
@@ -467,34 +465,34 @@ Control_Sequence::draw ( void )
     bool active = active_r();
 
     const Fl_Color color = active ? this->color() : fl_inactive( this->color() );
-    //    const Fl_Color selection_color = active ? this->selection_color() : fl_inactive( this->selection_color() );
 
 #if defined(FLTK_SUPPORT) || defined (FLTK14_SUPPORT)
-    // Background only first for FLTK
+    // FLTK we draw the control points and polygon line last since no transparency
+
+    // Background only first for FLTK. NTK calls this from draw_box().
     if ( box() != FL_NO_BOX )
         fl_rectf( X, Y, W, H, FL_DARK1 );
-#else
-    // NTK draws everything before since it can overlay transparent
-    if ( box() != FL_NO_BOX )
-        draw_box();
-#endif
+
+    // draw the polygon
     if ( interpolation() != No_Type )
     {
         if ( draw_with_polygon )
         {
-#if defined(FLTK_SUPPORT) || defined (FLTK14_SUPPORT)
             fl_color( color  );
-#else
-            fl_color( fl_color_add_alpha( color, 60 ) );
-#endif
+
             fl_begin_complex_polygon();
             draw_curve( true );
             fl_end_complex_polygon();
-
         }
-        
-#if !defined(FLTK_SUPPORT) && !defined (FLTK14_SUPPORT)
-        // The polygon line for NTK before grid
+    }
+
+    // Grid lines after polygon and before control points
+    if ( box() != FL_NO_BOX )
+        draw_box();
+
+    // The polygon line after grid for FLTK since no transparency
+    if ( interpolation() != No_Type )
+    {
         fl_color( fl_color_average( FL_WHITE, color, 0.5 ) );
         fl_line_style( FL_SOLID, 2 );
 
@@ -503,17 +501,22 @@ Control_Sequence::draw ( void )
         fl_end_line();
 
         fl_line_style( FL_SOLID, 0 );
-#endif
     }
-
-#if defined(FLTK_SUPPORT) || defined (FLTK14_SUPPORT)
-    // Grid lines after polygon and before control points
+#else   // NTK
+    // NTK draws everything before since it can overlay transparent
     if ( box() != FL_NO_BOX )
         draw_box();
 
-    // The polygon line after grid for FLTK since no transparency
     if ( interpolation() != No_Type )
     {
+        if ( draw_with_polygon )
+        {
+            fl_color( fl_color_add_alpha( color, 60 ) );
+            fl_begin_complex_polygon();
+            draw_curve( true );
+            fl_end_complex_polygon();
+        }
+
         fl_color( fl_color_average( FL_WHITE, color, 0.5 ) );
         fl_line_style( FL_SOLID, 2 );
 
