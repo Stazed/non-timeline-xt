@@ -322,7 +322,6 @@ package_status(EnableSSE2          "Use sse2 . . . . . . . . . . . . . . . . . .
 package_status(EnableNTK           "Enable NTK build . . . . . . . . . . . . . . . . . . . .:"  )
 package_status(EnableNTKStatic     "Enable NTK Static build. . . . . . . . . . . . . . . . .:"  )
 package_status(EnableFLTKStatic    "Enable FLTK Static build . . . . . . . . . . . . . . . .:"  )
-package_status(EnableFLTK1-4       "Enable FLTK-1-4 build. . . . . . . . . . . . . . . . . .:"  )
 package_status(NativeOptimizations "Native optimizations . . . . . . . . . . . . . . . . . .:"  )
 package_status(BuildForDebug       "Build for debug. . . . . . . . . . . . . . . . . . . . .:"  )
 
