@@ -54,7 +54,7 @@
 
 #include "../../nonlib/nsm.h"
 
-#if defined(FLTK_SUPPORT) || defined (FLTK14_SUPPORT)
+#if defined(FLTK_SUPPORT)
 #include "../../FL/themes.H"
 #endif
 
@@ -331,7 +331,7 @@ main ( int argc, char **argv )
 
     Fl::add_check( check_signals );
 
-#if defined(FLTK_SUPPORT) || defined (FLTK14_SUPPORT)
+#if defined(FLTK_SUPPORT)
     fl_register_themes(USER_CONFIG_DIR);
 #endif
 

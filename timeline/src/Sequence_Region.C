@@ -246,7 +246,7 @@ void
 Sequence_Region::draw_box ( void )
 {
     Fl_Color c = selected() ? selection_color() : box_color();
-#if defined(FLTK_SUPPORT) || defined (FLTK14_SUPPORT)
+#if defined(FLTK_SUPPORT)
     fl_draw_box( box(), x(), y(), w(), h(), c );
 #else
     fl_draw_box( box(), x(), y(), w(), h(), fl_color_add_alpha( c, 127 ) );

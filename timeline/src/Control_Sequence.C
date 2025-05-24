@@ -429,7 +429,7 @@ Control_Sequence::draw_box ( void )
 
     fl_clip_box( bx, by, bw, bh, X, Y, W, H );
 
-#if !defined(FLTK_SUPPORT) && !defined(FLTK14_SUPPORT)
+#if !defined(FLTK_SUPPORT)
     // NTK only. FLTK calls this from draw() to show before the grid since no transparency
     fl_rectf( X, Y, W, H, FL_DARK1 );
 #endif
@@ -466,7 +466,7 @@ Control_Sequence::draw ( void )
 
     const Fl_Color color = active ? this->color() : fl_inactive( this->color() );
 
-#if defined(FLTK_SUPPORT) || defined (FLTK14_SUPPORT)
+#if defined(FLTK_SUPPORT)
     // FLTK we draw the control points and polygon line last since no transparency
 
     // Background only first for FLTK. NTK calls this from draw_box().

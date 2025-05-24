@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0401
+version 1.0309
 header_name {.H}
 code_name {.C}
 comment {//
@@ -256,7 +256,7 @@ _h_main = 600;
 Fl::visible_focus( 0 );
 
 // The FL_ASYM_BOX type is NTK only
-\#if !defined(FLTK_SUPPORT) && !defined(FLTK14_SUPPORT)
+\#if !defined(FLTK_SUPPORT)
     solo_blinker->box( FL_ASYM_BOX );
     solo_blinker->down_box( FL_ASYM_BOX );
     rec_blinker->box( FL_ASYM_BOX );
@@ -341,8 +341,8 @@ Loggable::progress_callback( &TLE::progress_cb, this );} {}
     {
         timeline->command_quit();
     }
-}} open selected
-      xywh {864 86 1025 770} type Double resizable
+}}
+      xywh {422 183 1025 770} type Double resizable
       code0 {o->xclass( APP_NAME );}
       class TLE_Window size_range {947 300 0 0} visible
     } {
@@ -583,7 +583,7 @@ Project::compact();}
               label {&Theme}
               callback {fl_theme_chooser();}
               xywh {15 15 40 24}
-              code0 {\#if defined(FLTK_SUPPORT) || defined (FLTK14_SUPPORT)
+              code0 {\#if defined(FLTK_SUPPORT)
    \#include "../../FL/Fl_Theme_Chooser.H"
 \#else
     \#include <FL/Fl_Theme_Chooser.H>
@@ -910,7 +910,7 @@ else
         }
       }
       Fl_Box {} {
-        label {<Timeline>}
+        label {<Timeline>} selected
         xywh {0 75 1025 692} box FLAT_BOX color 47 labeltype NO_LABEL labelsize 100 resizable
         code0 {timeline = o;}
         class Timeline
@@ -922,7 +922,7 @@ else
       }
     }
   }
-  Function {menu_picked_value( const Fl_Menu_ *m )} {private return_type {static int}
+  Function {menu_picked_value( const Fl_Menu_ *m )} {open private return_type {static int}
   } {
     code {return m->menu()[ m->value() ].flags & FL_MENU_VALUE;} {}
   }
@@ -934,7 +934,7 @@ else
   }
   decl {void menubar_cb ( void )} {private local
   }
-  Function {update_menu()} {private
+  Function {update_menu()} {open private
   } {
     code {Fl_Menu_Bar *m = menubar;
 

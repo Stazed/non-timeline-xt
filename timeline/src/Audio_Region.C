@@ -658,7 +658,7 @@ Audio_Region::draw ( void )
         /* Fl_Color c = fl_color_average( FL_DARK1, */
         /*                                Audio_Region::inherit_track_color ? sequence()->track()->color() :  _box_color, */
         /*                                0.75f ); */
-#if defined(FLTK_SUPPORT) || defined (FLTK14_SUPPORT)
+#if defined(FLTK_SUPPORT)
         fl_color( fl_rgb_color( 20, 20, 20 ) );
 #else
         fl_color( fl_color_add_alpha( fl_rgb_color( 20, 20, 20 ), 127 ) );
@@ -778,7 +778,7 @@ Audio_Region::draw ( void )
         const int lx = sequence()->drawable_x() + timeline->ts_to_x( ( this->start() + _loop ) - timeline->xoffset );
 
         const int pw = 8;
-#if defined(FLTK_SUPPORT) || defined (FLTK14_SUPPORT)
+#if defined(FLTK_SUPPORT)
         fl_color( fl_color_average( FL_CYAN, FL_WHITE, 0.80f ) );
 #else
         fl_color( fl_color_add_alpha( fl_color_average( FL_CYAN, FL_WHITE, 0.80f ), 127 ) );
@@ -802,7 +802,7 @@ Audio_Region::draw ( void )
 
     if ( _adjusting_gain > 0.0f )
     {
-#if defined(FLTK_SUPPORT) || defined (FLTK14_SUPPORT)
+#if defined(FLTK_SUPPORT)
         fl_color( FL_DARK1 );
 #else
         fl_color( fl_color_add_alpha( FL_DARK1, 127 ) );
@@ -811,7 +811,7 @@ Audio_Region::draw ( void )
         fl_rectf( X, ( y() + h() ) - ( h() * ( _scale * 0.25 ) ), X + W, y() + h() );
 
         fl_line_style( FL_DASH, 1 );
-#if defined(FLTK_SUPPORT) || defined (FLTK14_SUPPORT)
+#if defined(FLTK_SUPPORT)
         fl_color( FL_GREEN );
 #else
         fl_color( fl_color_add_alpha( FL_GREEN, 200 ) );
@@ -833,7 +833,7 @@ Audio_Region::draw ( void )
 
         /* fl_color( fl_color_add_alpha( FL_WHITE, 127 ) ); */
         /* fl_color( FL_BACKGROUND_COLOR ); */
-#if defined(FLTK_SUPPORT) || defined (FLTK14_SUPPORT)
+#if defined(FLTK_SUPPORT)
         fl_color( FL_WHITE );
 #else
         fl_color( fl_color_add_alpha( FL_WHITE, 127 ) );
