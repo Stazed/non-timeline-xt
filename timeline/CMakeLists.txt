@@ -163,6 +163,7 @@ else(EnableNTKStatic)
                 png
                 dl
                 m
+                z   # needed for fltk-1.4 static build
             )
 
         target_include_directories (
