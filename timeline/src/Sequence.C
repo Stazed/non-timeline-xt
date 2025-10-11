@@ -173,7 +173,11 @@ Sequence::widget_at ( nframes_t ts, int Y )
     for ( list <Sequence_Widget *>::const_reverse_iterator r = _widgets.rbegin(); r != _widgets.rend(); ++r )
         if ( ts >= (*r)->start() && ts <= (*r)->start() + (*r)->length()
             && Y >= (*r)->y() && Y <= (*r)->y() + (*r)->h() )
+        {
+            MESSAGE("Y = %d: (*r)->y() = %d", Y, (*r)->y());
+            
             return (*r);
+        }
 
     return NULL;
 }
@@ -737,9 +741,14 @@ Sequence::nudge_control_selected_Y(bool up)
                 Y += 0.01;
 
             //    DMESSAGE("Y = %f", Y);
-
-            if ( Y >= 0.99 )
-                Y = 0.99;
+            /* This will allow the full range, but by doing so, you cannot enter
+               the control widget with the mouse and grab it if at max on the bottom.
+               Was originally limited to 0.99, but we are going with the full range
+               with nudging since you cannot set it to max bottom from dragging,
+               So you must use nudging to move the control point up from max bottom if
+               you do max it.*/
+            if ( Y >= 1.00 )
+                Y = 1.00;
 
             if( Y <= 0.00 )
                 Y = 0.00;
