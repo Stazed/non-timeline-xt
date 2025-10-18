@@ -173,11 +173,7 @@ Sequence::widget_at ( nframes_t ts, int Y )
     for ( list <Sequence_Widget *>::const_reverse_iterator r = _widgets.rbegin(); r != _widgets.rend(); ++r )
         if ( ts >= (*r)->start() && ts <= (*r)->start() + (*r)->length()
             && Y >= (*r)->y() && Y <= (*r)->y() + (*r)->h() )
-        {
-            MESSAGE("Y = %d: (*r)->y() = %d", Y, (*r)->y());
-            
             return (*r);
-        }
 
     return NULL;
 }
