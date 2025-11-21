@@ -572,6 +572,11 @@ Track::name ( const char *name )
     if ( name_field )
         name_field->value( _name );
 
+// This is necessary for FLTK >= 1.4
+#if defined(FLTK_SUPPORT)
+    redraw();
+#endif
+
     update_port_names();
 }
 
