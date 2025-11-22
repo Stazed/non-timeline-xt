@@ -961,8 +961,8 @@ _Pragma("GCC diagnostic pop")
         stats_box->deactivate();
       } // Fl_Button* stats_box
       { sm_blinker = new Fl_Button(985, 6, 35, 15, "SM");
-        sm_blinker->box(FL_ROUNDED_BOX);
-        sm_blinker->down_box(FL_ROUNDED_BOX);
+        sm_blinker->box(FL_ROUND_DOWN_BOX);
+        sm_blinker->down_box(FL_ROUND_DOWN_BOX);
         sm_blinker->color(FL_DARK2);
         sm_blinker->selection_color((Fl_Color)93);
         sm_blinker->labeltype(FL_NORMAL_LABEL);
