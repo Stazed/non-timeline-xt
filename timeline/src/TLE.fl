@@ -893,7 +893,7 @@ else
         }
         Fl_Button sm_blinker {
           label SM
-          xywh {985 6 35 15} box ROUNDED_BOX down_box ROUNDED_BOX color 45 selection_color 93 labelfont 3 labelcolor 39 deactivate
+          xywh {985 6 35 15} box ROUND_DOWN_BOX down_box ROUND_DOWN_BOX color 45 selection_color 93 labelfont 3 labelcolor 39 deactivate
           class Fl_Button
         }
       }
