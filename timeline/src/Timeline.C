@@ -351,11 +351,7 @@ Timeline::cb_scroll ( Fl_Widget * /* w */)
 
     if ( _old_xposition != x_to_ts( panzoomer->x_value() ))
     {
-#ifdef FLTK_SUPPORT
-        damage( FL_DAMAGE_SCROLL );
-#else   // to force redraw of tempo, time marker, annotation labels for NTK
         damage( FL_DAMAGE_ALL );
-#endif
         xposition( panzoomer->x_value() );
     }
 }
