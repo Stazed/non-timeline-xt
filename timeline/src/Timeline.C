@@ -33,9 +33,12 @@
 #include <FL/fl_draw.H>
 #include <FL/Fl_Menu_Button.H>
 
+#ifdef FLTK_VERSION_1_4
+#include <FL/platform.H>
+#endif
+
 #if defined(FLTK_SUPPORT)
 #include "../../FL/Fl_Panzoomer.H"
-#include <FL/platform.H>
 #include <cairo.h>
 #include <cairo-xlib.h>
 #else

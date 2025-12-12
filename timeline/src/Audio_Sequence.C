@@ -52,7 +52,7 @@ using namespace std;
 
 #include "../../nonlib/string_util.h"
 
-#ifdef FLTK_SUPPORT
+#ifdef FLTK_VERSION_1_4
 #include <FL/platform.H>
 #endif
 
