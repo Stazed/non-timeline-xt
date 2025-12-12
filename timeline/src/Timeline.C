@@ -903,10 +903,13 @@ Timeline::Timeline ( int X, int Y, int W, int H, const char* L ) : BASE( X, Y, W
 
         spacebox->resize( X, rulers->y() + ( ( H - rulers->h() ) - 50 ),
             W, 125 );
-
+#ifdef FLTK_VERSION_1_4
+        o->move_intersection(panzoomer->x(), panzoomer->y(),
+            panzoomer->x(), track_window->y() + track_window->h() );
+#else
         o->position( panzoomer->x(), panzoomer->y(),
             panzoomer->x(), track_window->y() + track_window->h() );
-
+#endif
         tile = o;
         resizable(o);
     }
