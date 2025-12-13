@@ -147,7 +147,7 @@ else(EnableNTKStatic)
         if(EnableFLTKStatic)
             if(TARGET fltk::fltk)   # Modern cmake
                 set(ExternLibraries
-                    ${LIBCAIRO_LIBRARIES}
+                    ${CAIRO_LIBRARIES}
                     ${JACK_LINK_LIBRARIES}
                     ${CMAKE_THREAD_LIBS_INIT}
                     ${SNDFILE_LIBRARIES}
@@ -158,14 +158,14 @@ else(EnableNTKStatic)
                 )
                 target_include_directories (
                     non-timeline-xt PRIVATE
-                    ${LIBCAIRO_INCLUDE_DIRS}
+                    ${CAIRO_INCLUDE_DIRS}
                     ${JACK_INCLUDE_DIRS}
                     ${SNDFILE_INCLUDE_DIRS}
                     ${LIBLO_INCLUDE_DIRS}
                 )
             else()                  # Legacy cmake
                 set(ExternLibraries
-                    ${LIBCAIRO_LIBRARIES}
+                    ${CAIRO_LIBRARIES}
                     ${JACK_LINK_LIBRARIES}
                     ${CMAKE_THREAD_LIBS_INIT}
                     ${SNDFILE_LIBRARIES}
@@ -187,7 +187,7 @@ else(EnableNTKStatic)
                 target_include_directories (
                     non-timeline-xt PRIVATE
                     ${FLTK_INCLUDE_DIR}
-                    ${LIBCAIRO_INCLUDE_DIRS}
+                    ${CAIRO_INCLUDE_DIRS}
                     ${JACK_INCLUDE_DIRS}
                     ${SNDFILE_INCLUDE_DIRS}
                     ${LIBLO_INCLUDE_DIRS}
@@ -200,7 +200,7 @@ else(EnableNTKStatic)
         else(EnableFLTKStatic)  # Dynamic
             if(TARGET fltk::fltk-shared)    # Modern cmake
                 set(ExternLibraries
-                    ${LIBCAIRO_LIBRARIES}
+                    ${CAIRO_LIBRARIES}
                     ${JACK_LINK_LIBRARIES}
                     ${CMAKE_THREAD_LIBS_INIT}
                     ${SNDFILE_LIBRARIES}
@@ -211,7 +211,7 @@ else(EnableNTKStatic)
 
                 target_include_directories (
                     non-timeline-xt PRIVATE
-                    ${LIBCAIRO_INCLUDE_DIRS}
+                    ${CAIRO_INCLUDE_DIRS}
                     ${JACK_INCLUDE_DIRS}
                     ${SNDFILE_INCLUDE_DIRS}
                     ${LIBLO_INCLUDE_DIRS}
@@ -220,7 +220,7 @@ else(EnableNTKStatic)
                 set(ExternLibraries
                     ${FLTK_LIBRARIES}
                     ${FLTK_IMAGES_LIBRARY}
-                    ${LIBCAIRO_LIBRARIES}
+                    ${CAIRO_LIBRARIES}
                     ${JACK_LINK_LIBRARIES}
                     ${CMAKE_THREAD_LIBS_INIT}
                     ${SNDFILE_LIBRARIES}
@@ -232,7 +232,7 @@ else(EnableNTKStatic)
                 target_include_directories (
                     non-timeline-xt PRIVATE
                     ${FLTK_INCLUDE_DIR}
-                    ${LIBCAIRO_INCLUDE_DIRS}
+                    ${CAIRO_INCLUDE_DIRS}
                     ${JACK_INCLUDE_DIRS}
                     ${SNDFILE_INCLUDE_DIRS}
                     ${LIBLO_INCLUDE_DIRS}

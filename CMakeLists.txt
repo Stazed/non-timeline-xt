@@ -67,6 +67,7 @@ endif()
 pkg_check_modules(JACK REQUIRED jack>=0.115.6)
 pkg_check_modules(LIBLO liblo>=0.26 REQUIRED)
 pkg_check_modules(SNDFILE REQUIRED sndfile)
+pkg_check_modules(CAIRO REQUIRED cairo)
 
 if(EnableNTKStatic)
     find_library(NTK_STATIC
