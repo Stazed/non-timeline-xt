@@ -2,7 +2,7 @@
 
 project (non-timeline-xt)
 
-set (ProgSources
+set(NONLIB_SOURCES
     ../nonlib/JACK/Client.C
     ../nonlib/JACK/Port.C
     ../nonlib/Log_Entry.C
@@ -14,7 +14,9 @@ set (ProgSources
     ../nonlib/dsp.C
     ../nonlib/file.C
     ../nonlib/string_util.C
+)
 
+set(FL_SOURCES
     ../FL/About_Dialog.C
     ../FL/Fl_Menu_Settings.C
     ../FL/Fl_Scalepack.C
@@ -23,7 +25,9 @@ set (ProgSources
     ../FL/menu_popup.C
     ../FL/test_press.C
     ../FL/focus_frame.C
+)
 
+set(CORE_SOURCES
     src/Annotation_Region.C
     src/Audio_Region.C
     src/Audio_Sequence.C
@@ -65,6 +69,12 @@ set (ProgSources
     src/Transport.C
     src/Waveform.C
     src/main.C
+)
+
+set(ProgSources
+    ${NONLIB_SOURCES}
+    ${FL_SOURCES}
+    ${CORE_SOURCES}
 )
 
 if(EnableNTKStatic)
