@@ -20,7 +20,8 @@
 
 # USAGE:
 #
-#   $ import-external-sources ~/audio/'The Best Song Ever' --dry-run
+#   $ import-external-sources ~/.local/share/nsm/'The Best Song Ever'/Non-Timeline-XT.nWCIU --dry-run
+#   $ import-external-sources ~/'Ray Sessions'/'The Best Song Ever'/Non-Timeline-XT.nWCIU --dry-run
 #
 #   -- to print list of SYMLINKS to be imported
 #

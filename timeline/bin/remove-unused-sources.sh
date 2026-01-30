@@ -1,6 +1,7 @@
 #!/bin/sh
 
 # Copyright (C) 2008 Jonathan Moore Liles                                     #
+# Copyright (C) 2023 Stazed                                                   #
 #                                                                             #
 # This program is free software; you can redistribute it and/or modify it     #
 # under the terms of the GNU General Public License as published by the       #
@@ -25,7 +26,8 @@
 #
 # USAGE:
 #
-#     $ remove-unused-sources ~/audio/'The Best Song Ever'
+#     $ remove-unused-sources -m ~/.local/share/nsm/'The Best Song Ever'/Non-Timeline-XT.nWCIU
+#     $ remove-unused-sources -m ~/'Ray Sessions'/'The Best Song Ever'/Non-Timeline-XT.nWCIU
 #
 # NOTES:
 #
