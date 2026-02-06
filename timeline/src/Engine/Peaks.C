@@ -116,7 +116,7 @@ class Peakfile
         }
 
         bool
-        operator< ( const block_descriptor &rhs )
+        operator< ( const block_descriptor &rhs ) const
         {
             return chunksize < rhs.chunksize;
         }
