@@ -27,6 +27,9 @@
 #include "../../nonlib/debug.h"
 
 #include <sys/time.h>
+#ifndef __linux__
+#include <libgen.h>
+#endif
 #include <FL/fl_ask.H>
 #include <FL/Fl.H>
 

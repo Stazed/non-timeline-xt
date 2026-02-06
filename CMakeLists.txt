@@ -16,6 +16,11 @@ add_definitions(-D'DOCUMENT_PATH="${CMAKE_INSTALL_PREFIX}/share/doc"')
 include(CheckCSourceCompiles)
 include(CheckCXXCompilerFlag)
 
+
+if(CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
+    link_directories(/usr/local/lib)
+endif()
+
 check_cxx_compiler_flag("-msse2" SUPPORT_SSE)
 
 option (BuildForDebug "Include gdb debugging support" OFF)
