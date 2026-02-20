@@ -282,7 +282,6 @@ message (STATUS                    "______________________Library_______________
 package_status(PKG_CONFIG_FOUND    "PkgConfig. . . . . . . . . . . . . . . . . . . . . . . .:"  )
 package_status(FLTK_FOUND          "FLTK toolkit . . . . . . . . . . . . . . . . . . . . . .:"  )
 package_status(NTK_FOUND           "NTK toolkit. . . . . . . . . . . . . . . . . . . . . . .:"  )
-package_status(CAIRO_FOUND         "Cairo support. . . . . . . . . . . . . . . . . . . . . .:"  )
 package_status(Threads_FOUND       "pthread support (libpthread) . . . . . . . . . . . . . .:"  )
 package_status(MLOCK               "mlock support. . . . . . . . . . . . . . . . . . . . . .:"  )
 package_status(LIBM                "libm support . . . . . . . . . . . . . . . . . . . . . .:"  )
@@ -294,6 +293,10 @@ package_status(JACK_METADATA       "Jack metadata support. . . . . . . . . . . .
 package_status(JACK_LATENCY_RANGE  "Jack port latency range support. . . . . . . . . . . . .:"  )
 package_status(HAVE_BUILTIN_ALIGNED "Has builtin assume aligned . . . . . . . . . . . . . . .:"  )
 package_status(HAS_SF_FORMAT_VORBIS "Have SF format vorbis. . . . . . . . . . . . . . . . . .:"  )
+
+if(NOT EnableNTK)
+    package_status(CAIRO_FOUND         "Cairo support. . . . . . . . . . . . . . . . . . . . . .:"  )
+endif()
 
 if((EnableFLTKStatic AND NOT TARGET fltk::fltk) OR EnableNTKStatic)
         package_status(FONTCONFIG_FOUND "Fontconfig support . . . . . . . . . . . . . . . . . . .:"  )
