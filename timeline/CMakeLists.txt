@@ -100,6 +100,50 @@ endif(EnableNTKStatic)
 
 add_executable (non-timeline-xt ${ProgSources} ${FLTK_specific} src/main.C)
 
+# FLTK shared build - default
+if(NOT EnableFLTKStatic AND NOT EnableNTK AND NOT EnableNTKStatic)
+    if(TARGET fltk::fltk-shared)    # Modern cmake
+        set(ExternLibraries
+            ${CAIRO_LIBRARIES}
+            ${JACK_LINK_LIBRARIES}
+            ${CMAKE_THREAD_LIBS_INIT}
+            ${SNDFILE_LIBRARIES}
+            ${LIBLO_LIBRARIES}
+            ${DL_LIBRARY}
+            ${M_LIBRARY}
+        )
+
+        target_include_directories (
+            non-timeline-xt PRIVATE
+            ${CAIRO_INCLUDE_DIRS}
+            ${JACK_INCLUDE_DIRS}
+            ${SNDFILE_INCLUDE_DIRS}
+            ${LIBLO_INCLUDE_DIRS}
+        )
+    else()                          # Legacy cmake
+        set(ExternLibraries
+            ${FLTK_LIBRARIES}
+            ${FLTK_IMAGES_LIBRARY}
+            ${CAIRO_LIBRARIES}
+            ${JACK_LINK_LIBRARIES}
+            ${CMAKE_THREAD_LIBS_INIT}
+            ${SNDFILE_LIBRARIES}
+            ${LIBLO_LIBRARIES}
+            ${DL_LIBRARY}
+            ${M_LIBRARY}
+        )
+
+        target_include_directories (
+            non-timeline-xt PRIVATE
+            ${FLTK_INCLUDE_DIR}
+            ${CAIRO_INCLUDE_DIRS}
+            ${JACK_INCLUDE_DIRS}
+            ${SNDFILE_INCLUDE_DIRS}
+            ${LIBLO_INCLUDE_DIRS}
+        )
+    endif()
+endif(NOT EnableFLTKStatic AND NOT EnableNTK AND NOT EnableNTKStatic)
+
 set(NTK_STATIC_FLTK_LEGACY_LIBS
     ${FONTCONFIG_LIBRARIES}
     ${JACK_LINK_LIBRARIES}
@@ -199,50 +243,6 @@ if(EnableFLTKStatic)
         )
     endif()
 endif()
-
-# FLTK shared build - default
-if(NOT EnableFLTKStatic AND NOT EnableNTK AND NOT EnableNTKStatic)
-    if(TARGET fltk::fltk-shared)    # Modern cmake
-        set(ExternLibraries
-            ${CAIRO_LIBRARIES}
-            ${JACK_LINK_LIBRARIES}
-            ${CMAKE_THREAD_LIBS_INIT}
-            ${SNDFILE_LIBRARIES}
-            ${LIBLO_LIBRARIES}
-            ${DL_LIBRARY}
-            ${M_LIBRARY}
-        )
-
-        target_include_directories (
-            non-timeline-xt PRIVATE
-            ${CAIRO_INCLUDE_DIRS}
-            ${JACK_INCLUDE_DIRS}
-            ${SNDFILE_INCLUDE_DIRS}
-            ${LIBLO_INCLUDE_DIRS}
-        )
-    else()                          # Legacy cmake
-        set(ExternLibraries
-            ${FLTK_LIBRARIES}
-            ${FLTK_IMAGES_LIBRARY}
-            ${CAIRO_LIBRARIES}
-            ${JACK_LINK_LIBRARIES}
-            ${CMAKE_THREAD_LIBS_INIT}
-            ${SNDFILE_LIBRARIES}
-            ${LIBLO_LIBRARIES}
-            ${DL_LIBRARY}
-            ${M_LIBRARY}
-        )
-
-        target_include_directories (
-            non-timeline-xt PRIVATE
-            ${FLTK_INCLUDE_DIR}
-            ${CAIRO_INCLUDE_DIRS}
-            ${JACK_INCLUDE_DIRS}
-            ${SNDFILE_INCLUDE_DIRS}
-            ${LIBLO_INCLUDE_DIRS}
-        )
-    endif()
-endif(NOT EnableFLTKStatic AND NOT EnableNTK AND NOT EnableNTKStatic)
 
 if(EnableFLTKStatic)
     if(TARGET fltk::fltk)   # Modern cmake
