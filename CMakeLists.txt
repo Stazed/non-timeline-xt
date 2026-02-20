@@ -292,8 +292,7 @@ package_status(JACK_LATENCY_RANGE  "Jack port latency range support. . . . . . .
 package_status(HAVE_BUILTIN_ALIGNED "Has builtin assume aligned . . . . . . . . . . . . . . .:"  )
 package_status(HAS_SF_FORMAT_VORBIS "Have SF format vorbis. . . . . . . . . . . . . . . . . .:"  )
 
-if(NOT TARGET fltk::fltk AND NOT TARGET fltk::fltk-shared)
-    if(NOT EnableNTK OR EnableNTKStatic)
+if((EnableFLTKStatic AND NOT TARGET fltk::fltk) OR EnableNTKStatic)
         package_status(FONTCONFIG_FOUND "Fontconfig support . . . . . . . . . . . . . . . . . . .:"  )
         package_status(X11_FOUND        "X11 support. . . . . . . . . . . . . . . . . . . . . . .:"  )
         package_status(XFT_FOUND        "XFT support. . . . . . . . . . . . . . . . . . . . . . .:"  )
@@ -303,7 +302,6 @@ if(NOT TARGET fltk::fltk AND NOT TARGET fltk::fltk-shared)
         package_status(XFIXES_FOUND     "Xfixes support . . . . . . . . . . . . . . . . . . . . .:"  )
         package_status(LIBPNG_FOUND     "PNG support. . . . . . . . . . . . . . . . . . . . . . .:"  )
         package_status(JPEG_LIBRARY     "JPEG support . . . . . . . . . . . . . . . . . . . . . .:"  )
-    endif()
 endif()
 
 #if(TARGET fltk::fltk)
