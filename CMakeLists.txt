@@ -88,7 +88,10 @@ if(EnableNTKStatic)
         /usr/local/lib64
         REQUIRED)
     pkg_check_modules(NTK ntk REQUIRED)
-    find_package(JPEG REQUIRED)
+    find_library(JPEG_LIBRARY jpeg REQUIRED)
+    pkg_check_modules(LIBPNG REQUIRED libpng)
+    pkg_check_modules(CAIRO REQUIRED cairo)
+    pkg_check_modules(X11 REQUIRED x11)
     pkg_check_modules(XFIXES REQUIRED xfixes)
     pkg_check_modules(XINERAMA REQUIRED xinerama)
     pkg_check_modules(FONTCONFIG REQUIRED fontconfig>=0.22)
@@ -97,46 +100,17 @@ if(EnableNTKStatic)
     pkg_check_modules(XCURSOR REQUIRED xcursor)
     add_definitions(-D'BUILD_TYPE="Built with NTK static Library"')
 else(EnableNTKStatic)
-
-    if(EnableNTK)
+    if(EnableNTK)       # dynamic
         pkg_check_modules(NTK ntk REQUIRED)
         pkg_check_modules(NTK_IMAGES ntk_images REQUIRED)
         add_definitions(-D'BUILD_TYPE="Built with NTK Library"')
-        if(EnableNTKStatic)
-            find_library(NTK_STATIC
-                NAMES
-                libntk.a
-                libntk.a.1
-                libntk.a.1.3.1001
-                PATHS
-                /usr/local/lib
-                /usr/local/lib64
-                REQUIRED)
-            find_library(NTK_STATIC_IMAGES
-                NAMES
-                libntk_images.a
-                libntk_images.a.1
-                libntk_images.a.1.3.1001
-                PATHS
-                /usr/local/lib
-                /usr/local/lib64
-                REQUIRED)
-            pkg_check_modules(NTK ntk REQUIRED)
-            find_package(JPEG REQUIRED)
-            pkg_check_modules(XFIXES REQUIRED xfixes)
-            pkg_check_modules(XINERAMA REQUIRED xinerama)
-            pkg_check_modules(FONTCONFIG REQUIRED fontconfig>=0.22)
-            pkg_check_modules(XFT REQUIRED xft)
-            pkg_check_modules(XRENDER REQUIRED xrender)
-            pkg_check_modules(XCURSOR REQUIRED xcursor)
-            add_definitions(-D'BUILD_TYPE="Built with NTK static Library"')
-        endif(EnableNTKStatic)
-    else(EnableNTK)     #FLTK
+    else(EnableNTK)     # FLTK
         pkg_check_modules(CAIRO REQUIRED cairo)
         SET(FLTK_SKIP_OPENGL TRUE)
         find_package(FLTK 1.4 CONFIG)
         if(EnableFLTKStatic)
             if(TARGET fltk::fltk)   # Modern cmake
+#                find_package(ZLIB REQUIRED)
                 message(STATUS "FLTK CONFIG is available")
                 add_definitions(-D'FLTK_VERSION_1_4=1')
                 add_definitions(-D'FLTK_SUPPORT=1') # FLTK 1-3
@@ -222,19 +196,8 @@ else (MLOCK)
     message(STATUS "mlock not found")
 endif (MLOCK)
 
-find_library (LIBDL dl)
-if (LIBDL)
-    message(STATUS "Found dl in ${LIBDL}")
-else (LIBDL)
-    message(FATAL_ERROR "dl required but not found")
-endif (LIBDL)
-
-find_library (LIBM m)
-if (LIBM)
-    message(STATUS "Found m in ${LIBM}")
-else (LIBM)
-    message(FATAL_ERROR "m required but not found")
-endif (LIBM)
+find_library (LIBDL dl REQUIRED)
+find_library (LIBM m REQUIRED)
 
 # uninstall target
 if(NOT TARGET uninstall)
@@ -327,7 +290,25 @@ package_status(LIBLO_FOUND         "Liblo support. . . . . . . . . . . . . . . .
 package_status(JACK_METADATA       "Jack metadata support. . . . . . . . . . . . . . . . . .:"  )
 package_status(JACK_LATENCY_RANGE  "Jack port latency range support. . . . . . . . . . . . .:"  )
 package_status(HAVE_BUILTIN_ALIGNED "Has builtin assume aligned . . . . . . . . . . . . . . .:"  )
-package_status(HAS_SF_FORMAT_VORBIS    "Have SF format vorbis. . . . . . . . . . . . . . . . . .:"  )
+package_status(HAS_SF_FORMAT_VORBIS "Have SF format vorbis. . . . . . . . . . . . . . . . . .:"  )
+
+if(NOT TARGET fltk::fltk AND NOT TARGET fltk::fltk-shared)
+    if(NOT EnableNTK OR EnableNTKStatic)
+        package_status(FONTCONFIG_FOUND "Fontconfig support . . . . . . . . . . . . . . . . . . .:"  )
+        package_status(X11_FOUND        "X11 support. . . . . . . . . . . . . . . . . . . . . . .:"  )
+        package_status(XFT_FOUND        "XFT support. . . . . . . . . . . . . . . . . . . . . . .:"  )
+        package_status(XRENDER_FOUND    "Xrender support. . . . . . . . . . . . . . . . . . . . .:"  )
+        package_status(XINERAMA_FOUND   "Xinerama support . . . . . . . . . . . . . . . . . . . .:"  )
+        package_status(XCURSOR_FOUND    "Xcursor support. . . . . . . . . . . . . . . . . . . . .:"  )
+        package_status(XFIXES_FOUND     "Xfixes support . . . . . . . . . . . . . . . . . . . . .:"  )
+        package_status(LIBPNG_FOUND     "PNG support. . . . . . . . . . . . . . . . . . . . . . .:"  )
+        package_status(JPEG_LIBRARY     "JPEG support . . . . . . . . . . . . . . . . . . . . . .:"  )
+    endif()
+endif()
+
+#if(TARGET fltk::fltk)
+#        package_status(ZLIB_FOUND       "Zlib support . . . . . . . . . . . . . . . . . . . . . .:"  )
+#endif()
 
 message (STATUS)
 message (STATUS                    "____________________ User Options________________________"  )

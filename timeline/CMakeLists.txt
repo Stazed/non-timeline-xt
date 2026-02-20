@@ -100,24 +100,28 @@ endif(EnableNTKStatic)
 
 add_executable (non-timeline-xt ${ProgSources} ${FLTK_specific} src/main.C)
 
+set(NTK_STATIC_FLTK_LEGACY_LIBS
+    ${FONTCONFIG_LIBRARIES}
+    ${JACK_LINK_LIBRARIES}
+    ${CMAKE_THREAD_LIBS_INIT}
+    ${SNDFILE_LIBRARIES}
+    ${X11_LIBRARIES}
+    ${LIBLO_LIBRARIES}
+    ${XFT_LIBRARIES}
+    ${XRENDER_LIBRARIES}
+    ${XINERAMA_LIBRARIES}
+    ${CAIRO_LIBRARIES}
+    ${XCURSOR_LIBRARIES}
+    ${XFIXES_LIBRARIES}
+    ${JPEG_LIBRARY}
+    ${LIBPNG_LIBRARIES}
+    ${DL_LIBRARY}
+    ${M_LIBRARY}
+)
+
 if(EnableNTKStatic)
     set(ExternLibraries
-        ${FONTCONFIG_LIBRARIES}
-        ${JACK_LINK_LIBRARIES}
-        ${CMAKE_THREAD_LIBS_INIT}
-        ${SNDFILE_LIBRARIES}
-        ${X11_LIBRARIES}
-        ${LIBLO_LIBRARIES}
-        ${XFT_LIBRARIES}
-        ${XRENDER_LIBRARIES}
-        ${XINERAMA_LIBRARIES}
-        cairo
-        Xcursor
-        Xfixes
-        jpeg
-        png
-        dl
-        m
+        ${NTK_STATIC_FLTK_LEGACY_LIBS}
     )
 
     target_include_directories (
@@ -141,8 +145,8 @@ else(EnableNTKStatic)
             ${CMAKE_THREAD_LIBS_INIT}
             ${SNDFILE_LIBRARIES}
             ${LIBLO_LIBRARIES}
-            dl
-            m
+            ${DL_LIBRARY}
+            ${M_LIBRARY}
         )
 
         target_include_directories (
@@ -162,9 +166,9 @@ else(EnableNTKStatic)
                     ${CMAKE_THREAD_LIBS_INIT}
                     ${SNDFILE_LIBRARIES}
                     ${LIBLO_LIBRARIES}
-                    dl
-                    m
-                    z
+                    ${DL_LIBRARY}
+                    ${M_LIBRARY}
+#                    ${ZLIB_LIBRARIES}
                 )
                 target_include_directories (
                     non-timeline-xt PRIVATE
@@ -172,26 +176,11 @@ else(EnableNTKStatic)
                     ${JACK_INCLUDE_DIRS}
                     ${SNDFILE_INCLUDE_DIRS}
                     ${LIBLO_INCLUDE_DIRS}
+#                    ${ZLIB_INCLUDE_DIRS}
                 )
             else()                  # Legacy cmake
                 set(ExternLibraries
-                    ${CAIRO_LIBRARIES}
-                    ${JACK_LINK_LIBRARIES}
-                    ${CMAKE_THREAD_LIBS_INIT}
-                    ${SNDFILE_LIBRARIES}
-                    ${X11_LIBRARIES}
-                    ${LIBLO_LIBRARIES}
-                    ${FONTCONFIG_LIBRARIES}
-                    ${XFT_LIBRARIES}
-                    ${XRENDER_LIBRARIES}
-                    ${XINERAMA_LIBRARIES}
-                    fontconfig
-                    Xcursor
-                    Xfixes
-                    jpeg
-                    png
-                    dl
-                    m
+                    ${NTK_STATIC_FLTK_LEGACY_LIBS}
                 )
 
                 target_include_directories (
@@ -215,8 +204,8 @@ else(EnableNTKStatic)
                     ${CMAKE_THREAD_LIBS_INIT}
                     ${SNDFILE_LIBRARIES}
                     ${LIBLO_LIBRARIES}
-                    dl
-                    m
+                    ${DL_LIBRARY}
+                    ${M_LIBRARY}
                 )
 
                 target_include_directories (
@@ -235,8 +224,8 @@ else(EnableNTKStatic)
                     ${CMAKE_THREAD_LIBS_INIT}
                     ${SNDFILE_LIBRARIES}
                     ${LIBLO_LIBRARIES}
-                    dl
-                    m
+                    ${DL_LIBRARY}
+                    ${M_LIBRARY}
                 )
 
                 target_include_directories (
