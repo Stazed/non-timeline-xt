@@ -27,6 +27,22 @@ option (EnableNTK "Use NTK toolkit for build" OFF)
 option (EnableNTKStatic "Use NTK static libraries for build" OFF)
 option (EnableFLTKStatic "Build using FLTK static libraries" OFF)
 
+set(_count 0)
+
+foreach(opt
+    EnableNTK
+    EnableNTKStatic
+    EnableFLTKStatic
+)
+    if(${opt})
+        math(EXPR _count "${_count} + 1")
+    endif()
+endforeach()
+
+if(_count GREATER 1)
+    message(FATAL_ERROR "Only one build target may be enabled.")
+endif()
+
 
 set(CMAKE_BUILD_TYPE "Release")
 
