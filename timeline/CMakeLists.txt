@@ -3,72 +3,72 @@
 project (non-timeline-xt)
 
 set(NONLIB_SOURCES
-    ../nonlib/JACK/Client.C
-    ../nonlib/JACK/Port.C
-    ../nonlib/Log_Entry.C
-    ../nonlib/Loggable.C
-    ../nonlib/NSM/Client.C
-    ../nonlib/OSC/Endpoint.C
-    ../nonlib/Thread.C
-    ../nonlib/debug.C
-    ../nonlib/dsp.C
-    ../nonlib/file.C
-    ../nonlib/string_util.C
+    ${CMAKE_SOURCE_DIR}/nonlib/JACK/Client.C
+    ${CMAKE_SOURCE_DIR}/nonlib/JACK/Port.C
+    ${CMAKE_SOURCE_DIR}/nonlib/Log_Entry.C
+    ${CMAKE_SOURCE_DIR}/nonlib/Loggable.C
+    ${CMAKE_SOURCE_DIR}/nonlib/NSM/Client.C
+    ${CMAKE_SOURCE_DIR}/nonlib/OSC/Endpoint.C
+    ${CMAKE_SOURCE_DIR}/nonlib/Thread.C
+    ${CMAKE_SOURCE_DIR}/nonlib/debug.C
+    ${CMAKE_SOURCE_DIR}/nonlib/dsp.C
+    ${CMAKE_SOURCE_DIR}/nonlib/file.C
+    ${CMAKE_SOURCE_DIR}/nonlib/string_util.C
 )
 
 set(FL_SOURCES
-    ../FL/About_Dialog.C
-    ../FL/Fl_Menu_Settings.C
-    ../FL/Fl_Scalepack.C
-    ../FL/Fl_Text_Edit_Window.C
-    ../FL/New_Project_Dialog.C
-    ../FL/menu_popup.C
-    ../FL/test_press.C
-    ../FL/focus_frame.C
+    ${CMAKE_SOURCE_DIR}/FL/About_Dialog.C
+    ${CMAKE_SOURCE_DIR}/FL/Fl_Menu_Settings.C
+    ${CMAKE_SOURCE_DIR}/FL/Fl_Scalepack.C
+    ${CMAKE_SOURCE_DIR}/FL/Fl_Text_Edit_Window.C
+    ${CMAKE_SOURCE_DIR}/FL/New_Project_Dialog.C
+    ${CMAKE_SOURCE_DIR}/FL/menu_popup.C
+    ${CMAKE_SOURCE_DIR}/FL/test_press.C
+    ${CMAKE_SOURCE_DIR}/FL/focus_frame.C
 )
 
 set(CORE_SOURCES
-    src/Annotation_Region.C
-    src/Audio_Region.C
-    src/Audio_Sequence.C
-    src/Control_Point.C
-    src/Control_Sequence.C
-    src/Cursor_Point.C
-    src/Cursor_Region.C
-    src/Cursor_Sequence.C
-    src/Engine/Audio_File.C
-    src/Engine/Audio_File_Dummy.C
-    src/Engine/Audio_File_SF.C
-    src/Engine/Audio_Region.C
-    src/Engine/Audio_Sequence.C
-    src/Engine/Control_Sequence.C
-    src/Engine/Disk_Stream.C
-    src/Engine/Engine.C
-    src/Engine/Peaks.C
-    src/Engine/Playback_DS.C
-    src/Engine/Record_DS.C
-    src/Engine/Timeline.C
-    src/Engine/Track.C
-    src/NSM.C
-    src/OSC_Transmit_Thread.C
-    src/OSC_Receive_Thread.C
-    src/Project.C
-    src/Region_Volume_Editor.C
-    src/Sequence.C
-    src/Sequence_Point.C
-    src/Sequence_Region.C
-    src/Sequence_Widget.C
-    src/TLE.C
-    src/Track_Header.C
-    src/Tempo_Point.C
-    src/Tempo_Sequence.C
-    src/Time_Point.C
-    src/Time_Sequence.C
-    src/Timeline.C
-    src/Track.C
-    src/Transport.C
-    src/Waveform.C
-    src/main.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Annotation_Region.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Audio_Region.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Audio_Sequence.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Control_Point.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Control_Sequence.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Cursor_Point.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Cursor_Region.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Cursor_Sequence.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Engine/Audio_File.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Engine/Audio_File_Dummy.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Engine/Audio_File_SF.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Engine/Audio_Region.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Engine/Audio_Sequence.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Engine/Control_Sequence.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Engine/Disk_Stream.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Engine/Engine.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Engine/Peaks.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Engine/Playback_DS.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Engine/Record_DS.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Engine/Timeline.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Engine/Track.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/NSM.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/OSC_Transmit_Thread.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/OSC_Receive_Thread.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Project.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Region_Volume_Editor.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Sequence.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Sequence_Point.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Sequence_Region.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Sequence_Widget.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/TLE.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Track_Header.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Tempo_Point.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Tempo_Sequence.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Time_Point.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Time_Sequence.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Timeline.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Track.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Transport.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/Waveform.C
+    ${CMAKE_SOURCE_DIR}/timeline/src/main.C
 )
 
 set(ProgSources
@@ -85,20 +85,20 @@ else(EnableNTKStatic)
     else(EnableNTK) #FLTK
         message (STATUS "USING FLTK BUILD")
         set(FLTK_specific
-            ../FL/Fl_Panzoomer.C
-            ../FL/Fl_Theme_Chooser.cxx
-            ../FL/Fl_Theme.cxx
-            ../FL/GTK_Theme.cxx
-            ../FL/Clean_Theme.cxx
-            ../FL/Crystal_Theme.cxx
-            ../FL/Gleam_Theme.cxx
-            ../FL/Vector_Theme.cxx
-            ../FL/themes.cxx
+            ${CMAKE_SOURCE_DIR}/FL/Fl_Panzoomer.C
+            ${CMAKE_SOURCE_DIR}/FL/Fl_Theme_Chooser.cxx
+            ${CMAKE_SOURCE_DIR}/FL/Fl_Theme.cxx
+            ${CMAKE_SOURCE_DIR}/FL/GTK_Theme.cxx
+            ${CMAKE_SOURCE_DIR}/FL/Clean_Theme.cxx
+            ${CMAKE_SOURCE_DIR}/FL/Crystal_Theme.cxx
+            ${CMAKE_SOURCE_DIR}/FL/Gleam_Theme.cxx
+            ${CMAKE_SOURCE_DIR}/FL/Vector_Theme.cxx
+            ${CMAKE_SOURCE_DIR}/FL/themes.cxx
         )
     endif(EnableNTK)
 endif(EnableNTKStatic)
 
-add_executable (non-timeline-xt ${ProgSources} ${FLTK_specific} src/main.C)
+add_executable (non-timeline-xt ${ProgSources} ${FLTK_specific} ${CMAKE_SOURCE_DIR}/timeline/src/main.C)
 
 # FLTK shared build - default
 if(NOT EnableFLTKStatic AND NOT EnableNTK AND NOT EnableNTKStatic)
