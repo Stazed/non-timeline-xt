@@ -215,8 +215,8 @@ else (MLOCK)
     message(STATUS "mlock not found")
 endif (MLOCK)
 
-find_library (LIBDL dl REQUIRED)
-find_library (LIBM m REQUIRED)
+find_library (DL_LIBRARY dl REQUIRED)
+find_library (M_LIBRARY m REQUIRED)
 
 # uninstall target
 if(NOT TARGET uninstall)
@@ -231,8 +231,8 @@ endif()
 
 mark_as_advanced (CMAKE_BUILD_TYPE)
 mark_as_advanced (CMAKE_INSTALL_PREFIX)
-mark_as_advanced (LIBDL)
-mark_as_advanced (LIBM)
+mark_as_advanced (DL_LIBRARY)
+mark_as_advanced (M_LIBRARY)
 
 if (BuildForDebug)
     set (CMAKE_BUILD_TYPE "Debug")
@@ -300,8 +300,8 @@ package_status(FLTK_FOUND          "FLTK toolkit . . . . . . . . . . . . . . . .
 package_status(NTK_FOUND           "NTK toolkit. . . . . . . . . . . . . . . . . . . . . . .:"  )
 package_status(Threads_FOUND       "pthread support (libpthread) . . . . . . . . . . . . . .:"  )
 package_status(MLOCK               "mlock support. . . . . . . . . . . . . . . . . . . . . .:"  )
-package_status(LIBM                "libm support . . . . . . . . . . . . . . . . . . . . . .:"  )
-package_status(LIBDL               "libdl support. . . . . . . . . . . . . . . . . . . . . .:"  )
+package_status(M_LIBRARY           "libm support . . . . . . . . . . . . . . . . . . . . . .:"  )
+package_status(DL_LIBRARY          "libdl support. . . . . . . . . . . . . . . . . . . . . .:"  )
 package_status(JACK_FOUND          "JACK Audio Connection Kit library. . . . . . . . . . . .:"  )
 package_status(SNDFILE_FOUND       "General audio file (libsndfile). . . . . . . . . . . . .:"  )
 package_status(LIBLO_FOUND         "Liblo support. . . . . . . . . . . . . . . . . . . . . .:"  )
