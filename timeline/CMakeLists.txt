@@ -243,16 +243,16 @@ if(EnableFLTK)
     endif()
 endif()
 
-if(EnableNTK)
-    target_link_libraries (non-timeline-xt PRIVATE ${ExternLibraries})
-endif()
-
 if(EnableFLTKStatic)
     if(TARGET fltk::fltk)   # Modern cmake
         target_link_libraries (non-timeline-xt PRIVATE fltk::fltk fltk::images ${ExternLibraries})
     else()                  # Legacy
         target_link_libraries (non-timeline-xt PRIVATE ${FLTK_STATIC} ${FLTK_STATIC_IMAGES} ${ExternLibraries})
     endif()
+endif()
+
+if(EnableNTK)
+    target_link_libraries (non-timeline-xt PRIVATE ${ExternLibraries})
 endif()
 
 if(EnableNTKStatic)

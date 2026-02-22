@@ -23,26 +23,20 @@ option (EnableOptimizations "Enable optimizations" ON)
 option (EnableSSE "Enable SSE (default=automatic check)" ON)
 option (EnableSSE2 "Enable SSE2 (default=automatic check)" ON)
 option (NativeOptimizations "Enable native CPU optimizations" ON)
-option (EnableFLTK "Use FLTK shared toolkit for build" ON)
-option (EnableFLTKStatic "Build using FLTK static libraries" OFF)
-option (EnableNTK "Use NTK shared toolkit for build" OFF)
-option (EnableNTKStatic "Use NTK static libraries for build" OFF)
 
-set(_count 0)
+SET (GuiModule fltk  CACHE STRING "GUI module, either fltk, fltk-static, ntk or ntk-static.")
 
-foreach(opt
-    EnableFLTK
-    EnableNTK
-    EnableNTKStatic
-    EnableFLTKStatic
-)
-    if(${opt})
-        math(EXPR _count "${_count} + 1")
-    endif()
-endforeach()
-
-if(_count GREATER 1)
-    message(FATAL_ERROR "Only one build target may be enabled.")
+if(GuiModule STREQUAL fltk)
+    set (EnableFLTK TRUE)
+elseif(GuiModule STREQUAL fltk-static)
+    set (EnableFLTKStatic TRUE)
+elseif(GuiModule  STREQUAL ntk)
+    set (EnableNTK TRUE)
+elseif(GuiModule STREQUAL ntk-static)
+    set (EnableNTKStatic TRUE)
+else()
+    set (EnableFLTK TRUE)
+    message(STATUS "GUI module defaulting to fltk")
 endif()
 
 
