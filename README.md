@@ -34,7 +34,7 @@ Other Dependencies:
 * jack2       (Need development packages also)
 
 Getting submodules (nonlib and FL):
----------------
+----------------------------------
 
 ```bash
     git submodule update --init
@@ -50,7 +50,7 @@ Your distribution may have NTK available. If not, you can get an "unofficial" up
 ```
 
 Build Non-Timeline-XT:
--------------------
+---------------------
 
 For cmake build:
 
@@ -68,14 +68,23 @@ To uninstall:
     sudo make uninstall
 ```
 
-To build with NTK:
+The default build will use the FLTK shared library.
+
+To build with FLTK static library:
 
 ```bash
-    mkdir build
-    cd build
-    cmake -DEnableNTK=ON ..
-    make
-    sudo make install
+    cmake -DGuiModule=fltk-static ..
+```
+
+To build with NTK shared library:
+
+```bash
+    cmake -DGuiModule=ntk ..
+```
+
+To build with NTK static library:
+```bash
+    cmake -DGuiModule=ntk-static ..
 ```
 
 For package maintainers, if you are building generic binary packages to be used on different architectures,
