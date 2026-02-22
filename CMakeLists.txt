@@ -23,13 +23,15 @@ option (EnableOptimizations "Enable optimizations" ON)
 option (EnableSSE "Enable SSE (default=automatic check)" ON)
 option (EnableSSE2 "Enable SSE2 (default=automatic check)" ON)
 option (NativeOptimizations "Enable native CPU optimizations" ON)
-option (EnableNTK "Use NTK toolkit for build" OFF)
-option (EnableNTKStatic "Use NTK static libraries for build" OFF)
+option (EnableFLTK "Use FLTK shared toolkit for build" ON)
 option (EnableFLTKStatic "Build using FLTK static libraries" OFF)
+option (EnableNTK "Use NTK shared toolkit for build" OFF)
+option (EnableNTKStatic "Use NTK static libraries for build" OFF)
 
 set(_count 0)
 
 foreach(opt
+    EnableFLTK
     EnableNTK
     EnableNTKStatic
     EnableFLTKStatic
@@ -84,6 +86,52 @@ pkg_check_modules(JACK REQUIRED jack>=0.115.6)
 pkg_check_modules(LIBLO liblo>=0.26 REQUIRED)
 pkg_check_modules(SNDFILE REQUIRED sndfile)
 
+find_library(JPEG_LIBRARY jpeg REQUIRED)
+pkg_check_modules(LIBPNG REQUIRED libpng)
+pkg_check_modules(CAIRO REQUIRED cairo)
+pkg_check_modules(X11 REQUIRED x11)
+pkg_check_modules(XFIXES REQUIRED xfixes)
+pkg_check_modules(XINERAMA REQUIRED xinerama)
+pkg_check_modules(FONTCONFIG REQUIRED fontconfig>=0.22)
+pkg_check_modules(XFT REQUIRED xft)
+pkg_check_modules(XRENDER REQUIRED xrender)
+pkg_check_modules(XCURSOR REQUIRED xcursor)
+
+if(EnableFLTK OR EnableFLTKStatic)
+    SET(FLTK_SKIP_OPENGL TRUE)
+endif()
+
+if(EnableFLTK)
+    find_package(FLTK 1.4 CONFIG)
+    if(TARGET fltk::fltk-shared)    # Modern cmake
+        message(STATUS "FLTK CONFIG is available")
+        add_definitions(-D'FLTK_VERSION_1_4=1') # only if 1.4
+    else()      # legacy fltk
+        find_package(FLTK REQUIRED)
+    endif()
+    add_definitions(-D'FLTK_SUPPORT=1') # FLTK 1-3 always
+    add_definitions(-D'BUILD_TYPE="Built with FLTK Library"')
+endif()
+
+if(EnableFLTKStatic)
+    find_package(FLTK 1.4 CONFIG)
+    if(TARGET fltk::fltk)   # Modern cmake static
+        message(STATUS "FLTK CONFIG is available")
+        add_definitions(-D'FLTK_VERSION_1_4=1') # only if 1.4
+    else()                  # Legacy cmake
+        find_library(FLTK_STATIC libfltk.a REQUIRED)
+        find_library(FLTK_STATIC_IMAGES libfltk_images.a REQUIRED)
+    endif()
+    add_definitions(-D'FLTK_SUPPORT=1') # FLTK 1-3 always
+    add_definitions(-D'BUILD_TYPE="Built with FLTK static library"')
+endif()
+
+if(EnableNTK)       # shared
+    pkg_check_modules(NTK ntk REQUIRED)
+    pkg_check_modules(NTK_IMAGES ntk_images REQUIRED)
+    add_definitions(-D'BUILD_TYPE="Built with NTK Library"')
+endif()
+
 if(EnableNTKStatic)
     find_library(NTK_STATIC
         NAMES
@@ -104,72 +152,20 @@ if(EnableNTKStatic)
         /usr/local/lib64
         REQUIRED)
     pkg_check_modules(NTK ntk REQUIRED)
-    find_library(JPEG_LIBRARY jpeg REQUIRED)
-    pkg_check_modules(LIBPNG REQUIRED libpng)
-    pkg_check_modules(CAIRO REQUIRED cairo)
-    pkg_check_modules(X11 REQUIRED x11)
-    pkg_check_modules(XFIXES REQUIRED xfixes)
-    pkg_check_modules(XINERAMA REQUIRED xinerama)
-    pkg_check_modules(FONTCONFIG REQUIRED fontconfig>=0.22)
-    pkg_check_modules(XFT REQUIRED xft)
-    pkg_check_modules(XRENDER REQUIRED xrender)
-    pkg_check_modules(XCURSOR REQUIRED xcursor)
     add_definitions(-D'BUILD_TYPE="Built with NTK static Library"')
-else(EnableNTKStatic)
-    if(EnableNTK)       # dynamic
-        pkg_check_modules(NTK ntk REQUIRED)
-        pkg_check_modules(NTK_IMAGES ntk_images REQUIRED)
-        add_definitions(-D'BUILD_TYPE="Built with NTK Library"')
-    else(EnableNTK)     # FLTK
-        pkg_check_modules(CAIRO REQUIRED cairo)
-        SET(FLTK_SKIP_OPENGL TRUE)
-        find_package(FLTK 1.4 CONFIG)
-        if(EnableFLTKStatic)
-            if(TARGET fltk::fltk)   # Modern cmake
-#                find_package(ZLIB REQUIRED)
-                message(STATUS "FLTK CONFIG is available")
-                add_definitions(-D'FLTK_VERSION_1_4=1')
-                add_definitions(-D'FLTK_SUPPORT=1') # FLTK 1-3
-                add_definitions(-D'BUILD_TYPE="Built with FLTK static library"')
-            else()                  # Legacy cmake
-                find_library(FLTK_STATIC libfltk.a REQUIRED)
-                find_library(FLTK_STATIC_IMAGES libfltk_images.a REQUIRED)
-                find_library(JPEG_LIBRARY jpeg REQUIRED)
-                pkg_check_modules(LIBPNG REQUIRED libpng)
-                pkg_check_modules(XFIXES REQUIRED xfixes)
-                pkg_check_modules(XINERAMA REQUIRED xinerama)
-                pkg_check_modules(FONTCONFIG REQUIRED fontconfig>=0.22)
-                pkg_check_modules(XFT REQUIRED xft)
-                pkg_check_modules(XRENDER REQUIRED xrender)
-                pkg_check_modules(XCURSOR REQUIRED xcursor)
-                add_definitions(-D'BUILD_TYPE="Built with FLTK static library"')
-            endif()
-        else(EnableFLTKStatic)
-            add_definitions(-D'BUILD_TYPE="Built with FLTK Library"')
-        endif(EnableFLTKStatic)
+endif()
 
-        if(TARGET fltk::fltk-shared)    # Modern cmake
-            message(STATUS "FLTK CONFIG is available")
-            add_definitions(-D'FLTK_VERSION_1_4=1')
-            add_definitions(-D'FLTK_SUPPORT=1') # FLTK 1-3
-        else()      # legacy fltk
-            find_package(FLTK REQUIRED)
-            pkg_check_modules (LIBCAIRO REQUIRED cairo)
-            if(FLTK_FOUND)
-                mark_as_advanced(FORCE FLTK_BASE_LIBRARY)
-                mark_as_advanced(FORCE FLTK_CONFIG_SCRIPT)
-                mark_as_advanced(FORCE FLTK_DIR)
-                mark_as_advanced(FORCE FLTK_FLUID_EXECUTABLE)
-                mark_as_advanced(FORCE FLTK_FORMS_LIBRARY)
-                mark_as_advanced(FORCE FLTK_GL_LIBRARY)
-                mark_as_advanced(FORCE FLTK_IMAGES_LIBRARY)
-                mark_as_advanced(FORCE FLTK_INCLUDE_DIR)
-                mark_as_advanced(FORCE FLTK_MATH_LIBRARY)
-                add_definitions(-D'FLTK_SUPPORT=1') # FLTK 1-3
-            endif(FLTK_FOUND)
-        endif()
-    endif(EnableNTK)
-endif(EnableNTKStatic)
+if(FLTK_FOUND)
+    mark_as_advanced(FORCE FLTK_BASE_LIBRARY)
+    mark_as_advanced(FORCE FLTK_CONFIG_SCRIPT)
+    mark_as_advanced(FORCE FLTK_DIR)
+    mark_as_advanced(FORCE FLTK_FLUID_EXECUTABLE)
+    mark_as_advanced(FORCE FLTK_FORMS_LIBRARY)
+    mark_as_advanced(FORCE FLTK_GL_LIBRARY)
+    mark_as_advanced(FORCE FLTK_IMAGES_LIBRARY)
+    mark_as_advanced(FORCE FLTK_INCLUDE_DIR)
+    mark_as_advanced(FORCE FLTK_MATH_LIBRARY)
+endif(FLTK_FOUND)
 
 include(CheckSymbolExists)
 
@@ -309,32 +305,25 @@ package_status(JACK_METADATA       "Jack metadata support. . . . . . . . . . . .
 package_status(JACK_LATENCY_RANGE  "Jack port latency range support. . . . . . . . . . . . .:"  )
 package_status(HAVE_BUILTIN_ALIGNED "Has builtin assume aligned . . . . . . . . . . . . . . .:"  )
 package_status(HAS_SF_FORMAT_VORBIS "Have SF format vorbis. . . . . . . . . . . . . . . . . .:"  )
+package_status(CAIRO_FOUND         "Cairo support. . . . . . . . . . . . . . . . . . . . . .:"  )
 
-if(NOT EnableNTK)
-    package_status(CAIRO_FOUND         "Cairo support. . . . . . . . . . . . . . . . . . . . . .:"  )
-endif()
+package_status(FONTCONFIG_FOUND    "Fontconfig support . . . . . . . . . . . . . . . . . . .:"  )
+package_status(X11_FOUND           "X11 support. . . . . . . . . . . . . . . . . . . . . . .:"  )
+package_status(XFT_FOUND           "XFT support. . . . . . . . . . . . . . . . . . . . . . .:"  )
+package_status(XRENDER_FOUND       "Xrender support. . . . . . . . . . . . . . . . . . . . .:"  )
+package_status(XINERAMA_FOUND      "Xinerama support . . . . . . . . . . . . . . . . . . . .:"  )
+package_status(XCURSOR_FOUND       "Xcursor support. . . . . . . . . . . . . . . . . . . . .:"  )
+package_status(XFIXES_FOUND        "Xfixes support . . . . . . . . . . . . . . . . . . . . .:"  )
+package_status(LIBPNG_FOUND        "PNG support. . . . . . . . . . . . . . . . . . . . . . .:"  )
+package_status(JPEG_LIBRARY        "JPEG support . . . . . . . . . . . . . . . . . . . . . .:"  )
 
-if((EnableFLTKStatic AND NOT TARGET fltk::fltk) OR EnableNTKStatic)
-        package_status(FONTCONFIG_FOUND "Fontconfig support . . . . . . . . . . . . . . . . . . .:"  )
-        package_status(X11_FOUND        "X11 support. . . . . . . . . . . . . . . . . . . . . . .:"  )
-        package_status(XFT_FOUND        "XFT support. . . . . . . . . . . . . . . . . . . . . . .:"  )
-        package_status(XRENDER_FOUND    "Xrender support. . . . . . . . . . . . . . . . . . . . .:"  )
-        package_status(XINERAMA_FOUND   "Xinerama support . . . . . . . . . . . . . . . . . . . .:"  )
-        package_status(XCURSOR_FOUND    "Xcursor support. . . . . . . . . . . . . . . . . . . . .:"  )
-        package_status(XFIXES_FOUND     "Xfixes support . . . . . . . . . . . . . . . . . . . . .:"  )
-        package_status(LIBPNG_FOUND     "PNG support. . . . . . . . . . . . . . . . . . . . . . .:"  )
-        package_status(JPEG_LIBRARY     "JPEG support . . . . . . . . . . . . . . . . . . . . . .:"  )
-endif()
-
-#if(TARGET fltk::fltk)
-#        package_status(ZLIB_FOUND       "Zlib support . . . . . . . . . . . . . . . . . . . . . .:"  )
-#endif()
 
 message (STATUS)
 message (STATUS                    "____________________ User Options________________________"  )
 package_status(EnableOptimizations "Use optimizations. . . . . . . . . . . . . . . . . . . .:"  )
 package_status(EnableSSE           "Use sse. . . . . . . . . . . . . . . . . . . . . . . . .:"  )
 package_status(EnableSSE2          "Use sse2 . . . . . . . . . . . . . . . . . . . . . . . .:"  )
+package_status(EnableFLTK          "Enable FLTK build. . . . . . . . . . . . . . . . . . . .:"  )
 package_status(EnableNTK           "Enable NTK build . . . . . . . . . . . . . . . . . . . .:"  )
 package_status(EnableNTKStatic     "Enable NTK Static build. . . . . . . . . . . . . . . . .:"  )
 package_status(EnableFLTKStatic    "Enable FLTK Static build . . . . . . . . . . . . . . . .:"  )
