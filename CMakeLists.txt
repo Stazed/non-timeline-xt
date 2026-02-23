@@ -90,6 +90,7 @@ pkg_check_modules(FONTCONFIG REQUIRED fontconfig>=0.22)
 pkg_check_modules(XFT REQUIRED xft)
 pkg_check_modules(XRENDER REQUIRED xrender)
 pkg_check_modules(XCURSOR REQUIRED xcursor)
+pkg_check_modules(XEXT REQUIRED xext)
 
 if(EnableFLTK OR EnableFLTKStatic)
     SET(FLTK_SKIP_OPENGL TRUE)
@@ -308,6 +309,7 @@ package_status(XRENDER_FOUND       "Xrender support. . . . . . . . . . . . . . .
 package_status(XINERAMA_FOUND      "Xinerama support . . . . . . . . . . . . . . . . . . . .:"  )
 package_status(XCURSOR_FOUND       "Xcursor support. . . . . . . . . . . . . . . . . . . . .:"  )
 package_status(XFIXES_FOUND        "Xfixes support . . . . . . . . . . . . . . . . . . . . .:"  )
+package_status(XEXT_FOUND          "Xext support . . . . . . . . . . . . . . . . . . . . . .:"  )
 package_status(LIBPNG_FOUND        "PNG support. . . . . . . . . . . . . . . . . . . . . . .:"  )
 package_status(JPEG_LIBRARY        "JPEG support . . . . . . . . . . . . . . . . . . . . . .:"  )
 
