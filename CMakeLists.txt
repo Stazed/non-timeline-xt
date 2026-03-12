@@ -56,10 +56,20 @@ set (BuildOptions_Native
     "-march=native -mtune=native"
     CACHE STRING "Native compiler options"
 )
-set (BuildOptionsBasic
-    "-std=c++11 -Wno-unused-parameter -Wno-unused-result -O3 -fomit-frame-pointer -ffast-math -pipe"
-    CACHE STRING "basic X86 complier options"
-)
+
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    MESSAGE("USING CLANG OPTIMIZATIONS")
+    set (BuildOptionsBasic
+        "-std=c++11 -Wno-unused-parameter -Wno-unused-result -Wno-vla-cxx-extension -O3 -fomit-frame-pointer -ffast-math -pipe"
+        CACHE STRING "basic X86 complier options"
+    )
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    MESSAGE("USING GNU OPTIMIZATIONS")
+    set (BuildOptionsBasic
+        "-std=c++11 -Wno-unused-parameter -Wno-unused-result -O3 -fomit-frame-pointer -ffast-math -pipe"
+        CACHE STRING "basic X86 complier options"
+    )
+endif()
 
 set (BuildOptionsDebug
     "-std=c++11 -Wno-cast-function-type -O0 -g3 -ggdb -Wall -Wextra -Wpointer-arith"
