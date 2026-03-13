@@ -191,6 +191,10 @@ check_signals( void* )
 int
 main ( int argc, char **argv )
 {
+#if !defined(__GLIBC__)
+    debug_set_program_name(argv[0]);
+#endif
+
     printf( "%s %s\n", APP_TITLE, VERSION );
     printf( "%s\n%s\n", COPYRIGHT, COPYRIGHT2 );
 
