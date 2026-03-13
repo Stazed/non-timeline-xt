@@ -39,6 +39,7 @@
 #include "Waveform.H"
 
 #include <list>
+#include <libgen.h>
 using namespace std;
 
 #include "Track.H"
