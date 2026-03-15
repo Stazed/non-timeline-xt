@@ -58,9 +58,17 @@ sigmoid_interpolate ( float y1, float y2, float mu )
 nframes_t
 Control_Sequence::play ( sample_t *buf, nframes_t frame, nframes_t nframes )
 {
-    //  THREAD_ASSERT( RT );
+    if ( !buf || !nframes )
+        return 0;
 
-    Control_Point *p2, *p1 = static_cast<Control_Point*>( _widgets.front() );
+    if ( _widgets.empty() )
+        return 0;
+
+    Control_Point *p2 = NULL;
+    Control_Point *p1 = static_cast<Control_Point*>( _widgets.front() );
+
+    if ( !p1 )
+        return 0;
 
     nframes_t n = nframes;
 
@@ -68,6 +76,8 @@ Control_Sequence::play ( sample_t *buf, nframes_t frame, nframes_t nframes )
         i != _widgets.end(); ++i, p1 = p2 )
     {
         p2 = (Control_Point*)(*i);
+        if ( !p2 )
+            continue;
 
         if ( ! n )
             /* buffer's full, no point in continuing */
@@ -103,7 +113,7 @@ Control_Sequence::play ( sample_t *buf, nframes_t frame, nframes_t nframes )
 
             float incr;
 
-            if ( interpolation() != No_Type )
+            if ( interpolation() != No_Type && len > 0 )
                 incr = ( y2 - y1 ) / (float)len;
             else
                 incr = 0.0f;
