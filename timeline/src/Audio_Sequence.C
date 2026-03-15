@@ -330,12 +330,23 @@ Audio_Sequence::handle_paste ( const char *text )
         return 1;
 
     char *file;
+    const char *prefix = "file://";
+    const size_t prefix_len = strlen(prefix);
 
-    if ( ! sscanf( text, "file://%m[^\r\n]\n", &file ) )
+    if ( !text || strncmp(text, prefix, prefix_len) != 0 )
     {
-        WARNING( "invalid drop \"%s\"\n", text );
+        WARNING("invalid drop \"%s\"\n", text ? text : "(null)");
         return 0;
     }
+
+    const char *start = text + prefix_len;
+    const char *end = start;
+
+    while ( *end && *end != '\r' && *end != '\n' )
+        ++end;
+
+    std::string path(start, end - start);
+    file = strdup(path.c_str());
 
     unescape_url( file );
 
