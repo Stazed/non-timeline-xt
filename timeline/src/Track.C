@@ -1297,13 +1297,32 @@ Track::handle ( int m )
 
             char *port_name;
             int end;
-            while (  sscanf( text, "jack.port://%m[^\r\n]\r\n%n", &port_name, &end ) > 0 )
-            {
-                DMESSAGE( "Scanning %s", port_name );
-                port_names.push_back( port_name );
-                free(port_name );
 
-                text += end;
+            while ( text && *text )
+            {
+                static const char prefix[] = "jack.port://";
+                static const size_t prefix_len = sizeof( prefix ) - 1;
+
+                if ( strncmp( text, prefix, prefix_len ) != 0 )
+                    break;
+
+                const char *line_start = text + prefix_len;
+                const char *line_end = line_start;
+
+                while ( *line_end && *line_end != '\r' && *line_end != '\n' )
+                    ++line_end;
+
+                std::string port_name( line_start, line_end - line_start );
+
+                DMESSAGE( "Scanning %s", port_name.c_str() );
+                port_names.push_back( port_name );
+
+                text = line_end;
+
+                if ( *text == '\r' )
+                    ++text;
+                if ( *text == '\n' )
+                    ++text;
             }
 
             for ( unsigned int i = 0; i < input.size() && i < port_names.size(); i++)
