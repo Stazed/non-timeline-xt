@@ -58,13 +58,13 @@ set (BuildOptions_Native
 )
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    MESSAGE("USING CLANG OPTIMIZATIONS")
+    message(STATUS "USING CLANG OPTIMIZATIONS")
     set (BuildOptionsBasic
         "-std=c++11 -Wno-unused-parameter -Wno-unused-result -Wno-vla-cxx-extension -O3 -fomit-frame-pointer -ffast-math -pipe"
         CACHE STRING "basic X86 complier options"
     )
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    MESSAGE("USING GNU OPTIMIZATIONS")
+    message(STATUS "USING GNU OPTIMIZATIONS")
     set (BuildOptionsBasic
         "-std=c++11 -Wno-unused-parameter -Wno-unused-result -O3 -fomit-frame-pointer -ffast-math -pipe"
         CACHE STRING "basic X86 complier options"
@@ -76,6 +76,13 @@ set (BuildOptionsDebug
 #    "-std=c++11 -Wno-cast-function-type -Wno-unused-result -O0 -g3 -ggdb -Wall -Wextra -Wpointer-arith  -flto=auto -ffat-lto-objects -fexceptions -g -grecord-gcc-switches -pipe -Wall -Werror=format-security -Wp,-U_FORTIFY_SOURCE,-D_FORTIFY_SOURCE=3 -Wp,-D_GLIBCXX_ASSERTIONS -m64 -march=x86-64 -mtune=generic -fasynchronous-unwind-tables -fstack-clash-protection -fcf-protection -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer"
     CACHE STRING "Debug build flags"
 )
+
+if(CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
+    message(STATUS "Building on FreeBSD")
+    list(PREPEND CMAKE_PREFIX_PATH "/usr/local")
+    link_directories("/usr/local/lib")
+    include_directories(SYSTEM "/usr/local/include")
+endif()
 
 find_package (PkgConfig REQUIRED)
 
