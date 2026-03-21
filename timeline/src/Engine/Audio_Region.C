@@ -35,8 +35,6 @@
 #include "../../../nonlib/debug.h"
 #include "../../../nonlib/Thread.H"
 
-
-
 /** Apply a (portion of) fade from /start/ to a buffer up to size /nframes/. */
 void
 Audio_Region::Fade::apply ( sample_t *buf, Audio_Region::Fade::fade_dir_e dir, nframes_t start, nframes_t nframes ) const

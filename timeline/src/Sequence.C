@@ -90,7 +90,6 @@ Sequence::~Sequence (  )
         free( _name );
 }
 
-
 
 int
 Sequence::drawable_w ( void ) const

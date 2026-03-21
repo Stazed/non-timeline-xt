@@ -45,8 +45,6 @@ Cursor_Sequence::Cursor_Sequence( int X, int Y, int W, int H ) :
     resizable(0);
 }
 
-
-
 void
 Cursor_Sequence::label ( const char *s )
 {

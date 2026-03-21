@@ -156,8 +156,6 @@ Audio_Sequence::~Audio_Sequence ( )
     Loggable::block_end();
 }
 
-
-
 /** return a pointer to the current capture region for this sequence */
 const Audio_Region *
 Audio_Sequence::capture_region ( void ) const

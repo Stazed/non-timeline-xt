@@ -67,8 +67,6 @@ Cursor_Point::~Cursor_Point ( )
     type(NULL);
 }
 
-
-
 void
 Cursor_Point::get ( Log_Entry &e ) const
 {
@@ -110,8 +108,6 @@ Cursor_Point::set ( Log_Entry &e )
     //    _make_label();
 }
 
-
-
 int
 Cursor_Point::handle ( int m )
 {
@@ -132,5 +128,3 @@ Cursor_Point::handle ( int m )
 
     return Sequence_Point::handle( m );
 }
-
-

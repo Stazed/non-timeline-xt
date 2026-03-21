@@ -150,7 +150,6 @@ draw_full_arrow_symbol ( Fl_Color color )
 
 }
 
-
 
 class Timeline::Timeline_Panzoomer : public Fl_Panzoomer
 {
@@ -209,7 +208,6 @@ protected:
     }
 };
 
-
 
 void
 Timeline::redraw_overlay ( void )

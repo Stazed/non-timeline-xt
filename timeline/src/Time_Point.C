@@ -25,7 +25,6 @@
 #include "Time_Sequence.H"
 #include "Timeline.H" // for timeline->time_track
 
-
 
 Time_Point::Time_Point ( ) : _time( 4, 4 )
 {
@@ -59,7 +58,6 @@ Time_Point::~Time_Point ( )
     log_destroy();
 }
 
-
 
 void
 Time_Point::get ( Log_Entry &e ) const

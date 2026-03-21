@@ -27,7 +27,6 @@
 
 #include <stdint.h>
 
-
 
 Sequence_Region::Sequence_Region ( )
 {
@@ -42,7 +41,6 @@ Sequence_Region::~Sequence_Region ( )
 {
 }
 
-
 
 void
 Sequence_Region::get ( Log_Entry &e ) const

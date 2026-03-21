@@ -33,8 +33,6 @@
 #include "../../../nonlib/debug.h"
 #include "../../../nonlib/Thread.H"
 
-
-
 Engine::Engine ( ) : _thread( "RT" )
 {
     _buffers_dropped = 0;
@@ -50,8 +48,6 @@ Engine::~Engine ( )
        before the base class is */
     deactivate();
 }
-
-
 
 /*************/
 /* Callbacks */

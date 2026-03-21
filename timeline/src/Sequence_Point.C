@@ -25,7 +25,6 @@
 
 #include <FL/fl_draw.H>
 
-
 
 Sequence_Point::Sequence_Point ( const Sequence_Point &rhs ) : Sequence_Widget( rhs )
 {
@@ -40,7 +39,6 @@ Sequence_Point::~Sequence_Point ( )
 {
 }
 
-
 
 void
 Sequence_Point::get ( Log_Entry &e ) const

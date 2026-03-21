@@ -45,8 +45,6 @@
 using std::min;
 using std::max;
 
-
-
 /* defined in timeline.C */
 extern void draw_full_arrow_symbol ( Fl_Color color );
 
@@ -60,8 +58,6 @@ Fl_Boxtype Audio_Region::_box = FL_BORDER_BOX;
 
 Fl_Color Audio_Region::_selection_color = FL_MAGENTA;
 
-
-
 /* static Fl_Color fl_invert_color ( Fl_Color c ) */
 /* { */
 /*     unsigned char r, g, b; */
@@ -70,8 +66,6 @@ Fl_Color Audio_Region::_selection_color = FL_MAGENTA;
 
 /*     return fl_rgb_color( 255 - r, 255 - g, 255 - b ); */
 /* } */
-
-
 
 void
 Audio_Region::get ( Log_Entry &e ) const
@@ -205,8 +199,6 @@ Audio_Region::~Audio_Region ( )
 
     _clip->release();
 }
-
-
 
 void
 Audio_Region::menu_cb ( Fl_Widget *w, void *v )
@@ -1096,7 +1088,6 @@ Audio_Region::handle ( int m )
     return 0;
 }
 
-
 
 /**********/
 /* Public */

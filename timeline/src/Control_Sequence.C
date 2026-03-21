@@ -253,8 +253,6 @@ Control_Sequence::init ( void )
     interpolation( Linear );
 }
 
-
-
 void
 Control_Sequence::get ( Log_Entry &e ) const
 {

@@ -32,8 +32,6 @@
 #include <list>
 using std::list;
 
-
-
 /**********/
 /* Engine */
 /**********/
@@ -50,8 +48,6 @@ sigmoid_interpolate ( float y1, float y2, float mu )
 {
     return linear_interpolate( y1, y2, ( 1 - cos( mu * M_PI ) ) / 2 );
 }
-
-
 
 /** fill buf with /nframes/ of interpolated control curve values
  * starting at /frame/  */

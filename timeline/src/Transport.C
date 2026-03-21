@@ -143,7 +143,6 @@ Transport::Transport ( int X, int Y, int W, int H, const char *L )
     dolayout();
 }
 
-
 
 void
 Transport::cb_button ( Fl_Widget *w, void *v )

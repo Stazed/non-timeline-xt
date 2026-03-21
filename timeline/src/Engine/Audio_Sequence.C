@@ -31,8 +31,6 @@
 
 using namespace std;
 
-
-
 /**********/
 /* Engine */
 /**********/

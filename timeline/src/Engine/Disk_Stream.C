@@ -36,8 +36,6 @@ class Audio_Sequence;
 
 #include <unistd.h>
 
-
-
 /**********/
 /* Engine */
 /**********/
@@ -56,8 +54,6 @@ float Disk_Stream::seconds_to_buffer = 2.0f;
  require more data to be read from disk, as will varying channel
  counts.*/
 size_t Disk_Stream::disk_io_kbytes = 256;
-
-
 
 Disk_Stream::Disk_Stream ( Track *track, float frame_rate, nframes_t nframes, int channels ) : _track( track )
 {
@@ -93,8 +89,6 @@ Disk_Stream::~Disk_Stream ( )
 
     //    timeline->unlock();
 }
-
-
 
 /** flush buffers and reset. Must only be called from the RT thread. */
 void

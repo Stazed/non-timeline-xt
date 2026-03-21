@@ -41,7 +41,6 @@ Time_Sequence::Time_Sequence ( int X, int Y, int W, int H ) : Sequence ( X, Y, W
     resizable(0);
 }
 
-
 
 void
 Time_Sequence::handle_widget_change ( nframes_t start, nframes_t length )

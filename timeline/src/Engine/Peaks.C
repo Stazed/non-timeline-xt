@@ -65,8 +65,6 @@ struct peak_thread_data
     Peaks *peaks;
 };
 
-
-
 /* whether to cache peaks at multiple resolutions on disk to
  * drastically improve performance */
 bool Peaks::mipmapped_peakfiles = true;
@@ -76,8 +74,6 @@ const int Peaks::cache_levels  = 8;           /* number of sampling levels in pe
 const int Peaks::cache_step    = 1;            /* powers of two between each level. 4 == 256, 2048, 16384, ... */
 
 Peaks::peakbuffer Peaks::_peakbuf;
-
-
 
 static
 char *
@@ -89,8 +85,6 @@ peakname ( const char *filename )
 
     return file;
 }
-
-
 
 struct peakfile_block_header
 {
@@ -381,8 +375,6 @@ public:
     }
 };
 
-
-
 Peaks::Peaks ( Audio_File *c )
 {
     _rescan_needed = false;
@@ -405,8 +397,6 @@ Peaks::~Peaks ( )
     delete _peakfile;
     _peakfile = NULL;
 }
-
-
 
 /** Prepare a buffer of peaks from /s/ to /e/ for reading. Must be
  * called before any calls to operator[] */
@@ -681,8 +671,6 @@ Peaks::write ( sample_t *buf, nframes_t nframes )
     _peak_writer->write( buf, nframes );
 }
 
-
-
 /*
   The Streamer is for streaming peaks from audio buffers to disk while
   capturing. It works by accumulating a peak value across write()
@@ -773,8 +761,6 @@ Peaks::Streamer::write ( const sample_t *buf, nframes_t nframes )
     /* FIXME: shouldn't we just use write() instead? */
     fflush( _fp );
 }
-
-
 
 /*
   The Builder is for generating peaks from imported or updated
@@ -997,4 +983,3 @@ Peaks::Builder::Builder ( const Peaks *peaks ) :
     _peaks( peaks )
 { }
 
-

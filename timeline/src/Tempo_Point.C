@@ -25,7 +25,6 @@
 #include "Tempo_Sequence.H"
 #include "Timeline.H" // for timeline->tempo_track
 
-
 
 Tempo_Point::Tempo_Point ( )
 {
@@ -53,7 +52,6 @@ Tempo_Point::~Tempo_Point ( )
     log_destroy();
 }
 
-
 
 void
 Tempo_Point::get ( Log_Entry &e ) const

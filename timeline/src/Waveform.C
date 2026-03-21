@@ -33,14 +33,12 @@ using std::min;
 using std::max;
 #include "../../nonlib/dsp.h"
 
-
 
 bool Waveform::fill = true;
 bool Waveform::outline = true;
 bool Waveform::vary_color = true;
 bool Waveform::logarithmic = true;
 
-
 
 /* TODO: split the variations into separate functions. eg, plain,
  * outlined, filled, polygonal, rectified. */

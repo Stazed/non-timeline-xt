@@ -41,8 +41,6 @@ Cursor_Region::box_color ( Fl_Color c )
     ((Cursor_Sequence*)sequence())->cursor_color( c );
 }
 
-
-
 void
 Cursor_Region::get ( Log_Entry &e ) const
 {
