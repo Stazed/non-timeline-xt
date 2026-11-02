@@ -284,7 +284,33 @@ Audio_Sequence::draw ( void )
                 // This is for overlapping audio regions - changes color yellow shade on overlap
                 if ( b.w > 0 )
                 {
-#ifdef FLTK_SUPPORT
+#ifdef FLTK_VERSION_1_4
+                    Fl_Window* win = Fl_Window::current();
+                    const float scale = Fl::screen_scale(win->screen_num());
+                    const int surface_w =
+                        static_cast<int>(std::ceil(win->w() * scale));
+                    const int surface_h =
+                        static_cast<int>(std::ceil(win->h() * scale));
+
+                    cairo_surface_t* Xsurface = cairo_xlib_surface_create
+                        (fl_display, fl_window, fl_visual->visual,
+                        surface_w, surface_h);
+
+                    cairo_t *cc = cairo_create (Xsurface);
+                    // b.x/y/w/h are in FLTK units; the X drawable uses
+                    // scaled device coordinates.
+                    cairo_scale(cc, scale, scale);
+                    cairo_set_source_rgba( cc, 1, 1, 0, 0.35 );
+                    cairo_rectangle( cc, b.x, b.y, b.w, b.h );
+
+                    cairo_fill( cc );
+
+                    cairo_set_operator( cc, CAIRO_OPERATOR_OVER );
+
+                    cairo_destroy(cc);
+                    cairo_surface_destroy(Xsurface);
+
+#elif FLTK_SUPPORT  // FLTK 1.3 does not have scaling
                     cairo_surface_t* Xsurface = cairo_xlib_surface_create
                         (fl_display, fl_window, fl_visual->visual,
                         Fl_Window::current()->w(), Fl_Window::current()->h());
@@ -297,8 +323,8 @@ Audio_Sequence::draw ( void )
 
                     cairo_set_operator( cc, CAIRO_OPERATOR_OVER );
 
-                    cairo_surface_destroy(Xsurface);
                     cairo_destroy(cc);
+                    cairo_surface_destroy(Xsurface);
 #else   // NTK
                     cairo_t *cc = Fl::cairo_cc();
 

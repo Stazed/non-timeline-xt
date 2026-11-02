@@ -1417,12 +1417,21 @@ Timeline::draw_cursors ( Cursor_Sequence *o ) const
         {
             if ( Timeline::draw_with_cursor_overlay )
             {
-#ifdef FLTK_SUPPORT
+#ifdef FLTK_VERSION_1_4
+                Fl_Window* win = Fl_Window::current();
+                const float scale = Fl::screen_scale(win->screen_num());
+                const int surface_w =
+                    static_cast<int>(std::ceil(win->w() * scale));
+                const int surface_h =
+                    static_cast<int>(std::ceil(win->h() * scale));
+
                 cairo_surface_t* Xsurface = cairo_xlib_surface_create
                     (fl_display, fl_window, fl_visual->visual,
-                    Fl_Window::current()->w(), Fl_Window::current()->h());
+                    surface_w, surface_h);
 
                 cairo_t *cc = cairo_create (Xsurface);
+                // FLTK geometry is in FLTK units; Cairo draws to the X drawable.
+                cairo_scale(cc, scale, scale);
 
                 unsigned rgb = Fl::get_color( (*i)->box_color() );
 
@@ -1430,7 +1439,8 @@ Timeline::draw_cursors ( Cursor_Sequence *o ) const
                 unsigned g =  (rgb >> 16) & 0xFF;
                 unsigned b =  (rgb >> 8) & 0xFF;
 
-                cairo_set_source_rgba( cc, (double)r, (double)g, (double)b, 0.20 );
+                cairo_set_source_rgba( cc,
+                    r / 255.0, g / 255.0, b / 255.0, 0.20 );
 
                 // 200 is the width of the track header, so don't draw over the header
                 int line_x = (*i)->line_x() < 200 ?  200 : (*i)->line_x();
@@ -1451,9 +1461,46 @@ Timeline::draw_cursors ( Cursor_Sequence *o ) const
 
                 cairo_set_operator( cc, CAIRO_OPERATOR_OVER );
 
-                cairo_surface_destroy(Xsurface);
                 cairo_destroy(cc);
+                cairo_surface_destroy(Xsurface);
 
+#elif FLTK_SUPPORT  // FLTK 1.3 does not have scaling
+                cairo_surface_t* Xsurface = cairo_xlib_surface_create
+                    (fl_display, fl_window, fl_visual->visual,
+                    Fl_Window::current()->w(), Fl_Window::current()->h());
+
+                cairo_t *cc = cairo_create (Xsurface);
+
+                unsigned rgb = Fl::get_color( (*i)->box_color() );
+
+                unsigned r =  (rgb >> 24) & 0xFF;
+                unsigned g =  (rgb >> 16) & 0xFF;
+                unsigned b =  (rgb >> 8) & 0xFF;
+
+                cairo_set_source_rgba( cc,
+                    r / 255.0, g / 255.0, b / 255.0, 0.20 );
+
+                // 200 is the width of the track header, so don't draw over the header
+                int line_x = (*i)->line_x() < 200 ?  200 : (*i)->line_x();
+                int abs_w = (*i)->abs_w() - ( line_x - (*i)->line_x()  );
+
+                // Don't allow width to go into negative or it draws over the header
+                abs_w = abs_w < 0 ? 0 : abs_w;
+
+                // This is to keep the overlap from scrolling above the audio track into the cursor tracks
+                int ty = tracks->y() < 165 ? 165 : tracks->y();
+
+                //    DMESSAGE("ABS_W = %d", abs_w);
+                //    DMESSAGE("line_x = %d: tracks-x = %d: tracks-w = %d", (*i)->line_x(), tracks->x(), tracks->w());
+
+                cairo_rectangle( cc, line_x, ty, abs_w, tracks->h() );
+
+                cairo_fill( cc );
+
+                cairo_set_operator( cc, CAIRO_OPERATOR_OVER );
+
+                cairo_destroy(cc);
+                cairo_surface_destroy(Xsurface);
 #else   // NTK
                 fl_color( fl_color_add_alpha( (*i)->box_color(), 25 ) );
                 fl_rectf( (*i)->line_x(), tracks->y(), (*i)->abs_w(), tracks->h() );
