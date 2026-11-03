@@ -1796,7 +1796,16 @@ Timeline::redraw_playhead ( void )
                 xposition( max( 0, playhead_x - ( ( tracks->w() - Track::width() ) >> 1 ) ) );
             else if ( playhead_x > ts_to_x( xoffset ) + ( tracks->w() - Track::width() ) )
                 xposition( playhead_x );
+
             adjust_panzoomer();
+#ifdef FLTK_VERSION_1_4
+            // This redraw() is necessary for scaling with FLTK 1.4 but causes flicker
+            // of the grid lines with most but not all scale factors. Without the redraw
+            // the grid lines and cairo overlays do not align as the panzoomer scrolls
+            // when following the playhead. This redraw() also results in much higher 
+            // CPU usage. FIXME!!!
+            redraw();
+#endif
         }
     }
 }
@@ -2171,7 +2180,7 @@ Timeline::length ( void ) const
     return l;
 }
 
-/** set horizontal scroll postion to absolute pixel coordinate /X/ */
+/** set horizontal scroll position to absolute pixel coordinate /X/ */
 void
 Timeline::xposition ( int X )
 {
@@ -2594,3 +2603,4 @@ Timeline::command_show_gui( void )
 
     nsm_send_is_shown(nsm);
 }
+
