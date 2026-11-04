@@ -1564,7 +1564,20 @@ Timeline::draw ( void )
 
     //    c = FL_DAMAGE_ALL;
 
-    if ( c & FL_DAMAGE_SCROLL )
+#if defined(FLTK_VERSION_1_4)
+    /* fl_scroll() shifts whole pixels. At fractional screen scales, use a
+       full redraw instead to avoid different rounding between scroll areas. */
+    const float scale = Fl::screen_scale( window()->screen_num() );
+    const bool can_pixel_scroll =
+        scale == static_cast<float>( static_cast<int>( scale ) );
+#else
+    const bool can_pixel_scroll = true;
+#endif
+
+    if ( ( c & FL_DAMAGE_SCROLL ) && !can_pixel_scroll )
+        c |= FL_DAMAGE_ALL;
+
+    if ( ( c & FL_DAMAGE_SCROLL ) && can_pixel_scroll )
     {
         {
             /*         draw_child( *rulers ); */
@@ -1723,7 +1736,12 @@ Timeline::redraw_playhead ( void )
 {
     //    static nframes_t last_playhead = -1;
     static int last_playhead_x = -1;
-
+#ifdef FLTK_VERSION_1_4
+    // This holding is because when scaled on FLTK 1.4, there is grid flickering due to 
+    // float >> int rounding, I guess. So instead of constantly scrolling we only scroll
+    // every 60 frames when following playhead if it is scaled.
+    static int hold_playhead = -1;
+#endif
     if ( transport->rolling )
     {
         // The case when jack transport is started by another client when recording is enabled.
@@ -1779,8 +1797,17 @@ Timeline::redraw_playhead ( void )
         // needed and is set when we actually get confirmation from jack query that
         // jack is rolling when recording.
         transport->stop();
+#ifdef FLTK_VERSION_1_4
+        hold_playhead = -1;
+#endif
         DMESSAGE("Called stop");
     }
+#ifdef FLTK_VERSION_1_4
+    else
+    {
+        hold_playhead = -1;
+    }
+#endif
 
     int playhead_x = ts_to_x( transport->frame );
 
@@ -1793,19 +1820,30 @@ Timeline::redraw_playhead ( void )
         if ( follow_playhead )
         {
             if ( center_playhead && active() )
+            {
+#ifdef FLTK_VERSION_1_4
+                const float scale = Fl::screen_scale( window()->screen_num() );
+                if ( scale > 1.01 || scale < .999)
+                {
+                    if(playhead_x > (hold_playhead + 60))
+                    {
+                        hold_playhead = playhead_x;
+                        xposition( max( 0, playhead_x - ( ( tracks->w() - Track::width() ) >> 1 ) ) );
+                    }
+                }
+                else
+                {
+                    xposition( max( 0, playhead_x - ( ( tracks->w() - Track::width() ) >> 1 ) ) );
+                }
+                    
+            }
+#else
                 xposition( max( 0, playhead_x - ( ( tracks->w() - Track::width() ) >> 1 ) ) );
+#endif
             else if ( playhead_x > ts_to_x( xoffset ) + ( tracks->w() - Track::width() ) )
                 xposition( playhead_x );
 
             adjust_panzoomer();
-#ifdef FLTK_VERSION_1_4
-            // This redraw() is necessary for scaling with FLTK 1.4 but causes flicker
-            // of the grid lines with most but not all scale factors. Without the redraw
-            // the grid lines and cairo overlays do not align as the panzoomer scrolls
-            // when following the playhead. This redraw() also results in much higher 
-            // CPU usage. FIXME!!!
-            redraw();
-#endif
         }
     }
 }
