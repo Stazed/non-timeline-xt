@@ -1732,7 +1732,6 @@ Timeline::draw_playhead ( void )
 void
 Timeline::redraw_playhead ( void )
 {
-    //    static nframes_t last_playhead = -1;
     static int last_playhead_x = -1;
 #ifdef FLTK_VERSION_1_4
     // This holding is because when scaled on FLTK 1.4, there is grid flickering due to 
@@ -1820,7 +1819,7 @@ Timeline::redraw_playhead ( void )
             if ( center_playhead && active() )
             {
 #ifdef FLTK_VERSION_1_4
-                if(playhead_x > (hold_playhead + 60))
+                if(playhead_x > (hold_playhead + 60) || (hold_playhead == -1))
                 {
                     hold_playhead = playhead_x;
                     xposition( max( 0, playhead_x - ( ( tracks->w() - Track::width() ) >> 1 ) ) );
