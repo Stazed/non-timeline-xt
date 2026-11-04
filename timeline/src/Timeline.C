@@ -1567,9 +1567,7 @@ Timeline::draw ( void )
 #if defined(FLTK_VERSION_1_4)
     /* fl_scroll() shifts whole pixels. At fractional screen scales, use a
        full redraw instead to avoid different rounding between scroll areas. */
-    const float scale = Fl::screen_scale( window()->screen_num() );
-    const bool can_pixel_scroll =
-        scale == static_cast<float>( static_cast<int>( scale ) );
+    const bool can_pixel_scroll = false;
 #else
     const bool can_pixel_scroll = true;
 #endif
@@ -1739,7 +1737,7 @@ Timeline::redraw_playhead ( void )
 #ifdef FLTK_VERSION_1_4
     // This holding is because when scaled on FLTK 1.4, there is grid flickering due to 
     // float >> int rounding, I guess. So instead of constantly scrolling we only scroll
-    // every 60 frames when following playhead if it is scaled.
+    // every 60 frames when following playhead.
     static int hold_playhead = -1;
 #endif
     if ( transport->rolling )
@@ -1822,17 +1820,9 @@ Timeline::redraw_playhead ( void )
             if ( center_playhead && active() )
             {
 #ifdef FLTK_VERSION_1_4
-                const float scale = Fl::screen_scale( window()->screen_num() );
-                if ( scale > 1.01 || scale < .999)
+                if(playhead_x > (hold_playhead + 60))
                 {
-                    if(playhead_x > (hold_playhead + 60))
-                    {
-                        hold_playhead = playhead_x;
-                        xposition( max( 0, playhead_x - ( ( tracks->w() - Track::width() ) >> 1 ) ) );
-                    }
-                }
-                else
-                {
+                    hold_playhead = playhead_x;
                     xposition( max( 0, playhead_x - ( ( tracks->w() - Track::width() ) >> 1 ) ) );
                 }
 #else
