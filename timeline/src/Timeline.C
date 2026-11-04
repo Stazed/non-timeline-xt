@@ -1763,16 +1763,28 @@ Timeline::redraw_playhead ( void )
                                 stop();
                                 transport->locate( playback_home() );
                                 record();
+#ifdef FLTK_VERSION_1_4
+                                hold_playhead = -1;
+#endif
+
                             }
                             else
                             {
                                 transport->locate( playback_home() );
+#ifdef FLTK_VERSION_1_4
+                                hold_playhead = -1;
+#endif
                             }
                         }
                     }
                 }
                 else if ( transport->frame > playback_end() )
+                {
                     transport->stop();
+#ifdef FLTK_VERSION_1_4
+                    hold_playhead = -1;
+#endif
+                }
             }
         }
     }
