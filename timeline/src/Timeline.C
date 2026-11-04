@@ -1835,11 +1835,10 @@ Timeline::redraw_playhead ( void )
                 {
                     xposition( max( 0, playhead_x - ( ( tracks->w() - Track::width() ) >> 1 ) ) );
                 }
-                    
-            }
 #else
                 xposition( max( 0, playhead_x - ( ( tracks->w() - Track::width() ) >> 1 ) ) );
 #endif
+            }
             else if ( playhead_x > ts_to_x( xoffset ) + ( tracks->w() - Track::width() ) )
                 xposition( playhead_x );
 
