@@ -33,7 +33,7 @@
 #include <FL/fl_draw.H>
 #include <FL/Fl_Menu_Button.H>
 
-#ifdef FLTK_VERSION_1_4
+#if FL_API_VERSION >= 10400
 #include <FL/platform.H>
 #endif
 
@@ -901,7 +901,7 @@ Timeline::Timeline ( int X, int Y, int W, int H, const char* L ) : BASE( X, Y, W
 
         spacebox->resize( X, rulers->y() + ( ( H - rulers->h() ) - 50 ),
             W, 125 );
-#ifdef FLTK_VERSION_1_4
+#if FL_API_VERSION >= 10400
         o->move_intersection(panzoomer->x(), panzoomer->y(),
             panzoomer->x(), track_window->y() + track_window->h() );
 #else
@@ -1417,7 +1417,7 @@ Timeline::draw_cursors ( Cursor_Sequence *o ) const
         {
             if ( Timeline::draw_with_cursor_overlay )
             {
-#ifdef FLTK_VERSION_1_4
+#if FL_API_VERSION >= 10400
                 Fl_Window* win = Fl_Window::current();
                 const float scale = Fl::screen_scale(win->screen_num());
                 const int surface_w =
@@ -1564,7 +1564,7 @@ Timeline::draw ( void )
 
     //    c = FL_DAMAGE_ALL;
 
-#if defined(FLTK_VERSION_1_4)
+#if FL_API_VERSION >= 10400
     /* fl_scroll() shifts whole pixels. At fractional screen scales, use a
        full redraw instead to avoid different rounding between scroll areas. */
     const bool can_pixel_scroll = false;
@@ -1733,7 +1733,7 @@ void
 Timeline::redraw_playhead ( void )
 {
     static int last_playhead_x = -1;
-#ifdef FLTK_VERSION_1_4
+#if FL_API_VERSION >= 10400
     // This holding is because when scaled on FLTK 1.4, there is grid flickering due to 
     // float >> int rounding, I guess. So instead of constantly scrolling we only scroll
     // every 60 frames when following playhead.
@@ -1763,7 +1763,7 @@ Timeline::redraw_playhead ( void )
                                 stop();
                                 transport->locate( playback_home() );
                                 record();
-#ifdef FLTK_VERSION_1_4
+#if FL_API_VERSION >= 10400
                                 hold_playhead = -1;
 #endif
 
@@ -1771,7 +1771,7 @@ Timeline::redraw_playhead ( void )
                             else
                             {
                                 transport->locate( playback_home() );
-#ifdef FLTK_VERSION_1_4
+#if FL_API_VERSION >= 10400
                                 hold_playhead = -1;
 #endif
                             }
@@ -1781,7 +1781,7 @@ Timeline::redraw_playhead ( void )
                 else if ( transport->frame > playback_end() )
                 {
                     transport->stop();
-#ifdef FLTK_VERSION_1_4
+#if FL_API_VERSION >= 10400
                     hold_playhead = -1;
 #endif
                 }
@@ -1806,12 +1806,12 @@ Timeline::redraw_playhead ( void )
         // needed and is set when we actually get confirmation from jack query that
         // jack is rolling when recording.
         transport->stop();
-#ifdef FLTK_VERSION_1_4
+#if FL_API_VERSION >= 10400
         hold_playhead = -1;
 #endif
         DMESSAGE("Called stop");
     }
-#ifdef FLTK_VERSION_1_4
+#if FL_API_VERSION >= 10400
     else
     {
         hold_playhead = -1;
@@ -1830,7 +1830,7 @@ Timeline::redraw_playhead ( void )
         {
             if ( center_playhead && active() )
             {
-#ifdef FLTK_VERSION_1_4
+#if FL_API_VERSION >= 10400
                 if(playhead_x > (hold_playhead + 60) || (hold_playhead == -1))
                 {
                     hold_playhead = playhead_x;

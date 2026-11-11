@@ -53,7 +53,7 @@ using namespace std;
 
 #include "../../nonlib/string_util.h"
 
-#ifdef FLTK_VERSION_1_4
+#if FL_API_VERSION >= 10400
 #include <FL/platform.H>
 #endif
 
@@ -284,7 +284,7 @@ Audio_Sequence::draw ( void )
                 // This is for overlapping audio regions - changes color yellow shade on overlap
                 if ( b.w > 0 )
                 {
-#ifdef FLTK_VERSION_1_4
+#if FL_API_VERSION >= 10400
                     Fl_Window* win = Fl_Window::current();
                     const float scale = Fl::screen_scale(win->screen_num());
                     const int surface_w =

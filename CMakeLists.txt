@@ -117,7 +117,6 @@ if(EnableFLTK)
     find_package(FLTK 1.4 CONFIG)
     if(TARGET fltk::fltk-shared)    # Modern cmake
         message(STATUS "FLTK CONFIG is available")
-        add_definitions(-D'FLTK_VERSION_1_4=1') # only if 1.4
     else()      # legacy fltk
         find_package(FLTK REQUIRED)
     endif()
