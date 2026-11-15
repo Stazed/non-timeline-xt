@@ -35,6 +35,7 @@
 
 #if FL_API_VERSION >= 10400
 #include <FL/platform.H>
+#include <cstdint>
 #endif
 
 #if defined(FLTK_SUPPORT)
@@ -83,6 +84,17 @@ typedef unsigned char fl_damage_t;
 #define BASE Fl_Group
 #define BX this->x()
 #define BY this->y()
+
+#if FL_API_VERSION >= 10400
+struct measure_line_context
+{
+    Timeline *timeline;
+    cairo_t *cr;
+    int X;
+    int H;
+    double scale;
+};
+#endif
 
 bool Timeline::draw_with_measure_lines = true;
 bool Timeline::draw_with_cursor_overlay = true;
@@ -1104,6 +1116,65 @@ Timeline::offset_to_x ( nframes_t frame ) const
 void
 Timeline::draw_measure_cb ( nframes_t frame, const BBT &bbt, void *v )
 {
+#if FL_API_VERSION >= 10400
+    measure_line_context *ctx = static_cast<measure_line_context *>( v );
+    Timeline *o = ctx->timeline;
+ 
+     if ( o->panzoomer->zoom() >= 15 )
+         return;
+
+    Fl_Color mc = FL_LIGHT3;
+    Fl_Color bc = FL_LIGHT2;
+    Fl_Color c;
+    Fl_Color ct = fl_contrast( mc, FL_BACKGROUND_COLOR );
+    bool light_theme = false;
+
+    if ( FL_BLACK == ct )
+    {
+        light_theme = true;
+        /* in a light color scheme mode */
+        mc = fl_rgb_color(30, 30, 30);
+        bc = FL_DARK3;
+    }
+
+    if ( bbt.beat )
+    {
+        if ( o->panzoomer->zoom() > 12 )
+            return;
+        else
+            c = bc;
+    }
+    else
+        c = mc;
+
+    // soften the grid lines some
+    if(light_theme)
+        fl_color( fl_color_average(c, FL_WHITE, .50f) );
+    else
+        fl_color( fl_color_average(c, FL_BLACK, .50f) );
+
+    const unsigned rgb = Fl::get_color( c );
+    const double alpha = 1.0;
+
+    /* Preserve the fractional logical x coordinate instead of shifting it. */
+    const double frame_delta =
+        frame >= o->xoffset
+            ? static_cast<double>( frame - o->xoffset )
+            : -static_cast<double>( o->xoffset - frame );
+    const double x =
+        std::ldexp( frame_delta, -o->_fpp ) + Track::width() - ctx->X;
+
+    cairo_set_source_rgba( ctx->cr,
+        ((rgb >> 24) & 0xff) / 255.0,
+        ((rgb >> 16) & 0xff) / 255.0,
+        ((rgb >>  8) & 0xff) / 255.0,
+        alpha );
+    cairo_set_line_width( ctx->cr, 1.0 / ctx->scale );
+    cairo_move_to( ctx->cr, x, 0 );
+    cairo_line_to( ctx->cr, x, ctx->H );
+    cairo_stroke( ctx->cr );
+    
+#else
     Timeline *o = static_cast<Timeline*>( v );
 
     if ( o->panzoomer->zoom() >= 15 )
@@ -1150,6 +1221,7 @@ Timeline::draw_measure_cb ( nframes_t frame, const BBT &bbt, void *v )
     const int x = timeline->ts_to_x( frame - timeline->xoffset ) + Track::width();
 
     fl_line( x, 0, x, 2000 );
+#endif  // 
 }
 
 /* FIXME: wrong place for this */
@@ -1298,16 +1370,94 @@ Timeline::draw_measure_lines ( int X, int Y, int W, int H )
     if ( ! draw_with_measure_lines )
         return;
 
-    fl_line_style( FL_SOLID, 0 );
-
     const nframes_t start = x_to_offset( X );
     const nframes_t length = x_to_ts( W );
+
+#if FL_API_VERSION >= 10400
+    if ( W <= 0 || H <= 0 )
+        return;
+
+    double scale = 1.0;
+
+    Fl_Window *win = Fl_Window::current();
+    if ( win )
+        scale = Fl::screen_scale( win->screen_num() );
+
+    const int pixel_w = static_cast<int>( std::ceil( W * scale ) );
+    const int pixel_h = static_cast<int>( std::ceil( H * scale ) );
+
+    cairo_surface_t *surface =
+        cairo_image_surface_create( CAIRO_FORMAT_ARGB32, pixel_w, pixel_h );
+
+    if ( cairo_surface_status( surface ) != CAIRO_STATUS_SUCCESS )
+    {
+        cairo_surface_destroy( surface );
+        return;
+    }
+
+    cairo_t *cr = cairo_create( surface );
+
+    /* Start transparent; FLTK will composite the RGBA image over the timeline. */
+    cairo_set_operator( cr, CAIRO_OPERATOR_CLEAR );
+    cairo_paint( cr );
+    cairo_set_operator( cr, CAIRO_OPERATOR_OVER );
+
+    cairo_scale( cr, scale, scale );
+
+    measure_line_context ctx = { this, cr, X, H, scale };
+    render_tempomap( start, length, draw_measure_cb, &ctx );
+
+    cairo_destroy( cr );
+    cairo_surface_flush( surface );
+
+    /* Cairo ARGB32 is premultiplied; Fl_RGB_Image expects straight RGBA. */
+    const unsigned char *src = cairo_image_surface_get_data( surface );
+    const int stride = cairo_image_surface_get_stride( surface );
+    std::vector<unsigned char> rgba( pixel_w * pixel_h * 4 );
+
+    for ( int y = 0; y < pixel_h; ++y )
+    {
+        for ( int x = 0; x < pixel_w; ++x )
+        {
+            std::uint32_t p;
+            std::memcpy( &p, src + y * stride + x * 4, sizeof( p ) );
+
+            const unsigned a = ( p >> 24 ) & 0xff;
+            unsigned r = ( p >> 16 ) & 0xff;
+            unsigned g = ( p >>  8 ) & 0xff;
+            unsigned b =   p        & 0xff;
+
+            if ( a )
+            {
+                r = std::min( 255u, ( r * 255u + a / 2 ) / a );
+                g = std::min( 255u, ( g * 255u + a / 2 ) / a );
+                b = std::min( 255u, ( b * 255u + a / 2 ) / a );
+            }
+
+            unsigned char *d = &rgba[ ( y * pixel_w + x ) * 4 ];
+            d[0] = static_cast<unsigned char>( r );
+            d[1] = static_cast<unsigned char>( g );
+            d[2] = static_cast<unsigned char>( b );
+            d[3] = static_cast<unsigned char>( a );
+        }
+    }
+
+    cairo_surface_destroy( surface );
+
+    Fl_RGB_Image image( rgba.data(), pixel_w, pixel_h, 4 );
+    fl_push_clip( X, Y, W, H );
+    image.draw( X, Y, W, H );
+    fl_pop_clip();
+    
+#else
+    fl_line_style( FL_SOLID, 0 );
 
     fl_push_clip( X, Y, W, H );
 
     render_tempomap( start, length, draw_measure_cb, this );
 
     fl_pop_clip();
+#endif
 }
 
 void
