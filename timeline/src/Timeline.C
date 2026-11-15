@@ -1377,17 +1377,8 @@ Timeline::draw_measure_lines ( int X, int Y, int W, int H )
     if ( W <= 0 || H <= 0 )
         return;
 
-    double scale = 1.0;
-
-    Fl_Window *win = Fl_Window::current();
-    if ( win )
-        scale = Fl::screen_scale( win->screen_num() );
-
-    const int pixel_w = static_cast<int>( std::ceil( W * scale ) );
-    const int pixel_h = static_cast<int>( std::ceil( H * scale ) );
-
     cairo_surface_t *surface =
-        cairo_image_surface_create( CAIRO_FORMAT_ARGB32, pixel_w, pixel_h );
+        cairo_image_surface_create( CAIRO_FORMAT_ARGB32, W, H );
 
     if ( cairo_surface_status( surface ) != CAIRO_STATUS_SUCCESS )
     {
@@ -1402,9 +1393,7 @@ Timeline::draw_measure_lines ( int X, int Y, int W, int H )
     cairo_paint( cr );
     cairo_set_operator( cr, CAIRO_OPERATOR_OVER );
 
-    cairo_scale( cr, scale, scale );
-
-    measure_line_context ctx = { this, cr, X, H, scale };
+    measure_line_context ctx = { this, cr, X, H, 1.0 };
     render_tempomap( start, length, draw_measure_cb, &ctx );
 
     cairo_destroy( cr );
@@ -1413,11 +1402,11 @@ Timeline::draw_measure_lines ( int X, int Y, int W, int H )
     /* Cairo ARGB32 is premultiplied; Fl_RGB_Image expects straight RGBA. */
     const unsigned char *src = cairo_image_surface_get_data( surface );
     const int stride = cairo_image_surface_get_stride( surface );
-    std::vector<unsigned char> rgba( pixel_w * pixel_h * 4 );
+    std::vector<unsigned char> rgba( W * H * 4 );
 
-    for ( int y = 0; y < pixel_h; ++y )
+    for ( int y = 0; y < H; ++y )
     {
-        for ( int x = 0; x < pixel_w; ++x )
+        for ( int x = 0; x < W; ++x )
         {
             std::uint32_t p;
             std::memcpy( &p, src + y * stride + x * 4, sizeof( p ) );
@@ -1434,7 +1423,7 @@ Timeline::draw_measure_lines ( int X, int Y, int W, int H )
                 b = std::min( 255u, ( b * 255u + a / 2 ) / a );
             }
 
-            unsigned char *d = &rgba[ ( y * pixel_w + x ) * 4 ];
+            unsigned char *d = &rgba[ ( y * W + x ) * 4 ];
             d[0] = static_cast<unsigned char>( r );
             d[1] = static_cast<unsigned char>( g );
             d[2] = static_cast<unsigned char>( b );
@@ -1444,7 +1433,7 @@ Timeline::draw_measure_lines ( int X, int Y, int W, int H )
 
     cairo_surface_destroy( surface );
 
-    Fl_RGB_Image image( rgba.data(), pixel_w, pixel_h, 4 );
+    Fl_RGB_Image image( rgba.data(), W, H, 4 );
     fl_push_clip( X, Y, W, H );
     image.draw( X, Y, W, H );
     fl_pop_clip();
