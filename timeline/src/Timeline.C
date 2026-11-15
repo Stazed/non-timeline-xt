@@ -1422,6 +1422,11 @@ Timeline::draw_measure_lines ( int X, int Y, int W, int H )
                 g = std::min( 255u, ( g * 255u + a / 2 ) / a );
                 b = std::min( 255u, ( b * 255u + a / 2 ) / a );
             }
+            
+            // Darken RGB by 20%, rounding to the nearest integer.
+            r = ( r * 80u + 50u ) / 100u;
+            g = ( g * 80u + 50u ) / 100u;
+            b = ( b * 80u + 50u ) / 100u;
 
             unsigned char *d = &rgba[ ( y * W + x ) * 4 ];
             d[0] = static_cast<unsigned char>( r );
@@ -1432,7 +1437,7 @@ Timeline::draw_measure_lines ( int X, int Y, int W, int H )
     }
 
     cairo_surface_destroy( surface );
-
+    
     Fl_RGB_Image image( rgba.data(), W, H, 4 );
     fl_push_clip( X, Y, W, H );
     image.draw( X, Y, W, H );
