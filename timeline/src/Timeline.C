@@ -1173,8 +1173,8 @@ Timeline::draw_measure_cb ( nframes_t frame, const BBT &bbt, void *v )
     cairo_move_to( ctx->cr, x, 0 );
     cairo_line_to( ctx->cr, x, ctx->H );
     cairo_stroke( ctx->cr );
-    
-#else
+
+#else   // FLTK 1.3 & NTK
     Timeline *o = static_cast<Timeline*>( v );
 
     if ( o->panzoomer->zoom() >= 15 )
@@ -1221,7 +1221,7 @@ Timeline::draw_measure_cb ( nframes_t frame, const BBT &bbt, void *v )
     const int x = timeline->ts_to_x( frame - timeline->xoffset ) + Track::width();
 
     fl_line( x, 0, x, 2000 );
-#endif  // 
+#endif
 }
 
 /* FIXME: wrong place for this */
@@ -1422,7 +1422,7 @@ Timeline::draw_measure_lines ( int X, int Y, int W, int H )
                 g = std::min( 255u, ( g * 255u + a / 2 ) / a );
                 b = std::min( 255u, ( b * 255u + a / 2 ) / a );
             }
-            
+
             // Darken RGB by 20%, rounding to the nearest integer.
             r = ( r * 80u + 50u ) / 100u;
             g = ( g * 80u + 50u ) / 100u;
@@ -1437,13 +1437,13 @@ Timeline::draw_measure_lines ( int X, int Y, int W, int H )
     }
 
     cairo_surface_destroy( surface );
-    
+
     Fl_RGB_Image image( rgba.data(), W, H, 4 );
     fl_push_clip( X, Y, W, H );
     image.draw( X, Y, W, H );
     fl_pop_clip();
     
-#else
+#else   // FLTK 1.3 and NTK
     fl_line_style( FL_SOLID, 0 );
 
     fl_push_clip( X, Y, W, H );
